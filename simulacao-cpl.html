@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simulação CPL — Implante Dental | Campo dos Goytacazes RJ</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: Arial, sans-serif; background: #f4f6fb; color: #1a1a2e; }
+  header { background: #0d1b3e; color: #fff; padding: 22px 32px; }
+  header h1 { font-size: 20px; font-weight: 700; }
+  header p { font-size: 13px; color: #a0aec0; margin-top: 4px; }
+  .container { max-width: 960px; margin: 28px auto; padding: 0 20px; }
+  .controls { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 22px; }
+  .ctrl-card { background: #fff; border-radius: 10px; padding: 18px 20px; box-shadow: 0 1px 4px rgba(0,0,0,0.07); }
+  .ctrl-label { font-size: 12px; color: #6b7280; margin-bottom: 4px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; }
+  .ctrl-value { font-size: 26px; font-weight: 700; color: #0d1b3e; margin-bottom: 10px; }
+  input[type=range] { width: 100%; accent-color: #1a56db; }
+  .range-labels { display: flex; justify-content: space-between; font-size: 11px; color: #9ca3af; margin-top: 4px; }
+  .metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 24px; }
+  .metric { background: #fff; border-radius: 10px; padding: 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.07); }
+  .metric-label { font-size: 11px; color: #6b7280; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 6px; }
+  .metric-value { font-size: 22px; font-weight: 700; }
+  .green { color: #0F6E56; }
+  .amber { color: #BA7517; }
+  .blue { color: #1a56db; }
+  .section-title { font-size: 12px; font-weight: 700; color: #6b7280; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 12px; }
+  .table-wrap { background: #fff; border-radius: 10px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.07); }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th { background: #f8fafc; color: #6b7280; font-weight: 700; text-align: center; padding: 11px 14px; border-bottom: 1px solid #e5e7eb; font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em; }
+  th:first-child { text-align: left; }
+  td { padding: 11px 14px; border-bottom: 1px solid #f3f4f6; text-align: center; }
+  td:first-child { text-align: left; font-weight: 700; color: #374151; }
+  tr:last-child td { border-bottom: none; }
+  tr.active-row td { background: #e6f9f2; }
+  tr.active-row td:first-child { color: #085041; }
+  tr.active-row td { color: #085041; font-weight: 700; }
+  .badge { display: inline-block; font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 12px; }
+  .badge-green { background: #dcfce7; color: #166534; }
+  .badge-amber { background: #fef3c7; color: #92400e; }
+  .badge-red { background: #fee2e2; color: #991b1b; }
+  .footer { text-align: center; font-size: 12px; color: #9ca3af; padding: 24px 0 32px; }
+  .note { background: #eff6ff; border-left: 3px solid #1a56db; border-radius: 0 8px 8px 0; padding: 12px 16px; font-size: 13px; color: #1e40af; margin-bottom: 20px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Simulação CPL — Implante Dental | Campo dos Goytacazes RJ</h1>
+  <p>Dbout Mídia · CPL médio de referência: R$ 6 a R$ 10</p>
+</header>
+<div class="container">
+
+  <div class="note">
+    🎯 Ajuste os controles abaixo para simular diferentes cenários de investimento e CPL.
+  </div>
+
+  <div class="controls">
+    <div class="ctrl-card">
+      <div class="ctrl-label">Investimento mensal</div>
+      <div class="ctrl-value" id="inv-label">R$ 3.000</div>
+      <input type="range" min="500" max="15000" step="500" value="3000" id="inv-slider" />
+      <div class="range-labels"><span>R$ 500</span><span>R$ 15.000</span></div>
+    </div>
+    <div class="ctrl-card">
+      <div class="ctrl-label">CPL estimado</div>
+      <div class="ctrl-value" id="cpl-label">R$ 8,00</div>
+      <input type="range" min="6" max="10" step="0.5" value="8" id="cpl-slider" />
+      <div class="range-labels"><span>R$ 6 (otimista)</span><span>R$ 10 (conservador)</span></div>
+    </div>
+  </div>
+
+  <div class="metrics">
+    <div class="metric">
+      <div class="metric-label">Leads estimados</div>
+      <div class="metric-value green" id="m-leads">375</div>
+    </div>
+    <div class="metric">
+      <div class="metric-label">CPL selecionado</div>
+      <div class="metric-value blue" id="m-cpl">R$ 8,00</div>
+    </div>
+    <div class="metric">
+      <div class="metric-label">Leads (CPL R$ 6)</div>
+      <div class="metric-value green" id="m-min">500</div>
+    </div>
+    <div class="metric">
+      <div class="metric-label">Leads (CPL R$ 10)</div>
+      <div class="metric-value amber" id="m-max">300</div>
+    </div>
+  </div>
+
+  <div class="section-title">Tabela completa — cenários por faixa de investimento</div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Investimento/mês</th>
+          <th>Leads CPL R$ 6</th>
+          <th>Leads CPL R$ 7</th>
+          <th>Leads CPL R$ 8</th>
+          <th>Leads CPL R$ 9</th>
+          <th>Leads CPL R$ 10</th>
+          <th>Estágio</th>
+        </tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
+  </div>
+
+  <div class="footer">Dbout Mídia · Tráfego para Área da Saúde · Campo dos Goytacazes RJ</div>
+</div>
+
+<script>
+const rows = [
+  500, 1000, 1500, 2000, 3000, 4000, 5000, 6000, 8000, 10000, 12000, 15000
+];
+
+function fmtBRL(v) {
+  return 'R$ ' + v.toLocaleString('pt-BR', {minimumFractionDigits:0, maximumFractionDigits:0});
+}
+function fmtBRLf(v) {
+  return 'R$ ' + v.toFixed(2).replace('.', ',');
+}
+function badgeLabel(inv) {
+  if (inv <= 1500) return '<span class="badge badge-red">Entrada</span>';
+  if (inv <= 4000) return '<span class="badge badge-amber">Crescimento</span>';
+  return '<span class="badge badge-green">Escala</span>';
+}
+
+function render() {
+  const inv = parseInt(document.getElementById('inv-slider').value);
+  const cpl = parseFloat(document.getElementById('cpl-slider').value);
+
+  document.getElementById('inv-label').textContent = fmtBRL(inv);
+  document.getElementById('cpl-label').textContent = fmtBRLf(cpl);
+  document.getElementById('m-leads').textContent = Math.round(inv / cpl);
+  document.getElementById('m-cpl').textContent = fmtBRLf(cpl);
+  document.getElementById('m-min').textContent = Math.round(inv / 6);
+  document.getElementById('m-max').textContent = Math.round(inv / 10);
+
+  const tbody = document.getElementById('tbody');
+  tbody.innerHTML = '';
+  rows.forEach(r => {
+    const isActive = r === inv;
+    const tr = document.createElement('tr');
+    if (isActive) tr.className = 'active-row';
+    tr.innerHTML = `
+      <td>${fmtBRL(r)}</td>
+      <td>${Math.round(r/6)}</td>
+      <td>${Math.round(r/7)}</td>
+      <td>${Math.round(r/8)}</td>
+      <td>${Math.round(r/9)}</td>
+      <td>${Math.round(r/10)}</td>
+      <td>${badgeLabel(r)}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+document.getElementById('inv-slider').addEventListener('input', render);
+document.getElementById('cpl-slider').addEventListener('input', render);
+render();
+</script>
+</body>
+</html>
