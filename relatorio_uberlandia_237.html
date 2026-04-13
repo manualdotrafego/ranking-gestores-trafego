@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Relatório · 237 Uberlândia · Meta Ads</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',sans-serif;background:#f0f2f5;color:#1c1e21;font-size:14px}
+.page{max-width:900px;margin:0 auto;padding:24px 16px 48px}
+
+/* ── HEADER ── */
+.header{background:#fff;border-radius:8px;padding:16px 24px;margin-bottom:20px;
+        display:flex;align-items:center;justify-content:space-between;
+        box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.fb-logo{display:flex;align-items:center;gap:8px}
+.fb-logo svg{width:72px}
+.fb-logo-sub{font-size:11px;color:#606770;font-weight:500;margin-top:-2px}
+.meta-logo{width:34px;height:34px}
+
+/* Date range badge */
+.date-range-wrap{display:flex;justify-content:center;margin-bottom:20px}
+.date-range{background:#fff;border:1px solid #dddfe2;border-radius:6px;padding:8px 20px;
+            font-size:13px;font-weight:600;color:#1c1e21;display:inline-flex;align-items:center;gap:8px}
+.date-range svg{color:#606770}
+
+/* Campaign info */
+.camp-info{background:#fff;border-radius:8px;padding:14px 20px;margin-bottom:20px;
+           box-shadow:0 1px 3px rgba(0,0,0,.1);display:flex;align-items:center;gap:14px}
+.camp-dot{width:10px;height:10px;border-radius:50%;background:#42b72a;flex-shrink:0}
+.camp-dot.paused{background:#f0a500}
+.camp-name{font-size:13px;font-weight:600;color:#1c1e21}
+.camp-status{font-size:11px;color:#42b72a;font-weight:600}
+.camp-account{font-size:11px;color:#606770;margin-left:auto}
+
+/* ── KPI CARDS ── */
+.kpi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px}
+.kpi-card{background:#fff;border-radius:8px;padding:20px 24px;box-shadow:0 1px 3px rgba(0,0,0,.12);
+          border-top:3px solid #1877f2}
+.kpi-label{font-size:11px;font-weight:600;color:#1877f2;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+.kpi-value{font-size:28px;font-weight:700;color:#1c1e21;line-height:1}
+.kpi-sub{font-size:11px;color:#606770;margin-top:5px}
+
+/* ── CHART CARD ── */
+.section-card{background:#fff;border-radius:8px;padding:20px 24px;margin-bottom:20px;
+              box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.section-title{font-size:16px;font-weight:700;color:#1c1e21;margin-bottom:2px}
+.section-sub{font-size:12px;color:#606770;margin-bottom:18px}
+.chart-wrap{height:280px;position:relative}
+
+/* Period tabs */
+.period-tabs{display:flex;gap:6px;margin-bottom:16px}
+.period-tab{padding:5px 14px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;
+            border:1px solid #dddfe2;background:#fff;color:#606770;transition:all .15s}
+.period-tab.active{background:#1877f2;color:#fff;border-color:#1877f2}
+
+/* ── TABLE ── */
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13px}
+thead th{padding:10px 14px;text-align:right;font-weight:700;color:#606770;
+         border-bottom:2px solid #dddfe2;font-size:12px;text-transform:uppercase;letter-spacing:.4px}
+thead th:first-child{text-align:left}
+tbody tr{border-bottom:1px solid #f0f2f5;transition:background .1s}
+tbody tr:hover{background:#f7f8fa}
+tbody td{padding:10px 14px;text-align:right;color:#1c1e21}
+tbody td:first-child{text-align:left;color:#606770;font-weight:600}
+.td-spend{color:#1c1e21;font-weight:600}
+.td-msgs{color:#1877f2;font-weight:700}
+.td-cpmsg-good{color:#42b72a;font-weight:600}
+.td-cpmsg-warn{color:#e2a01d;font-weight:600}
+.td-cpmsg-bad{color:#fa383e;font-weight:600}
+.today-row td{background:#f0f7ff}
+.today-badge{display:inline-block;background:#e7f3ff;color:#1877f2;font-size:9px;
+             font-weight:700;padding:1px 5px;border-radius:3px;margin-left:5px;vertical-align:middle}
+
+/* ── FOOTER ── */
+.footer{text-align:center;font-size:11px;color:#8a8d91;margin-top:28px}
+
+/* Responsive */
+@media(max-width:600px){
+  .kpi-grid{grid-template-columns:1fr}
+  .kpi-value{font-size:22px}
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- HEADER -->
+<div class="header">
+  <div class="fb-logo">
+    <svg viewBox="0 0 229 51" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M22.9 0C10.3 0 0 10.3 0 22.9s10.3 22.9 22.9 22.9 22.9-10.3 22.9-22.9S35.5 0 22.9 0zm5.7 23.7h-3.8v13.5h-5.6V23.7h-2.7v-4.8h2.7v-2.9c0-3.8 1.6-6.1 5.9-6.1h3.6v4.8h-2.3c-1.7 0-1.8.6-1.8 1.8v2.4h4.1l-.1 4.8z" fill="#1877F2"/>
+      <text x="52" y="36" font-family="Inter,Arial,sans-serif" font-size="26" font-weight="800" fill="#1877F2">facebook</text>
+      <text x="52" y="50" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="500" fill="#606770">Ads</text>
+    </svg>
+  </div>
+  <!-- Meta icon placeholder -->
+  <div style="width:36px;height:36px;background:linear-gradient(135deg,#0081fb,#00c6ff);border-radius:8px;display:flex;align-items:center;justify-content:center">
+    <span style="color:#fff;font-weight:800;font-size:16px">M</span>
+  </div>
+</div>
+
+<!-- CAMPAIGN INFO -->
+<div class="camp-info">
+  <div class="camp-dot"></div>
+  <div>
+    <div class="camp-name">C4 - 237 - Uberlândia Av 3658 - 8000$ - 02/03/26</div>
+    <div class="camp-status">ATIVA</div>
+  </div>
+  <div class="camp-account">CT05 - Braga · act_613666203841045</div>
+</div>
+
+<!-- DATE RANGE -->
+<div class="date-range-wrap">
+  <div class="date-range" id="dateRangeLabel">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+    <span id="periodText">6 de abr. de 2026 – 12 de abr. de 2026</span>
+    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+  </div>
+</div>
+
+<!-- KPIs -->
+<div class="kpi-grid">
+  <div class="kpi-card">
+    <div class="kpi-label">Valor Investido</div>
+    <div class="kpi-value" id="kpi-spend">—</div>
+    <div class="kpi-sub" id="kpi-spend-sub">—</div>
+  </div>
+  <div class="kpi-card" style="border-top-color:#42b72a">
+    <div class="kpi-label" style="color:#42b72a">Mensagens Iniciadas</div>
+    <div class="kpi-value" id="kpi-msgs">—</div>
+    <div class="kpi-sub" id="kpi-msgs-sub">—</div>
+  </div>
+  <div class="kpi-card" style="border-top-color:#e2a01d">
+    <div class="kpi-label" style="color:#e2a01d">Custo por Mensagem</div>
+    <div class="kpi-value" id="kpi-cpmsg">—</div>
+    <div class="kpi-sub" id="kpi-cpmsg-sub">—</div>
+  </div>
+</div>
+
+<!-- CHART -->
+<div class="section-card">
+  <div class="section-title">Visão Geral</div>
+  <div class="section-sub">Semanal</div>
+  <div class="period-tabs">
+    <button class="period-tab" onclick="setWeek(0)">Esta semana</button>
+    <button class="period-tab active" onclick="setWeek(1)">Semana passada</button>
+    <button class="period-tab" onclick="setWeek(2)">Há 2 semanas</button>
+    <button class="period-tab" onclick="setWeek(3)">Há 3 semanas</button>
+  </div>
+  <div class="chart-wrap">
+    <canvas id="mainChart"></canvas>
+  </div>
+</div>
+
+<!-- TABLE -->
+<div class="section-card">
+  <div class="section-title">Detalhamento</div>
+  <div class="section-sub">Diário</div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th style="text-align:left">Day</th>
+          <th>Valor Investido</th>
+          <th>Mensagens Iniciadas</th>
+          <th>Custo por Mensagem</th>
+          <th>Impressões</th>
+          <th>CPM</th>
+          <th>CTR</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody"></tbody>
+    </table>
+  </div>
+</div>
+
+<div class="footer">
+  Gerado em <span id="generatedAt"></span> · Campanha: C4 - 237 - Uberlândia Av 3658 · Conta CT05 - Braga · Meta Marketing API v21.0
+</div>
+
+</div><!-- /page -->
+
+<script>
+// ── DATA ────────────────────────────────────────────────────────────────────
+const DAILY = [
+  {"date":"2026-04-13","spend":89.83,"msgs":8,"cost_msg":22.46,"impr":3245,"cpm":27.68,"ctr":1.05},
+  {"date":"2026-04-12","spend":191.53,"msgs":55,"cost_msg":7.66,"impr":14017,"cpm":13.66,"ctr":0.81},
+  {"date":"2026-04-11","spend":223.59,"msgs":65,"cost_msg":7.99,"impr":17867,"cpm":12.51,"ctr":0.68},
+  {"date":"2026-04-10","spend":221.38,"msgs":43,"cost_msg":11.07,"impr":18944,"cpm":11.69,"ctr":0.50},
+  {"date":"2026-04-09","spend":186.90,"msgs":50,"cost_msg":8.50,"impr":14945,"cpm":12.51,"ctr":0.65},
+  {"date":"2026-04-08","spend":226.44,"msgs":56,"cost_msg":9.06,"impr":20429,"cpm":11.08,"ctr":0.59},
+  {"date":"2026-04-07","spend":322.17,"msgs":51,"cost_msg":14.64,"impr":24145,"cpm":13.34,"ctr":0.58},
+  {"date":"2026-04-06","spend":378.46,"msgs":85,"cost_msg":9.96,"impr":26191,"cpm":14.45,"ctr":0.69},
+  {"date":"2026-04-05","spend":278.92,"msgs":57,"cost_msg":11.16,"impr":19833,"cpm":14.06,"ctr":0.81},
+  {"date":"2026-04-04","spend":281.25,"msgs":65,"cost_msg":9.38,"impr":18277,"cpm":15.39,"ctr":0.83},
+  {"date":"2026-04-03","spend":244.47,"msgs":67,"cost_msg":8.43,"impr":17908,"cpm":13.65,"ctr":0.79},
+  {"date":"2026-04-02","spend":247.28,"msgs":53,"cost_msg":10.30,"impr":21168,"cpm":11.68,"ctr":0.74},
+  {"date":"2026-04-01","spend":268.07,"msgs":67,"cost_msg":8.94,"impr":23954,"cpm":11.19,"ctr":0.77},
+  {"date":"2026-03-31","spend":352.22,"msgs":96,"cost_msg":8.01,"impr":32174,"cpm":10.95,"ctr":0.81},
+  {"date":"2026-03-30","spend":243.51,"msgs":49,"cost_msg":11.60,"impr":19556,"cpm":12.45,"ctr":0.69},
+  {"date":"2026-03-29","spend":232.20,"msgs":84,"cost_msg":5.80,"impr":22289,"cpm":10.42,"ctr":1.04},
+  {"date":"2026-03-28","spend":225.69,"msgs":68,"cost_msg":7.05,"impr":22211,"cpm":10.16,"ctr":1.17},
+  {"date":"2026-03-27","spend":229.55,"msgs":75,"cost_msg":6.56,"impr":21244,"cpm":10.81,"ctr":0.70},
+  {"date":"2026-03-26","spend":138.29,"msgs":53,"cost_msg":5.53,"impr":10839,"cpm":12.76,"ctr":0.79},
+  {"date":"2026-03-25","spend":151.68,"msgs":43,"cost_msg":7.22,"impr":12153,"cpm":12.48,"ctr":0.90},
+  {"date":"2026-03-24","spend":176.57,"msgs":59,"cost_msg":6.54,"impr":15973,"cpm":11.05,"ctr":0.74},
+  {"date":"2026-03-23","spend":137.97,"msgs":19,"cost_msg":17.25,"impr":12054,"cpm":11.45,"ctr":0.56},
+  {"date":"2026-03-22","spend":74.95,"msgs":19,"cost_msg":8.33,"impr":7163,"cpm":10.46,"ctr":0.60},
+  {"date":"2026-03-21","spend":143.66,"msgs":47,"cost_msg":6.84,"impr":14443,"cpm":9.95,"ctr":0.84},
+  {"date":"2026-03-20","spend":109.90,"msgs":45,"cost_msg":5.50,"impr":10221,"cpm":10.75,"ctr":0.64},
+  {"date":"2026-03-19","spend":117.19,"msgs":45,"cost_msg":5.86,"impr":10149,"cpm":11.55,"ctr":0.80},
+  {"date":"2026-03-18","spend":140.83,"msgs":43,"cost_msg":7.41,"impr":11257,"cpm":12.51,"ctr":0.61},
+  {"date":"2026-03-17","spend":159.74,"msgs":43,"cost_msg":8.87,"impr":13350,"cpm":11.97,"ctr":0.62},
+  {"date":"2026-03-16","spend":168.10,"msgs":27,"cost_msg":12.93,"impr":14041,"cpm":11.97,"ctr":0.55},
+  {"date":"2026-03-15","spend":91.80,"msgs":15,"cost_msg":15.30,"impr":8257,"cpm":11.12,"ctr":0.54}
+];
+
+const PT_MONTHS = ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
+const PT_MONTHS_FULL = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
+const PT_DAYS_ABBR = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+
+let chart = null;
+let currentWeek = 1;
+
+function fmtBRL(v) {
+  return 'R$ ' + Number(v).toLocaleString('pt-BR', {minimumFractionDigits:2,maximumFractionDigits:2});
+}
+function fmtNum(v) {
+  return Number(v).toLocaleString('pt-BR');
+}
+function fmtDateLabel(iso) {
+  const [y,m,d] = iso.split('-');
+  return `${parseInt(d)} de ${PT_MONTHS_FULL[parseInt(m)-1]}`;
+}
+function fmtDateShort(iso) {
+  const [y,m,d] = iso.split('-');
+  const dt = new Date(iso + 'T12:00:00');
+  return `${parseInt(d)} de ${PT_MONTHS[parseInt(m)-1]}.`;
+}
+function fmtDateFull(iso) {
+  const [y,m,d] = iso.split('-');
+  return `${parseInt(d)} de ${PT_MONTHS[parseInt(m)-1]}. de ${y}`;
+}
+
+// Get 7-day window for a given week offset (0=this week, 1=last week, etc.)
+function getWeekDays(weekOffset) {
+  // Find last complete 7-day period ending at 'until'
+  const latest = DAILY[0].date; // most recent
+  const latestDate = new Date(latest + 'T12:00:00');
+  const endDate = new Date(latestDate);
+  endDate.setDate(endDate.getDate() - weekOffset * 7);
+  const startDate = new Date(endDate);
+  startDate.setDate(startDate.getDate() - 6);
+
+  const since = startDate.toISOString().slice(0,10);
+  const until = endDate.toISOString().slice(0,10);
+  return { since, until };
+}
+
+function getDaysBetween(since, until) {
+  return DAILY.filter(d => d.date >= since && d.date <= until)
+              .sort((a,b) => a.date.localeCompare(b.date));
+}
+
+function setWeek(offset) {
+  currentWeek = offset;
+  document.querySelectorAll('.period-tab').forEach((b,i) => {
+    b.classList.toggle('active', i === offset);
+  });
+  const { since, until } = getWeekDays(offset);
+  const days = getDaysBetween(since, until);
+
+  // Update date label
+  document.getElementById('periodText').textContent =
+    fmtDateFull(since) + ' – ' + fmtDateFull(until);
+
+  // KPIs
+  const totalSpend = days.reduce((s,d) => s + d.spend, 0);
+  const totalMsgs  = days.reduce((s,d) => s + d.msgs, 0);
+  const cpMsg = totalMsgs > 0 ? totalSpend / totalMsgs : 0;
+  const avgCPM = days.length > 0 ? days.reduce((s,d) => s + d.cpm, 0) / days.length : 0;
+
+  document.getElementById('kpi-spend').textContent = fmtBRL(totalSpend);
+  document.getElementById('kpi-spend-sub').textContent = `${days.length} dias · CPM médio: ${fmtBRL(avgCPM)}`;
+  document.getElementById('kpi-msgs').textContent = fmtNum(totalMsgs);
+  document.getElementById('kpi-msgs-sub').textContent = `Média diária: ${(totalMsgs/Math.max(days.length,1)).toFixed(1)} msgs`;
+  document.getElementById('kpi-cpmsg').textContent = fmtBRL(cpMsg);
+  document.getElementById('kpi-cpmsg-sub').textContent = cpMsg <= 12 ? '✓ Dentro da meta' : '⚠ Acima da meta R$12';
+
+  // Chart
+  renderChart(days);
+}
+
+function renderChart(days) {
+  if (chart) { chart.destroy(); chart = null; }
+  const ctx = document.getElementById('mainChart');
+  const labels = days.map(d => fmtDateShort(d.date));
+
+  chart = new Chart(ctx, {
+    data: {
+      labels,
+      datasets: [
+        {
+          type: 'bar',
+          label: 'Mensagens Iniciadas',
+          data: days.map(d => d.msgs),
+          backgroundColor: 'rgba(24,119,242,0.75)',
+          borderColor: 'rgba(24,119,242,1)',
+          borderWidth: 1,
+          borderRadius: 3,
+          yAxisID: 'yLeft',
+          order: 2,
+        },
+        {
+          type: 'line',
+          label: 'Valor Investido',
+          data: days.map(d => d.spend),
+          borderColor: '#7b1fa2',
+          backgroundColor: 'transparent',
+          borderWidth: 2.5,
+          pointRadius: 4,
+          pointBackgroundColor: '#7b1fa2',
+          tension: 0.3,
+          yAxisID: 'yRight',
+          order: 1,
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: {
+          display: true,
+          position: 'top',
+          align: 'start',
+          labels: {
+            font: { size: 11, family: 'Inter' },
+            color: '#606770',
+            boxWidth: 14,
+            padding: 14,
+            usePointStyle: true,
+          }
+        },
+        tooltip: {
+          backgroundColor: '#fff',
+          titleColor: '#1c1e21',
+          bodyColor: '#606770',
+          borderColor: '#dddfe2',
+          borderWidth: 1,
+          padding: 10,
+          callbacks: {
+            label(ctx) {
+              if (ctx.dataset.label === 'Valor Investido') return ' ' + fmtBRL(ctx.raw);
+              return ' ' + fmtNum(ctx.raw) + ' msgs';
+            }
+          }
+        }
+      },
+      scales: {
+        yLeft: {
+          type: 'linear',
+          position: 'left',
+          title: { display: true, text: 'Mensagens Iniciadas', color: '#606770', font:{size:10} },
+          ticks: { color: '#606770', font:{size:10} },
+          grid: { color: 'rgba(0,0,0,.06)' },
+          beginAtZero: true,
+        },
+        yRight: {
+          type: 'linear',
+          position: 'right',
+          title: { display: true, text: 'Valor Investido', color: '#606770', font:{size:10} },
+          ticks: {
+            color: '#606770',
+            font: { size: 10 },
+            callback: v => 'R$' + (v/1000).toFixed(1) + 'k'
+          },
+          grid: { display: false },
+          beginAtZero: true,
+        },
+        x: {
+          ticks: { color: '#606770', font:{size:10} },
+          grid: { display: false }
+        }
+      }
+    }
+  });
+}
+
+// Table — all 30 days
+function renderTable() {
+  const tbody = document.getElementById('tableBody');
+  const today = DAILY[0].date;
+  tbody.innerHTML = '';
+  DAILY.forEach(d => {
+    const isToday = d.date === today;
+    const cpClass = d.cost_msg <= 10 ? 'td-cpmsg-good' : d.cost_msg <= 15 ? 'td-cpmsg-warn' : 'td-cpmsg-bad';
+    const dtObj = new Date(d.date + 'T12:00:00');
+    const [y,m,day] = d.date.split('-');
+    const label = `${parseInt(day)} de ${PT_MONTHS[parseInt(m)-1]}.`;
+    const tr = document.createElement('tr');
+    if (isToday) tr.className = 'today-row';
+    tr.innerHTML = `
+      <td>${label}${isToday ? '<span class="today-badge">HOJE</span>' : ''}</td>
+      <td class="td-spend">${fmtBRL(d.spend)}</td>
+      <td class="td-msgs">${fmtNum(d.msgs)}</td>
+      <td class="${cpClass}">${fmtBRL(d.cost_msg)}</td>
+      <td>${fmtNum(d.impr)}</td>
+      <td>${fmtBRL(d.cpm)}</td>
+      <td>${d.ctr.toFixed(2)}%</td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+// Footer date
+document.getElementById('generatedAt').textContent =
+  new Date().toLocaleString('pt-BR', {day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
+
+// Init
+renderTable();
+setWeek(1); // default: semana passada (Apr 6–12, igual ao screenshot)
+</script>
+</body>
+</html>
