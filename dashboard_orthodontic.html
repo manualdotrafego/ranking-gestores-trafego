@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Campaign Intelligence · Meta Ads</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0a0a0a;
+  --sb:#0f0f0f;
+  --card:#141414;
+  --card2:#1a1a1a;
+  --card3:#202020;
+  --b1:rgba(124,58,237,0.15);
+  --b2:rgba(124,58,237,0.07);
+  --b3:rgba(124,58,237,0.30);
+  --p:#7c3aed;
+  --p2:#9d6ef7;
+  --p3:rgba(124,58,237,0.12);
+  --p4:rgba(124,58,237,0.20);
+  --text:#ffffff;
+  --muted:#666;
+  --muted2:#999;
+  --sw:300px;
+}
+html,body{height:100%;font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);font-size:14px}
+.layout{display:flex;min-height:100vh}
+
+/* ── SIDEBAR ── */
+.sb{width:var(--sw);flex-shrink:0;background:var(--sb);border-right:1px solid var(--b1);
+    position:fixed;top:0;left:0;bottom:0;overflow-y:auto;z-index:20;display:flex;flex-direction:column}
+.sb-top{padding:22px 18px 16px}
+.sb-brand{display:flex;align-items:center;gap:12px;margin-bottom:22px}
+.sb-icon{width:42px;height:42px;border-radius:10px;
+         background:linear-gradient(135deg,var(--p),var(--p2));
+         display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;color:#fff;flex-shrink:0}
+.sb-title{font-size:13px;font-weight:700;color:var(--text);line-height:1.3}
+.sb-sub{font-size:10px;color:var(--muted);margin-top:2px}
+.sb-divider{height:1px;background:var(--b1);margin:0 18px 14px}
+.sb-section-label{padding:0 18px 8px;font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;font-weight:600}
+
+/* Account selector */
+.sb-account-wrap{padding:0 18px 16px}
+.sb-account-wrap label{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;font-weight:600;display:block;margin-bottom:6px}
+.account-select{width:100%;background:var(--card2);color:var(--text);border:1px solid var(--b1);
+                border-radius:8px;padding:9px 12px;font-size:13px;font-family:'Inter',sans-serif;cursor:pointer;outline:none;appearance:none;
+                background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%237c3aed' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+                background-repeat:no-repeat;background-position:right 12px center;padding-right:32px}
+.account-select:hover{border-color:var(--p)}
+
+/* Meta CPMsg */
+.sb-meta-wrap{padding:0 18px 16px}
+.sb-meta-wrap label{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;font-weight:600;display:block;margin-bottom:6px}
+.meta-input-wrap{display:flex;align-items:center;gap:6px}
+.meta-input-prefix{font-size:12px;color:var(--muted2);font-weight:600}
+.meta-input{width:100%;background:var(--card2);color:var(--text);border:1px solid var(--b1);
+            border-radius:8px;padding:9px 12px;font-size:13px;font-family:'Inter',sans-serif;outline:none}
+.meta-input:focus{border-color:var(--p)}
+
+/* KPIs sidebar */
+.sb-kpis{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:0 18px;margin-bottom:16px}
+.sb-kpi{background:var(--card2);border:1px solid var(--b1);border-radius:8px;padding:10px 12px}
+.sb-kpi-l{font-size:8px;color:var(--muted);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:3px;line-height:1.3}
+.sb-kpi-v{font-size:15px;font-weight:700;color:var(--p2)}
+
+/* Campaign filter tabs */
+.sb-camp-label{padding:0 18px 8px;font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;font-weight:600}
+.sb-camps{padding:0 18px;display:flex;flex-direction:column;gap:4px;margin-bottom:16px}
+.camp-tab{background:transparent;border:1px solid transparent;border-radius:8px;padding:8px 12px;
+          color:var(--muted2);font-size:12px;font-family:'Inter',sans-serif;cursor:pointer;text-align:left;transition:all .15s;line-height:1.3}
+.camp-tab:hover{background:var(--p3);color:var(--p2);border-color:var(--b1)}
+.camp-tab.active{background:var(--p3);color:var(--p2);border-color:var(--b1);font-weight:600}
+.camp-tab-all{background:var(--p4);border:1px solid var(--b3);border-radius:8px;padding:8px 12px;
+              color:var(--p2);font-size:12px;font-family:'Inter',sans-serif;cursor:pointer;text-align:left;font-weight:600;transition:all .15s}
+.camp-tab-all:hover{background:var(--p);color:#fff}
+.camp-tab-all.active{background:var(--p);color:#fff;border-color:var(--p)}
+
+.sb-footer{margin-top:auto;padding:14px 18px;border-top:1px solid var(--b1)}
+.sb-footer-text{font-size:9px;color:var(--muted);line-height:1.9}
+.sb-footer-text span{color:var(--muted2)}
+.next-update{color:var(--p2) !important;font-weight:600}
+
+/* ── MAIN ── */
+.main{margin-left:var(--sw);flex:1;display:flex;flex-direction:column;min-height:100vh}
+
+/* Header */
+.header{padding:24px 28px 20px;border-bottom:1px solid var(--b1);display:flex;align-items:flex-start;justify-content:space-between;gap:20px}
+.header-left h1{font-size:22px;font-weight:800;margin-bottom:4px}
+.header-left .subtitle{font-size:12px;color:var(--muted2)}
+.header-right{text-align:right;flex-shrink:0}
+.last-update{font-size:11px;color:var(--muted2);margin-bottom:4px}
+.last-update span{color:var(--p2);font-weight:600}
+.period-badge{display:inline-block;background:var(--p3);border:1px solid var(--b1);border-radius:6px;
+              padding:4px 10px;font-size:10px;color:var(--p2);font-weight:600}
+
+/* Content */
+.content{flex:1;padding:24px 28px}
+
+/* KPI Cards */
+.kpi-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:28px}
+.kpi-card{background:var(--card);border:1px solid var(--b1);border-radius:12px;padding:16px 18px;position:relative;overflow:hidden}
+.kpi-card::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--p),var(--p2))}
+.kpi-label{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;font-weight:600;margin-bottom:6px}
+.kpi-value{font-size:22px;font-weight:800;color:var(--p2);line-height:1}
+.kpi-sub{font-size:10px;color:var(--muted);margin-top:4px}
+
+/* Charts row */
+.charts-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:28px}
+.chart-card{background:var(--card);border:1px solid var(--b1);border-radius:12px;padding:18px}
+.chart-title{font-size:12px;font-weight:600;color:var(--muted2);margin-bottom:14px;text-transform:uppercase;letter-spacing:0.8px}
+.chart-wrap{height:240px;position:relative}
+
+/* Accordion campaigns */
+.accordion{display:flex;flex-direction:column;gap:10px}
+.acc-item{background:var(--card);border:1px solid var(--b1);border-radius:12px;overflow:hidden}
+.acc-header{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;cursor:pointer;
+            transition:background .15s;user-select:none;gap:12px}
+.acc-header:hover{background:var(--card2)}
+.acc-header-left{display:flex;align-items:center;gap:10px;min-width:0}
+.acc-chevron{font-size:12px;color:var(--muted);transition:transform .2s;flex-shrink:0}
+.acc-item.open .acc-chevron{transform:rotate(90deg)}
+.acc-name{font-size:13px;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.acc-objective{font-size:10px;color:var(--muted);margin-top:1px}
+.acc-header-metrics{display:flex;gap:16px;flex-shrink:0}
+.acc-metric{text-align:right}
+.acc-metric-v{font-size:13px;font-weight:700;color:var(--p2)}
+.acc-metric-l{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px}
+.acc-body{display:none;padding:0 16px 16px;border-top:1px solid var(--b1)}
+.acc-item.open .acc-body{display:block}
+
+/* Ad cards grid */
+.ads-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:12px;padding-top:14px}
+.ad-card{background:var(--card2);border:1px solid var(--b1);border-radius:10px;overflow:hidden;transition:border-color .15s}
+.ad-card:hover{border-color:var(--b3)}
+
+/* Ad card thumbnail */
+.ad-thumb{width:100%;height:140px;object-fit:cover;display:block;background:var(--card3)}
+.ad-thumb-placeholder{width:100%;height:140px;background:var(--card3);display:flex;align-items:center;justify-content:center;
+                       font-size:28px;color:var(--muted)}
+
+/* Ad card body */
+.ad-body{padding:12px 14px}
+.ad-top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:8px}
+.ad-name{font-size:12px;font-weight:600;color:var(--text);line-height:1.3;flex:1;min-width:0}
+.ad-adset{font-size:10px;color:var(--muted);margin-top:2px}
+.ad-badges{display:flex;gap:4px;flex-shrink:0;flex-wrap:wrap;justify-content:flex-end}
+.badge{display:inline-block;padding:2px 7px;border-radius:5px;font-size:9px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase}
+.badge-top{background:rgba(124,58,237,0.25);color:#c4b5fd;border:1px solid rgba(124,58,237,0.4)}
+.badge-bom{background:rgba(139,92,246,0.15);color:#a78bfa;border:1px solid rgba(139,92,246,0.3)}
+.badge-teste{background:rgba(100,100,120,0.2);color:#aaa;border:1px solid rgba(150,150,170,0.3)}
+.badge-revisar{background:rgba(180,100,60,0.2);color:#f59e0b;border:1px solid rgba(180,100,60,0.35)}
+.badge-on{background:rgba(60,180,100,0.15);color:#6ee7b7;border:1px solid rgba(60,180,100,0.3)}
+.badge-off{background:rgba(120,120,130,0.15);color:#888;border:1px solid rgba(120,120,130,0.3)}
+
+/* Ad metrics */
+.ad-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:10px}
+.ad-met{background:var(--card3);border-radius:6px;padding:7px 9px;text-align:center}
+.ad-met-v{font-size:12px;font-weight:700;color:var(--p2);line-height:1}
+.ad-met-l{font-size:8px;color:var(--muted);margin-top:2px;text-transform:uppercase;letter-spacing:0.5px}
+.ad-met-v.warn{color:#f59e0b}
+
+/* Age breakdown */
+.age-toggle{display:inline-flex;align-items:center;gap:5px;font-size:10px;color:var(--muted2);cursor:pointer;
+            background:var(--card3);border:1px solid var(--b1);border-radius:5px;padding:4px 9px;transition:all .15s;margin-top:2px}
+.age-toggle:hover{color:var(--p2);border-color:var(--b3)}
+.age-table-wrap{display:none;margin-top:8px;overflow-x:auto}
+.age-table{width:100%;border-collapse:collapse;font-size:10px}
+.age-table th{color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:0.5px;padding:5px 8px;
+              border-bottom:1px solid var(--b1);text-align:right}
+.age-table th:first-child{text-align:left}
+.age-table td{padding:5px 8px;border-bottom:1px solid rgba(255,255,255,0.03);text-align:right;color:var(--muted2)}
+.age-table td:first-child{text-align:left;color:var(--text);font-weight:600}
+.age-table tr:last-child td{border-bottom:none}
+
+/* Loading / empty */
+.loading{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:300px;gap:14px;color:var(--muted)}
+.spinner{width:36px;height:36px;border:3px solid var(--b1);border-top-color:var(--p);border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.empty{text-align:center;padding:60px 20px;color:var(--muted);font-size:13px}
+.empty-icon{font-size:40px;margin-bottom:12px;opacity:.4}
+.error-box{background:rgba(180,60,60,0.1);border:1px solid rgba(180,60,60,0.3);border-radius:10px;
+           padding:16px 20px;color:#f87171;font-size:13px;margin-bottom:20px}
+
+/* Responsive */
+@media(max-width:1100px){.kpi-grid{grid-template-columns:repeat(3,1fr)}.charts-row{grid-template-columns:1fr}}
+@media(max-width:900px){.kpi-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:720px){
+  .sb{display:none}
+  .main{margin-left:0}
+  .kpi-grid{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+<div class="layout">
+
+<!-- ── SIDEBAR ── -->
+<aside class="sb">
+  <div class="sb-top">
+    <div class="sb-brand">
+      <div class="sb-icon">CI</div>
+      <div>
+        <div class="sb-title">Campaign Intelligence</div>
+        <div class="sb-sub">Meta Ads · Orthodontic</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sb-divider"></div>
+
+  <div class="sb-section-label">Conta</div>
+  <div class="sb-account-wrap">
+    <select class="account-select" id="accountSelect" onchange="selectAccount(this.value)">
+      <option value="">Carregando...</option>
+    </select>
+  </div>
+
+  <div class="sb-divider"></div>
+
+  <div class="sb-section-label">Meta CPMsg</div>
+  <div class="sb-meta-wrap">
+    <div class="meta-input-wrap">
+      <span class="meta-input-prefix">R$</span>
+      <input class="meta-input" type="number" id="metaCpMsg" value="30" min="1" step="1" oninput="renderAll()"/>
+    </div>
+  </div>
+
+  <div class="sb-divider"></div>
+
+  <div class="sb-section-label">KPIs da Conta</div>
+  <div class="sb-kpis" id="sidebarKpis">
+    <div class="sb-kpi"><div class="sb-kpi-l">Investido</div><div class="sb-kpi-v" id="sk-spend">—</div></div>
+    <div class="sb-kpi"><div class="sb-kpi-l">Mensagens</div><div class="sb-kpi-v" id="sk-msgs">—</div></div>
+    <div class="sb-kpi"><div class="sb-kpi-l">CPMsg</div><div class="sb-kpi-v" id="sk-cpmsg">—</div></div>
+    <div class="sb-kpi"><div class="sb-kpi-l">Impressões</div><div class="sb-kpi-v" id="sk-impr">—</div></div>
+  </div>
+
+  <div class="sb-divider"></div>
+
+  <div class="sb-camp-label">Campanhas</div>
+  <div class="sb-camps" id="campTabs"></div>
+
+  <div class="sb-footer">
+    <div class="sb-footer-text">
+      <span id="footer-account">—</span><br>
+      Período: <span id="footer-period">—</span><br>
+      Meta Marketing API v21<br>
+      Atualiza a cada 6h<br>
+      <span class="next-update" id="next-update-label">Próxima atualização em 6h</span>
+    </div>
+  </div>
+</aside>
+
+<!-- ── MAIN ── -->
+<main class="main">
+  <div class="header">
+    <div class="header-left">
+      <h1 id="header-title">Campaign Intelligence</h1>
+      <div class="subtitle" id="header-subtitle">Selecione uma conta</div>
+    </div>
+    <div class="header-right">
+      <div class="last-update">Última atualização: <span id="last-update-val">—</span></div>
+      <div class="period-badge" id="period-badge">—</div>
+    </div>
+  </div>
+
+  <div class="content" id="mainContent">
+    <div class="loading" id="loadingState">
+      <div class="spinner"></div>
+      <div>Carregando dados...</div>
+    </div>
+  </div>
+</main>
+
+</div><!-- /layout -->
+
+<script>
+// ─── STATE ───────────────────────────────────────────────────────────────────
+let dashData = null;       // full JSON
+let currentAccount = null; // selected account object
+let activeCampId = 'all';  // 'all' or campaign id string
+let chartMsgs = null;
+let chartCpMsg = null;
+let refreshTimeout = null;
+let loadedAt = null;
+
+// ─── BOOTSTRAP ───────────────────────────────────────────────────────────────
+loadData();
+
+function loadData() {
+  showLoading(true);
+  fetch('./dashboard_data.json?_=' + Date.now())
+    .then(r => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+    .then(json => {
+      dashData = json;
+      loadedAt = Date.now();
+      initDashboard();
+      scheduleRefresh();
+    })
+    .catch(err => {
+      showLoading(false);
+      document.getElementById('mainContent').innerHTML =
+        '<div class="error-box">Erro ao carregar dashboard_data.json: ' + err.message +
+        '<br><small>Certifique-se de que o arquivo existe e o servidor está rodando.</small></div>';
+    });
+}
+
+function scheduleRefresh() {
+  if (refreshTimeout) clearTimeout(refreshTimeout);
+  const SIX_HOURS = 21600000;
+  refreshTimeout = setTimeout(() => loadData(), SIX_HOURS);
+  updateNextUpdateLabel(SIX_HOURS);
+}
+
+function updateNextUpdateLabel(msLeft) {
+  const el = document.getElementById('next-update-label');
+  const hours = Math.ceil(msLeft / 3600000);
+  el.textContent = 'Próxima atualização em ' + hours + (hours === 1 ? 'h' : 'h');
+  // update every minute
+  setTimeout(() => {
+    const remaining = loadedAt + 21600000 - Date.now();
+    if (remaining > 0) updateNextUpdateLabel(remaining);
+  }, 60000);
+}
+
+function showLoading(show) {
+  const el = document.getElementById('loadingState');
+  if (el) el.style.display = show ? 'flex' : 'none';
+}
+
+// ─── INIT ────────────────────────────────────────────────────────────────────
+function initDashboard() {
+  if (!dashData) return;
+
+  // Header dates
+  const upd = dashData.updated_at || '';
+  document.getElementById('last-update-val').textContent = formatUpdatedAt(upd);
+  const periodStr = (dashData.since || '—') + ' → ' + (dashData.until || '—');
+  document.getElementById('period-badge').textContent = periodStr;
+  document.getElementById('footer-period').textContent = periodStr;
+
+  // Populate account dropdown
+  const sel = document.getElementById('accountSelect');
+  sel.innerHTML = '';
+  if (!dashData.accounts || !dashData.accounts.length) {
+    sel.innerHTML = '<option value="">Nenhuma conta</option>';
+    return;
+  }
+  dashData.accounts.forEach(acc => {
+    const opt = document.createElement('option');
+    opt.value = acc.id;
+    opt.textContent = acc.name + (acc.id ? ' (' + acc.id.slice(-6) + ')' : '');
+    sel.appendChild(opt);
+  });
+
+  // Select first account
+  selectAccount(dashData.accounts[0].id);
+}
+
+function selectAccount(id) {
+  if (!dashData) return;
+  currentAccount = dashData.accounts.find(a => a.id === id) || null;
+  activeCampId = 'all';
+  document.getElementById('accountSelect').value = id;
+
+  if (!currentAccount) return;
+
+  document.getElementById('header-title').textContent = currentAccount.name;
+  document.getElementById('header-subtitle').textContent =
+    'Meta Ads · ' + (currentAccount.currency || 'BRL') + ' · ' + (currentAccount.campaigns || []).length + ' campanhas';
+  document.getElementById('footer-account').textContent = currentAccount.name;
+
+  buildCampTabs();
+  renderAll();
+}
+
+// ─── CAMPAIGN TABS ────────────────────────────────────────────────────────────
+function buildCampTabs() {
+  const container = document.getElementById('campTabs');
+  container.innerHTML = '';
+  if (!currentAccount) return;
+  const camps = currentAccount.campaigns || [];
+
+  const allBtn = document.createElement('button');
+  allBtn.className = 'camp-tab-all active';
+  allBtn.textContent = 'Todas (' + camps.length + ')';
+  allBtn.dataset.id = 'all';
+  allBtn.onclick = () => setCampFilter('all');
+  container.appendChild(allBtn);
+
+  camps.forEach(c => {
+    const btn = document.createElement('button');
+    btn.className = 'camp-tab';
+    btn.textContent = c.name;
+    btn.dataset.id = c.id;
+    btn.onclick = () => setCampFilter(c.id);
+    container.appendChild(btn);
+  });
+}
+
+function setCampFilter(id) {
+  activeCampId = id;
+  document.querySelectorAll('.camp-tab, .camp-tab-all').forEach(btn => {
+    btn.classList.remove('active');
+    if (btn.dataset.id === id) btn.classList.add('active');
+  });
+  renderAll();
+}
+
+// ─── RENDER ALL ───────────────────────────────────────────────────────────────
+function renderAll() {
+  if (!currentAccount) return;
+  const meta = parseFloat(document.getElementById('metaCpMsg').value) || 30;
+  const camps = filteredCampaigns();
+
+  updateSidebarKpis(camps);
+  renderKpiCards(camps, meta);
+  renderCharts(camps, meta);
+  renderAccordion(camps, meta);
+}
+
+function filteredCampaigns() {
+  if (!currentAccount) return [];
+  const all = currentAccount.campaigns || [];
+  if (activeCampId === 'all') return all;
+  return all.filter(c => c.id === activeCampId);
+}
+
+// ─── KPIs ─────────────────────────────────────────────────────────────────────
+function aggregateMetrics(camps) {
+  let spend = 0, msgs = 0, impr = 0, lpv = 0, active = 0, paused = 0;
+  camps.forEach(c => {
+    const m = c.metrics || {};
+    spend += m.spend || 0;
+    msgs  += m.msgs  || 0;
+    impr  += m.impressions || 0;
+    lpv   += m.lpv   || 0;
+    (c.ads || []).forEach(ad => {
+      if (ad.active) active++; else paused++;
+    });
+  });
+  return { spend, msgs, impr, lpv, active, paused, cpMsg: msgs > 0 ? spend / msgs : 0 };
+}
+
+function updateSidebarKpis(camps) {
+  const a = aggregateMetrics(camps);
+  document.getElementById('sk-spend').textContent = fmtBRL(a.spend);
+  document.getElementById('sk-msgs').textContent  = fmtNum(a.msgs);
+  document.getElementById('sk-cpmsg').textContent = fmtBRL(a.cpMsg);
+  document.getElementById('sk-impr').textContent  = fmtKM(a.impr);
+}
+
+function renderKpiCards(camps, meta) {
+  const a = aggregateMetrics(camps);
+  const main = document.getElementById('mainContent');
+  let kpiHtml = `
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-label">Investimento Total</div>
+        <div class="kpi-value">${fmtBRL(a.spend)}</div>
+        <div class="kpi-sub">${camps.length} campanha${camps.length !== 1 ? 's' : ''}</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Total Mensagens</div>
+        <div class="kpi-value">${fmtNum(a.msgs)}</div>
+        <div class="kpi-sub">LPV: ${fmtNum(a.lpv)}</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">CPMsg Médio</div>
+        <div class="kpi-value" style="color:${a.cpMsg > meta ? '#f59e0b' : 'var(--p2)'}">${fmtBRL(a.cpMsg)}</div>
+        <div class="kpi-sub">Meta: R$ ${meta}</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Impressões</div>
+        <div class="kpi-value">${fmtKM(a.impr)}</div>
+        <div class="kpi-sub">&nbsp;</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Criativos</div>
+        <div class="kpi-value" style="font-size:16px">${a.active} <span style="font-size:12px;color:var(--muted)">ativos</span> / ${a.paused} <span style="font-size:12px;color:var(--muted)">pausados</span></div>
+        <div class="kpi-sub">Total: ${a.active + a.paused}</div>
+      </div>
+    </div>
+  `;
+  main.innerHTML = kpiHtml +
+    '<div class="charts-row"><div class="chart-card"><div class="chart-title">Mensagens por Criativo (top 10)</div><div class="chart-wrap"><canvas id="chartMsgs"></canvas></div></div>' +
+    '<div class="chart-card"><div class="chart-title">Custo/Msg por Criativo (top 10)</div><div class="chart-wrap"><canvas id="chartCpMsg"></canvas></div></div></div>' +
+    '<div class="accordion" id="accordion"></div>';
+}
+
+// ─── CHARTS ───────────────────────────────────────────────────────────────────
+function renderCharts(camps, meta) {
+  // Collect all ads
+  let allAds = [];
+  camps.forEach(c => (c.ads || []).forEach(ad => {
+    allAds.push({ name: shortName(ad.name, 30), msgs: (ad.metrics || {}).msgs || 0, cpMsg: (ad.metrics || {}).cost_msg || 0 });
+  }));
+
+  // Chart: Messages top 10
+  const top10Msgs = [...allAds].sort((a, b) => b.msgs - a.msgs).slice(0, 10);
+  if (chartMsgs) { chartMsgs.destroy(); chartMsgs = null; }
+  const ctxM = document.getElementById('chartMsgs');
+  if (ctxM && top10Msgs.length) {
+    chartMsgs = new Chart(ctxM, {
+      type: 'bar',
+      data: {
+        labels: top10Msgs.map(a => a.name),
+        datasets: [{
+          data: top10Msgs.map(a => a.msgs),
+          backgroundColor: 'rgba(124,58,237,0.55)',
+          borderColor: 'rgba(124,58,237,0.9)',
+          borderWidth: 1,
+          borderRadius: 4
+        }]
+      },
+      options: {
+        indexAxis: 'y',
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: {
+          x: { ticks: { color: '#666', font: { size: 10 } }, grid: { color: 'rgba(255,255,255,0.04)' } },
+          y: { ticks: { color: '#999', font: { size: 10 } }, grid: { display: false } }
+        }
+      }
+    });
+  }
+
+  // Chart: CPMsg top 10 (those with msgs > 0)
+  const top10CpMsg = allAds.filter(a => a.msgs > 0).sort((a, b) => a.cpMsg - b.cpMsg).slice(0, 10);
+  if (chartCpMsg) { chartCpMsg.destroy(); chartCpMsg = null; }
+  const ctxC = document.getElementById('chartCpMsg');
+  if (ctxC && top10CpMsg.length) {
+    const metaVal = meta;
+    chartCpMsg = new Chart(ctxC, {
+      type: 'bar',
+      data: {
+        labels: top10CpMsg.map(a => a.name),
+        datasets: [{
+          data: top10CpMsg.map(a => a.cpMsg),
+          backgroundColor: top10CpMsg.map(a => a.cpMsg <= metaVal ? 'rgba(124,58,237,0.55)' : 'rgba(180,100,60,0.55)'),
+          borderColor: top10CpMsg.map(a => a.cpMsg <= metaVal ? 'rgba(124,58,237,0.9)' : 'rgba(245,158,11,0.9)'),
+          borderWidth: 1,
+          borderRadius: 4
+        }]
+      },
+      options: {
+        indexAxis: 'y',
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          annotation: {}
+        },
+        scales: {
+          x: {
+            ticks: { color: '#666', font: { size: 10 }, callback: v => 'R$' + v.toFixed(0) },
+            grid: { color: 'rgba(255,255,255,0.04)' }
+          },
+          y: { ticks: { color: '#999', font: { size: 10 } }, grid: { display: false } }
+        }
+      }
+    });
+  }
+}
+
+// ─── ACCORDION ────────────────────────────────────────────────────────────────
+function renderAccordion(camps, meta) {
+  const container = document.getElementById('accordion');
+  if (!container) return;
+  if (!camps.length) {
+    container.innerHTML = '<div class="empty"><div class="empty-icon">📭</div>Nenhuma campanha encontrada.</div>';
+    return;
+  }
+  container.innerHTML = '';
+  camps.forEach((camp, idx) => {
+    const item = document.createElement('div');
+    item.className = 'acc-item' + (idx === 0 ? ' open' : '');
+    item.innerHTML = buildAccHeader(camp) + buildAccBody(camp, meta);
+    item.querySelector('.acc-header').onclick = () => item.classList.toggle('open');
+
+    // age toggle
+    item.querySelectorAll('.age-toggle').forEach(btn => {
+      btn.onclick = (e) => {
+        e.stopPropagation();
+        const wrap = btn.nextElementSibling;
+        const open = wrap.style.display === 'block';
+        wrap.style.display = open ? 'none' : 'block';
+        btn.textContent = open ? '▸ Ver breakdown por idade' : '▴ Ocultar breakdown';
+      };
+    });
+
+    container.appendChild(item);
+  });
+}
+
+function buildAccHeader(camp) {
+  const m = camp.metrics || {};
+  return `
+    <div class="acc-header">
+      <div class="acc-header-left">
+        <span class="acc-chevron">▶</span>
+        <div>
+          <div class="acc-name">${esc(camp.name)}</div>
+          <div class="acc-objective">${esc(camp.objective || '')}</div>
+        </div>
+      </div>
+      <div class="acc-header-metrics">
+        <div class="acc-metric">
+          <div class="acc-metric-v">${fmtBRL(m.spend || 0)}</div>
+          <div class="acc-metric-l">Invest.</div>
+        </div>
+        <div class="acc-metric">
+          <div class="acc-metric-v">${fmtNum(m.msgs || 0)}</div>
+          <div class="acc-metric-l">Msgs</div>
+        </div>
+        <div class="acc-metric">
+          <div class="acc-metric-v">${fmtBRL(m.cost_msg || 0)}</div>
+          <div class="acc-metric-l">CPMsg</div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function buildAccBody(camp, meta) {
+  const ads = camp.ads || [];
+  if (!ads.length) return '<div class="acc-body"><div class="empty" style="padding:30px 0">Nenhum criativo nesta campanha.</div></div>';
+  const cards = ads.map(ad => buildAdCard(ad, meta)).join('');
+  return `<div class="acc-body"><div class="ads-grid">${cards}</div></div>`;
+}
+
+function buildAdCard(ad, meta) {
+  const m = ad.metrics || {};
+  const badge = getQualityBadge(m, meta);
+  const statusBadge = ad.active
+    ? '<span class="badge badge-on">ON</span>'
+    : '<span class="badge badge-off">OFF</span>';
+
+  const thumb = ad.thumbnail
+    ? `<img class="ad-thumb" src="${esc(ad.thumbnail)}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" alt=""/><div class="ad-thumb-placeholder" style="display:none">🖼️</div>`
+    : `<div class="ad-thumb-placeholder">🖼️</div>`;
+
+  const cpMsgColor = m.cost_msg && m.cost_msg > meta * 1.5 ? 'warn' : '';
+
+  let ageHtml = '';
+  if (ad.age_breakdown && ad.age_breakdown.length) {
+    ageHtml = `
+      <span class="age-toggle">▸ Ver breakdown por idade</span>
+      <div class="age-table-wrap">
+        <table class="age-table">
+          <thead><tr>
+            <th>Idade</th><th>Msgs</th><th>CPMsg</th><th>LPV</th><th>CPV</th><th>Impr</th><th>Spend</th>
+          </tr></thead>
+          <tbody>
+            ${ad.age_breakdown.map(r => `
+              <tr>
+                <td>${esc(r.age)}</td>
+                <td>${fmtNum(r.msgs || 0)}</td>
+                <td>${fmtBRL(r.cost_msg || 0)}</td>
+                <td>${fmtNum(r.lpv || 0)}</td>
+                <td>${r.lpv > 0 ? fmtBRL((r.spend || 0) / r.lpv) : '—'}</td>
+                <td>${fmtKM(r.impressions || 0)}</td>
+                <td>${fmtBRL(r.spend || 0)}</td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+      </div>
+    `;
+  }
+
+  return `
+    <div class="ad-card">
+      ${thumb}
+      <div class="ad-body">
+        <div class="ad-top">
+          <div>
+            <div class="ad-name">${esc(ad.name)}</div>
+            <div class="ad-adset">${esc(ad.adset || '')}</div>
+          </div>
+          <div class="ad-badges">${badge}${statusBadge}</div>
+        </div>
+        <div class="ad-metrics">
+          <div class="ad-met"><div class="ad-met-v">${fmtBRL(m.spend || 0)}</div><div class="ad-met-l">Investido</div></div>
+          <div class="ad-met"><div class="ad-met-v">${fmtNum(m.msgs || 0)}</div><div class="ad-met-l">Mensagens</div></div>
+          <div class="ad-met"><div class="ad-met-v ${cpMsgColor}">${m.cost_msg ? fmtBRL(m.cost_msg) : '—'}</div><div class="ad-met-l">Custo/Msg</div></div>
+          <div class="ad-met"><div class="ad-met-v">${fmtKM(m.impressions || 0)}</div><div class="ad-met-l">Impressões</div></div>
+          <div class="ad-met"><div class="ad-met-v">${fmtNum(m.lpv || 0)}</div><div class="ad-met-l">LPV</div></div>
+          <div class="ad-met"><div class="ad-met-v">${m.lpv > 0 ? fmtBRL((m.spend || 0) / m.lpv) : '—'}</div><div class="ad-met-l">Custo/LPV</div></div>
+        </div>
+        ${ageHtml}
+      </div>
+    </div>
+  `;
+}
+
+// ─── BADGE LOGIC ─────────────────────────────────────────────────────────────
+function getQualityBadge(m, meta) {
+  const spend = m.spend || 0;
+  const msgs  = m.msgs  || 0;
+  const cpMsg = m.cost_msg || 0;
+
+  if (spend < 50) return '<span class="badge badge-teste">TESTE</span>';
+  if (cpMsg > meta * 1.5) return '<span class="badge badge-revisar">REVISAR</span>';
+  if (msgs >= 10 && cpMsg <= meta) return '<span class="badge badge-top">TOP</span>';
+  if (msgs >= 5) return '<span class="badge badge-bom">BOM</span>';
+  return '<span class="badge badge-teste">TESTE</span>';
+}
+
+// ─── FORMAT HELPERS ───────────────────────────────────────────────────────────
+function fmtBRL(v) {
+  if (v == null || isNaN(v)) return '—';
+  return 'R$ ' + Number(v).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+function fmtNum(v) {
+  if (v == null || isNaN(v)) return '—';
+  return Number(v).toLocaleString('pt-BR');
+}
+function fmtKM(v) {
+  if (v == null || isNaN(v)) return '—';
+  if (v >= 1000000) return (v / 1000000).toFixed(1) + 'M';
+  if (v >= 1000)    return (v / 1000).toFixed(1) + 'K';
+  return String(Math.round(v));
+}
+function formatUpdatedAt(s) {
+  if (!s) return '—';
+  // expects "YYYY-MM-DD HH:MM:SS" or "YYYY-MM-DD HH:MM"
+  try {
+    const [date, time] = s.split(' ');
+    const [y, mo, d] = date.split('-');
+    const [h, mi] = (time || '00:00').split(':');
+    return d + '/' + mo + ' ' + h + ':' + mi;
+  } catch { return s; }
+}
+function shortName(s, max) {
+  if (!s) return '';
+  return s.length > max ? s.slice(0, max) + '…' : s;
+}
+function esc(s) {
+  if (!s) return '';
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+</script>
+</body>
+</html>
