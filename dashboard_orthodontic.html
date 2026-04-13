@@ -693,6 +693,7 @@ function buildAdCard(ad, meta) {
           <div class="ad-met"><div class="ad-met-v">${m.lpv > 0 ? fmtBRL((m.spend || 0) / m.lpv) : '—'}</div><div class="ad-met-l">Custo/LPV</div></div>
         </div>
         ${ageHtml}
+        ${ad.preview_url ? `<div style="padding:8px 0 4px"><a href="${esc(ad.preview_url)}" target="_blank" rel="noopener" style="color:var(--acc);font-size:12px;text-decoration:none;font-weight:500">Ver Prévia →</a></div>` : ''}
       </div>
     </div>
   `;
