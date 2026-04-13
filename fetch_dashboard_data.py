@@ -197,7 +197,7 @@ def fetch_account(acc, ad_lookup):
     # 3. Age breakdown — aggregate últimos 7 dias
     print(f"    Buscando breakdown por idade...")
     age_raw = get_all_pages(f"/act_{acct_id}/insights", {
-        "fields": "ad_id,age,spend,impressions,actions,cost_per_action_type",
+        "fields": "ad_id,spend,impressions,actions,cost_per_action_type",
         "level": "ad",
         "time_range": TIME_RANGE,
         "breakdowns": "age",
