@@ -15,7 +15,6 @@ BASE  = "https://graph.facebook.com/v21.0"
 OUT   = os.path.join(os.path.dirname(__file__), "dashboard_data.json")
 
 ACCOUNTS = [
-    {"id": "753068846198086",  "name": "CT01",                         "currency": "BRL"},
     {"id": "795680591769062",  "name": "CT02 - Braga",                 "currency": "BRL"},
     {"id": "350266333900752",  "name": "CT03 - São José do Rio Preto", "currency": "BRL"},
     {"id": "613666203841045",  "name": "CT05 - Braga",                 "currency": "BRL"},
@@ -27,7 +26,6 @@ ACCOUNTS = [
     {"id": "784528807407228",  "name": "Mirassol Orthodontic CA01",    "currency": "BRL"},
     {"id": "1221130892436075", "name": "MOGI/SUZANO CA01",             "currency": "BRL"},
     {"id": "945748271201968",  "name": "CA 02 - RIO CLARO",            "currency": "BRL"},
-    {"id": "310500857276337",  "name": "CONTA 001",                    "currency": "BRL"},
 ]
 
 SINCE = (date.today() - timedelta(days=30)).strftime("%Y-%m-%d")
