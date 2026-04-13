@@ -60,6 +60,20 @@ html,body{height:100%;font-family:'Inter',sans-serif;background:var(--bg);color:
             border-radius:8px;padding:9px 12px;font-size:13px;font-family:'Inter',sans-serif;outline:none}
 .meta-input:focus{border-color:var(--p)}
 
+/* Day selector */
+.sb-day-wrap{padding:0 18px 16px}
+.day-btns{display:flex;flex-direction:column;gap:4px;max-height:220px;overflow-y:auto}
+.day-btn{background:transparent;border:1px solid transparent;border-radius:8px;padding:7px 12px;
+         color:var(--muted2);font-size:11px;font-family:'Inter',sans-serif;cursor:pointer;
+         text-align:left;transition:all .15s;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.day-btn:hover{background:var(--p3);color:var(--p2);border-color:var(--b1)}
+.day-btn.active{background:var(--p4);color:var(--p2);border-color:var(--b3);font-weight:600}
+.day-btn-total{background:var(--p4);border:1px solid var(--b3);border-radius:8px;padding:7px 12px;
+               color:var(--p2);font-size:11px;font-family:'Inter',sans-serif;cursor:pointer;
+               text-align:left;font-weight:700;transition:all .15s;margin-bottom:4px}
+.day-btn-total:hover{background:var(--p);color:#fff}
+.day-btn-total.active{background:var(--p);color:#fff;border-color:var(--p)}
+
 /* KPIs sidebar */
 .sb-kpis{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:0 18px;margin-bottom:16px}
 .sb-kpi{background:var(--card2);border:1px solid var(--b1);border-radius:8px;padding:10px 12px}
@@ -230,6 +244,15 @@ html,body{height:100%;font-family:'Inter',sans-serif;background:var(--bg);color:
 
   <div class="sb-divider"></div>
 
+  <div class="sb-section-label">Período</div>
+  <div class="sb-day-wrap">
+    <div class="day-btns" id="dayBtns">
+      <button class="day-btn-total active" onclick="selectDay('all')">Total (acumulado)</button>
+    </div>
+  </div>
+
+  <div class="sb-divider"></div>
+
   <div class="sb-section-label">KPIs da Conta</div>
   <div class="sb-kpis" id="sidebarKpis">
     <div class="sb-kpi"><div class="sb-kpi-l">Investido</div><div class="sb-kpi-v" id="sk-spend">—</div></div>
@@ -248,8 +271,8 @@ html,body{height:100%;font-family:'Inter',sans-serif;background:var(--bg);color:
       <span id="footer-account">—</span><br>
       Período: <span id="footer-period">—</span><br>
       Meta Marketing API v21<br>
-      Atualiza a cada 6h<br>
-      <span class="next-update" id="next-update-label">Próxima atualização em 6h</span>
+      Atualiza a cada 5h<br>
+      <span class="next-update" id="next-update-label">Próxima atualização em 5h</span>
     </div>
   </div>
 </aside>
@@ -282,6 +305,7 @@ html,body{height:100%;font-family:'Inter',sans-serif;background:var(--bg);color:
 let dashData = null;       // full JSON
 let currentAccount = null; // selected account object
 let activeCampId = 'all';  // 'all' or campaign id string
+let selectedDay = 'all';   // 'all' or 'YYYY-MM-DD'
 let chartMsgs = null;
 let chartCpMsg = null;
 let refreshTimeout = null;
@@ -310,18 +334,20 @@ function loadData() {
 
 function scheduleRefresh() {
   if (refreshTimeout) clearTimeout(refreshTimeout);
-  const SIX_HOURS = 21600000;
-  refreshTimeout = setTimeout(() => loadData(), SIX_HOURS);
-  updateNextUpdateLabel(SIX_HOURS);
+  const FIVE_HOURS = 18000000;
+  refreshTimeout = setTimeout(() => loadData(), FIVE_HOURS);
+  updateNextUpdateLabel(FIVE_HOURS);
 }
 
 function updateNextUpdateLabel(msLeft) {
   const el = document.getElementById('next-update-label');
-  const hours = Math.ceil(msLeft / 3600000);
-  el.textContent = 'Próxima atualização em ' + hours + (hours === 1 ? 'h' : 'h');
-  // update every minute
+  const hours = Math.floor(msLeft / 3600000);
+  const mins  = Math.round((msLeft % 3600000) / 60000);
+  el.textContent = hours > 0
+    ? 'Próxima atualização em ' + hours + 'h' + (mins > 0 ? mins + 'min' : '')
+    : 'Próxima atualização em ' + mins + 'min';
   setTimeout(() => {
-    const remaining = loadedAt + 21600000 - Date.now();
+    const remaining = loadedAt + 18000000 - Date.now();
     if (remaining > 0) updateNextUpdateLabel(remaining);
   }, 60000);
 }
@@ -356,8 +382,44 @@ function initDashboard() {
     sel.appendChild(opt);
   });
 
+  // Build day selector
+  buildDaySelector();
+
   // Select first account
   selectAccount(dashData.accounts[0].id);
+}
+
+function buildDaySelector() {
+  const days = (dashData && dashData.days_available) ? [...dashData.days_available].reverse() : [];
+  const container = document.getElementById('dayBtns');
+  const PT_DAYS = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+  container.innerHTML = '';
+
+  const totalBtn = document.createElement('button');
+  totalBtn.className = 'day-btn-total' + (selectedDay === 'all' ? ' active' : '');
+  totalBtn.textContent = 'Total (acumulado)';
+  totalBtn.onclick = () => selectDay('all');
+  container.appendChild(totalBtn);
+
+  days.forEach(d => {
+    const dt = new Date(d + 'T12:00:00');
+    const dayName = PT_DAYS[dt.getDay()];
+    const label = dayName + ' ' + dt.toLocaleDateString('pt-BR', {day:'2-digit', month:'2-digit'});
+    const btn = document.createElement('button');
+    btn.className = 'day-btn' + (selectedDay === d ? ' active' : '');
+    btn.textContent = label;
+    btn.dataset.day = d;
+    btn.onclick = () => selectDay(d);
+    container.appendChild(btn);
+  });
+}
+
+function selectDay(day) {
+  selectedDay = day;
+  // Update button states
+  document.querySelectorAll('.day-btn-total').forEach(b => b.classList.toggle('active', day === 'all'));
+  document.querySelectorAll('.day-btn').forEach(b => b.classList.toggle('active', b.dataset.day === day));
+  renderAll();
 }
 
 function selectAccount(id) {
@@ -429,11 +491,33 @@ function filteredCampaigns() {
   return all.filter(c => c.id === activeCampId);
 }
 
+// ─── DAILY HELPERS ────────────────────────────────────────────────────────────
+function getAdMetrics(ad) {
+  if (selectedDay === 'all') return ad.metrics || {};
+  return (ad.daily || {})[selectedDay] || {};
+}
+
+function getCampMetrics(camp) {
+  if (selectedDay === 'all') return camp.metrics || {};
+  let spend = 0, msgs = 0, impr = 0, lpv = 0, purchases = 0;
+  (camp.ads || []).forEach(ad => {
+    const m = (ad.daily || {})[selectedDay] || {};
+    spend    += m.spend       || 0;
+    msgs     += m.msgs        || 0;
+    impr     += m.impressions || 0;
+    lpv      += m.lpv         || 0;
+    purchases+= m.purchases   || 0;
+  });
+  spend = Math.round(spend * 100) / 100;
+  return { spend, msgs, impressions: impr, lpv, purchases,
+           cost_msg: msgs > 0 ? Math.round(spend / msgs * 100) / 100 : 0 };
+}
+
 // ─── KPIs ─────────────────────────────────────────────────────────────────────
 function aggregateMetrics(camps) {
   let spend = 0, msgs = 0, impr = 0, lpv = 0, active = 0, paused = 0;
   camps.forEach(c => {
-    const m = c.metrics || {};
+    const m = getCampMetrics(c);
     spend += m.spend || 0;
     msgs  += m.msgs  || 0;
     impr  += m.impressions || 0;
@@ -496,7 +580,8 @@ function renderCharts(camps, meta) {
   // Collect all ads
   let allAds = [];
   camps.forEach(c => (c.ads || []).forEach(ad => {
-    allAds.push({ name: shortName(ad.name, 30), msgs: (ad.metrics || {}).msgs || 0, cpMsg: (ad.metrics || {}).cost_msg || 0 });
+    const m = getAdMetrics(ad);
+    allAds.push({ name: shortName(ad.name, 30), msgs: m.msgs || 0, cpMsg: m.cost_msg || 0 });
   }));
 
   // Chart: Messages top 10
@@ -598,7 +683,7 @@ function renderAccordion(camps, meta) {
 }
 
 function buildAccHeader(camp) {
-  const m = camp.metrics || {};
+  const m = getCampMetrics(camp);
   return `
     <div class="acc-header">
       <div class="acc-header-left">
@@ -634,7 +719,7 @@ function buildAccBody(camp, meta) {
 }
 
 function buildAdCard(ad, meta) {
-  const m = ad.metrics || {};
+  const m = getAdMetrics(ad);
   const badge = getQualityBadge(m, meta);
   const statusBadge = ad.active
     ? '<span class="badge badge-on">ON</span>'
@@ -693,7 +778,13 @@ function buildAdCard(ad, meta) {
           <div class="ad-met"><div class="ad-met-v">${m.lpv > 0 ? fmtBRL((m.spend || 0) / m.lpv) : '—'}</div><div class="ad-met-l">Custo/LPV</div></div>
         </div>
         ${ageHtml}
-        ${ad.preview_url ? `<div style="padding:8px 0 4px"><a href="${esc(ad.preview_url)}" target="_blank" rel="noopener" style="color:var(--acc);font-size:12px;text-decoration:none;font-weight:500">Ver Prévia →</a></div>` : ''}
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:6px 0 2px;flex-wrap:wrap;gap:6px">
+          <div style="display:flex;gap:10px;flex-wrap:wrap">
+            ${ad.created_at ? `<span style="font-size:10px;color:var(--muted)">Criado: <span style="color:var(--muted2)">${fmtDateBR(ad.created_at)}</span></span>` : (ad.first_active ? `<span style="font-size:10px;color:var(--muted)">1º dado: <span style="color:var(--muted2)">${fmtDateBR(ad.first_active)}</span></span>` : '')}
+            ${!ad.active && ad.updated_at ? `<span style="font-size:10px;color:var(--muted)">Pausado: <span style="color:#f59e0b">${fmtDateBR(ad.updated_at)}</span></span>` : ''}
+          </div>
+          ${ad.preview_url ? `<a href="${esc(ad.preview_url)}" target="_blank" rel="noopener" style="color:var(--p2);font-size:11px;text-decoration:none;font-weight:600;flex-shrink:0">Ver Prévia →</a>` : ''}
+        </div>
       </div>
     </div>
   `;
@@ -726,6 +817,11 @@ function fmtKM(v) {
   if (v >= 1000000) return (v / 1000000).toFixed(1) + 'M';
   if (v >= 1000)    return (v / 1000).toFixed(1) + 'K';
   return String(Math.round(v));
+}
+function fmtDateBR(iso) {
+  if (!iso) return '—';
+  const [y, m, d] = iso.split('-');
+  return `${d}/${m}/${y.slice(2)}`;
 }
 function formatUpdatedAt(s) {
   if (!s) return '—';
