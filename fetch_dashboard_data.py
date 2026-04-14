@@ -15,7 +15,7 @@ TOKEN = os.getenv("META_ACCESS_TOKEN")
 BASE  = "https://graph.facebook.com/v21.0"
 OUT   = os.path.join(os.path.dirname(__file__), "dashboard_data.json")
 
-ACCOUNTS = [
+BRAGA_ACCOUNTS = [
     {"id": "795680591769062",  "name": "CT02 - Braga",                 "currency": "BRL"},
     {"id": "350266333900752",  "name": "CT03 - São José do Rio Preto", "currency": "BRL"},
     {"id": "613666203841045",  "name": "CT05 - Braga",                 "currency": "BRL"},
@@ -28,6 +28,24 @@ ACCOUNTS = [
     {"id": "1221130892436075", "name": "MOGI/SUZANO CA01",             "currency": "BRL"},
     {"id": "945748271201968",  "name": "CA 02 - RIO CLARO",            "currency": "BRL"},
 ]
+
+IGOR_ACCOUNTS = [
+    {"id": "5648874101844136", "name": "CT03 - Guaramirim - IGOR",  "currency": "BRL"},
+    {"id": "449000287288780",  "name": "CT02 - Unaí - IGOR",        "currency": "BRL"},
+    {"id": "1181454115989018", "name": "CT03 - Fhilipe - IGOR",     "currency": "BRL"},
+    {"id": "1191525622298805", "name": "CT05 - DBOUT 02 - IGOR",    "currency": "BRL"},
+    {"id": "412153471621510",  "name": "CT02 - MJOLNIR - IGOR",     "currency": "BRL"},
+    {"id": "391009870578696",  "name": "AQC 00 - IGOR",             "currency": "BRL"},
+    {"id": "1583196522529565", "name": "CT01 - DRACO - IGOR",       "currency": "BRL"},
+]
+
+# Todos os gestores
+GESTORES = [
+    {"id": "thiago_braga",  "name": "Thiago Braga",  "accounts": BRAGA_ACCOUNTS},
+    {"id": "igor_teixeira", "name": "Igor Teixeira",  "accounts": IGOR_ACCOUNTS},
+]
+
+ACCOUNTS = BRAGA_ACCOUNTS + IGOR_ACCOUNTS
 
 # Busca últimos 7 dias a cada execução
 FETCH_DAYS = 7
@@ -137,7 +155,14 @@ def load_existing_ads():
         with open(OUT) as f:
             data = json.load(f)
         ad_lookup = {}
-        for acc in data.get("accounts", []):
+        # Suporta estrutura nova (gestores) e antiga (accounts direto)
+        all_accounts = []
+        if "gestores" in data:
+            for g in data.get("gestores", []):
+                all_accounts.extend(g.get("accounts", []))
+        else:
+            all_accounts = data.get("accounts", [])
+        for acc in all_accounts:
             for camp in acc.get("campaigns", []):
                 for ad in camp.get("ads", []):
                     ad_lookup[ad["id"]] = {
@@ -396,6 +421,24 @@ def main():
 
     result["days_available"] = sorted(all_days)
 
+    # ── Agrupamento por gestor ────────────────────────────────────────────────
+    gestores_out = []
+    for g in GESTORES:
+        g_ids   = {a["id"] for a in g["accounts"]}
+        g_accts = [a for a in result["accounts"] if a["id"] in g_ids]
+        g_days  = set()
+        for acc in g_accts:
+            for camp in acc.get("campaigns", []):
+                for ad in camp.get("ads", []):
+                    g_days.update(ad.get("daily", {}).keys())
+        gestores_out.append({
+            "id":             g["id"],
+            "name":           g["name"],
+            "days_available": sorted(g_days),
+            "accounts":       g_accts,
+        })
+    result["gestores"] = gestores_out
+
     with open(OUT, "w", encoding="utf-8") as f:
         json.dump(result, f, ensure_ascii=False, indent=2)
 
@@ -403,9 +446,14 @@ def main():
     total_ads   = sum(sum(len(c["ads"]) for c in a["campaigns"]) for a in result["accounts"])
     days_list   = result["days_available"]
     print(f"\n✅ Salvo: {OUT}")
-    print(f"   {len(ACCOUNTS)} contas | {total_camps} campanhas | {total_ads} anúncios")
+    print(f"   {len(ACCOUNTS)} contas ({len(BRAGA_ACCOUNTS)} Braga + {len(IGOR_ACCOUNTS)} Igor)")
+    print(f"   {total_camps} campanhas | {total_ads} anúncios")
     print(f"   {len(days_list)} dias disponíveis: {days_list[0] if days_list else '—'} → {days_list[-1] if days_list else '—'}")
     print(f"   Atualizado em: {result['updated_at']}")
+    for g in gestores_out:
+        g_camps = sum(len(a["campaigns"]) for a in g["accounts"])
+        g_ads   = sum(sum(len(c["ads"]) for c in a["campaigns"]) for a in g["accounts"])
+        print(f"   [{g['name']}] {len(g['accounts'])} contas | {g_camps} campanhas | {g_ads} anúncios")
 
 
 if __name__ == "__main__":

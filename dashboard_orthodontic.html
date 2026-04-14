@@ -42,6 +42,20 @@ html,body{height:100%;font-family:'Inter',sans-serif;background:var(--bg);color:
 .sb-divider{height:1px;background:var(--b1);margin:0 18px 14px}
 .sb-section-label{padding:0 18px 8px;font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;font-weight:600}
 
+/* Gestor selector */
+.sb-gestor-wrap{padding:0 18px 16px}
+.gestor-btns{display:flex;flex-direction:column;gap:5px}
+.gestor-btn{background:transparent;border:1px solid var(--b1);border-radius:8px;padding:9px 12px;
+            color:var(--muted2);font-size:12px;font-family:'Inter',sans-serif;cursor:pointer;
+            text-align:left;transition:all .15s;font-weight:500;display:flex;align-items:center;gap:8px}
+.gestor-btn:hover{background:var(--p3);color:var(--p2);border-color:var(--b3)}
+.gestor-btn.active{background:var(--p4);color:var(--p2);border-color:var(--b3);font-weight:700}
+.gestor-avatar{width:24px;height:24px;border-radius:6px;background:linear-gradient(135deg,var(--p),var(--p2));
+               display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:#fff;flex-shrink:0}
+.gestor-info{display:flex;flex-direction:column;line-height:1.2}
+.gestor-name{font-size:12px}
+.gestor-accts{font-size:9px;color:var(--muted);font-weight:400}
+
 /* Account selector */
 .sb-account-wrap{padding:0 18px 16px}
 .sb-account-wrap label{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;font-weight:600;display:block;margin-bottom:6px}
@@ -225,6 +239,13 @@ html,body{height:100%;font-family:'Inter',sans-serif;background:var(--bg);color:
 
   <div class="sb-divider"></div>
 
+  <div class="sb-section-label">Gestor</div>
+  <div class="sb-gestor-wrap">
+    <div class="gestor-btns" id="gestorBtns"></div>
+  </div>
+
+  <div class="sb-divider"></div>
+
   <div class="sb-section-label">Conta</div>
   <div class="sb-account-wrap">
     <select class="account-select" id="accountSelect" onchange="selectAccount(this.value)">
@@ -302,10 +323,11 @@ html,body{height:100%;font-family:'Inter',sans-serif;background:var(--bg);color:
 
 <script>
 // ─── STATE ───────────────────────────────────────────────────────────────────
-let dashData = null;       // full JSON
-let currentAccount = null; // selected account object
-let activeCampId = 'all';  // 'all' or campaign id string
-let selectedDay = 'all';   // 'all' or 'YYYY-MM-DD'
+let dashData = null;         // full JSON
+let selectedGestor = null;   // { id, name, days_available, accounts }
+let currentAccount = null;   // selected account object
+let activeCampId = 'all';    // 'all' or campaign id string
+let selectedDay = 'all';     // 'all' or 'YYYY-MM-DD'
 let chartMsgs = null;
 let chartCpMsg = null;
 let refreshTimeout = null;
@@ -368,29 +390,78 @@ function initDashboard() {
   document.getElementById('period-badge').textContent = periodStr;
   document.getElementById('footer-period').textContent = periodStr;
 
-  // Populate account dropdown
-  const sel = document.getElementById('accountSelect');
-  sel.innerHTML = '';
-  if (!dashData.accounts || !dashData.accounts.length) {
-    sel.innerHTML = '<option value="">Nenhuma conta</option>';
+  // Build gestor selector
+  buildGestorSelector();
+
+  // Select first gestor (triggers account population + render)
+  const gestores = dashData.gestores || [];
+  if (gestores.length) {
+    selectGestor(gestores[0].id);
+  }
+}
+
+// ─── GESTOR SELECTOR ─────────────────────────────────────────────────────────
+function buildGestorSelector() {
+  const container = document.getElementById('gestorBtns');
+  container.innerHTML = '';
+  const gestores = dashData.gestores || [];
+  if (!gestores.length) {
+    container.innerHTML = '<div style="font-size:11px;color:var(--muted);padding:4px 0">Nenhum gestor</div>';
     return;
   }
-  dashData.accounts.forEach(acc => {
+  gestores.forEach(g => {
+    const initials = g.name.split(' ').map(w => w[0]).slice(0, 2).join('').toUpperCase();
+    const nAccts   = (g.accounts || []).length;
+    const btn = document.createElement('button');
+    btn.className = 'gestor-btn';
+    btn.dataset.id = g.id;
+    btn.innerHTML = `
+      <div class="gestor-avatar">${initials}</div>
+      <div class="gestor-info">
+        <span class="gestor-name">${esc(g.name)}</span>
+        <span class="gestor-accts">${nAccts} conta${nAccts !== 1 ? 's' : ''}</span>
+      </div>`;
+    btn.onclick = () => selectGestor(g.id);
+    container.appendChild(btn);
+  });
+}
+
+function selectGestor(id) {
+  const gestores = dashData.gestores || [];
+  selectedGestor = gestores.find(g => g.id === id) || null;
+
+  // Update button states
+  document.querySelectorAll('.gestor-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.id === id);
+  });
+
+  if (!selectedGestor) return;
+
+  // Populate account dropdown for this gestor
+  const sel = document.getElementById('accountSelect');
+  sel.innerHTML = '';
+  selectedGestor.accounts.forEach(acc => {
     const opt = document.createElement('option');
     opt.value = acc.id;
     opt.textContent = acc.name + (acc.id ? ' (' + acc.id.slice(-6) + ')' : '');
     sel.appendChild(opt);
   });
 
-  // Build day selector
+  // Reset day + campaign filters
+  selectedDay = 'all';
+  activeCampId = 'all';
   buildDaySelector();
 
-  // Select first account
-  selectAccount(dashData.accounts[0].id);
+  // Select first account of this gestor
+  if (selectedGestor.accounts.length) {
+    selectAccount(selectedGestor.accounts[0].id);
+  }
 }
 
 function buildDaySelector() {
-  const days = (dashData && dashData.days_available) ? [...dashData.days_available].reverse() : [];
+  const src  = (selectedGestor && selectedGestor.days_available) ? selectedGestor.days_available
+               : (dashData && dashData.days_available) ? dashData.days_available : [];
+  const days = [...src].reverse();
   const container = document.getElementById('dayBtns');
   const PT_DAYS = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
   container.innerHTML = '';
@@ -424,7 +495,8 @@ function selectDay(day) {
 
 function selectAccount(id) {
   if (!dashData) return;
-  currentAccount = dashData.accounts.find(a => a.id === id) || null;
+  const pool = selectedGestor ? selectedGestor.accounts : (dashData.accounts || []);
+  currentAccount = pool.find(a => a.id === id) || null;
   activeCampId = 'all';
   document.getElementById('accountSelect').value = id;
 
