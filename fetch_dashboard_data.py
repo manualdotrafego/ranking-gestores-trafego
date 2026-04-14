@@ -30,13 +30,16 @@ BRAGA_ACCOUNTS = [
 ]
 
 IGOR_ACCOUNTS = [
-    {"id": "5648874101844136", "name": "CT03 - Guaramirim - IGOR",  "currency": "BRL"},
-    {"id": "449000287288780",  "name": "CT02 - Unaí - IGOR",        "currency": "BRL"},
-    {"id": "1181454115989018", "name": "CT03 - Fhilipe - IGOR",     "currency": "BRL"},
-    {"id": "1191525622298805", "name": "CT05 - DBOUT 02 - IGOR",    "currency": "BRL"},
-    {"id": "412153471621510",  "name": "CT02 - MJOLNIR - IGOR",     "currency": "BRL"},
-    {"id": "391009870578696",  "name": "AQC 00 - IGOR",             "currency": "BRL"},
-    {"id": "1583196522529565", "name": "CT01 - DRACO - IGOR",       "currency": "BRL"},
+    {"id": "5648874101844136", "name": "CT03 - Guaramirim - IGOR",          "currency": "BRL"},
+    {"id": "449000287288780",  "name": "CT02 - Unaí - IGOR",                "currency": "BRL"},
+    {"id": "1181454115989018", "name": "CT03 - Fhilipe - IGOR",             "currency": "BRL"},
+    {"id": "1191525622298805", "name": "CT05 - DBOUT 02 - IGOR",            "currency": "BRL"},
+    {"id": "412153471621510",  "name": "CT02 - MJOLNIR - IGOR",             "currency": "BRL"},
+    {"id": "391009870578696",  "name": "AQC 00 - IGOR",                     "currency": "BRL"},
+    {"id": "1583196522529565", "name": "CT01 - DRACO - IGOR",               "currency": "BRL"},
+    {"id": "1329276834986407", "name": "Orthodontic Aparecida Goiânia IGOR","currency": "BRL"},
+    {"id": "566170923166415",  "name": "Ortomais 1.1 - IGOR",               "currency": "BRL"},
+    {"id": "1132321672289497", "name": "Brasil Odontologia Rio do Sul IGOR", "currency": "BRL"},
 ]
 
 # Todos os gestores
