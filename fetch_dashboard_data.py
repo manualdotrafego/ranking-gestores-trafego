@@ -16,17 +16,27 @@ BASE  = "https://graph.facebook.com/v21.0"
 OUT   = os.path.join(os.path.dirname(__file__), "dashboard_data.json")
 
 BRAGA_ACCOUNTS = [
-    {"id": "795680591769062",  "name": "CT02 - Braga",                 "currency": "BRL"},
-    {"id": "350266333900752",  "name": "CT03 - São José do Rio Preto", "currency": "BRL"},
-    {"id": "613666203841045",  "name": "CT05 - Braga",                 "currency": "BRL"},
-    {"id": "1534753857104914", "name": "CDC Odontologia",              "currency": "BRL"},
-    {"id": "627225619698621",  "name": "Contagem",                     "currency": "BRL"},
-    {"id": "684292170965131",  "name": "Dbout Aquec 02 CA01",          "currency": "BRL"},
-    {"id": "1385771249133770", "name": "Dbout Aquec 02 CA02",          "currency": "BRL"},
-    {"id": "1492720022172340", "name": "Dbout Aquec 02 CA03",          "currency": "BRL"},
-    {"id": "784528807407228",  "name": "Mirassol Orthodontic CA01",    "currency": "BRL"},
-    {"id": "1221130892436075", "name": "MOGI/SUZANO CA01",             "currency": "BRL"},
-    {"id": "945748271201968",  "name": "CA 02 - RIO CLARO",            "currency": "BRL"},
+    {"id": "795680591769062",  "name": "CT02 - Braga",                    "currency": "BRL"},
+    {"id": "350266333900752",  "name": "CT03 - São José do Rio Preto",    "currency": "BRL"},
+    {"id": "613666203841045",  "name": "CT05 - Braga",                    "currency": "BRL"},
+    {"id": "1534753857104914", "name": "CDC Odontologia",                 "currency": "BRL"},
+    {"id": "627225619698621",  "name": "Contagem",                        "currency": "BRL"},
+    {"id": "684292170965131",  "name": "Dbout Aquec 02 CA01",             "currency": "BRL"},
+    {"id": "1385771249133770", "name": "Dbout Aquec 02 CA02",             "currency": "BRL"},
+    {"id": "1492720022172340", "name": "Dbout Aquec 02 CA03",             "currency": "BRL"},
+    {"id": "784528807407228",  "name": "Mirassol Orthodontic CA01",       "currency": "BRL"},
+    {"id": "1221130892436075", "name": "MOGI/SUZANO CA01",                "currency": "BRL"},
+    {"id": "945748271201968",  "name": "CA 02 - RIO CLARO",               "currency": "BRL"},
+    {"id": "1191172178527886", "name": "São José dos Campos Vilaça",      "currency": "BRL"},
+]
+
+MILENA_ACCOUNTS = [
+    {"id": "929466455169259",  "name": "C.A 01 MKT DBOUT - MILENA",      "currency": "BRL"},
+    {"id": "1085576095862723", "name": "C.A 02 MKT DBOUT - MILENA",      "currency": "BRL"},
+    {"id": "1092388468506879", "name": "C.A 03 MKT DBOUT - MILENA",      "currency": "BRL"},
+    {"id": "8918374284933128", "name": "C.A 04 MKT DBOUT - MILENA",      "currency": "BRL"},
+    {"id": "821690284057436",  "name": "C.A 05 MKT DBOUT - MILENA",      "currency": "BRL"},
+    {"id": "1256638916269263", "name": "C.A 06 MKT DBOUT - MILENA",      "currency": "BRL"},
 ]
 
 IGOR_ACCOUNTS = [
@@ -46,9 +56,10 @@ IGOR_ACCOUNTS = [
 GESTORES = [
     {"id": "thiago_braga",  "name": "Thiago Braga",  "accounts": BRAGA_ACCOUNTS},
     {"id": "igor_teixeira", "name": "Igor Teixeira",  "accounts": IGOR_ACCOUNTS},
+    {"id": "milena",        "name": "Milena",          "accounts": MILENA_ACCOUNTS},
 ]
 
-ACCOUNTS = BRAGA_ACCOUNTS + IGOR_ACCOUNTS
+ACCOUNTS = BRAGA_ACCOUNTS + IGOR_ACCOUNTS + MILENA_ACCOUNTS
 
 # Busca últimos 7 dias a cada execução
 FETCH_DAYS = 7
@@ -449,7 +460,7 @@ def main():
     total_ads   = sum(sum(len(c["ads"]) for c in a["campaigns"]) for a in result["accounts"])
     days_list   = result["days_available"]
     print(f"\n✅ Salvo: {OUT}")
-    print(f"   {len(ACCOUNTS)} contas ({len(BRAGA_ACCOUNTS)} Braga + {len(IGOR_ACCOUNTS)} Igor)")
+    print(f"   {len(ACCOUNTS)} contas ({len(BRAGA_ACCOUNTS)} Braga + {len(IGOR_ACCOUNTS)} Igor + {len(MILENA_ACCOUNTS)} Milena)")
     print(f"   {total_camps} campanhas | {total_ads} anúncios")
     print(f"   {len(days_list)} dias disponíveis: {days_list[0] if days_list else '—'} → {days_list[-1] if days_list else '—'}")
     print(f"   Atualizado em: {result['updated_at']}")
