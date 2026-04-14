@@ -45,6 +45,14 @@ VICTOR_ACCOUNTS = [
     {"id": "1229765484942576", "name": "CA 04 - EQUITY+ Victor",          "currency": "BRL"},
 ]
 
+MOTA_ACCOUNTS = [
+    {"id": "5278613945567179", "name": "CT01 - BM02 - Mota",             "currency": "BRL"},
+    {"id": "388602330121239",  "name": "CT03 - BM02 - Mota",             "currency": "BRL"},
+    {"id": "140805155678128",  "name": "CT1 - Mota",                     "currency": "BRL"},
+    {"id": "959827441932943",  "name": "CT04 - Cartão Cliente Pinhais",  "currency": "BRL"},
+    {"id": "782257763801898",  "name": "CT06 - Mota",                    "currency": "BRL"},
+]
+
 BUENO_ACCOUNTS = [
     {"id": "844368963369490",  "name": "CT09 - BM04 - Closer Brasil",     "currency": "BRL"},
     {"id": "762767474947500",  "name": "CT 01 - Mercado da Patrícia",     "currency": "BRL"},
@@ -78,9 +86,10 @@ GESTORES = [
     {"id": "milena",        "name": "Milena",          "accounts": MILENA_ACCOUNTS},
     {"id": "victor",        "name": "Victor",           "accounts": VICTOR_ACCOUNTS},
     {"id": "bueno",         "name": "Bueno",            "accounts": BUENO_ACCOUNTS},
+    {"id": "mota",          "name": "Mota",             "accounts": MOTA_ACCOUNTS},
 ]
 
-ACCOUNTS = BRAGA_ACCOUNTS + IGOR_ACCOUNTS + MILENA_ACCOUNTS + VICTOR_ACCOUNTS + BUENO_ACCOUNTS
+ACCOUNTS = BRAGA_ACCOUNTS + IGOR_ACCOUNTS + MILENA_ACCOUNTS + VICTOR_ACCOUNTS + BUENO_ACCOUNTS + MOTA_ACCOUNTS
 
 # Busca últimos 7 dias a cada execução
 FETCH_DAYS = 7
@@ -482,7 +491,7 @@ def main():
     total_ads   = sum(sum(len(c["ads"]) for c in a["campaigns"]) for a in result["accounts"])
     days_list   = result["days_available"]
     print(f"\n✅ Salvo: {OUT}")
-    print(f"   {len(ACCOUNTS)} contas ({len(BRAGA_ACCOUNTS)} Braga + {len(IGOR_ACCOUNTS)} Igor + {len(MILENA_ACCOUNTS)} Milena + {len(VICTOR_ACCOUNTS)} Victor + {len(BUENO_ACCOUNTS)} Bueno)")
+    print(f"   {len(ACCOUNTS)} contas ({len(BRAGA_ACCOUNTS)} Braga + {len(IGOR_ACCOUNTS)} Igor + {len(MILENA_ACCOUNTS)} Milena + {len(VICTOR_ACCOUNTS)} Victor + {len(BUENO_ACCOUNTS)} Bueno + {len(MOTA_ACCOUNTS)} Mota)")
     print(f"   {total_camps} campanhas | {total_ads} anúncios")
     print(f"   {len(days_list)} dias disponíveis: {days_list[0] if days_list else '—'} → {days_list[-1] if days_list else '—'}")
     print(f"   Atualizado em: {result['updated_at']}")
