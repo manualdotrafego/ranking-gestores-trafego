@@ -45,6 +45,19 @@ VICTOR_ACCOUNTS = [
     {"id": "1229765484942576", "name": "CA 04 - EQUITY+ Victor",          "currency": "BRL"},
 ]
 
+BUENO_ACCOUNTS = [
+    {"id": "844368963369490",  "name": "CT09 - BM04 - Closer Brasil",     "currency": "BRL"},
+    {"id": "762767474947500",  "name": "CT 01 - Mercado da Patrícia",     "currency": "BRL"},
+    {"id": "514946917180994",  "name": "CT08 - BM04 - Closer Brasil",     "currency": "BRL"},
+    {"id": "646063993729347",  "name": "CT10 - BM04 - Closer Brasil",     "currency": "BRL"},
+    {"id": "1473069363640157", "name": "CT 03 - Operação Sorriso",        "currency": "BRL"},
+    {"id": "1512288279712118", "name": "CT 01 - Operação Sorriso",        "currency": "BRL"},
+    {"id": "1874417206315032", "name": "CT12 - BM04 Closer Brasil",       "currency": "BRL"},
+    {"id": "3656827834577801", "name": "CT14 - BM04 Closer Brasil",       "currency": "BRL"},
+    {"id": "421023317498662",  "name": "CT13 - BM04 Closer Brasil",       "currency": "BRL"},
+    {"id": "969549934748192",  "name": "CT11 - BM04 Closer Brasil",       "currency": "BRL"},
+]
+
 IGOR_ACCOUNTS = [
     {"id": "5648874101844136", "name": "CT03 - Guaramirim - IGOR",          "currency": "BRL"},
     {"id": "449000287288780",  "name": "CT02 - Unaí - IGOR",                "currency": "BRL"},
@@ -64,9 +77,10 @@ GESTORES = [
     {"id": "igor_teixeira", "name": "Igor Teixeira",  "accounts": IGOR_ACCOUNTS},
     {"id": "milena",        "name": "Milena",          "accounts": MILENA_ACCOUNTS},
     {"id": "victor",        "name": "Victor",           "accounts": VICTOR_ACCOUNTS},
+    {"id": "bueno",         "name": "Bueno",            "accounts": BUENO_ACCOUNTS},
 ]
 
-ACCOUNTS = BRAGA_ACCOUNTS + IGOR_ACCOUNTS + MILENA_ACCOUNTS + VICTOR_ACCOUNTS
+ACCOUNTS = BRAGA_ACCOUNTS + IGOR_ACCOUNTS + MILENA_ACCOUNTS + VICTOR_ACCOUNTS + BUENO_ACCOUNTS
 
 # Busca últimos 7 dias a cada execução
 FETCH_DAYS = 7
@@ -468,7 +482,7 @@ def main():
     total_ads   = sum(sum(len(c["ads"]) for c in a["campaigns"]) for a in result["accounts"])
     days_list   = result["days_available"]
     print(f"\n✅ Salvo: {OUT}")
-    print(f"   {len(ACCOUNTS)} contas ({len(BRAGA_ACCOUNTS)} Braga + {len(IGOR_ACCOUNTS)} Igor + {len(MILENA_ACCOUNTS)} Milena + {len(VICTOR_ACCOUNTS)} Victor)")
+    print(f"   {len(ACCOUNTS)} contas ({len(BRAGA_ACCOUNTS)} Braga + {len(IGOR_ACCOUNTS)} Igor + {len(MILENA_ACCOUNTS)} Milena + {len(VICTOR_ACCOUNTS)} Victor + {len(BUENO_ACCOUNTS)} Bueno)")
     print(f"   {total_camps} campanhas | {total_ads} anúncios")
     print(f"   {len(days_list)} dias disponíveis: {days_list[0] if days_list else '—'} → {days_list[-1] if days_list else '—'}")
     print(f"   Atualizado em: {result['updated_at']}")
