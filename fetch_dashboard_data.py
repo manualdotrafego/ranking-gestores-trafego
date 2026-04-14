@@ -39,6 +39,12 @@ MILENA_ACCOUNTS = [
     {"id": "1256638916269263", "name": "C.A 06 MKT DBOUT - MILENA",      "currency": "BRL"},
 ]
 
+VICTOR_ACCOUNTS = [
+    {"id": "816831793052077",  "name": "CT01 - Victor",                   "currency": "BRL"},
+    {"id": "1145079426101184", "name": "CT02 - Victor",                   "currency": "BRL"},
+    {"id": "1229765484942576", "name": "CA 04 - EQUITY+ Victor",          "currency": "BRL"},
+]
+
 IGOR_ACCOUNTS = [
     {"id": "5648874101844136", "name": "CT03 - Guaramirim - IGOR",          "currency": "BRL"},
     {"id": "449000287288780",  "name": "CT02 - Unaí - IGOR",                "currency": "BRL"},
@@ -57,9 +63,10 @@ GESTORES = [
     {"id": "thiago_braga",  "name": "Thiago Braga",  "accounts": BRAGA_ACCOUNTS},
     {"id": "igor_teixeira", "name": "Igor Teixeira",  "accounts": IGOR_ACCOUNTS},
     {"id": "milena",        "name": "Milena",          "accounts": MILENA_ACCOUNTS},
+    {"id": "victor",        "name": "Victor",           "accounts": VICTOR_ACCOUNTS},
 ]
 
-ACCOUNTS = BRAGA_ACCOUNTS + IGOR_ACCOUNTS + MILENA_ACCOUNTS
+ACCOUNTS = BRAGA_ACCOUNTS + IGOR_ACCOUNTS + MILENA_ACCOUNTS + VICTOR_ACCOUNTS
 
 # Busca últimos 7 dias a cada execução
 FETCH_DAYS = 7
@@ -85,7 +92,7 @@ def get(path, params=None):
     if params:
         p.update(params)
     try:
-        r = requests.get(f"{BASE}{path}", params=p, timeout=30)
+        r = requests.get(f"{BASE}{path}", params=p, timeout=90)
         data = r.json()
         if "error" in data:
             print(f"  API error: {data['error'].get('message','?')[:80]}")
@@ -102,10 +109,11 @@ def get_all_pages(path, params):
     results.extend(resp.get("data", []))
     while resp.get("paging", {}).get("next"):
         try:
-            r = requests.get(resp["paging"]["next"], timeout=30)
+            r = requests.get(resp["paging"]["next"], timeout=90)
             resp = r.json()
             results.extend(resp.get("data", []))
-        except:
+        except Exception as e:
+            print(f"  Erro na paginação: {e}")
             break
     return results
 
@@ -460,7 +468,7 @@ def main():
     total_ads   = sum(sum(len(c["ads"]) for c in a["campaigns"]) for a in result["accounts"])
     days_list   = result["days_available"]
     print(f"\n✅ Salvo: {OUT}")
-    print(f"   {len(ACCOUNTS)} contas ({len(BRAGA_ACCOUNTS)} Braga + {len(IGOR_ACCOUNTS)} Igor + {len(MILENA_ACCOUNTS)} Milena)")
+    print(f"   {len(ACCOUNTS)} contas ({len(BRAGA_ACCOUNTS)} Braga + {len(IGOR_ACCOUNTS)} Igor + {len(MILENA_ACCOUNTS)} Milena + {len(VICTOR_ACCOUNTS)} Victor)")
     print(f"   {total_camps} campanhas | {total_ads} anúncios")
     print(f"   {len(days_list)} dias disponíveis: {days_list[0] if days_list else '—'} → {days_list[-1] if days_list else '—'}")
     print(f"   Atualizado em: {result['updated_at']}")
