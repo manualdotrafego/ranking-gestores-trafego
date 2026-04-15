@@ -463,49 +463,90 @@ function clearSearch() {
   document.getElementById('searchResults').classList.remove('open');
 }
 
+function norm(s) {
+  return (s || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+}
+
+function extractClinicName(campName) {
+  // Tenta extrair nome legível da clínica a partir do nome da campanha
+  let n = campName;
+
+  // Formato Victor/Milena: [CIDADE] ou [CIDADE ESTADO]
+  const bracketed = [...n.matchAll(/\[([^\]]+)\]/g)].map(m => m[1]);
+  // Filtra blocos que são valores ou datas
+  const cityBlocks = bracketed.filter(b =>
+    !/^R\$|^\d{1,2}[\/\.]\d{1,2}|^[0-9,]+K?$|^[A-Z]{2,4}$|^CBO|^ABO|^CPM|^VSL/i.test(b)
+  );
+  if (cityBlocks.length) return cityBlocks[0];
+
+  // Formato Braga/Igor: "C1 - 341 - Indaiatuba/SP - ..." → pega a parte do nome
+  // Remove prefixos tipo "C1 -", "C2 -", "CP -", "CJ01 -", números
+  n = n.replace(/^(C[PJ]?\d*|CP\s*\d*)\s*[-–]\s*/i, '');
+  // Remove blocos de valor R$... e datas
+  n = n.replace(/R\$[\d\.,]+[KM]?/gi, '').replace(/\d{1,2}[\/\.]\d{1,2}([\/\.]\d{2,4})?/g, '');
+  // Remove emojis e símbolos comuns
+  n = n.replace(/[❌✅🔴🟢⚠️💰👥📊🔥|]+/g, '');
+  // Remove sufixos de status, orçamento
+  n = n.replace(/[-–|]\s*(INST|DOC|CLAR|IMPL|ORTO|PROT|MARC|CONV|REPUB|COPIA|CÓPIA|AGRESSIVO|VALIDAÇAO|REAPROVEIT|OFICIAL|NOVA|SEM GRAT).*/gi, '');
+  // Remove número de ID no início: "341 - Indaiatuba" → "Indaiatuba"
+  n = n.replace(/^\d+\s*[-–]\s*/, '');
+  // Remove estado no fim: "/SP", "/RJ"
+  n = n.replace(/\s*\/\s*[A-Z]{2}\s*$/, '');
+  // Limpa espaços múltiplos e hífens soltos
+  n = n.replace(/\s*[-–]+\s*$/, '').replace(/\s{2,}/g, ' ').trim();
+
+  return n || campName;
+}
+
 function runSearch(q) {
   if (!dashData) return;
   const res = document.getElementById('searchResults');
-  const ql  = q.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+  const ql  = norm(q);
   const matches = [];
 
   (dashData.gestores || []).forEach(g => {
     const photo = GESTOR_PHOTOS[g.id];
     (g.accounts || []).forEach(acc => {
-      // Match conta
-      const accNorm = acc.name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+      const accNorm = norm(acc.name);
       const accHit  = accNorm.includes(ql);
 
       (acc.campaigns || []).forEach(camp => {
-        const campNorm = camp.name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
-        const hit = campNorm.includes(ql) || accHit;
+        const clinicName = extractClinicName(camp.name);
+        const clinicNorm = norm(clinicName);
+        const campNorm   = norm(camp.name);
+        const hit = clinicNorm.includes(ql) || campNorm.includes(ql) || accHit;
         if (hit) {
-          matches.push({ g, acc, camp, photo });
+          matches.push({ g, acc, camp, photo, clinicName });
         }
       });
 
-      // Se conta bate mas sem campanhas, adiciona a conta
       if (accHit && !(acc.campaigns || []).length) {
-        matches.push({ g, acc, camp: null, photo });
+        matches.push({ g, acc, camp: null, photo, clinicName: acc.name });
       }
     });
   });
 
+  // Ordena: matches exatos no nome da clínica primeiro
+  matches.sort((a, b) => {
+    const aExact = norm(a.clinicName).startsWith(ql) ? 0 : 1;
+    const bExact = norm(b.clinicName).startsWith(ql) ? 0 : 1;
+    return aExact - bExact;
+  });
+
   res.innerHTML = '';
   if (!matches.length) {
-    res.innerHTML = '<div class="sr-empty">Nenhuma unidade encontrada para "<b>' + q + '</b>"</div>';
+    res.innerHTML = '<div class="sr-empty">Nenhuma clínica encontrada para "<b>' + q + '</b>"</div>';
     res.classList.add('open');
     return;
   }
 
-  // Limita a 40 resultados
   const shown = matches.slice(0, 40);
   const count = document.createElement('div');
   count.className = 'sr-count';
   count.textContent = shown.length + (matches.length > 40 ? '+' : '') + ' resultado' + (shown.length !== 1 ? 's' : '');
   res.appendChild(count);
 
-  shown.forEach(({ g, acc, camp, photo }) => {
+  shown.forEach(({ g, acc, camp, photo, clinicName }) => {
     const item = document.createElement('div');
     item.className = 'sr-item';
 
@@ -515,19 +556,19 @@ function runSearch(q) {
     if (photo) { const img = document.createElement('img'); img.src = photo; av.appendChild(img); }
     else { av.textContent = g.name.slice(0,2).toUpperCase(); }
 
-    // Body
+    // Body — mostra nome da clínica em destaque, campanha embaixo
     const body = document.createElement('div');
     body.className = 'sr-body';
-    const campDiv = document.createElement('div');
-    campDiv.className = 'sr-camp';
-    campDiv.textContent = camp ? camp.name : acc.name;
+    const nameDiv = document.createElement('div');
+    nameDiv.className = 'sr-camp';
+    nameDiv.textContent = clinicName || (camp ? camp.name : acc.name);
     const metaDiv = document.createElement('div');
     metaDiv.className = 'sr-meta';
     metaDiv.textContent = g.name + ' · ' + acc.name;
-    body.appendChild(campDiv);
+    body.appendChild(nameDiv);
     body.appendChild(metaDiv);
 
-    // Badge (spend se disponível)
+    // Badge com gasto
     const badge = document.createElement('div');
     badge.className = 'sr-badge';
     if (camp) {
@@ -546,9 +587,7 @@ function runSearch(q) {
       selectGestor(g.id);
       setTimeout(() => {
         selectAccount(acc.id);
-        if (camp) {
-          setTimeout(() => setCampFilter(camp.id), 100);
-        }
+        if (camp) setTimeout(() => setCampFilter(camp.id), 100);
       }, 150);
     };
 
