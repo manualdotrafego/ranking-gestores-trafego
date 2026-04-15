@@ -42,6 +42,35 @@ html,body{height:100%;font-family:'Inter',sans-serif;background:var(--bg);color:
 .sb-divider{height:1px;background:var(--b1);margin:0 18px 14px}
 .sb-section-label{padding:0 18px 8px;font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;font-weight:600}
 
+/* ── SEARCH ── */
+.sb-search-wrap{padding:0 18px 14px;position:relative}
+.sb-search-box{position:relative;display:flex;align-items:center}
+.sb-search-icon{position:absolute;left:10px;width:14px;height:14px;opacity:.45;pointer-events:none}
+.sb-search-input{width:100%;background:var(--card2);color:var(--text);border:1px solid var(--b1);
+  border-radius:8px;padding:9px 34px 9px 32px;font-size:12px;font-family:'Inter',sans-serif;
+  outline:none;transition:border-color .15s}
+.sb-search-input::placeholder{color:var(--muted)}
+.sb-search-input:focus{border-color:var(--p)}
+.sb-search-clear{position:absolute;right:8px;background:none;border:none;color:var(--muted);
+  cursor:pointer;font-size:14px;line-height:1;padding:2px;display:none}
+.sb-search-clear.visible{display:block}
+.sb-search-results{position:absolute;top:100%;left:18px;right:18px;background:var(--card);
+  border:1px solid var(--b3);border-radius:10px;z-index:999;max-height:380px;overflow-y:auto;
+  box-shadow:0 8px 32px rgba(0,0,0,.6);display:none;margin-top:4px}
+.sb-search-results.open{display:block}
+.sr-item{padding:10px 12px;cursor:pointer;border-bottom:1px solid var(--b1);transition:background .1s;display:flex;align-items:center;gap:10px}
+.sr-item:last-child{border-bottom:none}
+.sr-item:hover{background:var(--p3)}
+.sr-avatar{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--p),var(--p2));
+  display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:800;color:#fff;flex-shrink:0;overflow:hidden}
+.sr-avatar img{width:100%;height:100%;object-fit:cover}
+.sr-body{flex:1;min-width:0}
+.sr-camp{font-size:11px;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sr-meta{font-size:9px;color:var(--muted2);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sr-badge{font-size:8px;font-weight:700;background:var(--p3);color:var(--p2);border-radius:4px;padding:2px 5px;flex-shrink:0}
+.sr-empty{padding:16px;text-align:center;color:var(--muted);font-size:11px}
+.sr-count{padding:6px 12px;font-size:9px;color:var(--muted);border-bottom:1px solid var(--b1);text-transform:uppercase;letter-spacing:1px}
+
 /* Gestor selector */
 .sb-gestor-wrap{padding:0 18px 16px}
 .gestor-btns{display:flex;flex-direction:column;gap:5px}
@@ -240,6 +269,20 @@ html,body{height:100%;font-family:'Inter',sans-serif;background:var(--bg);color:
 
   <div class="sb-divider"></div>
 
+  <!-- ── PESQUISA GLOBAL ── -->
+  <div class="sb-search-wrap">
+    <div class="sb-search-box">
+      <svg class="sb-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+      </svg>
+      <input class="sb-search-input" id="globalSearch" type="text" placeholder="Buscar unidade, conta..." oninput="onSearchInput(this.value)" autocomplete="off"/>
+      <button class="sb-search-clear" id="searchClear" onclick="clearSearch()">✕</button>
+    </div>
+    <div class="sb-search-results" id="searchResults"></div>
+  </div>
+
+  <div class="sb-divider"></div>
+
   <div class="sb-section-label">Gestor</div>
   <div class="sb-gestor-wrap">
     <div class="gestor-btns" id="gestorBtns"></div>
@@ -400,6 +443,127 @@ function initDashboard() {
     selectGestor(gestores[0].id);
   }
 }
+
+// ─── PESQUISA GLOBAL ─────────────────────────────────────────────────────────
+
+let searchDebounce = null;
+
+function onSearchInput(val) {
+  const clear = document.getElementById('searchClear');
+  const res   = document.getElementById('searchResults');
+  clear.classList.toggle('visible', val.length > 0);
+  if (!val.trim()) { res.classList.remove('open'); return; }
+  clearTimeout(searchDebounce);
+  searchDebounce = setTimeout(() => runSearch(val.trim()), 120);
+}
+
+function clearSearch() {
+  document.getElementById('globalSearch').value = '';
+  document.getElementById('searchClear').classList.remove('visible');
+  document.getElementById('searchResults').classList.remove('open');
+}
+
+function runSearch(q) {
+  if (!dashData) return;
+  const res = document.getElementById('searchResults');
+  const ql  = q.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+  const matches = [];
+
+  (dashData.gestores || []).forEach(g => {
+    const photo = GESTOR_PHOTOS[g.id];
+    (g.accounts || []).forEach(acc => {
+      // Match conta
+      const accNorm = acc.name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+      const accHit  = accNorm.includes(ql);
+
+      (acc.campaigns || []).forEach(camp => {
+        const campNorm = camp.name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+        const hit = campNorm.includes(ql) || accHit;
+        if (hit) {
+          matches.push({ g, acc, camp, photo });
+        }
+      });
+
+      // Se conta bate mas sem campanhas, adiciona a conta
+      if (accHit && !(acc.campaigns || []).length) {
+        matches.push({ g, acc, camp: null, photo });
+      }
+    });
+  });
+
+  res.innerHTML = '';
+  if (!matches.length) {
+    res.innerHTML = '<div class="sr-empty">Nenhuma unidade encontrada para "<b>' + q + '</b>"</div>';
+    res.classList.add('open');
+    return;
+  }
+
+  // Limita a 40 resultados
+  const shown = matches.slice(0, 40);
+  const count = document.createElement('div');
+  count.className = 'sr-count';
+  count.textContent = shown.length + (matches.length > 40 ? '+' : '') + ' resultado' + (shown.length !== 1 ? 's' : '');
+  res.appendChild(count);
+
+  shown.forEach(({ g, acc, camp, photo }) => {
+    const item = document.createElement('div');
+    item.className = 'sr-item';
+
+    // Avatar
+    const av = document.createElement('div');
+    av.className = 'sr-avatar';
+    if (photo) { const img = document.createElement('img'); img.src = photo; av.appendChild(img); }
+    else { av.textContent = g.name.slice(0,2).toUpperCase(); }
+
+    // Body
+    const body = document.createElement('div');
+    body.className = 'sr-body';
+    const campDiv = document.createElement('div');
+    campDiv.className = 'sr-camp';
+    campDiv.textContent = camp ? camp.name : acc.name;
+    const metaDiv = document.createElement('div');
+    metaDiv.className = 'sr-meta';
+    metaDiv.textContent = g.name + ' · ' + acc.name;
+    body.appendChild(campDiv);
+    body.appendChild(metaDiv);
+
+    // Badge (spend se disponível)
+    const badge = document.createElement('div');
+    badge.className = 'sr-badge';
+    if (camp) {
+      const spend = parseFloat((camp.metrics || {}).spend || 0);
+      badge.textContent = spend > 0 ? 'R$' + spend.toFixed(0) : '–';
+    } else {
+      badge.textContent = acc.id.slice(-4);
+    }
+
+    item.appendChild(av);
+    item.appendChild(body);
+    item.appendChild(badge);
+
+    item.onclick = () => {
+      clearSearch();
+      selectGestor(g.id);
+      setTimeout(() => {
+        selectAccount(acc.id);
+        if (camp) {
+          setTimeout(() => setCampFilter(camp.id), 100);
+        }
+      }, 150);
+    };
+
+    res.appendChild(item);
+  });
+
+  res.classList.add('open');
+}
+
+// Fecha resultados ao clicar fora
+document.addEventListener('click', e => {
+  if (!e.target.closest('.sb-search-wrap')) {
+    document.getElementById('searchResults').classList.remove('open');
+  }
+});
 
 // ─── GESTOR PHOTOS ───────────────────────────────────────────────────────────
 const GESTOR_PHOTOS = {
