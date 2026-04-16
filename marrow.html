@@ -116,7 +116,7 @@
   /* ── KPI GRID ── */
   .kpi-grid {
     display: grid;
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-columns: repeat(7, 1fr);
     gap: 1px;
     background: var(--border);
     border: 1px solid var(--border);
@@ -420,7 +420,7 @@
   .legend-dot { display: inline-block; width: 8px; height: 8px; margin-right: 4px; }
 
   @media(max-width:1200px) {
-    .kpi-grid { grid-template-columns: repeat(3,1fr); }
+    .kpi-grid { grid-template-columns: repeat(4,1fr); }
     .mid-row  { grid-template-columns: 1fr; }
     .creatives-grid { grid-template-columns: repeat(3,1fr); }
   }
@@ -475,6 +475,11 @@
       <div class="kpi-label">Impressions</div>
       <div class="kpi-value">35.5K</div>
       <div class="kpi-sub">CPM $41.22</div>
+    </div>
+    <div class="kpi-card green-accent">
+      <div class="kpi-label">Landing Page CVR</div>
+      <div class="kpi-value green">2.78%</div>
+      <div class="kpi-sub">16 purchases / 575 LPVs</div>
     </div>
   </div>
 
