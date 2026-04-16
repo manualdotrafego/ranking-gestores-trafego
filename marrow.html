@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marrow Club — PHASE 3 Campaign Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Quantico:ital,wght@0,400;0,700;1,400&family=Josefin+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  :root {
+    --bg:         #fbfaf6;
+    --bg-card:    #ffffff;
+    --bg-dark:    #0f0e0c;
+    --accent:     #7d1416;
+    --accent-2:   #a81b1e;
+    --text:       #0d0c0a;
+    --muted:      #7a7770;
+    --border:     #e2dfd8;
+    --border-dark:#2a2825;
+    --green:      #1c5e3a;
+    --amber:      #8b5a00;
+    --r:          0;          /* border-radius = 0 throughout */
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Quantico', 'Josefin Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 14px;
+    line-height: 1.5;
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ── */
+  .site-header {
+    background: var(--bg-dark);
+    border-bottom: 2px solid var(--accent);
+    padding: 0 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .header-brand {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .brand-logo {
+    font-family: 'Quantico', sans-serif;
+    font-weight: 700;
+    font-size: 22px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: #fbfaf6;
+    text-decoration: none;
+  }
+  .brand-logo span { color: var(--accent); }
+  .header-divider { width: 1px; height: 28px; background: #333; }
+  .header-campaign {
+    color: #a09d98;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+  }
+  .header-meta {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  .period-tag {
+    background: rgba(125,20,22,0.15);
+    border: 1px solid var(--accent);
+    color: #e8a0a2;
+    padding: 4px 12px;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+  }
+  .updated-tag {
+    color: #665;
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  /* ── MAIN ── */
+  .main { padding: 36px 40px 60px; max-width: 1400px; margin: 0 auto; }
+
+  /* ── SECTION TITLES ── */
+  .section-title {
+    font-size: 10px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section-title::before {
+    content: '';
+    display: inline-block;
+    width: 3px;
+    height: 14px;
+    background: var(--accent);
+  }
+
+  /* ── KPI GRID ── */
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    margin-bottom: 32px;
+  }
+  .kpi-card {
+    background: var(--bg-card);
+    padding: 20px 20px 16px;
+    position: relative;
+    overflow: hidden;
+  }
+  .kpi-card.primary { background: var(--bg-dark); }
+  .kpi-card.primary .kpi-label { color: #665; }
+  .kpi-card.primary .kpi-value { color: #fbfaf6; }
+  .kpi-card.primary .kpi-sub { color: #444; }
+  .kpi-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0;
+    width: 100%; height: 2px;
+    background: transparent;
+    transition: background 0.2s;
+  }
+  .kpi-card.accent::after { background: var(--accent); }
+  .kpi-card.green-accent::after { background: var(--green); }
+  .kpi-label {
+    font-size: 9px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+  .kpi-value {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: -0.5px;
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .kpi-value.red { color: var(--accent); }
+  .kpi-value.green { color: var(--green); }
+  .kpi-sub {
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  /* ── MID ROW ── */
+  .mid-row {
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: 24px;
+    margin-bottom: 32px;
+  }
+
+  /* ── CHART CARD ── */
+  .chart-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    padding: 24px;
+  }
+  .chart-title {
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 20px;
+  }
+  .chart-wrap { position: relative; height: 240px; }
+
+  /* ── FUNNEL ── */
+  .funnel-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    padding: 24px;
+  }
+  .funnel-title {
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 20px;
+  }
+  .funnel-step {
+    margin-bottom: 12px;
+  }
+  .funnel-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 4px;
+  }
+  .funnel-stage {
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .funnel-val {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text);
+  }
+  .funnel-bar-track {
+    height: 3px;
+    background: var(--border);
+    position: relative;
+  }
+  .funnel-bar-fill {
+    height: 100%;
+    background: var(--accent);
+    transition: width 1s ease;
+  }
+  .funnel-bar-fill.dim { background: #c9c5bd; }
+  .funnel-cvr {
+    font-size: 9px;
+    color: var(--muted);
+    letter-spacing: 1px;
+    text-align: right;
+    margin-top: 2px;
+  }
+  .funnel-arrow {
+    text-align: center;
+    color: var(--border);
+    font-size: 10px;
+    margin: 3px 0;
+    letter-spacing: 1px;
+  }
+
+  /* ── ADSET TABLE ── */
+  .table-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    margin-bottom: 32px;
+    overflow: hidden;
+  }
+  .table-header-bar {
+    background: var(--bg-dark);
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .table-header-bar .tbl-title {
+    font-size: 9px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: #665;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  thead th {
+    padding: 10px 16px;
+    text-align: left;
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    border-bottom: 1px solid var(--border);
+    font-weight: 400;
+    background: #f8f6f2;
+  }
+  thead th.r { text-align: right; }
+  tbody td {
+    padding: 11px 16px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: middle;
+  }
+  tbody td.r { text-align: right; font-variant-numeric: tabular-nums; }
+  tbody tr:last-child td { border-bottom: none; }
+  tbody tr:hover { background: #faf8f4; }
+  .status-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+  .status-badge.active { background: rgba(28,94,58,0.1); color: var(--green); border: 1px solid rgba(28,94,58,0.3); }
+  .status-badge.paused { background: rgba(122,119,112,0.1); color: var(--muted); border: 1px solid var(--border); }
+  .roas-pill {
+    display: inline-block;
+    padding: 2px 8px;
+    font-size: 11px;
+    font-weight: 700;
+    background: var(--bg-dark);
+    color: #fbfaf6;
+  }
+  .roas-pill.good { background: var(--green); }
+  .roas-pill.ok   { background: var(--accent); }
+  .roas-pill.low  { background: #5a4a40; }
+  .bold { font-weight: 700; }
+  .muted-text { color: var(--muted); }
+
+  /* ── CREATIVES GRID ── */
+  .creatives-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    margin-bottom: 32px;
+  }
+  .creative-card {
+    background: var(--bg-card);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+  .creative-card.winner { outline: 2px solid var(--accent); outline-offset: -2px; }
+  .creative-thumb {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    display: block;
+    background: #f0ede7;
+  }
+  .creative-thumb-placeholder {
+    width: 100%;
+    aspect-ratio: 1;
+    background: #f0ede7;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--border);
+    font-size: 32px;
+  }
+  .creative-body { padding: 12px; flex: 1; }
+  .creative-name {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .creative-adset {
+    font-size: 9px;
+    color: var(--muted);
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .creative-metrics { display: flex; flex-direction: column; gap: 5px; }
+  .cm-row { display: flex; justify-content: space-between; align-items: baseline; }
+  .cm-label { font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); }
+  .cm-val { font-size: 13px; font-weight: 700; }
+  .cm-val.accent { color: var(--accent); }
+  .cm-val.green  { color: var(--green); }
+  .creative-footer {
+    padding: 8px 12px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .winner-tag {
+    position: absolute;
+    top: 0; left: 0;
+    background: var(--accent);
+    color: #fff;
+    font-size: 8px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    font-weight: 700;
+  }
+  .preview-link {
+    font-size: 9px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--accent);
+    text-decoration: none;
+    border-bottom: 1px solid currentColor;
+  }
+  .preview-link:hover { color: var(--accent-2); }
+
+  /* ── BOTTOM BAR ── */
+  .bottom-bar {
+    background: var(--bg-dark);
+    border-top: 1px solid var(--border-dark);
+    padding: 16px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .bottom-bar .bb-brand { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: #444; }
+  .bottom-bar .bb-note  { font-size: 10px; color: #444; letter-spacing: 1px; }
+
+  /* ── LEGEND DOTS ── */
+  .legend-dot { display: inline-block; width: 8px; height: 8px; margin-right: 4px; }
+
+  @media(max-width:1200px) {
+    .kpi-grid { grid-template-columns: repeat(3,1fr); }
+    .mid-row  { grid-template-columns: 1fr; }
+    .creatives-grid { grid-template-columns: repeat(3,1fr); }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="site-header">
+  <div class="header-brand">
+    <a href="https://marrow.club" class="brand-logo" target="_blank">M<span>A</span>RROW</a>
+    <div class="header-divider"></div>
+    <span class="header-campaign">Phase 3 — CBO Purchase Campaign</span>
+  </div>
+  <div class="header-meta">
+    <span class="period-tag">Mar 31 – Apr 16, 2026 &nbsp;·&nbsp; 17 Days</span>
+    <span class="updated-tag">Updated Apr 16, 2026</span>
+  </div>
+</header>
+
+<main class="main">
+
+  <!-- PRIMARY KPIs -->
+  <div class="section-title">Primary KPIs</div>
+  <div class="kpi-grid">
+    <div class="kpi-card primary accent">
+      <div class="kpi-label">Total Spend</div>
+      <div class="kpi-value red">$1,464</div>
+      <div class="kpi-sub">97 ¢ invested</div>
+    </div>
+    <div class="kpi-card accent">
+      <div class="kpi-label">ROAS</div>
+      <div class="kpi-value">1.26×</div>
+      <div class="kpi-sub">Rev ≈ $1,845</div>
+    </div>
+    <div class="kpi-card green-accent">
+      <div class="kpi-label">Purchases</div>
+      <div class="kpi-value green">16</div>
+      <div class="kpi-sub">Triple-C Sales</div>
+    </div>
+    <div class="kpi-card accent">
+      <div class="kpi-label">Cost Per Purchase</div>
+      <div class="kpi-value">$91.56</div>
+      <div class="kpi-sub">CPP (avg)</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Click-Through Rate</div>
+      <div class="kpi-value">3.66%</div>
+      <div class="kpi-sub">1,302 clicks</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Impressions</div>
+      <div class="kpi-value">35.5K</div>
+      <div class="kpi-sub">CPM $41.22</div>
+    </div>
+  </div>
+
+  <!-- DAILY CHART + FUNNEL -->
+  <div class="mid-row">
+    <div class="chart-card">
+      <div class="chart-title">
+        Daily Performance — Spend &amp; Purchases
+        <span style="margin-left:16px;font-size:9px;color:var(--muted)">
+          <span class="legend-dot" style="background:var(--accent)"></span>Spend (USD)
+          &nbsp;
+          <span class="legend-dot" style="background:var(--green)"></span>Purchases
+        </span>
+      </div>
+      <div class="chart-wrap">
+        <canvas id="chartDaily"></canvas>
+      </div>
+    </div>
+
+    <div class="funnel-card">
+      <div class="funnel-title">Conversion Funnel</div>
+
+      <div class="funnel-step">
+        <div class="funnel-row">
+          <span class="funnel-stage">Impressions</span>
+          <span class="funnel-val">35,540</span>
+        </div>
+        <div class="funnel-bar-track"><div class="funnel-bar-fill" style="width:100%"></div></div>
+      </div>
+      <div class="funnel-arrow">↓</div>
+
+      <div class="funnel-step">
+        <div class="funnel-row">
+          <span class="funnel-stage">Link Clicks</span>
+          <span class="funnel-val">1,302</span>
+        </div>
+        <div class="funnel-bar-track"><div class="funnel-bar-fill" style="width:100%"></div></div>
+        <div class="funnel-cvr">CTR 3.66%</div>
+      </div>
+      <div class="funnel-arrow">↓</div>
+
+      <div class="funnel-step">
+        <div class="funnel-row">
+          <span class="funnel-stage">Landing Page Views</span>
+          <span class="funnel-val">575</span>
+        </div>
+        <div class="funnel-bar-track"><div class="funnel-bar-fill" style="width:44.2%"></div></div>
+        <div class="funnel-cvr">Click → LPV 44.2%</div>
+      </div>
+      <div class="funnel-arrow">↓</div>
+
+      <div class="funnel-step">
+        <div class="funnel-row">
+          <span class="funnel-stage">Add to Cart</span>
+          <span class="funnel-val">38</span>
+        </div>
+        <div class="funnel-bar-track"><div class="funnel-bar-fill" style="width:6.6%"></div></div>
+        <div class="funnel-cvr">LPV → ATC 6.61%</div>
+      </div>
+      <div class="funnel-arrow">↓</div>
+
+      <div class="funnel-step">
+        <div class="funnel-row">
+          <span class="funnel-stage">Checkout Initiated</span>
+          <span class="funnel-val">32</span>
+        </div>
+        <div class="funnel-bar-track"><div class="funnel-bar-fill" style="width:5.6%"></div></div>
+        <div class="funnel-cvr">ATC → Checkout 84.2%</div>
+      </div>
+      <div class="funnel-arrow">↓</div>
+
+      <div class="funnel-step">
+        <div class="funnel-row">
+          <span class="funnel-stage">Purchases</span>
+          <span class="funnel-val" style="color:var(--green)">16</span>
+        </div>
+        <div class="funnel-bar-track"><div class="funnel-bar-fill" style="width:2.8%;background:var(--green)"></div></div>
+        <div class="funnel-cvr">LPV → Purchase 2.78%</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADSET BREAKDOWN -->
+  <div class="section-title">Ad Set Performance</div>
+  <div class="table-card" style="margin-bottom:32px">
+    <div class="table-header-bar">
+      <span class="tbl-title">4 Ad Sets — Last 30 Days</span>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>Ad Set</th>
+          <th>Status</th>
+          <th class="r">Spend</th>
+          <th class="r">Impr.</th>
+          <th class="r">CTR</th>
+          <th class="r">CPM</th>
+          <th class="r">LPV</th>
+          <th class="r">ATC</th>
+          <th class="r">Purchases</th>
+          <th class="r">CPP</th>
+          <th class="r">ROAS</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="bold">AD SET 1.2 — New Content</td>
+          <td><span class="status-badge active">Active</span></td>
+          <td class="r">$859.50</td>
+          <td class="r">22,096</td>
+          <td class="r">3.81%</td>
+          <td class="r">$38.90</td>
+          <td class="r">381</td>
+          <td class="r">28</td>
+          <td class="r bold">12</td>
+          <td class="r">$71.63</td>
+          <td class="r"><span class="roas-pill good">1.55×</span></td>
+        </tr>
+        <tr>
+          <td class="bold">AD SET 1.4 — New Content WPP Bret</td>
+          <td><span class="status-badge active">Active</span></td>
+          <td class="r">$350.65</td>
+          <td class="r">6,771</td>
+          <td class="r">3.82%</td>
+          <td class="r">$51.78</td>
+          <td class="r">77</td>
+          <td class="r">4</td>
+          <td class="r bold">3</td>
+          <td class="r">$116.88</td>
+          <td class="r"><span class="roas-pill ok">1.28×</span></td>
+        </tr>
+        <tr>
+          <td class="bold">AD SET 1.1 — All Open</td>
+          <td><span class="status-badge active">Active</span></td>
+          <td class="r">$192.21</td>
+          <td class="r">4,101</td>
+          <td class="r">3.44%</td>
+          <td class="r">$46.87</td>
+          <td class="r">75</td>
+          <td class="r">5</td>
+          <td class="r bold">1</td>
+          <td class="r">$192.21</td>
+          <td class="r"><span class="roas-pill low">0.55×</span></td>
+        </tr>
+        <tr>
+          <td class="bold muted-text">AD SET 1.3 — New Content</td>
+          <td><span class="status-badge paused">Paused</span></td>
+          <td class="r muted-text">$62.61</td>
+          <td class="r muted-text">2,572</td>
+          <td class="r muted-text">2.41%</td>
+          <td class="r muted-text">$24.34</td>
+          <td class="r muted-text">42</td>
+          <td class="r muted-text">1</td>
+          <td class="r muted-text">0</td>
+          <td class="r muted-text">—</td>
+          <td class="r"><span class="roas-pill low">0.00×</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- SECONDARY KPIS ROW -->
+  <div class="section-title">Secondary KPIs</div>
+  <div class="kpi-grid" style="margin-bottom:32px;grid-template-columns:repeat(5,1fr)">
+    <div class="kpi-card">
+      <div class="kpi-label">Reach</div>
+      <div class="kpi-value">17,464</div>
+      <div class="kpi-sub">Unique accounts</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Frequency</div>
+      <div class="kpi-value">2.04×</div>
+      <div class="kpi-sub">Avg impressions/person</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">ThruPlay Views</div>
+      <div class="kpi-value">190</div>
+      <div class="kpi-sub">15-sec video completions</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">View Content</div>
+      <div class="kpi-value">1,337</div>
+      <div class="kpi-sub">Product page views</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Payment Info Added</div>
+      <div class="kpi-value">4</div>
+      <div class="kpi-sub">Step before purchase</div>
+    </div>
+  </div>
+
+  <!-- CREATIVES -->
+  <div class="section-title">Creative Performance</div>
+  <div class="creatives-grid">
+
+    <!-- Ad 9 — WINNER -->
+    <div class="creative-card winner">
+      <div class="winner-tag">★ Top Performer</div>
+      <img class="creative-thumb" src="https://scontent-poa1-1.xx.fbcdn.net/v/t45.1600-4/661407167_26542419978756039_7225256769241650830_n.jpg?_nc_cat=110&ccb=1-7&_nc_ohc=1SodMxh1uCsQ7kNvwHkd-tc&_nc_oc=AdrT7wrGQMLGGwiXUCbpHoAc6mihzi5V-Bf0-HgTVaO26_dZ_PBcFcGtSIQRFLhlNdTpbQ-zpzujyohzNrkSoJX1&_nc_zt=1&_nc_ht=scontent-poa1-1.xx&edm=AOgd6ZUEAAAA&_nc_gid=1BduGRdko03tqSKj037TlQ&_nc_tpa=Q5bMBQEio3K9ArHrMhJnEcPEFuIUCThdeIj5NrE-NjkK12iesR7URCsG1up89SO32LpOY6RisopYMoPKow&stp=c0.5000x0.5000f_dst-emg0_p64x64_q75_tt6&ur=52f3c4&_nc_sid=58080a&oh=00_Af02tJGxti8lRi_p55VJvQs8vNYDSJE9yXVB15USxr5m2g&oe=69E6CCFA" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" alt="Ad 9">
+      <div class="creative-thumb-placeholder" style="display:none">🖼</div>
+      <div class="creative-body">
+        <div class="creative-name">Creative 9</div>
+        <div class="creative-adset">AD SET 1.2 — New Content</div>
+        <div class="creative-metrics">
+          <div class="cm-row"><span class="cm-label">Spend</span><span class="cm-val accent">$676.37</span></div>
+          <div class="cm-row"><span class="cm-label">Purchases</span><span class="cm-val green">10</span></div>
+          <div class="cm-row"><span class="cm-label">CPP</span><span class="cm-val">$67.64</span></div>
+          <div class="cm-row"><span class="cm-label">ROAS</span><span class="cm-val green">1.46×</span></div>
+          <div class="cm-row"><span class="cm-label">CTR</span><span class="cm-val">3.98%</span></div>
+          <div class="cm-row"><span class="cm-label">CPM</span><span class="cm-val">$39.70</span></div>
+          <div class="cm-row"><span class="cm-label">ATC</span><span class="cm-val">23</span></div>
+        </div>
+      </div>
+      <div class="creative-footer">
+        <span class="status-badge active">Active</span>
+        <a href="https://business.facebook.com/ads/api/preview_iframe.php?d=AQK9KCID0-ipnerPr8EsEX1ePkn79l6XsCsLebiwd-tf-KvElaC0CvYVsz0VDf862qLSJH_LhwVedLAWYrG0j28iuC03lrLhoQMezudri21dY0X-zOeLImq8KBqcu5vTN-1JW3mpfsY5x8n3OmWl1cERASf4zApG1aI6r-GpMfstgWGdNwvIKQX4xjKgAYskqJ1NRllOTVSl7RvTxHw68ijdNpYvden6UYJfsygaTVDatN7YxHkon9ck43KE4P2MN9aoKsKFyXZuuG-Y9cb_zMLsDGp49AtECAbwYB82ctXyj2_3athZX2Z0AfVSs8N_HRTVIuQYkGXnamzWwpiaJ4MPUH4F7ZPm83rv8X7dEdj450Rn37HJnHHUo7bRMU9k8gkgJ3BHl_w5KYHMTU4Rp-T1c8iPTlp09GeaVGMQVvsQNVochSaQLlLC0CA2lLlEbEA&t=AQKA2BMDzlfLLlvE5Pg" target="_blank" class="preview-link">Preview →</a>
+      </div>
+    </div>
+
+    <!-- LAST IMG -->
+    <div class="creative-card">
+      <img class="creative-thumb" src="https://scontent-poa1-1.xx.fbcdn.net/v/t45.1600-4/668958625_26628888683442501_7584482265855035631_n.jpg?_nc_cat=105&ccb=1-7&_nc_ohc=24ZYqVVhot0Q7kNvwGAGIas&_nc_oc=AdoeKPTz4crPgLbZmF_Pg8kVmRYnn3mYtjoyqAKifn2hGATEJhowLVVrS0DyTqWvCLNHUJQ1e9bGem_alc9elXwB&_nc_zt=1&_nc_ht=scontent-poa1-1.xx&edm=AOgd6ZUEAAAA&_nc_gid=1BduGRdko03tqSKj037TlQ&_nc_tpa=Q5bMBQH_0wwFhjj-TAiaDwtWeSkg3pFhaJ7kdxa43Pim8hauoNUxiSZgNntkpiLPu4S937mwwLG_aRURzA&stp=c0.5000x0.5000f_dst-emg0_p64x64_q75_tt6&ur=52f3c4&_nc_sid=58080a&oh=00_Af3A4ieeWAnLBRsXjO5IkRwALxuA0Aw9pLflXO9tf3L5wg&oe=69E6DAF5" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" alt="LAST IMG">
+      <div class="creative-thumb-placeholder" style="display:none">🖼</div>
+      <div class="creative-body">
+        <div class="creative-name">Last Image</div>
+        <div class="creative-adset">AD SET 1.4 — WPP Bret</div>
+        <div class="creative-metrics">
+          <div class="cm-row"><span class="cm-label">Spend</span><span class="cm-val accent">$295.69</span></div>
+          <div class="cm-row"><span class="cm-label">Purchases</span><span class="cm-val green">3</span></div>
+          <div class="cm-row"><span class="cm-label">CPP</span><span class="cm-val">$98.56</span></div>
+          <div class="cm-row"><span class="cm-label">ROAS</span><span class="cm-val">1.40×</span></div>
+          <div class="cm-row"><span class="cm-label">CTR</span><span class="cm-val">4.01%</span></div>
+          <div class="cm-row"><span class="cm-label">CPM</span><span class="cm-val">$52.04</span></div>
+          <div class="cm-row"><span class="cm-label">ATC</span><span class="cm-val">3</span></div>
+        </div>
+      </div>
+      <div class="creative-footer">
+        <span class="status-badge active">Active</span>
+        <a href="https://business.facebook.com/ads/api/preview_iframe.php?d=AQIqM91_y37fGmeAK0oCMMycQGkcylkQZJZwzgge7lqeTX0FXzgHyq-wFVD-YS_eFYr698Svz4HVOOEezCmNtBbsHd7wZDLNS8J8qbDd9_jvsRKrzt2Y9pZkmZwrSyBsfgzkMFueQrZjUvaMg7P_9yAsQLC5mm1zT4qJrGzdt6mVhv-dboWom47ADKnErOEqWz8DOYs0MkmR8-wUIoBmF-qwNsRzBh46Ugugb2MvK1vanfOPbxgTJoWNCP62SEcQDTQyJCf9gZ0scWBdsMXHAHxv5SVhQdXngHmVOrgT8QFtkvPHAjmDuCYZ_s1vLpHBE1JioyqOlRl6HPVrxf5BZmFHMkvKeeUf7V1JYrmLfBgONXAOMgulHgppBt0BOnsYyNfI7AHtoHwgKYUDBsC0tco6fzP8VjGEOoNK8apjymv4u5ke6hIy8LWCFMPmgGTrmiw&t=AQKSAZoIN4KJULU17Hg" target="_blank" class="preview-link">Preview →</a>
+      </div>
+    </div>
+
+    <!-- Ad 10 — Highest ROAS -->
+    <div class="creative-card">
+      <img class="creative-thumb" src="https://scontent-poa1-1.xx.fbcdn.net/v/t45.1600-4/661716503_26542420488755988_7848084731573735391_n.jpg?_nc_cat=107&ccb=1-7&_nc_ohc=PdWlf3HNCcoQ7kNvwFf05Gz&_nc_oc=AdoEXz4b2k61Ef739RAyKYlq2mcAPjEV2uAf7nOtebfFjO458AZBqyADCZjzW1bqn_hlBZczBTRZl5aedNhLSXiZ&_nc_zt=1&_nc_ht=scontent-poa1-1.xx&edm=AOgd6ZUEAAAA&_nc_gid=1BduGRdko03tqSKj037TlQ&_nc_tpa=Q5bMBQFO3W66q0QZ6NDwGVox5kvKDXTvTz5BF_OfqqMziExcMgaWNiNo3onmRp-P_9HtyDUCOijeqhCjhg&stp=c0.5000x0.5000f_dst-emg0_p64x64_q75_tt6&ur=52f3c4&_nc_sid=58080a&oh=00_Af0RB94_PFvMKlVprATNRXn5gpOQzh0Q17Z5CE6ND3YgOw&oe=69E6C595" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" alt="Ad 10">
+      <div class="creative-thumb-placeholder" style="display:none">🖼</div>
+      <div class="creative-body">
+        <div class="creative-name">Creative 10</div>
+        <div class="creative-adset">AD SET 1.2 — New Content</div>
+        <div class="creative-metrics">
+          <div class="cm-row"><span class="cm-label">Spend</span><span class="cm-val accent">$182.64</span></div>
+          <div class="cm-row"><span class="cm-label">Purchases</span><span class="cm-val green">2</span></div>
+          <div class="cm-row"><span class="cm-label">CPP</span><span class="cm-val">$91.32</span></div>
+          <div class="cm-row"><span class="cm-label">ROAS</span><span class="cm-val green">1.88× ★</span></div>
+          <div class="cm-row"><span class="cm-label">CTR</span><span class="cm-val">3.21%</span></div>
+          <div class="cm-row"><span class="cm-label">CPM</span><span class="cm-val">$36.25</span></div>
+          <div class="cm-row"><span class="cm-label">ATC</span><span class="cm-val">5</span></div>
+        </div>
+      </div>
+      <div class="creative-footer">
+        <span class="status-badge paused">Paused</span>
+        <a href="https://business.facebook.com/ads/api/preview_iframe.php?d=AQL5g2Z7C9my9wy16wKx3hN3UCVuHsSGnEi_Dq7TpIjWsacN9IPUHHCFTSFk4kM6B7ort_6I3UGx5s_UWVFc8MEICAKfqobM7iOWW_VcB6-vrtEFxq6AzjLJu7kNEqfuAV_Gv42QXepVH86q4tRhGb1-1T-nQTcADV1fCWzNide169ZN5VB-7j7ZyRZqCmGasgbGH_UsNb5sto0WpGivSl48lQXHFqx_0XLv9fr81lDHiBnvXnd6QUNfwgoXPoPtRlCrlA-xyM332FnvG93SP8-knwUtbFzEVF7oY4hwjhUITWCFCJMxvRnm8z9FIiG8Fegzzz1V4L9ieEuN-th7wRn9BaxvDXaQIqXLXWPfpNXbRiEj6kmdNN161Hz_BYzCkSIgGh7p_AYVUMZ9b3LLlMv5R7LnMAuF0bQovfc5Tfqz37FR9F2trIwfO_gUcMBHcyM&t=AQJ-IoX9oirwOMdVc7s" target="_blank" class="preview-link">Preview →</a>
+      </div>
+    </div>
+
+    <!-- Ad 16 -->
+    <div class="creative-card">
+      <img class="creative-thumb" src="https://scontent-poa1-1.xx.fbcdn.net/v/t15.5256-10/656719176_1435195885011579_8482922437010840128_n.jpg?_nc_cat=110&ccb=1-7&_nc_ohc=SHIgSb0ec5EQ7kNvwGJF8Wg&_nc_oc=AdrV32FaK-QotzHjdFCtm99fzT9XhYAds8IyfbWMiOpZMPKc1zIYkzQi2v2MNxFWUBPB3mXWjW2GohafM3YDuEX-&_nc_zt=23&_nc_ht=scontent-poa1-1.xx&edm=AOgd6ZUEAAAA&_nc_gid=1BduGRdko03tqSKj037TlQ&_nc_tpa=Q5bMBQFnYdXroexC9Bsq2aQzvhmRZ5n5u6osywIKFPl7XfdzRtSJ6Ymzrck0J_c_FdCs9wvge0iDENYgDw&stp=c0.5000x0.5000f_dst-emg0_p64x64_q75_tt6&ur=5fad0e&_nc_sid=58080a&oh=00_Af3psjfG-ZCtE7ZvpHxzlKRu0ZHX8GB-xdJsQJFtZI2Btw&oe=69E6EB27" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" alt="Ad 16">
+      <div class="creative-thumb-placeholder" style="display:none">🖼</div>
+      <div class="creative-body">
+        <div class="creative-name">Creative 16</div>
+        <div class="creative-adset">AD SET 1.1 — All Open</div>
+        <div class="creative-metrics">
+          <div class="cm-row"><span class="cm-label">Spend</span><span class="cm-val accent">$106.11</span></div>
+          <div class="cm-row"><span class="cm-label">Purchases</span><span class="cm-val">1</span></div>
+          <div class="cm-row"><span class="cm-label">CPP</span><span class="cm-val">$106.11</span></div>
+          <div class="cm-row"><span class="cm-label">ROAS</span><span class="cm-val">0.95×</span></div>
+          <div class="cm-row"><span class="cm-label">CTR</span><span class="cm-val">3.66%</span></div>
+          <div class="cm-row"><span class="cm-label">CPM</span><span class="cm-val">$53.19</span></div>
+          <div class="cm-row"><span class="cm-label">ATC</span><span class="cm-val">5</span></div>
+        </div>
+      </div>
+      <div class="creative-footer">
+        <span class="status-badge paused">Paused</span>
+        <a href="https://business.facebook.com/ads/api/preview_iframe.php?d=AQKdFhOaqp3fV3XxXWoNtnMCDk0I0ywFnplWXIj4ZDGW1RsT43VSASBfbRRGf0L14d0sNXZwXLuyiBG4BlKG7F_EXwLuw2YQgj2QByu4UW_kWDBOx64Z2_Jhks9hlWPB74RU3Ih6zGeOirEYBJc9kgMm8Z3VaRdDzadWMaU0P2DV2fup4DdxvUmKpD5hMk6d0apBx9l3UrWHhdJ0gVu-o1Fazs-I7jsTwthsULaVx-QHAxYSa8xmgpByA0LDiiNsqilX5YyVFZ3ehJm4oaYQGv9rKTVpAnvDm85c1Vi5caQidxN_zbwKnBepbuU6v4_39twy83b5LuZLoZBu1nMpW8bb98QRdJO3zG4sfVToGWTOIkaxeymfuBIYugTS1P9mIXJHhGSl-pJUBOI2qHU992JK1AD2S53BUO1nkYz98xGWrTHqGp5hy_wmQpQpLvH-rmU&t=AQKkItCQKHCdyyAm_VE" target="_blank" class="preview-link">Preview →</a>
+      </div>
+    </div>
+
+    <!-- LAST IMG 2 -->
+    <div class="creative-card">
+      <img class="creative-thumb" src="https://scontent-poa1-1.xx.fbcdn.net/v/t45.1600-4/669105236_26628881803443189_8421810658355183646_n.jpg?_nc_cat=102&ccb=1-7&_nc_ohc=wu0OWR6EyM0Q7kNvwEqhHsA&_nc_oc=AdpzPozNCCcHm3_Xu9KdYZ2oQCjK__VESeVTmM90RVQUNTiXr2pSKDRTinBXbdCsAM8-lhBEKNTT4dxGntjJKiVU&_nc_zt=1&_nc_ht=scontent-poa1-1.xx&edm=AOgd6ZUEAAAA&_nc_gid=1BduGRdko03tqSKj037TlQ&_nc_tpa=Q5bMBQHuhmv5AAxo5aA3oPPj_0kNeAOHw0VF8RlYbguC1vH-Ah6FlWwI15iuvAWl0Hz56Jhz7W7Rlp1BCQ&stp=c0.5000x0.5000f_dst-emg0_p64x64_q75_tt6&ur=52f3c4&_nc_sid=58080a&oh=00_Af2a-skXcuKHDypQ78UrY4-p7LcCEmyCiUOuu9O0gX-q0w&oe=69E6DACE" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" alt="LAST IMG 2">
+      <div class="creative-thumb-placeholder" style="display:none">🖼</div>
+      <div class="creative-body">
+        <div class="creative-name">Last Image 2</div>
+        <div class="creative-adset">AD SET 1.4 — WPP Bret</div>
+        <div class="creative-metrics">
+          <div class="cm-row"><span class="cm-label">Spend</span><span class="cm-val accent">$54.96</span></div>
+          <div class="cm-row"><span class="cm-label">Purchases</span><span class="cm-val">0</span></div>
+          <div class="cm-row"><span class="cm-label">CPP</span><span class="cm-val muted-text">—</span></div>
+          <div class="cm-row"><span class="cm-label">ROAS</span><span class="cm-val muted-text">0.00×</span></div>
+          <div class="cm-row"><span class="cm-label">CTR</span><span class="cm-val">2.75%</span></div>
+          <div class="cm-row"><span class="cm-label">CPM</span><span class="cm-val">$50.47</span></div>
+          <div class="cm-row"><span class="cm-label">ATC</span><span class="cm-val">1</span></div>
+        </div>
+      </div>
+      <div class="creative-footer">
+        <span class="status-badge paused">Paused</span>
+        <a href="https://business.facebook.com/ads/api/preview_iframe.php?d=AQKCt578u0h1wvKpo15vySEQJXnuEpNkInunz8IHj7xoOsTruePaspVt-wvOFmG9OrA17eXZrUjxYtPhEaHRnWLbspjMK5LoFT61naQdGY_k_i0Hp8iqdNBdtqmnCTARAEtjLPCOOviMegAuABTGm7iP4GrC5ymsMAKqihGBPxHLXBq0EBqIjKf7khnMu5mht4Q2ORW0shPpHk0LCfgxXeE6yMtqDjNmjnNHTPZ77kGoAFHNI6XHbTGLaVf2K8o7CzmFT2oo_0QhGwT4vTaPTBBjfJB30WMt6ZzOxnY9jO6RGdE2u13dggOMrO9ZBqZBGeqKPWFG5BYIYOQwF3B9Kdx_v_T_NXeEW5gZVdWLepWSAu0-C0a9oBPyrqTF-HxHmE7CbA9WVypjLOPJYpS4nv2_JuHsnJrqinxnNV8WVcd_3BFT0RcOaageV8SiZLgGTt4&t=AQLWCQq6VRbHfdmdLfs" target="_blank" class="preview-link">Preview →</a>
+      </div>
+    </div>
+
+    <!-- Ad 1 -->
+    <div class="creative-card">
+      <img class="creative-thumb" src="https://scontent-poa1-1.xx.fbcdn.net/v/t45.1600-4/663971520_26597408536590516_2091398485175837543_n.jpg?_nc_cat=107&ccb=1-7&_nc_ohc=GGfKHn2J8PAQ7kNvwEQiN4y&_nc_oc=AdqOfFkgYVEzhkj_dQKKeARHJ00nu0g8h0it4uDLJStAvj1bYjRefP3kXEZac8OR3rzf4wI8n94omptsZXX2kmzj&_nc_zt=1&_nc_ht=scontent-poa1-1.xx&edm=AOgd6ZUEAAAA&_nc_gid=1BduGRdko03tqSKj037TlQ&_nc_tpa=Q5bMBQEBx3x7lFP55YMJnobkdrC1hi07zS7Bi7JvLzNFMWlH5HQIjgZTdST5W6VMHLApVLqfNG3XRT3ZKQ&stp=c0.5000x0.5000f_dst-emg0_p64x64_q75_tt6&ur=52f3c4&_nc_sid=58080a&oh=00_Af1nUpz0T_RL78oynShDGoCQcbePXsmXzS79odF78HlYjg&oe=69E6C992" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" alt="Ad 1">
+      <div class="creative-thumb-placeholder" style="display:none">🖼</div>
+      <div class="creative-body">
+        <div class="creative-name">Creative 1</div>
+        <div class="creative-adset">AD SET 1.3 — New Content (Paused)</div>
+        <div class="creative-metrics">
+          <div class="cm-row"><span class="cm-label">Spend</span><span class="cm-val muted-text">$54.31</span></div>
+          <div class="cm-row"><span class="cm-label">Purchases</span><span class="cm-val">0</span></div>
+          <div class="cm-row"><span class="cm-label">CPP</span><span class="cm-val muted-text">—</span></div>
+          <div class="cm-row"><span class="cm-label">ROAS</span><span class="cm-val muted-text">0.00×</span></div>
+          <div class="cm-row"><span class="cm-label">CTR</span><span class="cm-val">2.37%</span></div>
+          <div class="cm-row"><span class="cm-label">CPM</span><span class="cm-val">$23.38</span></div>
+          <div class="cm-row"><span class="cm-label">LPV</span><span class="cm-val">39</span></div>
+        </div>
+      </div>
+      <div class="creative-footer">
+        <span class="status-badge paused">Paused</span>
+        <a href="https://business.facebook.com/ads/api/preview_iframe.php?d=AQKhVQUlDWMBrdu2JVoBrW0TV2tXxmcN6P0BSTYyXmeoxIi0lXZo7gOBwe-wAOaoFu2kNoKPWa6ULguY4U_o3ksqT7mChdd7rQh9s7Tb76fhduux7Chg7TOhmYrWeSn991rBX--o-Ibvd7JvokZuyFO1GTPMGxBwjBdE1wAsLgpOdzFxzAsW2DOZEuFMGjV6EMCSDmZgfQ1b19t7b1ar9brYtC2MKFonl2EULqO0692MxvUZp5DkTgsOY7kgSBvRCX-8Pk0PMx4H7SQ_Zz0aDYCrtn-i_GR8JiXdxAChHxPORVaVdSLaoSol0QPcvilCh1GXQEjwb7vgjngtG8sATXQknv1qKOrhLQGlOUHsX9RWYyvSBYIDDfDaq1Wy2eVeI426M-n79c2Qbuuu2dd5YbTMm_M4bSyIVs1Fmd-bvHmV5ePsvHEdVS8fBz9zboLyPVQ&t=AQL_06KjUPSHJzfH86E" target="_blank" class="preview-link">Preview →</a>
+      </div>
+    </div>
+
+    <!-- Remodel 01 -->
+    <div class="creative-card">
+      <img class="creative-thumb" src="https://scontent-poa1-1.xx.fbcdn.net/v/t45.1600-4/658755892_26518549781143059_2334409100390063454_n.jpg?_nc_cat=105&ccb=1-7&_nc_ohc=BoOUlyUquYUQ7kNvwG0T1As&_nc_oc=AdrO0qgT9dqB-TzqoBI8uBH7l75Qqp6g-LBdavfHbMv-02ngdclIqE7v29e09zRDW3p_rcunD2s6KG92JlqHElvI&_nc_zt=1&_nc_ht=scontent-poa1-1.xx&edm=AOgd6ZUEAAAA&_nc_gid=1BduGRdko03tqSKj037TlQ&_nc_tpa=Q5bMBQHOuGRuMTApy12bMf7Ybl3y1h4mLoRtv9tRn-HAMy2H2zw3JprxErj122SEA8NEwTvftHQyjcuKAw&stp=c0.5000x0.5000f_dst-emg0_p64x64_q75_tt6&ur=52f3c4&_nc_sid=58080a&oh=00_Af0_I1msjatYnQhxE9XZPCl-yCWonGbXnEkYgWkIQpv3YQ&oe=69E6D5F7" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" alt="Remodel 01">
+      <div class="creative-thumb-placeholder" style="display:none">🖼</div>
+      <div class="creative-body">
+        <div class="creative-name">Remodel 01</div>
+        <div class="creative-adset">AD SET 1.1 — All Open</div>
+        <div class="creative-metrics">
+          <div class="cm-row"><span class="cm-label">Spend</span><span class="cm-val muted-text">$49.22</span></div>
+          <div class="cm-row"><span class="cm-label">Purchases</span><span class="cm-val">0</span></div>
+          <div class="cm-row"><span class="cm-label">CPP</span><span class="cm-val muted-text">—</span></div>
+          <div class="cm-row"><span class="cm-label">ROAS</span><span class="cm-val muted-text">0.00×</span></div>
+          <div class="cm-row"><span class="cm-label">CTR</span><span class="cm-val">3.47%</span></div>
+          <div class="cm-row"><span class="cm-label">CPM</span><span class="cm-val">$37.15</span></div>
+          <div class="cm-row"><span class="cm-label">LPV</span><span class="cm-val">33</span></div>
+        </div>
+      </div>
+      <div class="creative-footer">
+        <span class="status-badge paused">Paused</span>
+        <a href="https://business.facebook.com/ads/api/preview_iframe.php?d=AQJqWPNl7FEIZnMz-PEegSIUcAzYXMRjbgwi30j9irSI7DHVQzS_khWLxmPdrjj56XR2aYOZ7B5BMv8OwEPKtGxTS2HXvtcy71wBV4KfJvtOuoa-mxlzzRRvUJdPFqlMgE2YNI4yDzm9vldVzHb9YKJyMs9N1WAWZSmzW8J9bOkoFFyAFEKl1wFL4PuItkNb326uu6nuJqkI_rhf_gq13a4y_tT_S0cjIuJXGO-shxY4MvGcIDayMmqmfE6kVwoiOTaOzShrbtsR9Suy1tN6AXz4Wz9TFPm78d30NXWwG1EENFbuGUGzlJlnXLhYilXHQLIPEIqXVizxPS2g8kP6mzMUOf1kM-6IleIcbGX23gnPVRis-DHlv1K5TiAKiX4mNFTepNDOnroAhpIIYW_vCU9UidqgffQ7MsRB3WpQFQfZKuDDMlJUEMUMinx6FKAXp4g&t=AQIiduDVxrx5BgR_KtQ" target="_blank" class="preview-link">Preview →</a>
+      </div>
+    </div>
+
+    <!-- Ad 14 -->
+    <div class="creative-card">
+      <img class="creative-thumb" src="https://scontent-poa1-1.xx.fbcdn.net/v/t15.5256-10/656441289_1660565325372172_1128149209344685004_n.jpg?_nc_cat=101&ccb=1-7&_nc_ohc=XWY3EilmE-YQ7kNvwG48i4D&_nc_oc=AdrVKFeXYbJE-fSPhjUVmzUB4Mn3DuFkltzeqwfmjB2KcqYfQWP39gADbAfvlIdvUkoNS07x7fpaypRJwdsYJjqK&_nc_zt=23&_nc_ht=scontent-poa1-1.xx&edm=AOgd6ZUEAAAA&_nc_gid=1BduGRdko03tqSKj037TlQ&_nc_tpa=Q5bMBQEs6hKNM7xkUqYEr0Hdn_Wt2xAY-FmBXXcd36Tw0gHmAcvBez3ue_XCicZ8MhlvpsuTAKJvN0UGKw&stp=c0.5000x0.5000f_dst-emg0_p64x64_q75_tt6&ur=5fad0e&_nc_sid=58080a&oh=00_Af3DKpJ99Ng8oiMkjZj66urFWAKcbGNd1as9P4B4YE29UQ&oe=69E6F145" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" alt="Ad 14">
+      <div class="creative-thumb-placeholder" style="display:none">🖼</div>
+      <div class="creative-body">
+        <div class="creative-name">Creative 14</div>
+        <div class="creative-adset">AD SET 1.1 — All Open</div>
+        <div class="creative-metrics">
+          <div class="cm-row"><span class="cm-label">Spend</span><span class="cm-val muted-text">$36.88</span></div>
+          <div class="cm-row"><span class="cm-label">Purchases</span><span class="cm-val">0</span></div>
+          <div class="cm-row"><span class="cm-label">CPP</span><span class="cm-val muted-text">—</span></div>
+          <div class="cm-row"><span class="cm-label">ROAS</span><span class="cm-val muted-text">0.00×</span></div>
+          <div class="cm-row"><span class="cm-label">CTR</span><span class="cm-val">2.82%</span></div>
+          <div class="cm-row"><span class="cm-label">CPM</span><span class="cm-val">$47.22</span></div>
+          <div class="cm-row"><span class="cm-label">Freq</span><span class="cm-val">3.55×</span></div>
+        </div>
+      </div>
+      <div class="creative-footer">
+        <span class="status-badge active">Active</span>
+        <a href="https://business.facebook.com/ads/api/preview_iframe.php?d=AQL8-RKK20C_EudTqJU5bkRDrt10hoExBHnNERXmtzO9foqB__ZRGNQbPn4czfopd46Kc4B8iRrBfM4gXjZ1frhjWZpOHhEcNdZxbGtPQZF1Mu9jsGErti2ru8tUFgHxuGJ1TI_nXpp_i9K5kqPfFkq97a5CyXVQbfEL42FXoHR0A7UwA8NmoI0GS7kQpMfI50VoP-3xpc6HANQY17KKwGhOifJbh-AtUZzTx2pwlVLoo4Xy7Ik80a44LFSNsTiPNwDm3dQpo2rCceM7H4HNWzYmoQ7I2exFjU_v8ceUZrkuO1VQDqfOkjP5I1vavOWd5gLq1OK-dSLUt9-e4Y2ytHSxdxrouyte7wZSHhZwIKXsOxQyQIT6FVbJznAWWfsA4lfryy4CiG5CUKMOGuLnew8d2R9Y3dp5gyOhHJhw3GZqZGm7bhEdrYDVsUL_PB-YZcs&t=AQKv4X655_Mhg6U0kIE" target="_blank" class="preview-link">Preview →</a>
+      </div>
+    </div>
+
+    <!-- Ad 3 -->
+    <div class="creative-card">
+      <img class="creative-thumb" src="https://external-poa1-1.xx.fbcdn.net/emg1/v/t13/13104804276648362914?url=https%3A%2F%2Fwww.facebook.com%2Fads%2Fimage%2F%3Fd%3DAQI46s09mfjFyCyS1qMCJeEzEpYfKbp9D-GhnNFhlkJm-xqh9KVSwDU_tMtQwZUX6dBgxbWyaDacr7tyXCpnko-WaNnG2UTxd3Sao8_UzMCNAu4sHN0OBn5iZJWOBgcN9AWs4ZI7AZpHbuyPmNWMOiPr&fb_obo=1&utld=facebook.com&stp=c0.5000x0.5000f_dst-emg0_p64x64_q75_tt6&edm=AOgd6ZUEAAAA&_nc_gid=1BduGRdko03tqSKj037TlQ&_nc_oc=AdpdQCmM5ZbYwJwBNjdhnsRCRxgp3nmxFKtlT0VDSCId20VX262aBH65MeOMyGsUUAlEHIkCjk7q4W-gQ28iuhGl&ccb=13-1&oh=06_Q3--Afhj1bo8jF6peiGq8N9FBjY__kjBAHBoGY4jKNnumW-8&oe=69E2E483&_nc_sid=58080a" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" alt="Ad 3">
+      <div class="creative-thumb-placeholder" style="display:none">🖼</div>
+      <div class="creative-body">
+        <div class="creative-name">Creative 3</div>
+        <div class="creative-adset">AD SET 1.3 — New Content (Paused)</div>
+        <div class="creative-metrics">
+          <div class="cm-row"><span class="cm-label">Spend</span><span class="cm-val muted-text">$8.30</span></div>
+          <div class="cm-row"><span class="cm-label">Purchases</span><span class="cm-val">0</span></div>
+          <div class="cm-row"><span class="cm-label">CPP</span><span class="cm-val muted-text">—</span></div>
+          <div class="cm-row"><span class="cm-label">ROAS</span><span class="cm-val muted-text">0.00×</span></div>
+          <div class="cm-row"><span class="cm-label">CTR</span><span class="cm-val">2.81%</span></div>
+          <div class="cm-row"><span class="cm-label">CPM</span><span class="cm-val">$33.33</span></div>
+          <div class="cm-row"><span class="cm-label">VC</span><span class="cm-val">64</span></div>
+        </div>
+      </div>
+      <div class="creative-footer">
+        <span class="status-badge paused">Paused</span>
+        <a href="https://business.facebook.com/ads/api/preview_iframe.php?d=AQIcL_eqTFup-xvFD_TCG952Aoroq5uvDEec4CtflH8onf8jyvkdAvlXWj_7-gyZsNtx82SwpYOnPxSR6kGWkskpL8AvMcIzn_KxXaRMBADp7_-vFelfAMAj3FooI4ssyWdQmB-WVD3ve02kViNNCqCKjBdkPaPfq2tS9V-6qnm6YFX1_xSdVAqy_RiROYKcmGGcs6idtjl40YmQJryxGhEJoGgxagX9K7SeQOKuAFR9n4Mof4Nj4-HuMwRsToVLie63QgQoVjiLLkt2OcXiLQd7QU81zd4Os-PQ6nw5vRILuMgECLMDrs2srK64UCAGfU8iAs4TZqcuahvlcQSy0V8tHS4xSr1FkpJsGhpnnEOnT9FkiDsa9tZm96FZfgDEkyHgGVHa9RXQpmvuMpTHt2UyGnLxlRkdp3xCQVgdXbXbP2CwbjzdCqEbEDsEhxpHov8&t=AQK019ZB8NxIG1hJLXY" target="_blank" class="preview-link">Preview →</a>
+      </div>
+    </div>
+
+  </div><!-- /creatives-grid -->
+
+</main>
+
+<!-- FOOTER -->
+<footer class="bottom-bar">
+  <span class="bb-brand">Marrow Club — Phase 3 Dashboard</span>
+  <span class="bb-note">Campaign: [FASE 3] - [CBO] - [PURCHASE] &nbsp;·&nbsp; Account 885028967584826 &nbsp;·&nbsp; Data via Meta Ads API v21.0</span>
+</footer>
+
+<script>
+// ── DAILY DATA ──────────────────────────────────────────────────────────────
+const daily = [
+  {d:"Mar 31", spend:83.46,  purchases:1},
+  {d:"Apr 1",  spend:75.39,  purchases:0},
+  {d:"Apr 2",  spend:87.24,  purchases:0},
+  {d:"Apr 3",  spend:75.52,  purchases:2},
+  {d:"Apr 4",  spend:78.22,  purchases:0},
+  {d:"Apr 5",  spend:95.09,  purchases:1},
+  {d:"Apr 6",  spend:84.29,  purchases:3},
+  {d:"Apr 7",  spend:73.99,  purchases:2},
+  {d:"Apr 8",  spend:87.57,  purchases:0},
+  {d:"Apr 9",  spend:98.72,  purchases:0},
+  {d:"Apr 10", spend:88.34,  purchases:0},
+  {d:"Apr 11", spend:98.89,  purchases:1},
+  {d:"Apr 12", spend:113.80, purchases:2},
+  {d:"Apr 13", spend:97.76,  purchases:1},
+  {d:"Apr 14", spend:93.73,  purchases:0},
+  {d:"Apr 15", spend:95.39,  purchases:1},
+  {d:"Apr 16", spend:37.57,  purchases:2},
+];
+
+// ── CHART ────────────────────────────────────────────────────────────────────
+const ACCENT = '#7d1416';
+const GREEN  = '#1c5e3a';
+const BG_LINE= 'rgba(125,20,22,0.08)';
+
+new Chart(document.getElementById('chartDaily'), {
+  type: 'bar',
+  data: {
+    labels: daily.map(d => d.d),
+    datasets: [
+      {
+        label: 'Spend (USD)',
+        data: daily.map(d => d.spend),
+        backgroundColor: daily.map(d => d.purchases > 0 ? ACCENT : 'rgba(125,20,22,0.25)'),
+        borderColor: daily.map(d => d.purchases > 0 ? ACCENT : 'rgba(125,20,22,0.4)'),
+        borderWidth: 1,
+        yAxisID: 'ySpend',
+        order: 2,
+      },
+      {
+        label: 'Purchases',
+        data: daily.map(d => d.purchases),
+        type: 'line',
+        borderColor: GREEN,
+        backgroundColor: 'rgba(28,94,58,0.1)',
+        pointBackgroundColor: GREEN,
+        pointRadius: daily.map(d => d.purchases > 0 ? 5 : 3),
+        pointHoverRadius: 7,
+        borderWidth: 2,
+        tension: 0.3,
+        fill: true,
+        yAxisID: 'yPurchases',
+        order: 1,
+      },
+    ],
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    interaction: { mode: 'index', intersect: false },
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        backgroundColor: '#0f0e0c',
+        titleColor: '#fbfaf6',
+        bodyColor: '#a09d98',
+        borderColor: '#2a2825',
+        borderWidth: 1,
+        padding: 12,
+        callbacks: {
+          label: ctx => ctx.dataset.label === 'Spend (USD)'
+            ? '  Spend: $' + ctx.parsed.y.toFixed(2)
+            : '  Purchases: ' + ctx.parsed.y,
+        },
+      },
+    },
+    scales: {
+      x: {
+        grid: { color: 'rgba(0,0,0,0.04)' },
+        ticks: { color: '#7a7770', font: { family: 'Quantico', size: 10 }, maxRotation: 45 },
+      },
+      ySpend: {
+        position: 'left',
+        grid: { color: 'rgba(0,0,0,0.05)' },
+        ticks: { color: '#7a7770', font: { family: 'Quantico', size: 10 }, callback: v => '$' + v },
+      },
+      yPurchases: {
+        position: 'right',
+        grid: { drawOnChartArea: false },
+        ticks: { color: GREEN, font: { family: 'Quantico', size: 10 }, stepSize: 1 },
+        min: 0,
+        max: 6,
+      },
+    },
+  },
+});
+</script>
+</body>
+</html>
