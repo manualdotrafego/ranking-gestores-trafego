@@ -383,7 +383,7 @@ let dashData = null;         // full JSON
 let selectedGestor = null;   // { id, name, days_available, accounts }
 let currentAccount = null;   // selected account object
 let activeCampId = 'all';    // 'all' or campaign id string
-let selectedDay = 'all';     // 'all' or 'YYYY-MM-DD'
+let selectedDay = '7d';      // '7d', '14d', 'all', or 'YYYY-MM-DD'
 let chartMsgs = null;
 let chartCpMsg = null;
 let refreshTimeout = null;
@@ -678,7 +678,7 @@ function selectGestor(id) {
   });
 
   // Reset day + campaign filters
-  selectedDay = 'all';
+  selectedDay = '7d';
   activeCampId = 'all';
   buildDaySelector();
 
@@ -696,12 +696,27 @@ function buildDaySelector() {
   const PT_DAYS = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
   container.innerHTML = '';
 
-  const totalBtn = document.createElement('button');
-  totalBtn.className = 'day-btn-total' + (selectedDay === 'all' ? ' active' : '');
-  totalBtn.textContent = 'Total (acumulado)';
-  totalBtn.onclick = () => selectDay('all');
-  container.appendChild(totalBtn);
+  // Range buttons
+  const ranges = [
+    { key: '7d',  label: '7 dias' },
+    { key: '14d', label: '14 dias' },
+    { key: 'all', label: 'Acumulado' },
+  ];
+  ranges.forEach(r => {
+    const btn = document.createElement('button');
+    btn.className = 'day-btn-total' + (selectedDay === r.key ? ' active' : '');
+    btn.textContent = r.label;
+    btn.dataset.day = r.key;
+    btn.onclick = () => selectDay(r.key);
+    container.appendChild(btn);
+  });
 
+  // Separator
+  const sep = document.createElement('span');
+  sep.style.cssText = 'display:inline-block;width:1px;height:20px;background:var(--border);margin:0 4px;vertical-align:middle;opacity:.5';
+  container.appendChild(sep);
+
+  // Individual day buttons
   days.forEach(d => {
     const dt = new Date(d + 'T12:00:00');
     const dayName = PT_DAYS[dt.getDay()];
@@ -718,7 +733,7 @@ function buildDaySelector() {
 function selectDay(day) {
   selectedDay = day;
   // Update button states
-  document.querySelectorAll('.day-btn-total').forEach(b => b.classList.toggle('active', day === 'all'));
+  document.querySelectorAll('.day-btn-total').forEach(b => b.classList.toggle('active', b.dataset.day === day));
   document.querySelectorAll('.day-btn').forEach(b => b.classList.toggle('active', b.dataset.day === day));
   renderAll();
 }
@@ -794,16 +809,60 @@ function filteredCampaigns() {
 }
 
 // ─── DAILY HELPERS ────────────────────────────────────────────────────────────
+function rangeCutoff(mode) {
+  // Returns the ISO cutoff date string for a given range mode
+  const now = new Date();
+  if (mode === '7d')  { now.setDate(now.getDate() - 6);  return now.toISOString().slice(0,10); }
+  if (mode === '14d') { now.setDate(now.getDate() - 13); return now.toISOString().slice(0,10); }
+  return null; // 'all' → no cutoff
+}
+
+function sumDailyRange(daily, cutoff) {
+  let spend = 0, msgs = 0, impr = 0, lpv = 0, purchases = 0, add_cart = 0, initiate = 0;
+  Object.entries(daily || {}).forEach(([d, m]) => {
+    if (cutoff && d < cutoff) return;
+    spend    += m.spend       || 0;
+    msgs     += m.msgs        || 0;
+    impr     += m.impressions || 0;
+    lpv      += m.lpv         || 0;
+    purchases+= m.purchases   || 0;
+    add_cart += m.add_cart    || 0;
+    initiate += m.initiate    || 0;
+  });
+  spend = Math.round(spend * 100) / 100;
+  return { spend, msgs, impressions: impr, lpv, purchases, add_cart, initiate,
+           cost_msg: msgs > 0 ? Math.round(spend/msgs * 100) / 100 : 0,
+           cpm: impr > 0 ? Math.round(spend/impr * 1000 * 100) / 100 : 0 };
+}
+
 function getAdMetrics(ad) {
   if (selectedDay === 'all') return ad.metrics || {};
-  return (ad.daily || {})[selectedDay] || {};
+  if (/^\d{4}-\d{2}-\d{2}$/.test(selectedDay)) return (ad.daily || {})[selectedDay] || {};
+  // range: '7d' or '14d'
+  return sumDailyRange(ad.daily, rangeCutoff(selectedDay));
 }
 
 function getCampMetrics(camp) {
   if (selectedDay === 'all') return camp.metrics || {};
+  if (/^\d{4}-\d{2}-\d{2}$/.test(selectedDay)) {
+    let spend = 0, msgs = 0, impr = 0, lpv = 0, purchases = 0;
+    (camp.ads || []).forEach(ad => {
+      const m = (ad.daily || {})[selectedDay] || {};
+      spend    += m.spend       || 0;
+      msgs     += m.msgs        || 0;
+      impr     += m.impressions || 0;
+      lpv      += m.lpv         || 0;
+      purchases+= m.purchases   || 0;
+    });
+    spend = Math.round(spend * 100) / 100;
+    return { spend, msgs, impressions: impr, lpv, purchases,
+             cost_msg: msgs > 0 ? Math.round(spend / msgs * 100) / 100 : 0 };
+  }
+  // range: '7d' or '14d' — sum from ad daily
+  const cutoff = rangeCutoff(selectedDay);
   let spend = 0, msgs = 0, impr = 0, lpv = 0, purchases = 0;
   (camp.ads || []).forEach(ad => {
-    const m = (ad.daily || {})[selectedDay] || {};
+    const m = sumDailyRange(ad.daily, cutoff);
     spend    += m.spend       || 0;
     msgs     += m.msgs        || 0;
     impr     += m.impressions || 0;

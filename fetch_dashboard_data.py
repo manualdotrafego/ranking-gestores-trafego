@@ -442,8 +442,10 @@ def main():
 
     result = {
         "updated_at":     datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-        "since":          CUTOFF,
+        "since":          SINCE,   # primeiro dia buscado (janela de 7 dias)
         "until":          UNTIL,
+        "fetch_since":    SINCE,   # janela de fetch (últimos 7 dias)
+        "cutoff":         CUTOFF,  # data de corte do histórico (últimos 30 dias)
         "days_available": sorted(all_days),
         "accounts":       [],
     }
