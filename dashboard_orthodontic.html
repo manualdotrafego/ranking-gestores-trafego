@@ -1154,7 +1154,7 @@ function buildAdCard(ad, meta) {
             ${ad.created_at ? `<span style="font-size:10px;color:var(--muted)">Criado: <span style="color:var(--muted2)">${fmtDateBR(ad.created_at)}</span></span>` : (ad.first_active ? `<span style="font-size:10px;color:var(--muted)">1º dado: <span style="color:var(--muted2)">${fmtDateBR(ad.first_active)}</span></span>` : '')}
             ${!ad.active && ad.updated_at ? `<span style="font-size:10px;color:var(--muted)">Pausado: <span style="color:#f59e0b">${fmtDateBR(ad.updated_at)}</span></span>` : ''}
           </div>
-          ${ad.preview_url ? `<a href="${esc(ad.preview_url)}" target="_blank" rel="noopener" style="color:var(--p2);font-size:11px;text-decoration:none;font-weight:600;flex-shrink:0">Ver Prévia →</a>` : ''}
+          ${ad.preview_url ? `<button onclick="showAdPreview(event,'${esc(ad.preview_url)}')" style="background:none;border:none;cursor:pointer;color:var(--p2);font-size:11px;font-weight:600;flex-shrink:0;padding:0;font-family:inherit">Ver Prévia →</button>` : ''}
         </div>
       </div>
     </div>
@@ -1212,6 +1212,44 @@ function esc(s) {
   if (!s) return '';
   return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
+// ─── AD PREVIEW MODAL ────────────────────────────────────────────────────────
+function showAdPreview(evt, url) {
+  evt.stopPropagation();
+  let overlay = document.getElementById('previewOverlay');
+  if (!overlay) {
+    overlay = document.createElement('div');
+    overlay.id = 'previewOverlay';
+    overlay.style.cssText = [
+      'position:fixed;inset:0;z-index:9999',
+      'background:rgba(0,0,0,0.82)',
+      'display:flex;align-items:center;justify-content:center',
+      'cursor:pointer'
+    ].join(';');
+    overlay.innerHTML = `
+      <div style="position:relative;cursor:default" onclick="event.stopPropagation()">
+        <button id="previewClose" onclick="closeAdPreview()"
+          style="position:absolute;top:-14px;right:-14px;z-index:10;
+                 width:30px;height:30px;border-radius:50%;border:none;
+                 background:#fff;color:#111;font-size:16px;font-weight:700;
+                 cursor:pointer;line-height:30px;text-align:center;padding:0">✕</button>
+        <iframe id="previewFrame" src="" frameborder="0" scrolling="no"
+          style="width:320px;height:570px;border-radius:6px;display:block;background:#fff"></iframe>
+      </div>`;
+    overlay.addEventListener('click', closeAdPreview);
+    document.body.appendChild(overlay);
+  }
+  document.getElementById('previewFrame').src = url;
+  overlay.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+}
+function closeAdPreview() {
+  const ov = document.getElementById('previewOverlay');
+  if (ov) { ov.style.display = 'none'; }
+  const fr = document.getElementById('previewFrame');
+  if (fr) { fr.src = ''; }
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeAdPreview(); });
 </script>
 </body>
 </html>
