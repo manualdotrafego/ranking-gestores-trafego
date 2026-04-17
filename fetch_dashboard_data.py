@@ -5,7 +5,7 @@ Incremental: mantém histórico e adiciona novos dias sem sobrescrever dados exi
 Atualiza a cada 5 horas via cron.
 """
 
-import os, json, requests, time
+import os, json, requests, time, re, html as html_mod
 from datetime import datetime, date, timedelta
 from dotenv import load_dotenv
 
@@ -287,11 +287,29 @@ def fetch_account(acc, ad_lookup):
     status_map  = {}
     created_map = {}
     updated_map = {}
+    preview_map = {}
     for ad in ads_meta_raw:
         thumb_map[ad["id"]]   = ad.get("creative", {}).get("thumbnail_url", "")
         status_map[ad["id"]]  = ad.get("effective_status", "PAUSED")
         created_map[ad["id"]] = ad.get("created_time", "")[:10]  # YYYY-MM-DD
         updated_map[ad["id"]] = ad.get("updated_time", "")[:10]
+
+    # 4b. Preview URLs — busca para ads ativos sem preview em cache
+    active_ids_needing_preview = [
+        ad["id"] for ad in ads_meta_raw
+        if status_map.get(ad["id"]) == "ACTIVE"
+        and not ad_lookup.get(ad["id"], {}).get("preview_url")
+    ]
+    if active_ids_needing_preview:
+        print(f"    Buscando previews ({len(active_ids_needing_preview)} ads ativos)...")
+        for ad_id_p in active_ids_needing_preview:
+            prev = get(f"/{ad_id_p}/previews", {"ad_format": "MOBILE_FEED_STANDARD"})
+            for p in prev.get("data", []):
+                m = re.search(r'src="([^"]+)"', p.get("body", ""))
+                if m:
+                    preview_map[ad_id_p] = html_mod.unescape(m.group(1))
+                    break
+            time.sleep(0.1)
 
     # 5. Indexa insights diários por ad_id → date
     new_daily = {}   # {ad_id: {date_str: metrics}}
@@ -355,9 +373,9 @@ def fetch_account(acc, ad_lookup):
         if not merged_daily:
             continue
 
-        # Dados estáticos: prefere existentes
+        # Dados estáticos: prefere existentes; preview fresco para ads ativos
         thumbnail   = existing.get("thumbnail") or thumb_map.get(ad_id, "")
-        preview_url = existing.get("preview_url", "")
+        preview_url = preview_map.get(ad_id) or existing.get("preview_url", "")
         age_bd      = age_index.get(ad_id) or existing.get("age_breakdown", [])
         created_at  = created_map.get(ad_id) or existing.get("created_at", "")
         updated_at  = updated_map.get(ad_id) or existing.get("updated_at", "")
