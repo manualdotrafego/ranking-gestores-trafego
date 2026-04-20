@@ -283,12 +283,26 @@ def gerar_relatorio(since=None, until=None):
     return msg
 
 
+def monday_of_week(ref: date) -> date:
+    """Retorna a segunda-feira da semana de ref (weekday 0 = seg)."""
+    return ref - timedelta(days=ref.weekday())
+
+
 if __name__ == "__main__":
     import sys
-    # Uso: python relatorio_conta001.py [since] [until]
-    # Ex:  python relatorio_conta001.py 2026-04-13 2026-04-17
-    since_arg = sys.argv[1] if len(sys.argv) > 1 else "2026-04-13"
-    until_arg = sys.argv[2] if len(sys.argv) > 2 else date.today().strftime("%Y-%m-%d")
+    today_d = date.today()
+
+    # Sem argumentos → segunda desta semana até hoje (relatório diário às 08h)
+    # Com argumentos → uso manual: python relatorio_conta001.py [since] [until]
+    if len(sys.argv) >= 3:
+        since_arg = sys.argv[1]
+        until_arg = sys.argv[2]
+    elif len(sys.argv) == 2:
+        since_arg = sys.argv[1]
+        until_arg = today_d.strftime("%Y-%m-%d")
+    else:
+        since_arg = monday_of_week(today_d).strftime("%Y-%m-%d")
+        until_arg = today_d.strftime("%Y-%m-%d")
 
     print(f"Buscando dados de {since_arg} até {until_arg}...")
     msg = gerar_relatorio(since=since_arg, until=until_arg)
