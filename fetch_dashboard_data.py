@@ -97,9 +97,8 @@ SINCE = (date.today() - timedelta(days=FETCH_DAYS - 1)).strftime("%Y-%m-%d")
 UNTIL = date.today().strftime("%Y-%m-%d")
 TIME_RANGE = json.dumps({"since": SINCE, "until": UNTIL})
 
-# Mantém histórico de 30 dias
-KEEP_DAYS = 30
-CUTOFF = (date.today() - timedelta(days=KEEP_DAYS - 1)).strftime("%Y-%m-%d")
+# Histórico ilimitado — nunca descarta dias passados
+CUTOFF = "2000-01-01"  # data de corte simbólica (sem exclusão de histórico)
 
 # Dias que sempre atualiza (hoje e ontem podem ter dados parciais)
 ALWAYS_REFRESH = {
@@ -443,7 +442,7 @@ def fetch_account(acc, ad_lookup):
 def main():
     print(f"=== Gerando dashboard_data.json (incremental, diário) ===")
     print(f"Período de busca: {SINCE} → {UNTIL}")
-    print(f"Histórico mantido: últimos {KEEP_DAYS} dias (desde {CUTOFF})")
+    print(f"Histórico mantido: completo (sem corte de datas)")
     print(f"Contas: {len(ACCOUNTS)}\n")
 
     # Carrega dados existentes para merge incremental
