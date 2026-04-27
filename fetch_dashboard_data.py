@@ -147,9 +147,7 @@ def parse_actions(row):
     for a in row.get("actions", []):
         t = a["action_type"]
         v = int(float(a.get("value", 0)))
-        if t in ("onsite_conversion.messaging_first_reply",
-                 "onsite_conversion.send_message",
-                 "onsite_conversion.messaging_conversation_started_7d"):
+        if t == "onsite_conversion.messaging_first_reply":   # única métrica para evitar dupla contagem
             msgs += v
         if t == "purchase":           purchases += v
         if t == "add_to_cart":        add_cart += v
@@ -158,8 +156,7 @@ def parse_actions(row):
 
     cost_msg = 0
     for c in row.get("cost_per_action_type", []):
-        if c["action_type"] in ("onsite_conversion.messaging_first_reply",
-                                "onsite_conversion.send_message"):
+        if c["action_type"] == "onsite_conversion.messaging_first_reply":
             cost_msg = float(c.get("value", 0))
 
     spend = float(row.get("spend", 0))

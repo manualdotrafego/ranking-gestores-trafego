@@ -68,9 +68,7 @@ def get_insights(camp_id, since, until):
     clicks  = int(row.get("clicks", 0))
     leads   = 0
     for a in row.get("actions", []):
-        if a["action_type"] in ("lead", "onsite_conversion.lead_grouped",
-                                 "onsite_conversion.messaging_first_reply",
-                                 "onsite_conversion.messaging_conversation_started_7d"):
+        if a["action_type"] == "lead":   # usar só 'lead' para evitar dupla contagem
             leads += int(float(a["value"]))
     return spend, leads, impress, clicks
 
@@ -90,8 +88,7 @@ def get_insights_vendas(camp_id, since, until):
     clicks    = int(row.get("clicks", 0))
     purchases = 0
     for a in row.get("actions", []):
-        if a["action_type"] in ("purchase", "omni_purchase",
-                                 "offsite_conversion.fb_pixel_purchase"):
+        if a["action_type"] == "purchase":   # usar só 'purchase' para evitar dupla contagem
             purchases += int(float(a["value"]))
     return spend, purchases, impress, clicks
 
