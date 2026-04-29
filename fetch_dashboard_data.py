@@ -290,11 +290,10 @@ def fetch_account(acc, ad_lookup):
         created_map[ad["id"]] = ad.get("created_time", "")[:10]  # YYYY-MM-DD
         updated_map[ad["id"]] = ad.get("updated_time", "")[:10]
 
-    # 4b. Preview URLs — busca para ads ativos sem preview em cache
+    # 4b. Preview URLs — sempre renova para todos os ads ativos (URLs expiram)
     active_ids_needing_preview = [
         ad["id"] for ad in ads_meta_raw
         if status_map.get(ad["id"]) == "ACTIVE"
-        and not ad_lookup.get(ad["id"], {}).get("preview_url")
     ]
     if active_ids_needing_preview:
         print(f"    Buscando previews ({len(active_ids_needing_preview)} ads ativos)...")
