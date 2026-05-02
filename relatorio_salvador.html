@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Relatório · Salvador · Meta Ads</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/pt.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',sans-serif;background:#f0f2f5;color:#1c1e21;font-size:14px}
+.page{max-width:920px;margin:0 auto;padding:24px 16px 48px}
+.header{background:#fff;border-radius:8px;padding:14px 22px;margin-bottom:18px;
+        display:flex;align-items:center;justify-content:space-between;
+        box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.header-left{display:flex;align-items:center;gap:10px}
+.fb-wordmark{font-size:22px;font-weight:800;color:#1877f2;line-height:1}
+.fb-sub{font-size:11px;color:#606770;font-weight:500}
+.dbout-logo{height:44px;width:auto;object-fit:contain}
+.camp-info{background:#fff;border-radius:8px;padding:13px 20px;margin-bottom:16px;
+           box-shadow:0 1px 3px rgba(0,0,0,.1);display:flex;align-items:center;gap:12px}
+.camp-dot{width:10px;height:10px;border-radius:50%;background:#42b72a;flex-shrink:0}
+.camp-name{font-size:13px;font-weight:600;color:#1c1e21}
+.camp-status{font-size:11px;color:#42b72a;font-weight:700}
+.camp-account{font-size:11px;color:#8a8d91;margin-left:auto;white-space:nowrap}
+.date-range-wrap{display:flex;justify-content:center;margin-bottom:18px;gap:8px;flex-wrap:wrap}
+.date-input-wrap{position:relative}
+.date-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);pointer-events:none;color:#606770}
+#dateRangeInput{background:#fff;border:1.5px solid #dddfe2;border-radius:8px;
+  padding:9px 16px 9px 36px;font-size:13px;font-weight:600;color:#1c1e21;
+  font-family:'Inter',sans-serif;cursor:pointer;min-width:280px;text-align:center;
+  box-shadow:0 1px 3px rgba(0,0,0,.08);transition:border-color .15s;outline:none}
+#dateRangeInput:hover,#dateRangeInput:focus{border-color:#1877f2}
+.period-shortcuts{display:flex;gap:6px;flex-wrap:wrap;justify-content:center}
+.ps-btn{padding:6px 14px;border-radius:20px;font-size:11px;font-weight:600;cursor:pointer;
+        border:1.5px solid #dddfe2;background:#fff;color:#606770;
+        font-family:'Inter',sans-serif;transition:all .15s}
+.ps-btn:hover{border-color:#1877f2;color:#1877f2}
+.ps-btn.active{background:#1877f2;color:#fff;border-color:#1877f2}
+.kpi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:18px}
+.kpi-card{background:#fff;border-radius:8px;padding:18px 22px;
+          box-shadow:0 1px 3px rgba(0,0,0,.12);border-top:3px solid #1877f2}
+.kpi-label{font-size:10px;font-weight:700;color:#1877f2;text-transform:uppercase;
+           letter-spacing:.6px;margin-bottom:6px}
+.kpi-value{font-size:26px;font-weight:800;color:#1c1e21;line-height:1}
+.kpi-sub{font-size:11px;color:#8a8d91;margin-top:5px}
+.section-card{background:#fff;border-radius:8px;padding:20px 24px;margin-bottom:18px;
+              box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.section-title{font-size:15px;font-weight:700;color:#1c1e21;margin-bottom:2px}
+.section-sub{font-size:12px;color:#8a8d91;margin-bottom:16px}
+.chart-wrap{height:280px;position:relative}
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13px}
+thead th{padding:10px 14px;text-align:right;font-weight:700;color:#606770;
+         border-bottom:2px solid #dddfe2;font-size:11px;text-transform:uppercase;
+         letter-spacing:.4px;white-space:nowrap}
+thead th:first-child{text-align:left}
+tbody tr{border-bottom:1px solid #f0f2f5;transition:background .1s}
+tbody tr:hover{background:#f7f8fa}
+tbody tr.out-range{opacity:.4}
+tbody td{padding:9px 14px;text-align:right;color:#1c1e21;white-space:nowrap}
+tbody td:first-child{text-align:left;color:#606770;font-weight:600}
+.td-spend{font-weight:600}
+.td-msgs{color:#1877f2;font-weight:700}
+.td-good{color:#42b72a;font-weight:600}
+.td-warn{color:#e2a01d;font-weight:600}
+.td-bad{color:#fa383e;font-weight:600}
+.today-row td{background:#f0f7ff}
+.today-badge,.range-badge{display:inline-block;font-size:9px;font-weight:700;
+             padding:1px 5px;border-radius:3px;margin-left:5px;vertical-align:middle}
+.today-badge{background:#e7f3ff;color:#1877f2}
+.range-badge{background:#e6f4ea;color:#2d9e43}
+.flatpickr-calendar{font-family:'Inter',sans-serif!important;border-radius:10px;
+                    box-shadow:0 8px 24px rgba(0,0,0,.15)!important}
+.flatpickr-day.selected,.flatpickr-day.startRange,.flatpickr-day.endRange{
+  background:#1877f2!important;border-color:#1877f2!important}
+.flatpickr-day.inRange{background:#e7f3ff!important;border-color:#e7f3ff!important;color:#1c1e21}
+.footer{text-align:center;font-size:11px;color:#8a8d91;margin-top:24px}
+@media(max-width:620px){
+  .kpi-grid{grid-template-columns:1fr}
+  #dateRangeInput{min-width:220px}
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+<div class="header">
+  <div class="header-left">
+    <div>
+      <div class="fb-wordmark">facebook</div>
+      <div class="fb-sub">Ads</div>
+    </div>
+  </div>
+  
+</div>
+
+<div class="camp-info">
+  <div class="camp-dot"></div>
+  <div>
+    <div class="camp-name">030 | Salvador R$1.200 - 24.03.26</div>
+    <div class="camp-status">Ativa</div>
+  </div>
+  <div class="camp-account">Conta: 5278613945567179</div>
+</div>
+
+<div class="date-range-wrap">
+  <div class="date-input-wrap">
+    <span class="date-icon">📅</span>
+    <input id="dateRangeInput" type="text" readonly placeholder="Selecione o período"/>
+  </div>
+  <div class="period-shortcuts">
+    <button class="ps-btn" onclick="applyShortcut(0)">Hoje</button>
+    <button class="ps-btn" onclick="applyShortcut(1)">Ontem</button>
+    <button class="ps-btn" onclick="applyShortcut(7)">Últimos 7 dias</button>
+    <button class="ps-btn" onclick="applyShortcut(15)">Últimos 15 dias</button>
+    <button class="ps-btn" onclick="applyShortcut(30)">Últimos 30 dias</button>
+  </div>
+</div>
+
+<div class="kpi-grid">
+  <div class="kpi-card">
+    <div class="kpi-label">Valor Investido</div>
+    <div class="kpi-value" id="kpi-spend">—</div>
+    <div class="kpi-sub" id="kpi-spend-sub"></div>
+  </div>
+  <div class="kpi-card" style="border-top-color:#42b72a">
+    <div class="kpi-label" style="color:#42b72a">Mensagens Iniciadas</div>
+    <div class="kpi-value" id="kpi-msgs">—</div>
+    <div class="kpi-sub" id="kpi-msgs-sub"></div>
+  </div>
+  <div class="kpi-card" style="border-top-color:#e2a01d">
+    <div class="kpi-label" style="color:#e2a01d">Custo por Mensagem</div>
+    <div class="kpi-value" id="kpi-cpmsg">—</div>
+    <div class="kpi-sub" id="kpi-cpmsg-sub"></div>
+  </div>
+</div>
+
+<div class="section-card">
+  <div class="section-title">Visão Geral</div>
+  <div class="section-sub" id="chartSub">Período selecionado</div>
+  <div class="chart-wrap"><canvas id="mainChart"></canvas></div>
+</div>
+
+<div class="section-card">
+  <div class="section-title">Detalhamento</div>
+  <div class="section-sub">Diário · Histórico completo</div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th style="text-align:left">Dia</th>
+          <th>Valor Investido</th>
+          <th>Mensagens</th>
+          <th>Custo/Msg</th>
+          <th>Impressões</th>
+          <th>CPM</th>
+          <th>CTR</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody"></tbody>
+    </table>
+  </div>
+</div>
+
+<div class="footer">
+  Gerado em 01/05/2026 · Salvador · Meta API v21.0
+</div>
+</div>
+
+<script>
+const DAILY = [{"date": "2026-05-01", "spend": 32.76, "msgs": 24, "cost_msg": 1.36, "impr": 2502, "cpm": 13.09, "ctr": 1.28}, {"date": "2026-04-30", "spend": 41.69, "msgs": 9, "cost_msg": 4.63, "impr": 2967, "cpm": 14.05, "ctr": 1.35}, {"date": "2026-04-29", "spend": 52.54, "msgs": 31, "cost_msg": 1.69, "impr": 3809, "cpm": 13.79, "ctr": 0.95}, {"date": "2026-04-28", "spend": 46.97, "msgs": 30, "cost_msg": 1.57, "impr": 3331, "cpm": 14.1, "ctr": 0.81}, {"date": "2026-04-27", "spend": 43.71, "msgs": 29, "cost_msg": 1.51, "impr": 3166, "cpm": 13.81, "ctr": 1.42}, {"date": "2026-04-26", "spend": 37.62, "msgs": 15, "cost_msg": 2.51, "impr": 2977, "cpm": 12.64, "ctr": 0.91}, {"date": "2026-04-25", "spend": 46.92, "msgs": 35, "cost_msg": 1.34, "impr": 3370, "cpm": 13.92, "ctr": 1.19}, {"date": "2026-04-24", "spend": 44.77, "msgs": 25, "cost_msg": 1.79, "impr": 3355, "cpm": 13.34, "ctr": 0.72}, {"date": "2026-04-23", "spend": 45.33, "msgs": 58, "cost_msg": 0.78, "impr": 3084, "cpm": 14.7, "ctr": 1.33}, {"date": "2026-04-22", "spend": 38.41, "msgs": 33, "cost_msg": 1.16, "impr": 2087, "cpm": 18.4, "ctr": 1.05}, {"date": "2026-04-21", "spend": 36.34, "msgs": 37, "cost_msg": 0.98, "impr": 3169, "cpm": 11.47, "ctr": 1.42}, {"date": "2026-04-20", "spend": 33.29, "msgs": 32, "cost_msg": 1.04, "impr": 2260, "cpm": 14.73, "ctr": 1.15}, {"date": "2026-04-19", "spend": 34.44, "msgs": 12, "cost_msg": 2.87, "impr": 2138, "cpm": 16.11, "ctr": 1.03}, {"date": "2026-04-18", "spend": 24.8, "msgs": 25, "cost_msg": 0.99, "impr": 1851, "cpm": 13.4, "ctr": 1.35}, {"date": "2026-04-17", "spend": 35.62, "msgs": 29, "cost_msg": 1.23, "impr": 2598, "cpm": 13.71, "ctr": 1.12}, {"date": "2026-04-16", "spend": 40.75, "msgs": 12, "cost_msg": 3.4, "impr": 2871, "cpm": 14.19, "ctr": 1.18}, {"date": "2026-04-15", "spend": 45.47, "msgs": 29, "cost_msg": 1.57, "impr": 3139, "cpm": 14.49, "ctr": 1.21}, {"date": "2026-04-14", "spend": 53.38, "msgs": 21, "cost_msg": 2.54, "impr": 3352, "cpm": 15.92, "ctr": 1.49}, {"date": "2026-04-13", "spend": 33.83, "msgs": 17, "cost_msg": 1.99, "impr": 1801, "cpm": 18.78, "ctr": 1.72}, {"date": "2026-04-12", "spend": 31.68, "msgs": 7, "cost_msg": 4.53, "impr": 1898, "cpm": 16.69, "ctr": 1.16}, {"date": "2026-04-11", "spend": 37.49, "msgs": 21, "cost_msg": 1.79, "impr": 2679, "cpm": 13.99, "ctr": 1.61}, {"date": "2026-04-10", "spend": 37.54, "msgs": 14, "cost_msg": 2.68, "impr": 2683, "cpm": 13.99, "ctr": 1.16}, {"date": "2026-04-09", "spend": 37.36, "msgs": 31, "cost_msg": 1.21, "impr": 3011, "cpm": 12.41, "ctr": 1.2}, {"date": "2026-04-08", "spend": 48.59, "msgs": 20, "cost_msg": 2.43, "impr": 3498, "cpm": 13.89, "ctr": 1.46}, {"date": "2026-04-07", "spend": 41.65, "msgs": 16, "cost_msg": 2.6, "impr": 2583, "cpm": 16.12, "ctr": 1.51}, {"date": "2026-04-06", "spend": 43.17, "msgs": 15, "cost_msg": 2.88, "impr": 2472, "cpm": 17.46, "ctr": 1.46}, {"date": "2026-04-05", "spend": 47.95, "msgs": 19, "cost_msg": 2.52, "impr": 2711, "cpm": 17.69, "ctr": 1.99}, {"date": "2026-04-04", "spend": 46.38, "msgs": 16, "cost_msg": 2.9, "impr": 2532, "cpm": 18.32, "ctr": 1.94}, {"date": "2026-04-03", "spend": 41.0, "msgs": 18, "cost_msg": 2.28, "impr": 2497, "cpm": 16.42, "ctr": 1.92}, {"date": "2026-04-02", "spend": 35.63, "msgs": 33, "cost_msg": 1.08, "impr": 2833, "cpm": 12.58, "ctr": 1.48}];
+const DEFAULT_DAYS = 15;
+const PT_M = ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
+const PT_MF = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
+let chart=null, activeSince=null, activeUntil=null;
+function fmtBRL(v){return 'R$ '+Number(v).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2})}
+function fmtNum(v){return Number(v).toLocaleString('pt-BR')}
+function fmtShort(iso){const[y,m,d]=iso.split('-');return `${+d} de ${PT_M[+m-1]}.`}
+function fmtFull(iso){const[y,m,d]=iso.split('-');return `${+d} de ${PT_MF[+m-1]} de ${y}`}
+function addDays(iso,n){const d=new Date(iso+'T12:00:00');d.setDate(d.getDate()+n);return d.toISOString().slice(0,10)}
+function today(){return DAILY.length>0?DAILY[0].date:new Date().toISOString().slice(0,10)}
+const minDate=DAILY.length>0?DAILY[DAILY.length-1].date:undefined;
+const maxDate=DAILY.length>0?DAILY[0].date:undefined;
+const fp=flatpickr('#dateRangeInput',{
+  mode:'range',locale:'pt',dateFormat:'d \de M. \de Y',
+  minDate,maxDate,showMonths:1,
+  onChange(selectedDates){
+    if(selectedDates.length===2){
+      clearShortcuts();
+      applyRange(selectedDates[0].toISOString().slice(0,10),selectedDates[1].toISOString().slice(0,10));
+    }
+  }
+});
+function applyShortcut(days){
+  clearShortcuts();
+  const btns=document.querySelectorAll('.ps-btn');
+  const idx=[0,1,7,15,30].indexOf(days);
+  if(idx>=0)btns[idx].classList.add('active');
+  const until=today();
+  const since=days===0?until:days===1?addDays(until,-1):addDays(until,-(days-1));
+  const sinceEnd=days===1?addDays(until,-1):until;
+  fp.setDate([since,sinceEnd],false);
+  applyRange(since,sinceEnd);
+}
+function clearShortcuts(){document.querySelectorAll('.ps-btn').forEach(b=>b.classList.remove('active'))}
+function applyRange(since,until){
+  activeSince=since;activeUntil=until;
+  const inRange=DAILY.filter(d=>d.date>=since&&d.date<=until).sort((a,b)=>a.date.localeCompare(b.date));
+  const totalSpend=inRange.reduce((s,d)=>s+d.spend,0);
+  const totalMsgs=inRange.reduce((s,d)=>s+d.msgs,0);
+  const cpMsg=totalMsgs>0?totalSpend/totalMsgs:0;
+  const totalImpr=inRange.reduce((s,d)=>s+d.impr,0);
+  document.getElementById('kpi-spend').textContent=fmtBRL(totalSpend);
+  document.getElementById('kpi-spend-sub').textContent=`${inRange.length} dias · Impressões: ${fmtNum(totalImpr)}`;
+  document.getElementById('kpi-msgs').textContent=fmtNum(totalMsgs);
+  document.getElementById('kpi-msgs-sub').textContent=`Média diária: ${inRange.length>0?(totalMsgs/inRange.length).toFixed(1):0} msgs`;
+  document.getElementById('kpi-cpmsg').textContent=fmtBRL(cpMsg);
+  document.getElementById('kpi-cpmsg-sub').textContent=cpMsg>0&&cpMsg<=12?'✓ Dentro da meta (≤R$12)':cpMsg>12?'⚠ Acima da meta':'—';
+  document.getElementById('kpi-cpmsg').style.color=cpMsg>15?'#fa383e':cpMsg>12?'#e2a01d':'#1c1e21';
+  document.getElementById('chartSub').textContent=fmtFull(since)+' – '+fmtFull(until);
+  renderChart(inRange);renderTable(since,until);
+}
+function renderChart(days){
+  if(chart){chart.destroy();chart=null}
+  chart=new Chart(document.getElementById('mainChart'),{
+    data:{
+      labels:days.map(d=>fmtShort(d.date)),
+      datasets:[
+        {type:'bar',label:'Mensagens Iniciadas',data:days.map(d=>d.msgs),
+          backgroundColor:'rgba(24,119,242,0.65)',borderColor:'rgba(24,119,242,1)',
+          borderWidth:1,borderRadius:4,yAxisID:'yL',order:2},
+        {type:'line',label:'Valor Investido',data:days.map(d=>d.spend),
+          borderColor:'#7b1fa2',backgroundColor:'transparent',
+          borderWidth:2.5,pointRadius:4,pointBackgroundColor:'#7b1fa2',
+          tension:0.3,yAxisID:'yR',order:1}
+      ]
+    },
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      interaction:{mode:'index',intersect:false},
+      plugins:{
+        legend:{display:true,position:'top',align:'start',
+          labels:{font:{size:11,family:'Inter'},color:'#606770',boxWidth:14,padding:14,usePointStyle:true}},
+        tooltip:{backgroundColor:'#fff',titleColor:'#1c1e21',bodyColor:'#606770',
+          borderColor:'#dddfe2',borderWidth:1,padding:10,
+          callbacks:{label(c){return c.dataset.label==='Valor Investido'?' '+fmtBRL(c.raw):' '+fmtNum(c.raw)+' msgs'}}}
+      },
+      scales:{
+        yL:{type:'linear',position:'left',beginAtZero:true,
+            title:{display:true,text:'Mensagens Iniciadas',color:'#606770',font:{size:10}},
+            ticks:{color:'#606770',font:{size:10}},grid:{color:'rgba(0,0,0,.05)'}},
+        yR:{type:'linear',position:'right',beginAtZero:true,
+            title:{display:true,text:'Valor Investido',color:'#606770',font:{size:10}},
+            ticks:{color:'#606770',font:{size:10},callback:v=>'R$'+v.toFixed(0)},
+            grid:{display:false}},
+        x:{ticks:{color:'#606770',font:{size:10},maxRotation:45},grid:{display:false}}
+      }
+    }
+  });
+}
+function renderTable(since,until){
+  const tbody=document.getElementById('tableBody');
+  const todayStr=DAILY.length>0?DAILY[0].date:'';
+  tbody.innerHTML='';
+  DAILY.forEach(d=>{
+    const inSel=d.date>=since&&d.date<=until;
+    const isToday=d.date===todayStr;
+    const[y,m,day]=d.date.split('-');
+    const label=`${+day} de ${PT_M[+m-1]}.`;
+    const cpClass=d.cost_msg<=10?'td-good':d.cost_msg<=15?'td-warn':'td-bad';
+    const tr=document.createElement('tr');
+    if(isToday)tr.className='today-row';
+    else if(!inSel)tr.className='out-range';
+    tr.innerHTML=`
+      <td>${label}${isToday?'<span class="today-badge">HOJE</span>':''}${inSel&&!isToday?'<span class="range-badge">✓</span>':''}</td>
+      <td class="td-spend">${fmtBRL(d.spend)}</td>
+      <td class="td-msgs">${fmtNum(d.msgs)}</td>
+      <td class="${cpClass}">${fmtBRL(d.cost_msg)}</td>
+      <td>${fmtNum(d.impr)}</td>
+      <td>${fmtBRL(d.cpm)}</td>
+      <td>${d.ctr.toFixed(2)}%</td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+window.addEventListener('load',()=>applyShortcut(DEFAULT_DAYS));
+</script>
+</body>
+</html>
