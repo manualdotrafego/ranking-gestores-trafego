@@ -13,8 +13,6 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Inter',sans-serif;background:#f0f2f5;color:#1c1e21;font-size:14px}
 .page{max-width:920px;margin:0 auto;padding:24px 16px 48px}
-
-/* HEADER */
 .header{background:#fff;border-radius:8px;padding:14px 22px;margin-bottom:18px;
         display:flex;align-items:center;justify-content:space-between;
         box-shadow:0 1px 3px rgba(0,0,0,.12)}
@@ -22,21 +20,16 @@ body{font-family:'Inter',sans-serif;background:#f0f2f5;color:#1c1e21;font-size:1
 .fb-wordmark{font-size:22px;font-weight:800;color:#1877f2;line-height:1}
 .fb-sub{font-size:11px;color:#606770;font-weight:500}
 .dbout-logo{height:44px;width:auto;object-fit:contain}
-
-/* Campaign info */
 .camp-info{background:#fff;border-radius:8px;padding:13px 20px;margin-bottom:16px;
            box-shadow:0 1px 3px rgba(0,0,0,.1);display:flex;align-items:center;gap:12px}
 .camp-dot{width:10px;height:10px;border-radius:50%;background:#42b72a;flex-shrink:0}
 .camp-name{font-size:13px;font-weight:600;color:#1c1e21}
 .camp-status{font-size:11px;color:#42b72a;font-weight:700}
 .camp-account{font-size:11px;color:#8a8d91;margin-left:auto;white-space:nowrap}
-
-/* DATE PICKER */
 .date-range-wrap{display:flex;justify-content:center;margin-bottom:18px;gap:8px;flex-wrap:wrap}
 .date-input-wrap{position:relative}
 .date-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);pointer-events:none;color:#606770}
-#dateRangeInput{
-  background:#fff;border:1.5px solid #dddfe2;border-radius:8px;
+#dateRangeInput{background:#fff;border:1.5px solid #dddfe2;border-radius:8px;
   padding:9px 16px 9px 36px;font-size:13px;font-weight:600;color:#1c1e21;
   font-family:'Inter',sans-serif;cursor:pointer;min-width:280px;text-align:center;
   box-shadow:0 1px 3px rgba(0,0,0,.08);transition:border-color .15s;outline:none}
@@ -47,8 +40,6 @@ body{font-family:'Inter',sans-serif;background:#f0f2f5;color:#1c1e21;font-size:1
         font-family:'Inter',sans-serif;transition:all .15s}
 .ps-btn:hover{border-color:#1877f2;color:#1877f2}
 .ps-btn.active{background:#1877f2;color:#fff;border-color:#1877f2}
-
-/* KPIs */
 .kpi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:18px}
 .kpi-card{background:#fff;border-radius:8px;padding:18px 22px;
           box-shadow:0 1px 3px rgba(0,0,0,.12);border-top:3px solid #1877f2}
@@ -56,15 +47,11 @@ body{font-family:'Inter',sans-serif;background:#f0f2f5;color:#1c1e21;font-size:1
            letter-spacing:.6px;margin-bottom:6px}
 .kpi-value{font-size:26px;font-weight:800;color:#1c1e21;line-height:1}
 .kpi-sub{font-size:11px;color:#8a8d91;margin-top:5px}
-
-/* CHART CARD */
 .section-card{background:#fff;border-radius:8px;padding:20px 24px;margin-bottom:18px;
               box-shadow:0 1px 3px rgba(0,0,0,.12)}
 .section-title{font-size:15px;font-weight:700;color:#1c1e21;margin-bottom:2px}
 .section-sub{font-size:12px;color:#8a8d91;margin-bottom:16px}
 .chart-wrap{height:280px;position:relative}
-
-/* TABLE */
 .table-wrap{overflow-x:auto}
 table{width:100%;border-collapse:collapse;font-size:13px}
 thead th{padding:10px 14px;text-align:right;font-weight:700;color:#606770;
@@ -86,17 +73,12 @@ tbody td:first-child{text-align:left;color:#606770;font-weight:600}
              padding:1px 5px;border-radius:3px;margin-left:5px;vertical-align:middle}
 .today-badge{background:#e7f3ff;color:#1877f2}
 .range-badge{background:#e6f4ea;color:#2d9e43}
-
-/* Flatpickr overrides */
 .flatpickr-calendar{font-family:'Inter',sans-serif!important;border-radius:10px;
                     box-shadow:0 8px 24px rgba(0,0,0,.15)!important}
 .flatpickr-day.selected,.flatpickr-day.startRange,.flatpickr-day.endRange{
   background:#1877f2!important;border-color:#1877f2!important}
 .flatpickr-day.inRange{background:#e7f3ff!important;border-color:#e7f3ff!important;color:#1c1e21}
-
-/* Footer */
 .footer{text-align:center;font-size:11px;color:#8a8d91;margin-top:24px}
-
 @media(max-width:620px){
   .kpi-grid{grid-template-columns:1fr}
   #dateRangeInput{min-width:220px}
@@ -106,7 +88,6 @@ tbody td:first-child{text-align:left;color:#606770;font-weight:600}
 <body>
 <div class="page">
 
-<!-- HEADER -->
 <div class="header">
   <div class="header-left">
     <div>
@@ -117,17 +98,15 @@ tbody td:first-child{text-align:left;color:#606770;font-weight:600}
   
 </div>
 
-<!-- CAMPAIGN BADGE -->
 <div class="camp-info">
   <div class="camp-dot"></div>
   <div>
-    <div class="camp-name">C1 - 078 - São José dos Pinhais/PR - 2800$ - 11/03/26</div>
+    <div class="camp-name">234 | São Miguel Paulista - Clínica Odontológica - [2100] - 23.02.26</div>
     <div class="camp-status">Ativa</div>
   </div>
-  <div class="camp-account">Conta: 795680591769062</div>
+  <div class="camp-account">Conta: 1221130892436075</div>
 </div>
 
-<!-- DATE PICKER -->
 <div class="date-range-wrap">
   <div class="date-input-wrap">
     <span class="date-icon">📅</span>
@@ -142,7 +121,6 @@ tbody td:first-child{text-align:left;color:#606770;font-weight:600}
   </div>
 </div>
 
-<!-- KPIs -->
 <div class="kpi-grid">
   <div class="kpi-card">
     <div class="kpi-label">Valor Investido</div>
@@ -161,17 +139,15 @@ tbody td:first-child{text-align:left;color:#606770;font-weight:600}
   </div>
 </div>
 
-<!-- CHART -->
 <div class="section-card">
   <div class="section-title">Visão Geral</div>
   <div class="section-sub" id="chartSub">Período selecionado</div>
   <div class="chart-wrap"><canvas id="mainChart"></canvas></div>
 </div>
 
-<!-- TABLE -->
 <div class="section-card">
   <div class="section-title">Detalhamento</div>
-  <div class="section-sub">Diário · Últimos 30 dias</div>
+  <div class="section-sub">Diário · Histórico completo</div>
   <div class="table-wrap">
     <table>
       <thead>
@@ -191,131 +167,87 @@ tbody td:first-child{text-align:left;color:#606770;font-weight:600}
 </div>
 
 <div class="footer">
-  Gerado em 13/04/2026 · 078 -  São José dos Pinhais · CT05 - Thiago Braga · Meta API v21.0
+  Gerado em 01/05/2026 · 078 -  São José dos Pinhais · Meta API v21.0
 </div>
-
 </div>
 
 <script>
-const DAILY = [{"date": "2026-04-13", "spend": 21.81, "msgs": 11, "cost_msg": 1.98, "impr": 1171, "cpm": 18.63, "ctr": 1.11}, {"date": "2026-04-12", "spend": 64.91, "msgs": 39, "cost_msg": 1.66, "impr": 5458, "cpm": 11.89, "ctr": 0.79}, {"date": "2026-04-11", "spend": 66.21, "msgs": 40, "cost_msg": 1.66, "impr": 5957, "cpm": 11.11, "ctr": 0.74}, {"date": "2026-04-10", "spend": 65.65, "msgs": 40, "cost_msg": 1.64, "impr": 5396, "cpm": 12.17, "ctr": 0.98}, {"date": "2026-04-09", "spend": 65.52, "msgs": 52, "cost_msg": 1.26, "impr": 4266, "cpm": 15.36, "ctr": 1.15}, {"date": "2026-04-08", "spend": 81.19, "msgs": 35, "cost_msg": 2.32, "impr": 6835, "cpm": 11.88, "ctr": 0.79}, {"date": "2026-04-07", "spend": 121.49, "msgs": 42, "cost_msg": 2.89, "impr": 10019, "cpm": 12.13, "ctr": 0.81}, {"date": "2026-04-06", "spend": 137.81, "msgs": 69, "cost_msg": 2.0, "impr": 9420, "cpm": 14.63, "ctr": 0.79}, {"date": "2026-04-05", "spend": 98.21, "msgs": 33, "cost_msg": 2.98, "impr": 7537, "cpm": 13.03, "ctr": 0.78}, {"date": "2026-04-04", "spend": 84.45, "msgs": 41, "cost_msg": 2.06, "impr": 6776, "cpm": 12.46, "ctr": 1.0}, {"date": "2026-04-03", "spend": 79.56, "msgs": 60, "cost_msg": 1.33, "impr": 7930, "cpm": 10.03, "ctr": 0.77}, {"date": "2026-04-02", "spend": 103.69, "msgs": 63, "cost_msg": 1.65, "impr": 10231, "cpm": 10.13, "ctr": 0.95}, {"date": "2026-04-01", "spend": 99.04, "msgs": 40, "cost_msg": 2.48, "impr": 9591, "cpm": 10.33, "ctr": 0.93}, {"date": "2026-03-31", "spend": 134.26, "msgs": 42, "cost_msg": 3.2, "impr": 12442, "cpm": 10.79, "ctr": 0.79}, {"date": "2026-03-30", "spend": 93.96, "msgs": 49, "cost_msg": 1.92, "impr": 7911, "cpm": 11.88, "ctr": 0.87}, {"date": "2026-03-29", "spend": 83.33, "msgs": 28, "cost_msg": 2.98, "impr": 8088, "cpm": 10.3, "ctr": 0.83}, {"date": "2026-03-28", "spend": 84.99, "msgs": 42, "cost_msg": 2.02, "impr": 8326, "cpm": 10.21, "ctr": 0.9}, {"date": "2026-03-27", "spend": 91.62, "msgs": 52, "cost_msg": 1.76, "impr": 8935, "cpm": 10.25, "ctr": 0.86}, {"date": "2026-03-26", "spend": 70.66, "msgs": 35, "cost_msg": 2.02, "impr": 6104, "cpm": 11.58, "ctr": 0.8}, {"date": "2026-03-25", "spend": 93.33, "msgs": 63, "cost_msg": 1.48, "impr": 7259, "cpm": 12.86, "ctr": 1.01}, {"date": "2026-03-24", "spend": 158.12, "msgs": 81, "cost_msg": 1.95, "impr": 13879, "cpm": 11.39, "ctr": 0.91}, {"date": "2026-03-23", "spend": 111.66, "msgs": 46, "cost_msg": 2.43, "impr": 9496, "cpm": 11.76, "ctr": 0.76}, {"date": "2026-03-22", "spend": 71.12, "msgs": 35, "cost_msg": 2.03, "impr": 5334, "cpm": 13.33, "ctr": 1.07}, {"date": "2026-03-21", "spend": 98.64, "msgs": 50, "cost_msg": 1.97, "impr": 8435, "cpm": 11.69, "ctr": 0.76}, {"date": "2026-03-20", "spend": 65.37, "msgs": 42, "cost_msg": 1.56, "impr": 4993, "cpm": 13.09, "ctr": 1.08}, {"date": "2026-03-19", "spend": 73.56, "msgs": 37, "cost_msg": 1.99, "impr": 5817, "cpm": 12.65, "ctr": 0.79}, {"date": "2026-03-18", "spend": 95.07, "msgs": 47, "cost_msg": 2.02, "impr": 7975, "cpm": 11.92, "ctr": 0.89}, {"date": "2026-03-17", "spend": 123.58, "msgs": 54, "cost_msg": 2.29, "impr": 10697, "cpm": 11.55, "ctr": 0.74}, {"date": "2026-03-16", "spend": 131.28, "msgs": 73, "cost_msg": 1.8, "impr": 11258, "cpm": 11.66, "ctr": 0.85}, {"date": "2026-03-15", "spend": 63.51, "msgs": 21, "cost_msg": 3.02, "impr": 5386, "cpm": 11.79, "ctr": 0.76}];
-
+const DAILY = [{"date": "2026-05-01", "spend": 55.33, "msgs": 47, "cost_msg": 1.18, "impr": 7127, "cpm": 7.76, "ctr": 1.21}, {"date": "2026-04-30", "spend": 51.63, "msgs": 68, "cost_msg": 0.76, "impr": 5442, "cpm": 9.49, "ctr": 1.71}, {"date": "2026-04-29", "spend": 52.73, "msgs": 49, "cost_msg": 1.08, "impr": 6317, "cpm": 8.35, "ctr": 1.23}, {"date": "2026-04-28", "spend": 80.84, "msgs": 127, "cost_msg": 0.64, "impr": 9507, "cpm": 8.5, "ctr": 1.47}, {"date": "2026-04-27", "spend": 89.31, "msgs": 121, "cost_msg": 0.74, "impr": 10617, "cpm": 8.41, "ctr": 1.32}, {"date": "2026-04-26", "spend": 69.74, "msgs": 91, "cost_msg": 0.77, "impr": 8906, "cpm": 7.83, "ctr": 1.3}, {"date": "2026-04-25", "spend": 60.46, "msgs": 84, "cost_msg": 0.72, "impr": 8951, "cpm": 6.75, "ctr": 1.33}, {"date": "2026-04-24", "spend": 53.38, "msgs": 84, "cost_msg": 0.64, "impr": 6832, "cpm": 7.81, "ctr": 1.42}, {"date": "2026-04-23", "spend": 81.74, "msgs": 102, "cost_msg": 0.8, "impr": 9384, "cpm": 8.71, "ctr": 1.36}, {"date": "2026-04-22", "spend": 69.8, "msgs": 87, "cost_msg": 0.8, "impr": 6534, "cpm": 10.68, "ctr": 1.36}, {"date": "2026-04-21", "spend": 102.44, "msgs": 93, "cost_msg": 1.1, "impr": 13587, "cpm": 7.54, "ctr": 1.3}, {"date": "2026-04-20", "spend": 91.78, "msgs": 111, "cost_msg": 0.83, "impr": 9898, "cpm": 9.27, "ctr": 1.36}, {"date": "2026-04-19", "spend": 29.91, "msgs": 38, "cost_msg": 0.79, "impr": 3445, "cpm": 8.68, "ctr": 1.6}, {"date": "2026-04-18", "spend": 65.37, "msgs": 111, "cost_msg": 0.59, "impr": 9622, "cpm": 6.79, "ctr": 1.62}, {"date": "2026-04-17", "spend": 58.55, "msgs": 68, "cost_msg": 0.86, "impr": 7721, "cpm": 7.58, "ctr": 1.28}, {"date": "2026-04-16", "spend": 66.08, "msgs": 75, "cost_msg": 0.88, "impr": 8881, "cpm": 7.44, "ctr": 1.32}, {"date": "2026-04-15", "spend": 71.69, "msgs": 117, "cost_msg": 0.61, "impr": 8994, "cpm": 7.97, "ctr": 1.33}, {"date": "2026-04-14", "spend": 96.26, "msgs": 96, "cost_msg": 1.0, "impr": 11139, "cpm": 8.64, "ctr": 1.4}, {"date": "2026-04-13", "spend": 78.67, "msgs": 102, "cost_msg": 0.77, "impr": 7495, "cpm": 10.5, "ctr": 1.39}, {"date": "2026-04-12", "spend": 52.79, "msgs": 75, "cost_msg": 0.7, "impr": 6784, "cpm": 7.78, "ctr": 1.4}, {"date": "2026-04-11", "spend": 65.33, "msgs": 62, "cost_msg": 1.05, "impr": 8716, "cpm": 7.5, "ctr": 1.42}, {"date": "2026-04-10", "spend": 56.52, "msgs": 77, "cost_msg": 0.73, "impr": 7482, "cpm": 7.55, "ctr": 1.44}, {"date": "2026-04-09", "spend": 49.91, "msgs": 79, "cost_msg": 0.63, "impr": 6482, "cpm": 7.7, "ctr": 1.43}, {"date": "2026-04-08", "spend": 62.16, "msgs": 94, "cost_msg": 0.66, "impr": 8733, "cpm": 7.12, "ctr": 1.35}, {"date": "2026-04-07", "spend": 85.88, "msgs": 99, "cost_msg": 0.87, "impr": 11283, "cpm": 7.61, "ctr": 1.2}, {"date": "2026-04-06", "spend": 92.51, "msgs": 136, "cost_msg": 0.68, "impr": 9724, "cpm": 9.51, "ctr": 1.36}, {"date": "2026-04-05", "spend": 76.74, "msgs": 88, "cost_msg": 0.87, "impr": 10164, "cpm": 7.55, "ctr": 1.11}, {"date": "2026-04-04", "spend": 55.31, "msgs": 49, "cost_msg": 1.13, "impr": 6103, "cpm": 9.06, "ctr": 1.18}, {"date": "2026-04-03", "spend": 63.66, "msgs": 91, "cost_msg": 0.7, "impr": 8488, "cpm": 7.5, "ctr": 1.05}, {"date": "2026-04-02", "spend": 67.11, "msgs": 97, "cost_msg": 0.69, "impr": 8462, "cpm": 7.93, "ctr": 1.51}];
+const DEFAULT_DAYS = 15;
 const PT_M = ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
 const PT_MF = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
-
-let chart = null;
-let activeSince = null;
-let activeUntil = null;
-
+let chart=null, activeSince=null, activeUntil=null;
 function fmtBRL(v){return 'R$ '+Number(v).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2})}
 function fmtNum(v){return Number(v).toLocaleString('pt-BR')}
 function fmtShort(iso){const[y,m,d]=iso.split('-');return `${+d} de ${PT_M[+m-1]}.`}
 function fmtFull(iso){const[y,m,d]=iso.split('-');return `${+d} de ${PT_MF[+m-1]} de ${y}`}
 function addDays(iso,n){const d=new Date(iso+'T12:00:00');d.setDate(d.getDate()+n);return d.toISOString().slice(0,10)}
 function today(){return DAILY.length>0?DAILY[0].date:new Date().toISOString().slice(0,10)}
-
-// Flatpickr init
-const minDate = DAILY.length>0?DAILY[DAILY.length-1].date:undefined;
-const maxDate = DAILY.length>0?DAILY[0].date:undefined;
-
-const fp = flatpickr('#dateRangeInput', {
-  mode: 'range',
-  locale: 'pt',
-  dateFormat: 'd \de M. \de Y',
-  minDate: minDate,
-  maxDate: maxDate,
-  showMonths: 1,
-  onChange(selectedDates) {
-    if (selectedDates.length === 2) {
-      const since = selectedDates[0].toISOString().slice(0,10);
-      const until = selectedDates[1].toISOString().slice(0,10);
+const minDate=DAILY.length>0?DAILY[DAILY.length-1].date:undefined;
+const maxDate=DAILY.length>0?DAILY[0].date:undefined;
+const fp=flatpickr('#dateRangeInput',{
+  mode:'range',locale:'pt',dateFormat:'d \de M. \de Y',
+  minDate,maxDate,showMonths:1,
+  onChange(selectedDates){
+    if(selectedDates.length===2){
       clearShortcuts();
-      applyRange(since, until);
+      applyRange(selectedDates[0].toISOString().slice(0,10),selectedDates[1].toISOString().slice(0,10));
     }
   }
 });
-
-function applyShortcut(days) {
+function applyShortcut(days){
   clearShortcuts();
-  const btns = document.querySelectorAll('.ps-btn');
-  const idx = [0,1,7,15,30].indexOf(days);
-  if (idx>=0) btns[idx].classList.add('active');
-
-  const until = today();
-  const since = days === 0 ? until : days === 1 ? addDays(until,-1) : addDays(until,-(days-1));
-  const sinceEnd = days === 1 ? addDays(until,-1) : until;
-
-  fp.setDate([since, sinceEnd], false);
-  applyRange(since, sinceEnd);
+  const btns=document.querySelectorAll('.ps-btn');
+  const idx=[0,1,7,15,30].indexOf(days);
+  if(idx>=0)btns[idx].classList.add('active');
+  const until=today();
+  const since=days===0?until:days===1?addDays(until,-1):addDays(until,-(days-1));
+  const sinceEnd=days===1?addDays(until,-1):until;
+  fp.setDate([since,sinceEnd],false);
+  applyRange(since,sinceEnd);
 }
-
-function clearShortcuts(){
-  document.querySelectorAll('.ps-btn').forEach(b=>b.classList.remove('active'));
+function clearShortcuts(){document.querySelectorAll('.ps-btn').forEach(b=>b.classList.remove('active'))}
+function applyRange(since,until){
+  activeSince=since;activeUntil=until;
+  const inRange=DAILY.filter(d=>d.date>=since&&d.date<=until).sort((a,b)=>a.date.localeCompare(b.date));
+  const totalSpend=inRange.reduce((s,d)=>s+d.spend,0);
+  const totalMsgs=inRange.reduce((s,d)=>s+d.msgs,0);
+  const cpMsg=totalMsgs>0?totalSpend/totalMsgs:0;
+  const totalImpr=inRange.reduce((s,d)=>s+d.impr,0);
+  document.getElementById('kpi-spend').textContent=fmtBRL(totalSpend);
+  document.getElementById('kpi-spend-sub').textContent=`${inRange.length} dias · Impressões: ${fmtNum(totalImpr)}`;
+  document.getElementById('kpi-msgs').textContent=fmtNum(totalMsgs);
+  document.getElementById('kpi-msgs-sub').textContent=`Média diária: ${inRange.length>0?(totalMsgs/inRange.length).toFixed(1):0} msgs`;
+  document.getElementById('kpi-cpmsg').textContent=fmtBRL(cpMsg);
+  document.getElementById('kpi-cpmsg-sub').textContent=cpMsg>0&&cpMsg<=12?'✓ Dentro da meta (≤R$12)':cpMsg>12?'⚠ Acima da meta':'—';
+  document.getElementById('kpi-cpmsg').style.color=cpMsg>15?'#fa383e':cpMsg>12?'#e2a01d':'#1c1e21';
+  document.getElementById('chartSub').textContent=fmtFull(since)+' – '+fmtFull(until);
+  renderChart(inRange);renderTable(since,until);
 }
-
-function applyRange(since, until) {
-  activeSince = since;
-  activeUntil = until;
-
-  const inRange = DAILY.filter(d => d.date >= since && d.date <= until)
-                       .sort((a,b)=>a.date.localeCompare(b.date));
-
-  const totalSpend = inRange.reduce((s,d)=>s+d.spend,0);
-  const totalMsgs  = inRange.reduce((s,d)=>s+d.msgs,0);
-  const cpMsg      = totalMsgs>0 ? totalSpend/totalMsgs : 0;
-  const totalImpr  = inRange.reduce((s,d)=>s+d.impr,0);
-
-  document.getElementById('kpi-spend').textContent   = fmtBRL(totalSpend);
-  document.getElementById('kpi-spend-sub').textContent = `${inRange.length} dias · Impressões: ${fmtNum(totalImpr)}`;
-  document.getElementById('kpi-msgs').textContent    = fmtNum(totalMsgs);
-  document.getElementById('kpi-msgs-sub').textContent  = `Média diária: ${inRange.length>0?(totalMsgs/inRange.length).toFixed(1):0} msgs`;
-  document.getElementById('kpi-cpmsg').textContent   = fmtBRL(cpMsg);
-  document.getElementById('kpi-cpmsg-sub').textContent = cpMsg>0&&cpMsg<=12 ? '✓ Dentro da meta (≤R$12)' : cpMsg>12 ? '⚠ Acima da meta' : '—';
-  document.getElementById('kpi-cpmsg').style.color   = cpMsg>15?'#fa383e':cpMsg>12?'#e2a01d':'#1c1e21';
-
-  document.getElementById('chartSub').textContent = fmtFull(since) + ' – ' + fmtFull(until);
-
-  renderChart(inRange);
-  renderTable(since, until);
-}
-
-function renderChart(days) {
+function renderChart(days){
   if(chart){chart.destroy();chart=null}
-  const ctx = document.getElementById('mainChart');
-
-  chart = new Chart(ctx, {
-    data: {
-      labels: days.map(d=>fmtShort(d.date)),
+  chart=new Chart(document.getElementById('mainChart'),{
+    data:{
+      labels:days.map(d=>fmtShort(d.date)),
       datasets:[
-        {
-          type:'bar', label:'Mensagens Iniciadas',
-          data: days.map(d=>d.msgs),
-          backgroundColor:'rgba(24,119,242,0.65)',
-          borderColor:'rgba(24,119,242,1)',
-          borderWidth:1,borderRadius:4,
-          yAxisID:'yL', order:2
-        },
-        {
-          type:'line', label:'Valor Investido',
-          data: days.map(d=>d.spend),
-          borderColor:'#7b1fa2', backgroundColor:'transparent',
-          borderWidth:2.5, pointRadius:4, pointBackgroundColor:'#7b1fa2',
-          tension:0.3, yAxisID:'yR', order:1
-        }
+        {type:'bar',label:'Mensagens Iniciadas',data:days.map(d=>d.msgs),
+          backgroundColor:'rgba(24,119,242,0.65)',borderColor:'rgba(24,119,242,1)',
+          borderWidth:1,borderRadius:4,yAxisID:'yL',order:2},
+        {type:'line',label:'Valor Investido',data:days.map(d=>d.spend),
+          borderColor:'#7b1fa2',backgroundColor:'transparent',
+          borderWidth:2.5,pointRadius:4,pointBackgroundColor:'#7b1fa2',
+          tension:0.3,yAxisID:'yR',order:1}
       ]
     },
     options:{
-      responsive:true, maintainAspectRatio:false,
+      responsive:true,maintainAspectRatio:false,
       interaction:{mode:'index',intersect:false},
       plugins:{
         legend:{display:true,position:'top',align:'start',
           labels:{font:{size:11,family:'Inter'},color:'#606770',boxWidth:14,padding:14,usePointStyle:true}},
-        tooltip:{
-          backgroundColor:'#fff',titleColor:'#1c1e21',bodyColor:'#606770',
+        tooltip:{backgroundColor:'#fff',titleColor:'#1c1e21',bodyColor:'#606770',
           borderColor:'#dddfe2',borderWidth:1,padding:10,
-          callbacks:{label(c){
-            return c.dataset.label==='Valor Investido'?' '+fmtBRL(c.raw):' '+fmtNum(c.raw)+' msgs'
-          }}
-        }
+          callbacks:{label(c){return c.dataset.label==='Valor Investido'?' '+fmtBRL(c.raw):' '+fmtNum(c.raw)+' msgs'}}}
       },
       scales:{
         yL:{type:'linear',position:'left',beginAtZero:true,
@@ -330,21 +262,20 @@ function renderChart(days) {
     }
   });
 }
-
-function renderTable(since, until) {
-  const tbody = document.getElementById('tableBody');
-  const todayStr = DAILY.length>0?DAILY[0].date:'';
-  tbody.innerHTML = '';
-  DAILY.forEach(d => {
-    const inSel = d.date >= since && d.date <= until;
-    const isToday = d.date === todayStr;
-    const [y,m,day] = d.date.split('-');
-    const label = `${+day} de ${PT_M[+m-1]}.`;
-    const cpClass = d.cost_msg<=10?'td-good':d.cost_msg<=15?'td-warn':'td-bad';
-    const tr = document.createElement('tr');
-    if(isToday) tr.className='today-row';
-    else if(!inSel) tr.className='out-range';
-    tr.innerHTML = `
+function renderTable(since,until){
+  const tbody=document.getElementById('tableBody');
+  const todayStr=DAILY.length>0?DAILY[0].date:'';
+  tbody.innerHTML='';
+  DAILY.forEach(d=>{
+    const inSel=d.date>=since&&d.date<=until;
+    const isToday=d.date===todayStr;
+    const[y,m,day]=d.date.split('-');
+    const label=`${+day} de ${PT_M[+m-1]}.`;
+    const cpClass=d.cost_msg<=10?'td-good':d.cost_msg<=15?'td-warn':'td-bad';
+    const tr=document.createElement('tr');
+    if(isToday)tr.className='today-row';
+    else if(!inSel)tr.className='out-range';
+    tr.innerHTML=`
       <td>${label}${isToday?'<span class="today-badge">HOJE</span>':''}${inSel&&!isToday?'<span class="range-badge">✓</span>':''}</td>
       <td class="td-spend">${fmtBRL(d.spend)}</td>
       <td class="td-msgs">${fmtNum(d.msgs)}</td>
@@ -356,12 +287,7 @@ function renderTable(since, until) {
     tbody.appendChild(tr);
   });
 }
-
-document.getElementById('genDate') && (document.getElementById('genDate').textContent =
-  new Date().toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'}));
-
-// Init: últimos 15 dias
-applyShortcut(15);
+window.addEventListener('load',()=>applyShortcut(DEFAULT_DAYS));
 </script>
 </body>
 </html>
