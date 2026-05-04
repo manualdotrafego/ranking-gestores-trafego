@@ -167,13 +167,15 @@ tbody td:first-child{text-align:left;color:#606770;font-weight:600}
 </div>
 
 <div class="footer">
-  Gerado em 02/05/2026 · Brazlándia · Meta API v21.0
+  Gerado em 04/05/2026 · Brazlándia · Meta API v21.0
 </div>
 </div>
 
 <script>
-const DAILY = [{"date": "2026-05-02", "spend": 17.85, "msgs": 3, "cost_msg": 5.95, "impr": 1884, "cpm": 9.47, "ctr": 0.8}, {"date": "2026-05-01", "spend": 29.62, "msgs": 16, "cost_msg": 1.85, "impr": 3805, "cpm": 7.78, "ctr": 0.92}, {"date": "2026-04-30", "spend": 31.72, "msgs": 24, "cost_msg": 1.32, "impr": 2985, "cpm": 10.63, "ctr": 1.51}, {"date": "2026-04-29", "spend": 46.66, "msgs": 22, "cost_msg": 2.12, "impr": 3831, "cpm": 12.18, "ctr": 1.46}, {"date": "2026-04-28", "spend": 38.99, "msgs": 14, "cost_msg": 2.79, "impr": 2871, "cpm": 13.58, "ctr": 1.08}];
+const DAILY = [{"date": "2026-05-01", "spend": 29.62, "msgs": 16, "cost_msg": 1.85, "impr": 3805, "cpm": 7.78, "ctr": 0.92}, {"date": "2026-04-30", "spend": 31.72, "msgs": 24, "cost_msg": 1.32, "impr": 2985, "cpm": 10.63, "ctr": 1.51}, {"date": "2026-04-29", "spend": 46.66, "msgs": 22, "cost_msg": 2.12, "impr": 3831, "cpm": 12.18, "ctr": 1.46}, {"date": "2026-04-28", "spend": 38.99, "msgs": 14, "cost_msg": 2.79, "impr": 2871, "cpm": 13.58, "ctr": 1.08}];
 const DEFAULT_DAYS = 15;
+const FIXED_SINCE = '2026-04-15';
+const FIXED_UNTIL = '2026-05-01';
 const PT_M = ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
 const PT_MF = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
 let chart=null, activeSince=null, activeUntil=null;
@@ -287,7 +289,10 @@ function renderTable(since,until){
     tbody.appendChild(tr);
   });
 }
-window.addEventListener('load',()=>applyShortcut(DEFAULT_DAYS));
+window.addEventListener('load',()=>{
+  fp.setDate([FIXED_SINCE,FIXED_UNTIL],false);
+  applyRange(FIXED_SINCE,FIXED_UNTIL);
+});
 </script>
 </body>
 </html>

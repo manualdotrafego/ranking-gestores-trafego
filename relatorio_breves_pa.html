@@ -167,13 +167,15 @@ tbody td:first-child{text-align:left;color:#606770;font-weight:600}
 </div>
 
 <div class="footer">
-  Gerado em 02/05/2026 · Breves PA · Meta API v21.0
+  Gerado em 04/05/2026 · Breves PA · Meta API v21.0
 </div>
 </div>
 
 <script>
-const DAILY = [{"date": "2026-05-02", "spend": 11.31, "msgs": 7, "cost_msg": 1.62, "impr": 1794, "cpm": 6.3, "ctr": 1.51}, {"date": "2026-05-01", "spend": 23.62, "msgs": 25, "cost_msg": 0.94, "impr": 4251, "cpm": 5.56, "ctr": 1.81}, {"date": "2026-04-30", "spend": 24.1, "msgs": 16, "cost_msg": 1.51, "impr": 3916, "cpm": 6.15, "ctr": 1.43}, {"date": "2026-04-29", "spend": 32.46, "msgs": 28, "cost_msg": 1.16, "impr": 5512, "cpm": 5.89, "ctr": 1.49}, {"date": "2026-04-28", "spend": 33.17, "msgs": 20, "cost_msg": 1.66, "impr": 5721, "cpm": 5.8, "ctr": 1.38}, {"date": "2026-04-27", "spend": 30.04, "msgs": 21, "cost_msg": 1.43, "impr": 4118, "cpm": 7.29, "ctr": 1.6}, {"date": "2026-04-26", "spend": 29.01, "msgs": 17, "cost_msg": 1.71, "impr": 5354, "cpm": 5.42, "ctr": 1.31}, {"date": "2026-04-25", "spend": 48.26, "msgs": 29, "cost_msg": 1.66, "impr": 9113, "cpm": 5.3, "ctr": 1.39}, {"date": "2026-04-24", "spend": 48.97, "msgs": 44, "cost_msg": 1.11, "impr": 9338, "cpm": 5.24, "ctr": 1.56}, {"date": "2026-04-23", "spend": 49.24, "msgs": 48, "cost_msg": 1.03, "impr": 8506, "cpm": 5.79, "ctr": 1.94}, {"date": "2026-04-22", "spend": 46.45, "msgs": 40, "cost_msg": 1.16, "impr": 6931, "cpm": 6.7, "ctr": 1.4}, {"date": "2026-04-10", "spend": 0.0, "msgs": 0, "cost_msg": 0.0, "impr": 0, "cpm": 0.0, "ctr": 0.0}, {"date": "2026-04-09", "spend": 0.0, "msgs": 0, "cost_msg": 0.0, "impr": 0, "cpm": 0.0, "ctr": 0.0}, {"date": "2026-04-08", "spend": 0.0, "msgs": 0, "cost_msg": 0.0, "impr": 0, "cpm": 0.0, "ctr": 0.0}, {"date": "2026-04-07", "spend": 0.0, "msgs": 0, "cost_msg": 0.0, "impr": 0, "cpm": 0.0, "ctr": 0.0}, {"date": "2026-04-06", "spend": 7.46, "msgs": 6, "cost_msg": 1.24, "impr": 853, "cpm": 8.75, "ctr": 2.34}, {"date": "2026-04-05", "spend": 26.01, "msgs": 24, "cost_msg": 1.08, "impr": 3958, "cpm": 6.57, "ctr": 1.59}, {"date": "2026-04-04", "spend": 23.55, "msgs": 14, "cost_msg": 1.68, "impr": 3500, "cpm": 6.73, "ctr": 1.37}, {"date": "2026-04-03", "spend": 24.02, "msgs": 26, "cost_msg": 0.92, "impr": 4931, "cpm": 4.87, "ctr": 1.74}];
+const DAILY = [{"date": "2026-05-01", "spend": 23.81, "msgs": 25, "cost_msg": 0.95, "impr": 4257, "cpm": 5.59, "ctr": 1.81}, {"date": "2026-04-30", "spend": 24.1, "msgs": 16, "cost_msg": 1.51, "impr": 3916, "cpm": 6.15, "ctr": 1.43}, {"date": "2026-04-29", "spend": 32.46, "msgs": 28, "cost_msg": 1.16, "impr": 5512, "cpm": 5.89, "ctr": 1.49}, {"date": "2026-04-28", "spend": 33.17, "msgs": 20, "cost_msg": 1.66, "impr": 5721, "cpm": 5.8, "ctr": 1.38}, {"date": "2026-04-27", "spend": 30.04, "msgs": 21, "cost_msg": 1.43, "impr": 4118, "cpm": 7.29, "ctr": 1.6}, {"date": "2026-04-26", "spend": 29.01, "msgs": 17, "cost_msg": 1.71, "impr": 5354, "cpm": 5.42, "ctr": 1.31}, {"date": "2026-04-25", "spend": 48.26, "msgs": 29, "cost_msg": 1.66, "impr": 9113, "cpm": 5.3, "ctr": 1.39}, {"date": "2026-04-24", "spend": 48.97, "msgs": 44, "cost_msg": 1.11, "impr": 9338, "cpm": 5.24, "ctr": 1.56}, {"date": "2026-04-23", "spend": 49.24, "msgs": 48, "cost_msg": 1.03, "impr": 8506, "cpm": 5.79, "ctr": 1.94}, {"date": "2026-04-22", "spend": 46.45, "msgs": 40, "cost_msg": 1.16, "impr": 6931, "cpm": 6.7, "ctr": 1.4}];
 const DEFAULT_DAYS = 15;
+const FIXED_SINCE = '2026-04-15';
+const FIXED_UNTIL = '2026-05-01';
 const PT_M = ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
 const PT_MF = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
 let chart=null, activeSince=null, activeUntil=null;
@@ -287,7 +289,10 @@ function renderTable(since,until){
     tbody.appendChild(tr);
   });
 }
-window.addEventListener('load',()=>applyShortcut(DEFAULT_DAYS));
+window.addEventListener('load',()=>{
+  fp.setDate([FIXED_SINCE,FIXED_UNTIL],false);
+  applyRange(FIXED_SINCE,FIXED_UNTIL);
+});
 </script>
 </body>
 </html>
