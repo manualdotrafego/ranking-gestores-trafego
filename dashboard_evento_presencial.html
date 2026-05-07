@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Evento Presencial · Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#070f24;--bg2:#0a1734;--sb:#0a1632;--card:#0d1d40;--card2:#11254f;
+  --border:rgba(203,230,245,0.08);--border2:rgba(203,230,245,0.18);
+  --pt:#cbe6f5;--ptd:rgba(203,230,245,0.12);--ptd2:rgba(203,230,245,0.22);
+  --gold:#d6b87a;--gn:#4ade80;--cy:#67e8f9;--pu:#a78bfa;--or:#fb923c;--rd:#f87171;
+  --txt:#ffffff;--mu:rgba(255,255,255,.45);--mu2:rgba(255,255,255,.28);
+  --sw:236px;--serif:'Cormorant Garamond',Georgia,serif;
+}
+html,body{height:100%;font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+  background:radial-gradient(circle at 15% -10%,#16306c 0%,var(--bg) 55%) fixed;
+  color:var(--txt);font-size:13px;letter-spacing:.01em}
+em.italic{font-family:var(--serif);font-style:italic;font-weight:600;color:var(--pt)}
+
+/* SIDEBAR */
+.sidebar{position:fixed;left:0;top:0;bottom:0;width:var(--sw);
+  background:linear-gradient(180deg,#0a1632 0%,#070f24 100%);
+  border-right:1px solid var(--border);display:flex;flex-direction:column;z-index:100}
+.sb-logo{padding:22px 18px 18px;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:11px;flex-shrink:0}
+.sb-mark{width:38px;height:38px;border-radius:8px;
+  background:linear-gradient(135deg,#cbe6f5 0%,#8eb6d9 100%);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--serif);font-style:italic;font-weight:600;font-size:22px;
+  color:#0a1734;line-height:1;flex-shrink:0;box-shadow:0 0 22px rgba(203,230,245,.18)}
+.sb-brand{font-family:var(--serif);font-size:18px;font-weight:600;color:#fff;letter-spacing:.04em;line-height:1}
+.sb-brand .dot{color:var(--pt)}
+.sb-sub{font-size:9px;color:var(--mu);margin-top:3px;letter-spacing:.18em;text-transform:uppercase}
+.sb-sec{padding:16px 18px 6px;font-size:9px;color:var(--mu);text-transform:uppercase;letter-spacing:.14em;flex-shrink:0}
+.sb-pills{padding:0 12px;flex:1;overflow-y:auto;min-height:0}
+.day-btn{display:flex;align-items:center;gap:9px;width:100%;
+  padding:9px 11px;border-radius:8px;background:none;border:none;
+  color:var(--mu);font-size:12px;font-family:inherit;cursor:pointer;margin-bottom:2px;
+  transition:all .14s;text-align:left}
+.day-btn .dot{width:6px;height:6px;border-radius:50%;background:currentColor;flex-shrink:0;opacity:.35}
+.day-btn:hover{background:var(--ptd);color:var(--txt)}
+.day-btn.on{background:var(--ptd);color:var(--pt);font-weight:600}
+.day-btn.on .dot{opacity:1}
+.sb-sum{padding:14px 18px 18px;border-top:1px solid var(--border);flex-shrink:0}
+.sb-sum-ttl{font-size:9px;text-transform:uppercase;color:var(--mu);letter-spacing:.14em;margin-bottom:11px}
+.sb-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.sb-lbl{font-size:11px;color:var(--mu)}
+.sb-val{font-size:13px;font-weight:700;font-variant-numeric:tabular-nums;color:var(--pt)}
+.sb-row.gn .sb-val{color:var(--gn)}
+.sb-row.cy .sb-val{color:var(--cy)}
+.sb-row.pu .sb-val{color:var(--pu)}
+.sb-row.wh .sb-val{color:var(--txt)}
+.sb-row.or .sb-val{color:var(--or)}
+.sb-row.rd .sb-val{color:var(--rd)}
+
+/* MAIN */
+.main{margin-left:var(--sw);min-height:100vh;padding:24px 24px 0;display:flex;flex-direction:column;gap:16px}
+
+/* HEADER */
+.hdr{display:flex;justify-content:space-between;align-items:flex-end;border-bottom:1px solid var(--border);padding-bottom:18px}
+.hdr h1{font-family:var(--serif);font-size:30px;font-weight:600;letter-spacing:.01em;line-height:1.1}
+.hdr h1 em{font-style:italic;color:var(--pt)}
+.hdr-sub{font-size:11px;color:var(--mu);margin-top:6px;letter-spacing:.06em}
+.hdr-range{font-size:12px;color:rgba(255,255,255,.65);margin-top:8px}
+.hdr-range strong{color:var(--pt);font-weight:600}
+.hdr-right{text-align:right;font-size:11px;color:var(--mu)}
+.hdr-tag{display:inline-flex;gap:6px;align-items:center;background:var(--ptd);color:var(--pt);
+  padding:5px 11px;border-radius:20px;font-size:10px;font-weight:600;letter-spacing:.04em;
+  border:1px solid var(--border2);margin-bottom:6px}
+.hdr-tag .pulse{width:6px;height:6px;border-radius:50%;background:var(--gn);
+  box-shadow:0 0 0 0 rgba(74,222,128,.6);animation:pulse 1.8s ease infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(74,222,128,.6)}70%{box-shadow:0 0 0 8px rgba(74,222,128,0)}100%{box-shadow:0 0 0 0 rgba(74,222,128,0)}}
+
+/* CARD */
+.card{background:var(--card);border:1px solid var(--border);border-radius:14px}
+.card-ttl{font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--mu);
+  padding:13px 16px 0;display:flex;justify-content:space-between;align-items:center}
+.bsm{font-size:9px;padding:3px 9px;border-radius:12px;font-weight:600;letter-spacing:.04em}
+.bsm-pt{background:var(--ptd);color:var(--pt)}
+.bsm-gn{background:rgba(74,222,128,.12);color:var(--gn)}
+.bsm-cy{background:rgba(103,232,249,.12);color:var(--cy)}
+.bsm-pu{background:rgba(167,139,250,.15);color:var(--pu)}
+.bsm-or{background:rgba(251,146,60,.13);color:var(--or)}
+.bsm-rd{background:rgba(248,113,113,.13);color:var(--rd)}
+.bsm-wh{background:rgba(255,255,255,.07);color:rgba(255,255,255,.55)}
+
+/* ROW1: Gauges + Chart */
+.row1{display:grid;grid-template-columns:1fr 1fr 1fr 2.3fr;gap:14px;align-items:start}
+.gcrd,.kcrd,.xcrd,.fcrd,.vcrd{transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease}
+.gcrd:hover,.kcrd:hover,.xcrd:hover,.fcrd:hover,.vcrd:hover{
+  transform:translateY(-3px);border-color:var(--border2);
+  box-shadow:0 12px 38px rgba(0,0,0,.55);z-index:2;position:relative}
+.gcrd{background:var(--card);border:1px solid var(--border);border-radius:14px;
+  padding:18px 12px 16px;display:flex;flex-direction:column;align-items:center;
+  height:230px;justify-content:center}
+.g-lbl{font-size:10px;color:var(--mu);text-transform:uppercase;letter-spacing:.1em;text-align:center;margin-bottom:10px}
+.g-wrap{position:relative;width:108px;height:108px}
+.g-wrap svg{width:100%;height:100%;display:block}
+.g-trk{fill:none;stroke:rgba(255,255,255,.06);stroke-width:9}
+.g-arc{fill:none;stroke-width:9;stroke-linecap:round;transition:stroke-dashoffset .8s cubic-bezier(.4,0,.2,1)}
+.g-ctr{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.g-num{font-size:20px;font-weight:800;font-variant-numeric:tabular-nums;line-height:1}
+.g-unit{font-size:9px;color:var(--mu);margin-top:1px;letter-spacing:.05em}
+.g-foot{font-size:10px;color:var(--mu);margin-top:6px;text-align:center}
+.ccrd{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px 16px;height:230px;display:flex;flex-direction:column}
+.ccrd canvas{display:block;width:100%!important;flex:1;min-height:0}
+
+/* ROW2: KPI strip */
+.row2{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.kcrd{background:var(--card);border:1px solid var(--border);border-radius:14px;
+  padding:16px 16px 14px;position:relative;overflow:hidden}
+.kcrd::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;border-radius:3px 0 0 3px;background:var(--pt)}
+.kcrd.gn::before{background:var(--gn)}
+.kcrd.cy::before{background:var(--cy)}
+.kcrd.pu::before{background:var(--pu)}
+.kcrd.or::before{background:var(--or)}
+.kcrd.mu::before{background:rgba(255,255,255,.18)}
+.kcrd.rd::before{background:var(--rd)}
+.k-lbl{font-size:10px;color:var(--mu);text-transform:uppercase;letter-spacing:.09em;margin-bottom:7px}
+.k-val{font-size:25px;font-weight:800;font-variant-numeric:tabular-nums;color:var(--pt);line-height:1}
+.kcrd.gn .k-val{color:var(--gn)}
+.kcrd.cy .k-val{color:var(--cy)}
+.kcrd.pu .k-val{color:var(--pu)}
+.kcrd.or .k-val{color:var(--or)}
+.kcrd.mu .k-val{color:var(--txt)}
+.kcrd.rd .k-val{color:var(--rd)}
+.k-sub{font-size:11px;color:var(--mu);margin-top:6px}
+
+/* ROW3: FUNNEL */
+.funnel-wrap{margin-top:4px}
+.funnel-hdr{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:11px}
+.funnel-ttl{font-family:var(--serif);font-size:18px;font-weight:600;color:#fff}
+.funnel-ttl em{font-style:italic;color:var(--pt)}
+.row3{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;align-items:stretch}
+.fcrd{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px 14px;
+  position:relative;overflow:hidden;display:flex;flex-direction:column}
+.fcrd::before{content:'';position:absolute;left:0;top:0;right:0;height:3px;background:var(--pt);opacity:.7}
+.fcrd.s1::before{background:var(--pt)}
+.fcrd.s2::before{background:var(--gn)}
+.fcrd.s3::before{background:var(--cy)}
+.fcrd.s4::before{background:var(--pu)}
+.fcrd.s5::before{background:linear-gradient(90deg,var(--gold),#f0d093)}
+.f-step{font-size:9px;color:var(--mu);letter-spacing:.16em;text-transform:uppercase;margin-bottom:7px;
+  display:flex;justify-content:space-between;align-items:center}
+.f-num-step{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;
+  border-radius:50%;font-weight:700;font-size:10px;color:#0a1632;background:var(--pt)}
+.fcrd.s2 .f-num-step{background:var(--gn)}
+.fcrd.s3 .f-num-step{background:var(--cy)}
+.fcrd.s4 .f-num-step{background:var(--pu)}
+.fcrd.s5 .f-num-step{background:var(--gold)}
+.f-lbl{font-family:var(--serif);font-size:14px;font-weight:600;color:#fff;line-height:1.15;margin-bottom:8px}
+.f-num{font-size:30px;font-weight:800;font-variant-numeric:tabular-nums;line-height:1;color:var(--pt)}
+.fcrd.s2 .f-num{color:var(--gn)}
+.fcrd.s3 .f-num{color:var(--cy)}
+.fcrd.s4 .f-num{color:var(--pu)}
+.fcrd.s5 .f-num{color:var(--gold)}
+.f-cost{font-size:11px;color:var(--mu);margin-top:8px}
+.f-cost span{color:#fff;font-weight:600;font-variant-numeric:tabular-nums}
+.f-pbr{height:5px;background:rgba(255,255,255,.06);border-radius:3px;overflow:hidden;margin-top:11px}
+.f-pbf{height:100%;border-radius:3px;transition:width .8s ease;background:var(--pt)}
+.fcrd.s2 .f-pbf{background:var(--gn)}
+.fcrd.s3 .f-pbf{background:var(--cy)}
+.fcrd.s4 .f-pbf{background:var(--pu)}
+.fcrd.s5 .f-pbf{background:linear-gradient(90deg,var(--gold),#f0d093)}
+.f-rate{font-size:10px;color:var(--mu);margin-top:5px}
+.f-rate strong{color:#fff;font-weight:600}
+.fcrd-arrow{position:absolute;right:-7px;top:50%;width:14px;height:14px;background:var(--bg);
+  border-top:1px solid var(--border);border-right:1px solid var(--border);
+  transform:translate(0,-50%) rotate(45deg);z-index:3;pointer-events:none}
+.f-na{font-size:11px;color:rgba(255,255,255,.25);margin-top:8px;font-style:italic}
+
+/* CREATIVE GRID */
+.cr-wrap{margin-bottom:6px}
+.cr-hdr{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:13px}
+.cr-ttl{font-family:var(--serif);font-size:16px;font-weight:600}
+.cr-ttl em{font-style:italic;color:var(--pt)}
+.cr-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px}
+.crcrd{background:var(--card);border:1px solid var(--border);border-radius:14px;
+  overflow:hidden;transition:transform .14s,border-color .14s}
+.crcrd:hover{transform:translateY(-3px);border-color:var(--border2);box-shadow:0 8px 28px rgba(0,0,0,.5)}
+.cr-thumb-wrap{position:relative;display:block;overflow:hidden}
+.cr-sbadge{position:absolute;top:8px;left:8px;z-index:3;font-size:9px;font-weight:800;letter-spacing:.06em;
+  padding:3px 9px;border-radius:20px;pointer-events:none}
+.cr-sbadge.on{background:rgba(74,222,128,.92);color:#0a1632;box-shadow:0 2px 8px rgba(0,0,0,.45)}
+.cr-sbadge.off{background:rgba(180,30,30,.9);color:#fff}
+.cr-rank{position:absolute;top:8px;right:8px;z-index:3;font-size:9px;font-weight:800;letter-spacing:.06em;
+  padding:3px 8px;border-radius:20px;background:rgba(0,0,0,.6);color:#fff}
+.cr-rank.top{background:rgba(214,184,122,.9);color:#0a1632}
+.cr-thumb{width:100%;aspect-ratio:9/16;object-fit:cover;display:block;background:#0a1632}
+.cr-ph{width:100%;aspect-ratio:9/16;display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(135deg,#0a1632,#111f45);font-size:32px}
+.cr-body{padding:11px 12px 12px}
+.cr-nm{font-size:11px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px}
+.cr-cp{font-size:10px;color:var(--mu);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:9px}
+.cr-stats{display:grid;grid-template-columns:1fr 1fr;gap:5px}
+.cs{background:rgba(203,230,245,.04);border-radius:7px;padding:6px 8px}
+.cs-l{font-size:9px;text-transform:uppercase;color:var(--mu);letter-spacing:.06em;margin-bottom:2px}
+.cs-v{font-size:13px;font-weight:700;font-variant-numeric:tabular-nums}
+.cs-v.pt{color:var(--pt)}.cs-v.wh{color:var(--txt)}.cs-v.gn{color:var(--gn)}
+.cs-v.cy{color:var(--cy)}.cs-v.pu{color:var(--pu)}.cs-v.gold{color:var(--gold)}
+.cs-v.mu{color:var(--mu)}
+
+/* TABLE */
+.tbl-crd{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden}
+.tbl-hdr{display:flex;justify-content:space-between;align-items:center;padding:13px 18px;border-bottom:1px solid var(--border)}
+.tbl-ttl{font-family:var(--serif);font-size:16px;font-weight:600}
+.tbl-ttl em{font-style:italic;color:var(--pt)}
+.tbl-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:12px;white-space:nowrap}
+th{padding:10px 14px;text-align:right;font-size:9px;text-transform:uppercase;letter-spacing:.08em;
+  color:var(--mu);background:rgba(203,230,245,.025);cursor:pointer;
+  border-bottom:1px solid var(--border);user-select:none}
+th:first-child{text-align:left}
+th:hover{color:var(--txt)}
+th.sort-asc::after{content:' ↑';color:var(--pt)}
+th.sort-desc::after{content:' ↓';color:var(--pt)}
+td{padding:10px 14px;border-bottom:1px solid rgba(255,255,255,.04)}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:rgba(203,230,245,.03)}
+.tr{text-align:right}.mono{font-variant-numeric:tabular-nums}
+.pt{color:var(--pt);font-weight:600}.dim{color:var(--mu)}
+.trunc{max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sbdg{display:inline-flex;align-items:center;gap:4px;font-size:10px;padding:3px 9px;border-radius:12px;font-weight:600;letter-spacing:.03em}
+.s-act{background:rgba(74,222,128,.13);color:var(--gn)}
+.s-pau{background:rgba(255,255,255,.06);color:var(--mu)}
+.bar-cell{display:flex;align-items:center;gap:8px;justify-content:flex-end}
+.mini-bar{width:60px;height:5px;background:rgba(255,255,255,.06);border-radius:3px;overflow:hidden;flex-shrink:0}
+.mini-fill{height:100%;border-radius:3px}
+
+/* FOOTER */
+.footer{font-size:11px;color:var(--mu);text-align:center;padding:14px 0 22px}
+.footer strong{color:rgba(255,255,255,.55)}
+
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(203,230,245,.14);border-radius:3px}
+
+@media(max-width:1320px){.row1{grid-template-columns:1fr 1fr 1fr}.chart-col{grid-column:1/-1;order:-1;height:260px}}
+@media(max-width:1100px){.row3{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:900px){.row1{grid-template-columns:1fr 1fr}.row2{grid-template-columns:repeat(2,1fr)}.row3{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:700px){:root{--sw:0px}.sidebar{display:none}.row2{grid-template-columns:1fr 1fr}.row3{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<nav class="sidebar">
+  <div class="sb-logo">
+    <div class="sb-mark">C</div>
+    <div>
+      <div class="sb-brand">CONTA<span class="dot"> 001</span></div>
+      <div class="sb-sub">Evento Presencial</div>
+    </div>
+  </div>
+  <div class="sb-sec">Dias com gasto</div>
+  <div class="sb-pills">
+    <button class="day-btn on"><span class="dot"></span>06/05/2026</button>
+  </div>
+  <div class="sb-sum">
+    <div class="sb-sum-ttl">Resumo do período</div>
+    <div class="sb-row"><span class="sb-lbl">💰 Gasto</span><span class="sb-val">R$232,38</span></div>
+    <div class="sb-row wh"><span class="sb-lbl">👁 Impressões</span><span class="sb-val">4.872</span></div>
+    <div class="sb-row wh"><span class="sb-lbl">🖱 Cliques</span><span class="sb-val">86</span></div>
+    <div class="sb-row gn"><span class="sb-lbl">🔗 LPV</span><span class="sb-val">42</span></div>
+    <div class="sb-row cy"><span class="sb-lbl">💬 Conversões</span><span class="sb-val">4</span></div>
+    <div class="sb-row or"><span class="sb-lbl">🛒 Init. Checkout</span><span class="sb-val">—</span></div>
+    <div class="sb-row rd"><span class="sb-lbl">📊 CPL</span><span class="sb-val">R$58,10</span></div>
+  </div>
+</nav>
+
+<main class="main">
+
+  <!-- HEADER -->
+  <div class="hdr">
+    <div>
+      <div class="hdr-tag"><span class="pulse"></span><span>CAMPANHA ATIVA</span></div>
+      <h1><em>Evento Presencial</em> · Validação de Criativo</h1>
+      <div class="hdr-sub">Conta 001 · act_310500857276337 · 15 criativos imagem</div>
+      <div class="hdr-range">Período: <strong>06/05/2026</strong> · Início de veiculação</div>
+    </div>
+    <div class="hdr-right">
+      <div>Atualizado em 06/05/2026</div>
+      <div style="margin-top:4px;color:rgba(203,230,245,.45);font-size:10px">1 dia de dados</div>
+    </div>
+  </div>
+
+  <!-- ROW1: Gauges + Chart -->
+  <div class="row1">
+
+    <!-- Gauge: CTR -->
+    <div class="gcrd">
+      <div class="g-lbl">CTR (All)</div>
+      <div class="g-wrap">
+        <svg viewBox="0 0 108 108">
+          <circle class="g-trk" cx="54" cy="54" r="45" transform="rotate(-90 54 54)"/>
+          <circle id="g-ctr" class="g-arc" cx="54" cy="54" r="45"
+            stroke="#cbe6f5" stroke-dasharray="282.74" stroke-dashoffset="282.74"
+            transform="rotate(-90 54 54)"/>
+        </svg>
+        <div class="g-ctr">
+          <span class="g-num" style="color:#cbe6f5">1,77%</span>
+          <span class="g-unit">Cliques/Impr.</span>
+        </div>
+      </div>
+      <div class="g-foot">86 cliques · 4.872 impressões</div>
+    </div>
+
+    <!-- Gauge: LPV Rate -->
+    <div class="gcrd">
+      <div class="g-lbl">Taxa de LPV</div>
+      <div class="g-wrap">
+        <svg viewBox="0 0 108 108">
+          <circle class="g-trk" cx="54" cy="54" r="45" transform="rotate(-90 54 54)"/>
+          <circle id="g-lpv" class="g-arc" cx="54" cy="54" r="45"
+            stroke="#4ade80" stroke-dasharray="282.74" stroke-dashoffset="282.74"
+            transform="rotate(-90 54 54)"/>
+        </svg>
+        <div class="g-ctr">
+          <span class="g-num" style="color:#4ade80">48,8%</span>
+          <span class="g-unit">LPV / Clique</span>
+        </div>
+      </div>
+      <div class="g-foot">42 LPV · 86 cliques</div>
+    </div>
+
+    <!-- Gauge: Conv Rate -->
+    <div class="gcrd">
+      <div class="g-lbl">Taxa de Conversão</div>
+      <div class="g-wrap">
+        <svg viewBox="0 0 108 108">
+          <circle class="g-trk" cx="54" cy="54" r="45" transform="rotate(-90 54 54)"/>
+          <circle id="g-conv" class="g-arc" cx="54" cy="54" r="45"
+            stroke="#67e8f9" stroke-dasharray="282.74" stroke-dashoffset="282.74"
+            transform="rotate(-90 54 54)"/>
+        </svg>
+        <div class="g-ctr">
+          <span class="g-num" style="color:#67e8f9">9,5%</span>
+          <span class="g-unit">Conv / LPV</span>
+        </div>
+      </div>
+      <div class="g-foot">4 conversões · 42 LPVs</div>
+    </div>
+
+    <!-- Chart: CPM / CPC / CPL barras -->
+    <div class="ccrd chart-col">
+      <div class="card-ttl" style="padding:0 0 10px">
+        <span>Distribuição de custo</span>
+        <span class="bsm bsm-pt">06/05</span>
+      </div>
+      <canvas id="chartCusto"></canvas>
+    </div>
+  </div>
+
+  <!-- ROW2: KPI strip -->
+  <div class="row2">
+    <div class="kcrd">
+      <div class="k-lbl">💰 Gasto</div>
+      <div class="k-val">R$232</div>
+      <div class="k-sub">,38 investidos hoje</div>
+    </div>
+    <div class="kcrd gn">
+      <div class="k-lbl">👁 Alcance</div>
+      <div class="k-val">2.576</div>
+      <div class="k-sub">freq. média 1,89 · 4.872 impr.</div>
+    </div>
+    <div class="kcrd cy">
+      <div class="k-lbl">🔗 Link Clicks</div>
+      <div class="k-val">64</div>
+      <div class="k-sub">86 cliques totais · CPL R$3,63</div>
+    </div>
+    <div class="kcrd pu">
+      <div class="k-lbl">🏠 Landing Page Views</div>
+      <div class="k-val">42</div>
+      <div class="k-sub">CPL LPV R$5,53</div>
+    </div>
+    <div class="kcrd or">
+      <div class="k-lbl">🛒 Initiate Checkout</div>
+      <div class="k-val" style="font-size:18px;margin-top:4px">Pixel N/A</div>
+      <div class="k-sub">evento de pixel não rastreado</div>
+    </div>
+    <div class="kcrd mu">
+      <div class="k-lbl">💬 Conversões (Msgs)</div>
+      <div class="k-val">4</div>
+      <div class="k-sub">CPL R$58,10 · 9,5% de conv.</div>
+    </div>
+    <div class="kcrd">
+      <div class="k-lbl">📊 CPM</div>
+      <div class="k-val">R$47,7</div>
+      <div class="k-sub">custo por mil impressões</div>
+    </div>
+    <div class="kcrd gn">
+      <div class="k-lbl">🖱 CPC (Todos)</div>
+      <div class="k-val">R$2,70</div>
+      <div class="k-sub">custo por clique total</div>
+    </div>
+  </div>
+
+  <!-- ROW3: FUNIL -->
+  <div class="funnel-wrap">
+    <div class="funnel-hdr">
+      <div class="funnel-ttl"><em>Funil de</em> Conversão</div>
+      <span class="bsm bsm-wh">06/05/2026 · 1 dia</span>
+    </div>
+    <div class="row3">
+
+      <div class="fcrd s1">
+        <div class="f-step"><span>Etapa 1</span><span class="f-num-step">1</span></div>
+        <div class="f-lbl">Impressões</div>
+        <div class="f-num">4.872</div>
+        <div class="f-cost">CPM <span>R$47,70</span></div>
+        <div class="f-pbr"><div class="f-pbf" style="width:100%"></div></div>
+        <div class="f-rate">100% do topo</div>
+        <div class="fcrd-arrow"></div>
+      </div>
+
+      <div class="fcrd s2">
+        <div class="f-step"><span>Etapa 2</span><span class="f-num-step">2</span></div>
+        <div class="f-lbl">Cliques (todos)</div>
+        <div class="f-num">86</div>
+        <div class="f-cost">CPC <span>R$2,70</span></div>
+        <div class="f-pbr"><div class="f-pbf" style="width:1.77%"></div></div>
+        <div class="f-rate">CTR <strong>1,77%</strong> das impressões</div>
+        <div class="fcrd-arrow"></div>
+      </div>
+
+      <div class="fcrd s3">
+        <div class="f-step"><span>Etapa 3</span><span class="f-num-step">3</span></div>
+        <div class="f-lbl">Landing Page Views</div>
+        <div class="f-num">42</div>
+        <div class="f-cost">CPL <span>R$5,53</span></div>
+        <div class="f-pbr"><div class="f-pbf" style="width:48.8%"></div></div>
+        <div class="f-rate"><strong>48,8%</strong> dos cliques viram LPV</div>
+        <div class="fcrd-arrow"></div>
+      </div>
+
+      <div class="fcrd s4">
+        <div class="f-step"><span>Etapa 4</span><span class="f-num-step">4</span></div>
+        <div class="f-lbl">Initiate Checkout</div>
+        <div class="f-num" style="font-size:22px;color:var(--mu);margin-top:8px">— —</div>
+        <div class="f-na">⚠️ Pixel event não rastreado. Configure o evento <em>InitiateCheckout</em> no pixel da conta para monitorar esta etapa.</div>
+        <div class="f-pbr"><div class="f-pbf" style="width:0%"></div></div>
+        <div class="f-rate"><strong>—</strong></div>
+        <div class="fcrd-arrow"></div>
+      </div>
+
+      <div class="fcrd s5">
+        <div class="f-step"><span>Etapa 5</span><span class="f-num-step">5</span></div>
+        <div class="f-lbl">Conversão (Msg)</div>
+        <div class="f-num">4</div>
+        <div class="f-cost">CPL <span>R$58,10</span></div>
+        <div class="f-pbr"><div class="f-pbf" style="width:9.5%"></div></div>
+        <div class="f-rate"><strong>9,5%</strong> das LPVs converteram</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- CREATIVE GRID -->
+  <div class="cr-wrap">
+    <div class="cr-hdr">
+      <div class="cr-ttl"><em>Criativos</em> · Performance por anúncio</div>
+      <span class="bsm bsm-pt">15 ads ativos · ordenado por CTR</span>
+    </div>
+    <div class="cr-grid" id="crGrid"></div>
+  </div>
+
+  <!-- TABLE -->
+  <div class="tbl-crd">
+    <div class="tbl-hdr">
+      <div class="tbl-ttl"><em>Tabela</em> detalhada</div>
+      <span class="bsm bsm-wh">06/05/2026</span>
+    </div>
+    <div class="tbl-wrap">
+      <table id="adsTable">
+        <thead>
+          <tr>
+            <th onclick="sortTable(0)">Criativo</th>
+            <th onclick="sortTable(1)" class="tr">Gasto</th>
+            <th onclick="sortTable(2)" class="tr">Impressões</th>
+            <th onclick="sortTable(3)" class="tr">Alcance</th>
+            <th onclick="sortTable(4)" class="tr">Cliques</th>
+            <th onclick="sortTable(5)" class="tr">CTR</th>
+            <th onclick="sortTable(6)" class="tr">CPC</th>
+            <th onclick="sortTable(7)" class="tr">CPM</th>
+            <th onclick="sortTable(8)" class="tr">LPV</th>
+            <th onclick="sortTable(9)" class="tr">Init. Checkout</th>
+            <th onclick="sortTable(10)" class="tr">Msgs</th>
+            <th onclick="sortTable(11)" class="tr">CPL (msg)</th>
+          </tr>
+        </thead>
+        <tbody id="adsBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="footer">Dashboard gerado em <strong>06/05/2026</strong> · Campanha [EVENTO PRESENCIAL] - [VALIDAÇÃO CRIATIVO] · act_310500857276337</div>
+
+</main>
+
+<script>
+const ADS = [
+  {name:"1_img",  status:"ACTIVE", spend:22.16, impr:444,  reach:280, clk:10, ctr:2.25, cpc:2.22, cpm:49.91, lpv:4,  ic:0, msgs:0, thumb:"https://external.fbfh1-2.fna.fbcdn.net/emg1/v/t13/2141554465823109095?url=https%3A%2F%2Fwww.facebook.com%2Fads%2Fimage%2F%3Fd%3DAQJckVqhWcgINV_U9wmRYgD4scHwHQZ4m5WeRhFE82sxHG-mAGfblDR_nWgg_S7lEw5CNf2j7p5FWyNfI6bchpm2BRaqQZuCp0W4cl6tf7LcP5Z_6Nfc2yZWyf5rrKgC-drixJyuYnqnIxTUvE5VUre_&fb_obo=1&utld=facebook.com&stp=c0.5000x0.5000f_dst-emg0_p64x64_q75_tt6&edm=ANIILHsEAAAA&_nc_gid=_86BO2zCFMyz74RxbrMRbg&ccb=13-1&oh=06_Q3--Aa3eTotUy90yqdVtMx4nTHOG8qwaEc0_gtTeUmodhpm7&oe=69FDC074&_nc_sid=58080a"},
+  {name:"5_img",  status:"ACTIVE", spend:14.87, impr:275,  reach:160, clk:5,  ctr:1.82, cpc:2.97, cpm:54.07, lpv:2,  ic:0, msgs:0, thumb:"https://external.fbfh1-2.fna.fbcdn.net/emg1/v/t13/14677102627280080513?url=https%3A%2F%2Fwww.facebook.com%2Fads%2Fimage%2F%3Fd%3DAQIm-YpYtM2YduEmBiuh6Nmitj4grh8DWqqhBa9b3ArGd9qwMQA2JdEbASZ7kxeuSK37kTK2zzRakhxNjmYhaDyBPc-DxzxyIZvWIN90foumiqnxRXncL4MmEzZKJeVvOeWUh4DRvpuxZTx4kRm-LJXE&fb_obo=1&utld=facebook.com&stp=c0.5000x0.5000f_dst-emg0_p64x64_q75_tt6&edm=ANIILHsEAAAA&ccb=13-1&oh=06_Q3--AeDxMDmWNvJttxp_Lc3u22tekFbC6ZC4JjD2s--Pig0c&oe=69FDC9C3&_nc_sid=58080a"},
+  {name:"7_img",  status:"ACTIVE", spend:7.15,  impr:99,   reach:60,  clk:1,  ctr:1.01, cpc:7.15, cpm:72.22, lpv:1,  ic:0, msgs:0, thumb:"https://external.fbfh1-2.fna.fbcdn.net/emg1/v/t13/15844946851597903307?url=https%3A%2F%2Fwww.facebook.com%2Fads%2Fimage%2F%3Fd%3DAQJ1eZIMX9akscpMpWwwNwbzfJSFAz6zHpl5mjFU2lQzoZXhsB8bH-F0MK83QLEwxDqtmHgaYr3TdGTN-Y6O8d7TmxNo7Gk3aQwAB8NU5ewagUnMl6w_ODxFffJQCVo-yynXfsek_AIBQFkDxfKdOBZ4&fb_obo=1&utld=facebook.com&stp=c0.5000x0.5000f_dst-emg0_p64x64_q75_tt6&edm=ANIILHsEAAAA&ccb=13-1&oh=06_Q3--AZuKYKr9g4PtQdACBKWPd4zqxvKLkDuxTpMzSnc2fQ4t&oe=69FDCFE2&_nc_sid=58080a"},
+  {name:"9_img",  status:"ACTIVE", spend:26.30, impr:590,  reach:345, clk:10, ctr:1.69, cpc:2.63, cpm:44.58, lpv:4,  ic:0, msgs:1, thumb:"https://external.fbfh1-2.fna.fbcdn.net/emg1/v/t13/14055489360873725039?url=https%3A%2F%2Fwww.facebook.com%2Fads%2Fimage%2F%3Fd%3DAQItyv7t9Yfh8_GMVpv0187-WDw6Bb9oyV8dVITRspQnk7utqB6JVdw7jK8p-HeIaKcOKh8O4iMcR2L8UQ7MpSv8HuNRrhg4EPheuIpvQgc0QZdspD_BLJQ1xb6uRuO87sqD7PgXvVJYGciFhwG2KTwB&fb_obo=1&utld=facebook.com&stp=c0.5000x0.5000f_dst-emg0_p64x64_q75_tt6&edm=ANIILHsEAAAA&ccb=13-1&oh=06_Q3--AX8djMvFktESUIQgWDmOaDQQB2Ok_zu9HO3BGKGXO_Fs&oe=69FDDBE6&_nc_sid=58080a"},
+  {name:"11_img", status:"ACTIVE", spend:18.43, impr:249,  reach:145, clk:3,  ctr:1.20, cpc:6.14, cpm:74.01, lpv:1,  ic:0, msgs:0, thumb:"https://external.fbfh1-2.fna.fbcdn.net/emg1/v/t13/18409387769486933638?url=https%3A%2F%2Fwww.facebook.com%2Fads%2Fimage%2F%3Fd%3DAQIwzgXb-s2Ug94o16HBF-q0IBWNyLM5aZdauphKOC84M8uEq-wmpNEa3nopYvU06WYhbGg7X1eRzQ_26HhDRVk_pTnSK2Za-djS1ulCA6RMvae-ZOnXkCmx-Sg_B7z-Mns1o2xBCePQK6Odg9uUUtvN&fb_obo=1&utld=facebook.com&stp=c0.5000x0.5000f_dst-emg0_p64x64_q75_tt6&edm=ANIILHsEAAAA&ccb=13-1&oh=06_Q3--AXLfvynDrkJoy_4VpyYqEXWb9zCX-cXx28VrJf2ZDJMU&oe=69FDCDB9&_nc_sid=58080a"},
+  {name:"13_img", status:"ACTIVE", spend:2.14,  impr:40,   reach:25,  clk:0,  ctr:0.00, cpc:0,    cpm:53.50, lpv:0,  ic:0, msgs:0, thumb:"https://external.fbfh1-2.fna.fbcdn.net/emg1/v/t13/14483179996604995404?url=https%3A%2F%2Fwww.facebook.com%2Fads%2Fimage%2F%3Fd%3DAQJuVlcwgQ2MnHI_GGkeM38LsP8pSHblEb0nCJpzbACYUhrLYIMVXWPvyM4qg-66mMU-DaTXNAf0ZFrh5Dzpsr4KTKVEtZ_MTG2w590CJUFJdK2fMnA7vYidSxjCGbkuhF6TRsK33TAHwrRJ6TlbRCtX&fb_obo=1&utld=facebook.com&stp=c0.5000x0.5000f_dst-emg0_p64x64_q75_tt6&edm=ANIILHsEAAAA&ccb=13-1&oh=06_Q3--AUOgxzD68Ws6hkuv4zADbZhsC-ICwqTCVHdp3fCeCllb&oe=69FDE80F&_nc_sid=58080a"},
+  {name:"15_img", status:"ACTIVE", spend:16.98, impr:397,  reach:230, clk:7,  ctr:1.76, cpc:2.43, cpm:42.77, lpv:3,  ic:0, msgs:0, thumb:"https://external.fbfh1-2.fna.fbcdn.net/emg1/v/t13/3155646774704184640?url=https%3A%2F%2Fwww.facebook.com%2Fads%2Fimage%2F%3Fd%3DAQLAyeslJl3H5tndro1E1N2ISbq7SDtWffb3E6aymuDFTQa5zB1kjvj_mVwBf8hxPq-xY-m79H5Y304C1uL6pNql5V-HvODmAZUAO9cF7YAqvUhseV334pN24R6F24RFQJpKLoGAUUYTBk5X9U4cimiO&fb_obo=1&utld=facebook.com&stp=c0.5000x0.5000f_dst-emg0_p64x64_q75_tt6&edm=ANIILHsEAAAA&ccb=13-1&oh=06_Q3--AVjJ2aEAuRkGLBUReq-1mq69hzej_CV09TkckgPLTmWa&oe=69FDC26C&_nc_sid=58080a"},
+  {name:"17_img", status:"ACTIVE", spend:14.47, impr:309,  reach:180, clk:2,  ctr:0.65, cpc:7.24, cpm:46.83, lpv:1,  ic:0, msgs:0, thumb:"https://external.fbfh1-2.fna.fbcdn.net/emg1/v/t13/1408872799423286579?url=https%3A%2F%2Fwww.facebook.com%2Fads%2Fimage%2F%3Fd%3DAQJTZSwtosBq6gqTqvM7hunNonCbPurLAkYzFNzsCEuV9Qse6C5IM1Ar0v4taAZDfAKbz2sfD6jug7C3c0BpRaIzrDX5SByZKyLBg4dy5Gss3O8rvLf3NiilkPkY2e-Xz_XrCdGmqFqAfez4tPmIv&fb_obo=1&utld=facebook.com&stp=c0.5000x0.5000f_dst-emg0_p64x64_q75_tt6&edm=ANIILHsEAAAA&ccb=13-1&oh=06_Q3--AQ-bNQRQyWTKvKLFmwtsz3mshTA3nNzHxI3geWe2Uix2&oe=69FDBFCC&_nc_sid=58080a"},
+  {name:"19_img", status:"ACTIVE", spend:14.64, impr:315,  reach:185, clk:7,  ctr:2.22, cpc:2.09, cpm:46.48, lpv:5,  ic:0, msgs:0, thumb:"https://external.fbfh1-2.fna.fbcdn.net/emg1/v/t13/1722536233047831298?url=https%3A%2F%2Fwww.facebook.com%2Fads%2Fimage%2F%3Fd%3DAQLBlLMU3zXWfFeM0L0QLqWMfoj5vl8tKuIqsWw7D5G2fJSbIISLawXZoVHrd1AxOHUZDkG9xPqcPskSmvJE37N55jKfPkR9PPVwYigZT_d8v7GpdTqeZ4_lz_JFfpZA5ePEicqwNy9Ic_x9mVYyBZOK&fb_obo=1&utld=facebook.com&stp=c0.5000x0.5000f_dst-emg0_p64x64_q75_tt6&edm=ANIILHsEAAAA&ccb=13-1&oh=06_Q3--Abva4CiG1T3DxWkgn_hV9kutyu4ezPWDl7XJ-tz_EMbQ&oe=69FDC816&_nc_sid=58080a"},
+  {name:"21_img", status:"ACTIVE", spend:18.99, impr:335,  reach:195, clk:5,  ctr:1.49, cpc:3.80, cpm:56.69, lpv:0,  ic:0, msgs:0, thumb:"https://external.fbfh1-2.fna.fbcdn.net/emg1/v/t13/16690812785834429307?url=https%3A%2F%2Fwww.facebook.com%2Fads%2Fimage%2F%3Fd%3DAQKLjfGvPgGLQNvVWQxqdkQUn6ITn5SVNDAhRvV6Gkq7sqc5n-Msff7SpJDoW6CIv_Pqc3F0eWbOWLer4JRgmmLVdL08ZXVq6pYF0qVYV01y5FPu8nEbQB8_piWlxtNfxkZeiepN06NtTP6QwgyJtiJe&fb_obo=1&utld=facebook.com&stp=c0.5000x0.5000f_dst-emg0_p64x64_q75_tt6&edm=ANIILHsEAAAA&ccb=13-1&oh=06_Q3--AT5PKie7H1zDJzew2LYIAtm-VHIufScbsadjA09Lq7w1&oe=69FDCF94&_nc_sid=58080a"},
+  {name:"23_img", status:"ACTIVE", spend:10.89, impr:308,  reach:180, clk:2,  ctr:0.65, cpc:5.45, cpm:35.36, lpv:1,  ic:0, msgs:0, thumb:"https://external.fbfh1-2.fna.fbcdn.net/emg1/v/t13/4328738469404755028?url=https%3A%2F%2Fwww.facebook.com%2Fads%2Fimage%2F%3Fd%3DAQLmN-LkoScZwgSunsGQH1mW4jB7wxMNPmCaxf_c3uz0dysnYcOrYM_QRFA2XNT5yS149y_uhZKwt8tVAra7L4KVKhZ4I8oIavWFK1yF00KBUkAKuAlc5Z9Sh_EwtRV4_fAxWJf1n_yRxT-Z5t0479i0&fb_obo=1&utld=facebook.com&stp=c0.5000x0.5000f_dst-emg0_p64x64_q75_tt6&edm=ANIILHsEAAAA&ccb=13-1&oh=06_Q3--ASH8NQQu5ITM4u5-NcILLN7YR9jFd5qdNgFU5NCp-v1O&oe=69FDBEA4&_nc_sid=58080a"},
+  {name:"25_img", status:"ACTIVE", spend:20.03, impr:605,  reach:350, clk:19, ctr:3.14, cpc:1.05, cpm:33.11, lpv:12, ic:0, msgs:2, thumb:"https://external.fbfh1-2.fna.fbcdn.net/emg1/v/t13/11520940539705542390?url=https%3A%2F%2Fwww.facebook.com%2Fads%2Fimage%2F%3Fd%3DAQKnVqJ7Zy1FbGUU7EjgtG2c3yGTm3zTalPiaI6QsuZruNrLVyVqelrs0wLsxFSAgPZWHbn24sxCZsbucfJA9XsMWEOgPoarf0O3gU1higzpGcU57i6VjbUmvyLxjT3iLAv5RXmTXfpik2I1opf2HtJ5&fb_obo=1&utld=facebook.com&stp=c0.5000x0.5000f_dst-emg0_p64x64_q75_tt6&edm=ANIILHsEAAAA&ccb=13-1&oh=06_Q3--ASu2l2pmU2hXqWz3bV4N08_7IfhcFryqjnbaH2RJMFH8&oe=69FDE814&_nc_sid=58080a"},
+  {name:"27_img", status:"ACTIVE", spend:16.41, impr:255,  reach:150, clk:1,  ctr:0.39, cpc:16.41,cpm:64.35, lpv:0,  ic:0, msgs:0, thumb:"https://external.fbfh1-2.fna.fbcdn.net/emg1/v/t13/14056659844933313031?url=https%3A%2F%2Fwww.facebook.com%2Fads%2Fimage%2F%3Fd%3DAQLX8ZY8iLdJBNi4dln87JuyxAnh-kM5JWHclOQsGjjvCBLHFJYSk_74HN2SXJg7v222jcFwMDnkVBlWRw_XI2yWmCM3FjJ6P1UWLCZpW1ld4v8oSLJJE6JYdqnk8QsT1Z1AfzAju8Fss_SKUz5hnOMi&fb_obo=1&utld=facebook.com&stp=c0.5000x0.5000f_dst-emg0_p64x64_q75_tt6&edm=ANIILHsEAAAA&ccb=13-1&oh=06_Q3--AYmMyblBlBH-sbyn_NMvalFmbd5nuOxtMhzR0Oss33gm&oe=69FDCA3A&_nc_sid=58080a"},
+  {name:"29_img", status:"ACTIVE", spend:16.68, impr:367,  reach:215, clk:5,  ctr:1.36, cpc:3.34, cpm:45.45, lpv:4,  ic:0, msgs:1, thumb:"https://external.fbfh1-2.fna.fbcdn.net/emg1/v/t13/17887508601887320352?url=https%3A%2F%2Fwww.facebook.com%2Fads%2Fimage%2F%3Fd%3DAQLE1fhFq20RkcaBSGa287HRmskcL-rT0ePcnw-1spwt9EtzTLF2MTu4yqplZBPQjFFc8xY7YSBvQPmpJfbkP4wWBOYDeOqxVBySLZ7LgURXAmj8r5mJwNdjAD_98CYIhtci4okrADgpxPsWDyOJrQHI&fb_obo=1&utld=facebook.com&stp=c0.5000x0.5000f_dst-emg0_p64x64_q75_tt6&edm=ANIILHsEAAAA&ccb=13-1&oh=06_Q3--AeQ3iFbq0KgzYzk3uE0vrDJMlRwjEtXc2ofCTDPgHuEK&oe=69FDC38C&_nc_sid=58080a"},
+  {name:"31_img", status:"ACTIVE", spend:12.24, impr:284,  reach:165, clk:9,  ctr:3.17, cpc:1.36, cpm:43.10, lpv:4,  ic:0, msgs:0, thumb:"https://external.fbfh1-2.fna.fbcdn.net/emg1/v/t13/13623500555514226283?url=https%3A%2F%2Fwww.facebook.com%2Fads%2Fimage%2F%3Fd%3DAQL3YikSee9MxL4noEKP14OaYW0G8X0CsoJWYjwp7wwhyJayV8eLYMDRkAw-heuN47btIaxsJ0lh5cQxJTkdoL-FUagbV2ees5yOrX2tQzwJXPzGR0xCrJGYxZZ-XuWV-vmFahq74Ijwo--fHZ9be4Nb&fb_obo=1&utld=facebook.com&stp=c0.5000x0.5000f_dst-emg0_p64x64_q75_tt6&edm=ANIILHsEAAAA&ccb=13-1&oh=06_Q3--AbiZzB-41DLSDaba5HukDX7x8ssJr_Xam1ukq88ZxR98&oe=69FDD5B0&_nc_sid=58080a"},
+];
+
+const maxCtr = Math.max(...ADS.map(a=>a.ctr));
+const maxSpend = Math.max(...ADS.map(a=>a.spend));
+const maxLpv = Math.max(...ADS.map(a=>a.lpv));
+
+// Sort by CTR desc
+const sorted = [...ADS].sort((a,b)=>b.ctr-a.ctr);
+
+function fR(n){return 'R$'+n.toFixed(2).replace('.',',').replace(/\B(?=(\d{3})+(?!\d))/g,'.')}
+function fN(n){return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g,'.')}
+
+// Build creative grid
+const grid = document.getElementById('crGrid');
+sorted.forEach((ad, i) => {
+  const isTop = i === 0;
+  const cpl = ad.msgs > 0 ? fR(ad.spend/ad.msgs) : '—';
+  const cplLpv = ad.lpv > 0 ? fR(ad.spend/ad.lpv) : '—';
+  const thumbHtml = `<img class="cr-thumb" src="${ad.thumb}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" loading="lazy"><div class="cr-ph" style="display:none">🖼️</div>`;
+  grid.innerHTML += `
+  <div class="crcrd">
+    <div class="cr-thumb-wrap">
+      <span class="cr-sbadge on">● ATIVO</span>
+      <span class="cr-rank ${isTop?'top':''}"> ${isTop?'🏆 #1':'#'+(i+1)}</span>
+      ${thumbHtml}
+    </div>
+    <div class="cr-body">
+      <div class="cr-nm">${ad.name}</div>
+      <div class="cr-cp">Evento Presencial · Imagem</div>
+      <div class="cr-stats">
+        <div class="cs"><div class="cs-l">CTR</div><div class="cs-v ${isTop?'gold':'pt'}">${ad.ctr.toFixed(2).replace('.',',')}%</div></div>
+        <div class="cs"><div class="cs-l">Gasto</div><div class="cs-v wh">${fR(ad.spend)}</div></div>
+        <div class="cs"><div class="cs-l">LPV</div><div class="cs-v gn">${ad.lpv}</div></div>
+        <div class="cs"><div class="cs-l">CPL msg</div><div class="cs-v cy">${cpl}</div></div>
+      </div>
+    </div>
+  </div>`;
+});
+
+// Build table
+const tbody = document.getElementById('adsBody');
+ADS.sort((a,b)=>b.spend-a.spend).forEach(ad => {
+  const cpl = ad.msgs > 0 ? fR(ad.spend/ad.msgs) : '<span class="dim">—</span>';
+  const ctrColor = ad.ctr >= 2.5 ? 'gn' : ad.ctr >= 1.5 ? 'pt' : 'rd';
+  tbody.innerHTML += `<tr>
+    <td><span class="trunc">${ad.name}</span></td>
+    <td class="tr mono">${fR(ad.spend)}</td>
+    <td class="tr mono">${fN(ad.impr)}</td>
+    <td class="tr mono">${fN(ad.reach)}</td>
+    <td class="tr mono">${ad.clk}</td>
+    <td class="tr mono"><span class="${ctrColor}">${ad.ctr.toFixed(2).replace('.',',')}%</span></td>
+    <td class="tr mono">${ad.cpc > 0 ? fR(ad.cpc) : '<span class="dim">—</span>'}</td>
+    <td class="tr mono">${fR(ad.cpm)}</td>
+    <td class="tr mono ${ad.lpv>0?'gn':'dim'}">${ad.lpv}</td>
+    <td class="tr dim">—</td>
+    <td class="tr mono ${ad.msgs>0?'cy':'dim'}">${ad.msgs}</td>
+    <td class="tr mono">${cpl}</td>
+  </tr>`;
+});
+
+// Gauges animation
+function setGauge(id, pct, color){
+  const circ = 2*Math.PI*45;
+  const offset = circ*(1-Math.min(pct,1));
+  const el = document.getElementById(id);
+  if(el){setTimeout(()=>{el.style.strokeDashoffset=offset;el.setAttribute('stroke',color)},200)}
+}
+// CTR: benchmark ~2%, show relative to 3%
+setGauge('g-ctr', 1.77/3.0, '#cbe6f5');
+// LPV rate: 48.8%
+setGauge('g-lpv', 0.488, '#4ade80');
+// Conv rate: 9.5%
+setGauge('g-conv', 0.095*3, '#67e8f9'); // amplify small %
+
+// Chart: per-ad CTR bar chart
+const chartData = {
+  labels: ADS.map(a=>a.name),
+  datasets:[
+    {label:'CTR %', data:ADS.map(a=>a.ctr), backgroundColor:'rgba(203,230,245,0.7)', yAxisID:'y'},
+    {label:'CPM R$', data:ADS.map(a=>a.cpm), backgroundColor:'rgba(167,139,250,0.5)', yAxisID:'y2'},
+  ]
+};
+new Chart(document.getElementById('chartCusto'),{
+  type:'bar',
+  data:chartData,
+  options:{
+    responsive:true, maintainAspectRatio:false,
+    plugins:{legend:{labels:{color:'rgba(255,255,255,.5)',font:{size:10}}},
+      tooltip:{backgroundColor:'#0d1d40',borderColor:'rgba(203,230,245,.15)',borderWidth:1,
+        titleColor:'#cbe6f5',bodyColor:'rgba(255,255,255,.75)'}},
+    scales:{
+      x:{ticks:{color:'rgba(255,255,255,.4)',font:{size:9}},grid:{color:'rgba(255,255,255,.04)'}},
+      y:{ticks:{color:'rgba(255,255,255,.4)',font:{size:9}},grid:{color:'rgba(255,255,255,.04)'},
+        title:{display:true,text:'CTR %',color:'rgba(203,230,245,.5)',font:{size:9}}},
+      y2:{position:'right',ticks:{color:'rgba(167,139,250,.6)',font:{size:9}},
+        grid:{display:false},title:{display:true,text:'CPM R$',color:'rgba(167,139,250,.5)',font:{size:9}}}
+    }
+  }
+});
+
+// Sort table
+let sortDir = {};
+function sortTable(col){
+  const tbody=document.getElementById('adsBody');
+  const rows=[...tbody.rows];
+  const dir=(sortDir[col]==='asc')?'desc':'asc';
+  sortDir={};sortDir[col]=dir;
+  rows.sort((a,b)=>{
+    const av=a.cells[col].innerText.replace(/[R$%,\.]/g,'').trim();
+    const bv=b.cells[col].innerText.replace(/[R$%,\.]/g,'').trim();
+    const an=parseFloat(av),bn=parseFloat(bv);
+    if(!isNaN(an)&&!isNaN(bn)) return dir==='asc'?an-bn:bn-an;
+    return dir==='asc'?av.localeCompare(bv):bv.localeCompare(av);
+  });
+  rows.forEach(r=>tbody.appendChild(r));
+  document.querySelectorAll('th').forEach((th,i)=>{
+    th.classList.remove('sort-asc','sort-desc');
+    if(i===col) th.classList.add(dir==='asc'?'sort-asc':'sort-desc');
+  });
+}
+</script>
+</body>
+</html>
