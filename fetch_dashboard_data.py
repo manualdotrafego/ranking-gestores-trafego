@@ -147,7 +147,7 @@ def parse_actions(row):
     for a in row.get("actions", []):
         t = a["action_type"]
         v = int(float(a.get("value", 0)))
-        if t == "onsite_conversion.messaging_first_reply":   # única métrica para evitar dupla contagem
+        if t == "onsite_conversion.messaging_conversation_started_7d":   # única métrica para evitar dupla contagem
             msgs += v
         if t == "purchase":           purchases += v
         if t == "add_to_cart":        add_cart += v
@@ -156,7 +156,7 @@ def parse_actions(row):
 
     cost_msg = 0
     for c in row.get("cost_per_action_type", []):
-        if c["action_type"] == "onsite_conversion.messaging_first_reply":
+        if c["action_type"] == "onsite_conversion.messaging_conversation_started_7d":
             cost_msg = float(c.get("value", 0))
 
     spend = float(row.get("spend", 0))
@@ -405,8 +405,8 @@ def fetch_account(acc, ad_lookup):
     for camp in camps_raw:
         camp_id = camp["id"]
         ads = sorted(camp_ads.get(camp_id, []), key=lambda x: x["metrics"]["spend"], reverse=True)
-        if not ads:
-            continue
+        # NÃO pula campanhas ACTIVE sem ads/spend recentes — elas aparecem com métricas zeradas
+        # (assim o usuário vê campanhas recém-criadas ou pausadas-reativadas)
 
         total = {"spend": 0, "impressions": 0, "msgs": 0, "lpv": 0, "purchases": 0}
         for ad in ads:
