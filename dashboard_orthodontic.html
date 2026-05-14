@@ -118,6 +118,25 @@ html,body{height:100%;font-family:'Inter',sans-serif;background:var(--bg);color:
 .day-btn-total:hover{background:var(--p);color:#fff}
 .day-btn-total.active{background:var(--p);color:#fff;border-color:var(--p)}
 
+/* Date range picker (custom) */
+.range-wrap{margin-top:8px;padding:10px;background:var(--card2);border:1px solid var(--b1);border-radius:8px}
+.range-title{font-size:9px;text-transform:uppercase;letter-spacing:1.2px;color:var(--muted);margin-bottom:8px;font-weight:600;display:flex;align-items:center;gap:6px}
+.range-title::before{content:'📅';font-size:11px}
+.range-row{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:6px}
+.range-field{display:flex;flex-direction:column;gap:3px}
+.range-field label{font-size:8px;color:var(--muted);text-transform:uppercase;letter-spacing:0.6px}
+.range-input{background:var(--card);border:1px solid var(--b1);border-radius:6px;padding:5px 7px;color:var(--text);
+             font-size:10px;font-family:'Inter',sans-serif;outline:none;width:100%;color-scheme:dark}
+.range-input:focus{border-color:var(--p)}
+.range-actions{display:flex;gap:6px;margin-top:6px}
+.range-btn{flex:1;background:var(--p);color:#fff;border:none;border-radius:6px;padding:6px 8px;
+           font-size:10px;font-weight:700;font-family:'Inter',sans-serif;cursor:pointer;transition:all .15s;letter-spacing:0.4px}
+.range-btn:hover{background:var(--p2)}
+.range-btn:disabled{background:var(--card3);color:var(--muted);cursor:not-allowed}
+.range-btn-secondary{background:transparent;border:1px solid var(--b1);color:var(--muted2)}
+.range-btn-secondary:hover{background:var(--p3);color:var(--p2);border-color:var(--p)}
+.range-active-tag{font-size:9px;background:var(--p);color:#fff;padding:3px 7px;border-radius:10px;display:inline-block;margin-top:6px;font-weight:600}
+
 /* KPIs sidebar */
 .sb-kpis{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:0 18px;margin-bottom:16px}
 .sb-kpi{background:var(--card2);border:1px solid var(--b1);border-radius:8px;padding:10px 12px}
@@ -326,6 +345,26 @@ html,body{height:100%;font-family:'Inter',sans-serif;background:var(--bg);color:
     <div class="day-btns" id="dayBtns">
       <button class="day-btn-total active" onclick="selectDay('all')">Total (acumulado)</button>
     </div>
+
+    <!-- Custom date range picker -->
+    <div class="range-wrap">
+      <div class="range-title">Período personalizado</div>
+      <div class="range-row">
+        <div class="range-field">
+          <label for="rangeStart">De</label>
+          <input type="date" id="rangeStart" class="range-input">
+        </div>
+        <div class="range-field">
+          <label for="rangeEnd">Até</label>
+          <input type="date" id="rangeEnd" class="range-input">
+        </div>
+      </div>
+      <div class="range-actions">
+        <button class="range-btn" onclick="applyCustomRange()">Aplicar</button>
+        <button class="range-btn range-btn-secondary" onclick="clearCustomRange()">Limpar</button>
+      </div>
+      <div id="rangeActiveTag" style="display:none"></div>
+    </div>
   </div>
 
   <div class="sb-divider"></div>
@@ -445,6 +484,9 @@ function initDashboard() {
   const periodStr = (dashData.since || '—') + ' → ' + (dashData.until || '—');
   document.getElementById('period-badge').textContent = periodStr;
   document.getElementById('footer-period').textContent = periodStr;
+
+  // Inicializa seletor de período customizado
+  initCustomRangeBounds();
 
   // Build gestor selector
   buildGestorSelector();
@@ -735,7 +777,60 @@ function selectDay(day) {
   // Update button states
   document.querySelectorAll('.day-btn-total').forEach(b => b.classList.toggle('active', b.dataset.day === day));
   document.querySelectorAll('.day-btn').forEach(b => b.classList.toggle('active', b.dataset.day === day));
+  // Limpa tag de range custom se um botão pré-definido foi usado
+  if (!isCustomRange(day)) {
+    const tag = document.getElementById('rangeActiveTag');
+    if (tag) tag.style.display = 'none';
+  }
   renderAll();
+}
+
+function applyCustomRange() {
+  const s = document.getElementById('rangeStart').value;
+  const u = document.getElementById('rangeEnd').value;
+  if (!s || !u) {
+    alert('Selecione as duas datas (de / até) antes de aplicar.');
+    return;
+  }
+  if (s > u) {
+    alert('A data inicial deve ser anterior ou igual à data final.');
+    return;
+  }
+  const mode = `${s}_${u}`;
+  selectedDay = mode;
+  // Desativa botões pré-definidos
+  document.querySelectorAll('.day-btn-total').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.day-btn').forEach(b => b.classList.remove('active'));
+  // Mostra tag ativa
+  const tag = document.getElementById('rangeActiveTag');
+  if (tag) {
+    const fmt = (iso) => iso.split('-').reverse().join('/');
+    tag.innerHTML = `<span class="range-active-tag">📅 ${fmt(s)} → ${fmt(u)}</span>`;
+    tag.style.display = 'block';
+  }
+  renderAll();
+}
+
+function clearCustomRange() {
+  document.getElementById('rangeStart').value = '';
+  document.getElementById('rangeEnd').value = '';
+  const tag = document.getElementById('rangeActiveTag');
+  if (tag) tag.style.display = 'none';
+  selectDay('all');
+}
+
+function initCustomRangeBounds() {
+  // Define min/max dos inputs baseado nos dados disponíveis no dashboard
+  if (!dashData) return;
+  const since = dashData.since || dashData.fetch_since;
+  const until = dashData.until;
+  const ipS = document.getElementById('rangeStart');
+  const ipE = document.getElementById('rangeEnd');
+  if (ipS && since) { ipS.min = since; ipS.max = until; }
+  if (ipE && until) { ipE.min = since; ipE.max = until; }
+  // Valores padrão sugeridos
+  if (ipS && !ipS.value && since) ipS.value = since;
+  if (ipE && !ipE.value && until) ipE.value = until;
 }
 
 function selectAccount(id) {
@@ -809,6 +904,14 @@ function filteredCampaigns() {
 }
 
 // ─── DAILY HELPERS ────────────────────────────────────────────────────────────
+function isCustomRange(mode) {
+  return typeof mode === 'string' && /^\d{4}-\d{2}-\d{2}_\d{4}-\d{2}-\d{2}$/.test(mode);
+}
+function parseCustomRange(mode) {
+  const [s, u] = mode.split('_');
+  return { since: s, until: u };
+}
+
 function rangeCutoff(mode) {
   // Returns the ISO cutoff date string for a given range mode
   const now = new Date();
@@ -817,10 +920,12 @@ function rangeCutoff(mode) {
   return null; // 'all' → no cutoff
 }
 
-function sumDailyRange(daily, cutoff) {
+function sumDailyRange(daily, cutoff, until) {
+  // Aceita também 'until' para janela fechada [cutoff..until]
   let spend = 0, msgs = 0, impr = 0, lpv = 0, purchases = 0, add_cart = 0, initiate = 0;
   Object.entries(daily || {}).forEach(([d, m]) => {
     if (cutoff && d < cutoff) return;
+    if (until && d > until) return;
     spend    += m.spend       || 0;
     msgs     += m.msgs        || 0;
     impr     += m.impressions || 0;
@@ -838,6 +943,10 @@ function sumDailyRange(daily, cutoff) {
 function getAdMetrics(ad) {
   if (selectedDay === 'all') return ad.metrics || {};
   if (/^\d{4}-\d{2}-\d{2}$/.test(selectedDay)) return (ad.daily || {})[selectedDay] || {};
+  if (isCustomRange(selectedDay)) {
+    const {since, until} = parseCustomRange(selectedDay);
+    return sumDailyRange(ad.daily, since, until);
+  }
   // range: '7d' or '14d'
   return sumDailyRange(ad.daily, rangeCutoff(selectedDay));
 }
@@ -858,11 +967,17 @@ function getCampMetrics(camp) {
     return { spend, msgs, impressions: impr, lpv, purchases,
              cost_msg: msgs > 0 ? Math.round(spend / msgs * 100) / 100 : 0 };
   }
-  // range: '7d' or '14d' — sum from ad daily
-  const cutoff = rangeCutoff(selectedDay);
+  // range: '7d', '14d' ou custom 'YYYY-MM-DD_YYYY-MM-DD' — sum from ad daily
+  let cutoff, untilCust = null;
+  if (isCustomRange(selectedDay)) {
+    const r = parseCustomRange(selectedDay);
+    cutoff = r.since; untilCust = r.until;
+  } else {
+    cutoff = rangeCutoff(selectedDay);
+  }
   let spend = 0, msgs = 0, impr = 0, lpv = 0, purchases = 0;
   (camp.ads || []).forEach(ad => {
-    const m = sumDailyRange(ad.daily, cutoff);
+    const m = sumDailyRange(ad.daily, cutoff, untilCust);
     spend    += m.spend       || 0;
     msgs     += m.msgs        || 0;
     impr     += m.impressions || 0;
