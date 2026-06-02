@@ -111,20 +111,23 @@ am5.ready(function(){{
     fill:am5.color(0xeeeeee)
   }});
 
-  // tooltip HTML custom
+  // tooltip HTML custom — fundo branco, texto preto (legível)
   series.mapPolygons.template.set("tooltipHTML", "{{tip}}");
+  const tt = am5.Tooltip.new(root,{{ getFillFromSprite:false }});
+  tt.get("background").setAll({{ fill: am5.color(0xffffff), fillOpacity: 1, stroke: am5.color(0xdddddd), strokeWidth: 1 }});
+  series.set("tooltip", tt);
 
   series.mapPolygons.template.states.create("hover",{{fillOpacity:0.82}});
 
   // dados
   const mapData = ESTADOS.map(e=>{{
-    const cidHtml = e.cidades.slice(0,14).map(c =>
-      `<tr><td style='padding:1px 8px 1px 0'>${{c.cidade}}</td><td style='text-align:right;font-weight:700'>${{fmt(c.cpl)}}</td></tr>`).join('');
-    const extra = e.cidades.length>14 ? `<div style='color:#bbb;font-size:10px;margin-top:3px'>+${{e.cidades.length-14}} outras cidades</div>` : '';
-    const tip = `<div style='font-family:Mulish;min-width:230px'>
-      <div style='font-size:14px;font-weight:900;border-bottom:2px solid #FFE600;padding-bottom:4px;margin-bottom:5px'>${{e.nome}} (${{e.uf}})</div>
-      <div style='font-size:13px;margin-bottom:6px'>CPL médio: <b style='color:#FFE600'>${{fmt(e.cpl)}}</b> · ${{e.msgs}} leads · ${{e.n_cidades}} cidades</div>
-      <table style='font-size:11px;color:#fff;border-collapse:collapse'>${{cidHtml}}</table>${{extra}}
+    const cidHtml = e.cidades.slice(0,16).map(c =>
+      `<tr><td style='padding:1px 10px 1px 0;color:#222'>${{c.cidade}}</td><td style='text-align:right;font-weight:800;color:#1a1a1a'>${{fmt(c.cpl)}}</td></tr>`).join('');
+    const extra = e.cidades.length>16 ? `<div style='color:#888;font-size:10px;margin-top:3px'>+${{e.cidades.length-16}} outras cidades</div>` : '';
+    const tip = `<div style='font-family:Mulish;min-width:240px;background:#ffffff;color:#222;padding:10px 12px;border-radius:8px'>
+      <div style='font-size:14px;font-weight:900;color:#1a1a1a;border-bottom:3px solid #FFE600;padding-bottom:4px;margin-bottom:6px'>${{e.nome}} (${{e.uf}})</div>
+      <div style='font-size:13px;color:#333;margin-bottom:7px'>CPL médio: <b style='color:#E08600'>${{fmt(e.cpl)}}</b> · ${{e.msgs}} leads · ${{e.n_cidades}} cidades</div>
+      <table style='font-size:11px;border-collapse:collapse'>${{cidHtml}}</table>${{extra}}
     </div>`;
     return {{ id:e.id, value:e.cpl, fill:colorFor(e.cpl), tip:tip }};
   }});

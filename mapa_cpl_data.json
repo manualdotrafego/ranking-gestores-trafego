@@ -1,32 +1,21 @@
 {
  "estados": [
   {
-   "id": "BR-AM",
-   "uf": "AM",
-   "nome": "Amazonas",
-   "cpl": 1.34,
-   "spend": 1074.05,
-   "msgs": 799,
-   "n_cidades": 1,
-   "cidades": [
-    {
-     "tag": "#104",
-     "cidade": "MANAUS",
-     "spend": 1074.05,
-     "msgs": 799,
-     "cpl": 1.34
-    }
-   ]
-  },
-  {
    "id": "BR-PA",
    "uf": "PA",
    "nome": "Pará",
-   "cpl": 1.84,
-   "spend": 1472.07,
-   "msgs": 802,
-   "n_cidades": 3,
+   "cpl": 1.25,
+   "spend": 2292.82,
+   "msgs": 1838,
+   "n_cidades": 4,
    "cidades": [
+    {
+     "tag": "#508",
+     "cidade": "INSTALAÇÃO",
+     "spend": 820.75,
+     "msgs": 1036,
+     "cpl": 0.79
+    },
     {
      "tag": "#533",
      "cidade": "clar",
@@ -47,6 +36,24 @@
      "spend": 641.44,
      "msgs": 307,
      "cpl": 2.09
+    }
+   ]
+  },
+  {
+   "id": "BR-AM",
+   "uf": "AM",
+   "nome": "Amazonas",
+   "cpl": 1.34,
+   "spend": 1074.05,
+   "msgs": 799,
+   "n_cidades": 1,
+   "cidades": [
+    {
+     "tag": "#104",
+     "cidade": "MANAUS",
+     "spend": 1074.05,
+     "msgs": 799,
+     "cpl": 1.34
     }
    ]
   },
@@ -310,13 +317,150 @@
    ]
   },
   {
+   "id": "BR-RJ",
+   "uf": "RJ",
+   "nome": "Rio de Janeiro",
+   "cpl": 3.15,
+   "spend": 10501.64,
+   "msgs": 3331,
+   "n_cidades": 18,
+   "cidades": [
+    {
+     "tag": "#526",
+     "cidade": "oferta completa",
+     "spend": 618.91,
+     "msgs": 465,
+     "cpl": 1.33
+    },
+    {
+     "tag": "#111",
+     "cidade": "Araruama Orthopride",
+     "spend": 263.88,
+     "msgs": 138,
+     "cpl": 1.91
+    },
+    {
+     "tag": "#341",
+     "cidade": "CP SANTO ANTONIO DE PADUA 1050K",
+     "spend": 500.95,
+     "msgs": 245,
+     "cpl": 2.04
+    },
+    {
+     "tag": "#125",
+     "cidade": "CAMPO DOS GOYTACASES",
+     "spend": 796.83,
+     "msgs": 354,
+     "cpl": 2.25
+    },
+    {
+     "tag": "#502",
+     "cidade": "CABO FRIO",
+     "spend": 688.55,
+     "msgs": 236,
+     "cpl": 2.92
+    },
+    {
+     "tag": "#455",
+     "cidade": "Orthopride Niteroi Fonseca",
+     "spend": 356.58,
+     "msgs": 118,
+     "cpl": 3.02
+    },
+    {
+     "tag": "#331",
+     "cidade": "CP SÃO PEDRO DA ADEIA 1K",
+     "spend": 785.04,
+     "msgs": 237,
+     "cpl": 3.31
+    },
+    {
+     "tag": "#335",
+     "cidade": "CP DUQUE DE CAXIAS 1 6K",
+     "spend": 912.87,
+     "msgs": 260,
+     "cpl": 3.51
+    },
+    {
+     "tag": "#634",
+     "cidade": "Odonto Leader Volta Redonda",
+     "spend": 808.21,
+     "msgs": 227,
+     "cpl": 3.56
+    },
+    {
+     "tag": "#344",
+     "cidade": "CP NOVA FRIBURGO",
+     "spend": 139.27,
+     "msgs": 38,
+     "cpl": 3.67
+    },
+    {
+     "tag": "#280",
+     "cidade": "Madureira RJ $",
+     "spend": 276.82,
+     "msgs": 74,
+     "cpl": 3.74
+    },
+    {
+     "tag": "#505",
+     "cidade": "Cópia",
+     "spend": 407.38,
+     "msgs": 102,
+     "cpl": 3.99
+    },
+    {
+     "tag": "#438",
+     "cidade": "Cabo Frio",
+     "spend": 873.63,
+     "msgs": 216,
+     "cpl": 4.04
+    },
+    {
+     "tag": "#531",
+     "cidade": "instalação Cópia",
+     "spend": 970.93,
+     "msgs": 222,
+     "cpl": 4.37
+    },
+    {
+     "tag": "#110",
+     "cidade": "Rio Bonito Orthopride",
+     "spend": 284.37,
+     "msgs": 61,
+     "cpl": 4.66
+    },
+    {
+     "tag": "#338",
+     "cidade": "CP BARRA MANSA 1K",
+     "spend": 361.41,
+     "msgs": 71,
+     "cpl": 5.09
+    },
+    {
+     "tag": "#339",
+     "cidade": "CP NOVA FRIBURGO 1K",
+     "spend": 497.77,
+     "msgs": 93,
+     "cpl": 5.35
+    },
+    {
+     "tag": "#236",
+     "cidade": "OralDents Nova Friburgo $",
+     "spend": 958.24,
+     "msgs": 174,
+     "cpl": 5.51
+    }
+   ]
+  },
+  {
    "id": "BR-MS",
    "uf": "MS",
    "nome": "Mato Grosso do Sul",
-   "cpl": 2.98,
-   "spend": 3666.2,
-   "msgs": 1229,
-   "n_cidades": 7,
+   "cpl": 3.17,
+   "spend": 4157.83,
+   "msgs": 1312,
+   "n_cidades": 8,
    "cidades": [
     {
      "tag": "#608",
@@ -366,6 +510,13 @@
      "spend": 287.76,
      "msgs": 64,
      "cpl": 4.5
+    },
+    {
+     "tag": "#546",
+     "cidade": "parc bol",
+     "spend": 491.63,
+     "msgs": 83,
+     "cpl": 5.92
     }
    ]
   },
@@ -373,10 +524,10 @@
    "id": "BR-RS",
    "uf": "RS",
    "nome": "Rio Grande do Sul",
-   "cpl": 3.34,
-   "spend": 11036.41,
-   "msgs": 3301,
-   "n_cidades": 20,
+   "cpl": 3.54,
+   "spend": 12005.05,
+   "msgs": 3391,
+   "n_cidades": 22,
    "cidades": [
     {
      "tag": "#311",
@@ -517,129 +668,20 @@
      "spend": 398.32,
      "msgs": 44,
      "cpl": 9.05
-    }
-   ]
-  },
-  {
-   "id": "BR-RJ",
-   "uf": "RJ",
-   "nome": "Rio de Janeiro",
-   "cpl": 3.43,
-   "spend": 9475.35,
-   "msgs": 2764,
-   "n_cidades": 16,
-   "cidades": [
-    {
-     "tag": "#111",
-     "cidade": "Araruama Orthopride",
-     "spend": 263.88,
-     "msgs": 138,
-     "cpl": 1.91
     },
     {
-     "tag": "#341",
-     "cidade": "CP SANTO ANTONIO DE PADUA 1050K",
-     "spend": 500.95,
-     "msgs": 245,
-     "cpl": 2.04
+     "tag": "#521",
+     "cidade": "INST",
+     "spend": 684.52,
+     "msgs": 67,
+     "cpl": 10.22
     },
     {
-     "tag": "#125",
-     "cidade": "CAMPO DOS GOYTACASES",
-     "spend": 796.83,
-     "msgs": 354,
-     "cpl": 2.25
-    },
-    {
-     "tag": "#502",
-     "cidade": "CABO FRIO",
-     "spend": 688.55,
-     "msgs": 236,
-     "cpl": 2.92
-    },
-    {
-     "tag": "#455",
-     "cidade": "Orthopride Niteroi Fonseca",
-     "spend": 356.58,
-     "msgs": 118,
-     "cpl": 3.02
-    },
-    {
-     "tag": "#331",
-     "cidade": "CP SÃO PEDRO DA ADEIA 1K",
-     "spend": 785.04,
-     "msgs": 237,
-     "cpl": 3.31
-    },
-    {
-     "tag": "#335",
-     "cidade": "CP DUQUE DE CAXIAS 1 6K",
-     "spend": 912.87,
-     "msgs": 260,
-     "cpl": 3.51
-    },
-    {
-     "tag": "#634",
-     "cidade": "Odonto Leader Volta Redonda",
-     "spend": 808.21,
-     "msgs": 227,
-     "cpl": 3.56
-    },
-    {
-     "tag": "#344",
-     "cidade": "CP NOVA FRIBURGO",
-     "spend": 139.27,
-     "msgs": 38,
-     "cpl": 3.67
-    },
-    {
-     "tag": "#280",
-     "cidade": "Madureira RJ $",
-     "spend": 276.82,
-     "msgs": 74,
-     "cpl": 3.74
-    },
-    {
-     "tag": "#438",
-     "cidade": "Cabo Frio",
-     "spend": 873.63,
-     "msgs": 216,
-     "cpl": 4.04
-    },
-    {
-     "tag": "#531",
-     "cidade": "instalação Cópia",
-     "spend": 970.93,
-     "msgs": 222,
-     "cpl": 4.37
-    },
-    {
-     "tag": "#110",
-     "cidade": "Rio Bonito Orthopride",
-     "spend": 284.37,
-     "msgs": 61,
-     "cpl": 4.66
-    },
-    {
-     "tag": "#338",
-     "cidade": "CP BARRA MANSA 1K",
-     "spend": 361.41,
-     "msgs": 71,
-     "cpl": 5.09
-    },
-    {
-     "tag": "#339",
-     "cidade": "CP NOVA FRIBURGO 1K",
-     "spend": 497.77,
-     "msgs": 93,
-     "cpl": 5.35
-    },
-    {
-     "tag": "#236",
-     "cidade": "OralDents Nova Friburgo $",
-     "spend": 958.24,
-     "msgs": 174,
-     "cpl": 5.51
+     "tag": "#622",
+     "cidade": "2IRMÃO 1",
+     "spend": 284.12,
+     "msgs": 23,
+     "cpl": 12.35
     }
    ]
   },
@@ -647,10 +689,10 @@
    "id": "BR-GO",
    "uf": "GO",
    "nome": "Goiás",
-   "cpl": 3.83,
-   "spend": 5517.51,
-   "msgs": 1442,
-   "n_cidades": 11,
+   "cpl": 3.81,
+   "spend": 6150.89,
+   "msgs": 1616,
+   "n_cidades": 12,
    "cidades": [
     {
      "tag": "#417",
@@ -685,6 +727,13 @@
      "cidade": "Quirinópolis $",
      "spend": 437.35,
      "msgs": 120,
+     "cpl": 3.64
+    },
+    {
+     "tag": "#543",
+     "cidade": "INST",
+     "spend": 633.38,
+     "msgs": 174,
      "cpl": 3.64
     },
     {
@@ -911,10 +960,10 @@
    "id": "BR-SP",
    "uf": "SP",
    "nome": "São Paulo",
-   "cpl": 4.69,
-   "spend": 45823.72,
-   "msgs": 9774,
-   "n_cidades": 66,
+   "cpl": 4.7,
+   "spend": 46809.06,
+   "msgs": 9951,
+   "n_cidades": 68,
    "cidades": [
     {
      "tag": "#313",
@@ -1162,6 +1211,13 @@
      "cpl": 4.91
     },
     {
+     "tag": "#615",
+     "cidade": "#615",
+     "spend": 741.5,
+     "msgs": 149,
+     "cpl": 4.98
+    },
+    {
      "tag": "#323",
      "cidade": "CP PERUS 1K",
      "spend": 237.19,
@@ -1330,6 +1386,13 @@
      "cpl": 8.2
     },
     {
+     "tag": "#545",
+     "cidade": "clar",
+     "spend": 243.84,
+     "msgs": 28,
+     "cpl": 8.71
+    },
+    {
      "tag": "#235",
      "cidade": "Olimpia SP $",
      "spend": 543.07,
@@ -1384,10 +1447,10 @@
    "id": "BR-PR",
    "uf": "PR",
    "nome": "Paraná",
-   "cpl": 4.78,
-   "spend": 14441.68,
-   "msgs": 3022,
-   "n_cidades": 22,
+   "cpl": 4.8,
+   "spend": 14608.8,
+   "msgs": 3045,
+   "n_cidades": 23,
    "cidades": [
     {
      "tag": "#106",
@@ -1493,6 +1556,13 @@
      "spend": 357.2,
      "msgs": 57,
      "cpl": 6.27
+    },
+    {
+     "tag": "#539",
+     "cidade": "oferta completa",
+     "spend": 167.12,
+     "msgs": 23,
+     "cpl": 7.27
     },
     {
      "tag": "#101",
@@ -1623,10 +1693,10 @@
    "id": "BR-MG",
    "uf": "MG",
    "nome": "Minas Gerais",
-   "cpl": 5.56,
-   "spend": 19943.83,
-   "msgs": 3584,
-   "n_cidades": 38,
+   "cpl": 5.59,
+   "spend": 20278.2,
+   "msgs": 3627,
+   "n_cidades": 40,
    "cidades": [
     {
      "tag": "#278",
@@ -1839,11 +1909,25 @@
      "cpl": 7.44
     },
     {
+     "tag": "#528",
+     "cidade": "#528",
+     "spend": 293.4,
+     "msgs": 38,
+     "cpl": 7.72
+    },
+    {
      "tag": "#611",
      "cidade": "Santa Barbara",
      "spend": 142.47,
      "msgs": 18,
      "cpl": 7.92
+    },
+    {
+     "tag": "#552",
+     "cidade": "inst+clar",
+     "spend": 40.97,
+     "msgs": 5,
+     "cpl": 8.19
     },
     {
      "tag": "#112",
@@ -2016,10 +2100,10 @@
    "id": "BR-RO",
    "uf": "RO",
    "nome": "Rondônia",
-   "cpl": 10.33,
-   "spend": 599.25,
-   "msgs": 58,
-   "n_cidades": 1,
+   "cpl": 11.08,
+   "spend": 1096.81,
+   "msgs": 99,
+   "n_cidades": 2,
    "cidades": [
     {
      "tag": "#328",
@@ -2027,103 +2111,18 @@
      "spend": 599.25,
      "msgs": 58,
      "cpl": 10.33
+    },
+    {
+     "tag": "#541",
+     "cidade": "premium",
+     "spend": 497.56,
+     "msgs": 41,
+     "cpl": 12.14
     }
    ]
   }
  ],
- "nao_identificados": [
-  {
-   "tag": "#615",
-   "cidade": "#615",
-   "spend": 741.5,
-   "msgs": 149,
-   "cpl": 4.98
-  },
-  {
-   "tag": "#521",
-   "cidade": "INST",
-   "spend": 684.52,
-   "msgs": 67,
-   "cpl": 10.22
-  },
-  {
-   "tag": "#545",
-   "cidade": "clar",
-   "spend": 243.84,
-   "msgs": 28,
-   "cpl": 8.71
-  },
-  {
-   "tag": "#552",
-   "cidade": "inst+clar",
-   "spend": 40.97,
-   "msgs": 5,
-   "cpl": 8.19
-  },
-  {
-   "tag": "#543",
-   "cidade": "INST",
-   "spend": 633.38,
-   "msgs": 174,
-   "cpl": 3.64
-  },
-  {
-   "tag": "#526",
-   "cidade": "oferta completa",
-   "spend": 618.91,
-   "msgs": 465,
-   "cpl": 1.33
-  },
-  {
-   "tag": "#541",
-   "cidade": "premium",
-   "spend": 497.56,
-   "msgs": 41,
-   "cpl": 12.14
-  },
-  {
-   "tag": "#528",
-   "cidade": "#528",
-   "spend": 293.4,
-   "msgs": 38,
-   "cpl": 7.72
-  },
-  {
-   "tag": "#539",
-   "cidade": "oferta completa",
-   "spend": 167.12,
-   "msgs": 23,
-   "cpl": 7.27
-  },
-  {
-   "tag": "#508",
-   "cidade": "INSTALAÇÃO",
-   "spend": 820.75,
-   "msgs": 1036,
-   "cpl": 0.79
-  },
-  {
-   "tag": "#546",
-   "cidade": "parc bol",
-   "spend": 491.63,
-   "msgs": 83,
-   "cpl": 5.92
-  },
-  {
-   "tag": "#505",
-   "cidade": "Cópia",
-   "spend": 407.38,
-   "msgs": 102,
-   "cpl": 3.99
-  },
-  {
-   "tag": "#622",
-   "cidade": "2IRMÃO 1",
-   "spend": 284.12,
-   "msgs": 23,
-   "cpl": 12.35
-  }
- ],
+ "nao_identificados": [],
  "periodo": {
   "since": "2026-05-27",
   "until": "2026-06-02"
