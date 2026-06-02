@@ -28,6 +28,9 @@ BRAGA_ACCOUNTS = [
     {"id": "1221130892436075", "name": "MOGI/SUZANO CA01",                "currency": "BRL"},
     {"id": "945748271201968",  "name": "CA 02 - RIO CLARO",               "currency": "BRL"},
     {"id": "1191172178527886", "name": "São José dos Campos Vilaça",      "currency": "BRL"},
+    {"id": "931356816330864",  "name": "Votuporanga Orthodontic CA01",    "currency": "BRL"},
+    {"id": "2098001153669315", "name": "CA Veris Odontologia",            "currency": "BRL"},
+    {"id": "760466882917549",  "name": "Ortho + Betim Ortodontia",        "currency": "BRL"},
 ]
 
 MILENA_ACCOUNTS = [
@@ -64,6 +67,7 @@ BUENO_ACCOUNTS = [
     {"id": "3656827834577801", "name": "CT14 - BM04 Closer Brasil",       "currency": "BRL"},
     {"id": "421023317498662",  "name": "CT13 - BM04 Closer Brasil",       "currency": "BRL"},
     {"id": "969549934748192",  "name": "CT11 - BM04 Closer Brasil",       "currency": "BRL"},
+    {"id": "1417247788994678", "name": "C.A - 05 CÉSAR",                  "currency": "BRL"},
 ]
 
 IGOR_ACCOUNTS = [
