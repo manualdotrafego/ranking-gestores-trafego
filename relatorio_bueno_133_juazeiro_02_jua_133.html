@@ -22,9 +22,9 @@ body{font-family:'Inter',sans-serif;background:#f0f2f5;color:#1c1e21;font-size:1
 .dbout-logo{width:52px;height:52px;border-radius:50%;object-fit:cover;box-shadow:0 2px 8px rgba(0,0,0,.15);border:1px solid #e8e8e8;flex-shrink:0}
 .camp-info{background:#fff;border-radius:8px;padding:13px 20px;margin-bottom:16px;
            box-shadow:0 1px 3px rgba(0,0,0,.1);display:flex;align-items:center;gap:12px}
-.camp-dot{width:10px;height:10px;border-radius:50%;background:#42b72a;flex-shrink:0}
+.camp-dot{width:10px;height:10px;border-radius:50%;background:#e2a01d;flex-shrink:0}
 .camp-name{font-size:13px;font-weight:600;color:#1c1e21}
-.camp-status{font-size:11px;color:#42b72a;font-weight:700}
+.camp-status{font-size:11px;color:#e2a01d;font-weight:700}
 .camp-account{font-size:11px;color:#8a8d91;margin-left:auto;white-space:nowrap}
 .date-range-wrap{display:flex;justify-content:center;margin-bottom:18px;gap:8px;flex-wrap:wrap}
 .date-input-wrap{position:relative}
@@ -102,7 +102,7 @@ tbody td:first-child{text-align:left;color:#606770;font-weight:600}
   <div class="camp-dot"></div>
   <div>
     <div class="camp-name">#133 | JUAZEIRO - [02 jua]</div>
-    <div class="camp-status">Ativa</div>
+    <div class="camp-status">Pausada</div>
   </div>
   <div class="camp-account">Conta: 421023317498662</div>
 </div>
@@ -167,15 +167,15 @@ tbody td:first-child{text-align:left;color:#606770;font-weight:600}
 </div>
 
 <div class="footer">
-  Gerado em 01/06/2026 · #133 | JUAZEIRO - [02 jua] · Meta API v21.0
+  Gerado em 05/06/2026 · #133 | JUAZEIRO - [02 jua] · Meta API v21.0
 </div>
 </div>
 
 <script>
-const DAILY = [{"date": "2026-05-31", "spend": 40.98, "msgs": 13, "cost_msg": 3.15, "impr": 6762, "cpm": 6.06, "ctr": 0.93}, {"date": "2026-05-30", "spend": 54.44, "msgs": 22, "cost_msg": 2.47, "impr": 7554, "cpm": 7.21, "ctr": 0.93}, {"date": "2026-05-29", "spend": 63.73, "msgs": 24, "cost_msg": 2.66, "impr": 8021, "cpm": 7.95, "ctr": 0.86}, {"date": "2026-05-28", "spend": 77.31, "msgs": 22, "cost_msg": 3.51, "impr": 9082, "cpm": 8.51, "ctr": 1.05}, {"date": "2026-05-27", "spend": 106.2, "msgs": 32, "cost_msg": 3.32, "impr": 12273, "cpm": 8.65, "ctr": 0.87}, {"date": "2026-05-26", "spend": 100.25, "msgs": 28, "cost_msg": 3.58, "impr": 11829, "cpm": 8.47, "ctr": 0.94}, {"date": "2026-05-25", "spend": 96.39, "msgs": 11, "cost_msg": 8.76, "impr": 12104, "cpm": 7.96, "ctr": 0.52}, {"date": "2026-05-24", "spend": 68.49, "msgs": 12, "cost_msg": 5.71, "impr": 9563, "cpm": 7.16, "ctr": 0.69}, {"date": "2026-05-23", "spend": 63.49, "msgs": 19, "cost_msg": 3.34, "impr": 8888, "cpm": 7.14, "ctr": 1.0}, {"date": "2026-05-22", "spend": 79.08, "msgs": 17, "cost_msg": 4.65, "impr": 10735, "cpm": 7.37, "ctr": 0.58}, {"date": "2026-05-21", "spend": 79.47, "msgs": 20, "cost_msg": 3.97, "impr": 10100, "cpm": 7.87, "ctr": 0.68}, {"date": "2026-05-20", "spend": 85.96, "msgs": 31, "cost_msg": 2.77, "impr": 11442, "cpm": 7.51, "ctr": 0.91}, {"date": "2026-05-19", "spend": 125.5, "msgs": 27, "cost_msg": 4.65, "impr": 14949, "cpm": 8.4, "ctr": 0.62}, {"date": "2026-05-18", "spend": 95.34, "msgs": 18, "cost_msg": 5.3, "impr": 10338, "cpm": 9.22, "ctr": 0.49}, {"date": "2026-05-17", "spend": 57.48, "msgs": 19, "cost_msg": 3.03, "impr": 7328, "cpm": 7.84, "ctr": 0.78}, {"date": "2026-05-16", "spend": 62.45, "msgs": 15, "cost_msg": 4.16, "impr": 8846, "cpm": 7.06, "ctr": 0.63}];
+const DAILY = [{"date": "2026-06-05", "spend": 0.09, "msgs": 1, "cost_msg": 0.09, "impr": 12, "cpm": 7.5, "ctr": 8.33}, {"date": "2026-06-04", "spend": 33.06, "msgs": 9, "cost_msg": 3.67, "impr": 4288, "cpm": 7.71, "ctr": 0.51}, {"date": "2026-06-03", "spend": 94.06, "msgs": 24, "cost_msg": 3.92, "impr": 12113, "cpm": 7.77, "ctr": 0.81}, {"date": "2026-06-02", "spend": 111.78, "msgs": 24, "cost_msg": 4.66, "impr": 11542, "cpm": 9.68, "ctr": 0.81}, {"date": "2026-06-01", "spend": 55.36, "msgs": 19, "cost_msg": 2.91, "impr": 7675, "cpm": 7.21, "ctr": 0.7}];
 const DEFAULT_DAYS = 15;
-const FIXED_SINCE = '2026-05-16';
-const FIXED_UNTIL = '2026-05-31';
+const FIXED_SINCE = '2026-06-01';
+const FIXED_UNTIL = '2026-06-05';
 const PT_M = ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
 const PT_MF = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
 let chart=null, activeSince=null, activeUntil=null;
