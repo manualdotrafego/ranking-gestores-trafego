@@ -54,6 +54,7 @@ MOTA_ACCOUNTS = [
     {"id": "140805155678128",  "name": "CT1 - Mota",                     "currency": "BRL"},
     {"id": "959827441932943",  "name": "CT04 - Cartão Cliente Pinhais",  "currency": "BRL"},
     {"id": "782257763801898",  "name": "CT06 - Mota",                    "currency": "BRL"},
+    {"id": "3894814770656049", "name": "CA02/Dbout - Mota",             "currency": "BRL"},
 ]
 
 BUENO_ACCOUNTS = [
