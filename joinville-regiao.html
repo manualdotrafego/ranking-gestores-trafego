@@ -4,117 +4,40 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Programa Polos · Joinville e Região — ECF Consultoria</title>
-<meta name="description" content="O Programa Polos da ECF Consultoria ajuda fabricantes e lojistas de móveis de Joinville e região a crescer as vendas no Mercado Livre com consultoria especializada.">
+<meta name="description" content="Programa Polos da ECF: consultoria para fabricantes e lojistas de móveis de Joinville e região venderem mais no Mercado Livre.">
 <style>
-:root{--azul:#3483FA;--escuro:#2D3277;--amarelo:#FFE600;--verde:#00A650;--tinta:#1b1f3b;}
+:root{--escuro:#2D3277;--amarelo:#FFE600;}
 *{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;}
-body{color:#1b1f3b;background:#f5f6fb;line-height:1.55;}
-a{text-decoration:none;}
-.wrap{max-width:920px;margin:0 auto;padding:0 22px;}
-.hero{background:linear-gradient(135deg,#2D3277 0%,#161a44 100%);color:#fff;padding:56px 0 64px;text-align:center;}
-.brand{font-size:13px;letter-spacing:3px;font-weight:700;color:#fff;opacity:.85;margin-bottom:6px;}
+body{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;
+  background:linear-gradient(135deg,#2D3277 0%,#161a44 100%);color:#fff;text-align:center;}
+.box{max-width:560px;}
+.brand{font-size:12px;letter-spacing:3px;font-weight:700;opacity:.85;margin-bottom:8px;}
 .brand b{color:var(--amarelo);}
-.region{display:inline-block;margin:18px 0 14px;font-size:13px;font-weight:700;letter-spacing:.5px;color:#fff;background:#ffffff22;border:1px solid #ffffff33;padding:7px 16px;border-radius:30px;}
-.hero h1{font-size:34px;line-height:1.2;font-weight:800;max-width:760px;margin:0 auto 16px;}
-.hero h1 em{color:var(--amarelo);font-style:normal;}
-.hero p{font-size:17px;opacity:.92;max-width:620px;margin:0 auto 30px;}
-.btn{display:inline-flex;align-items:center;gap:10px;background:var(--amarelo);color:#1b1f3b;font-weight:800;font-size:17px;padding:16px 30px;border-radius:14px;box-shadow:0 10px 30px rgba(255,230,0,.25);transition:transform .15s,box-shadow .15s;}
-.btn:hover{transform:translateY(-2px);box-shadow:0 14px 36px rgba(255,230,0,.35);}
+.region{display:inline-block;margin:14px 0 18px;font-size:13px;font-weight:700;color:#fff;
+  background:#ffffff22;border:1px solid #ffffff33;padding:7px 16px;border-radius:30px;}
+h1{font-size:32px;line-height:1.2;font-weight:800;margin-bottom:14px;}
+h1 em{color:var(--amarelo);font-style:normal;}
+p{font-size:17px;opacity:.92;margin-bottom:30px;}
+.btn{display:inline-flex;align-items:center;gap:10px;background:var(--amarelo);color:#1b1f3b;
+  font-weight:800;font-size:18px;padding:17px 34px;border-radius:14px;
+  box-shadow:0 10px 30px rgba(255,230,0,.25);transition:transform .15s;}
+.btn:hover{transform:translateY(-2px);}
 .btn svg{width:22px;height:22px;}
-.btn-note{font-size:13px;opacity:.75;margin-top:12px;}
-section{padding:48px 0;}
-.sec-tag{display:inline-block;font-size:12px;font-weight:800;letter-spacing:1px;color:var(--azul);text-transform:uppercase;margin-bottom:10px;}
-h2{font-size:25px;font-weight:800;margin-bottom:16px;color:var(--escuro);}
-.lead{font-size:16px;color:#444;max-width:680px;}
-.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:28px;}
-.card{background:#fff;border:1px solid #e7e9f5;border-radius:16px;padding:24px;}
-.card .ic{width:46px;height:46px;border-radius:12px;background:#3483FA15;display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:14px;}
-.card h3{font-size:16px;font-weight:700;margin-bottom:7px;color:var(--escuro);}
-.card p{font-size:14px;color:#555;}
-.list{margin-top:24px;display:grid;gap:13px;}
-.li{display:flex;gap:12px;align-items:flex-start;background:#fff;border:1px solid #e7e9f5;border-radius:12px;padding:16px 18px;}
-.li .ck{flex:0 0 auto;width:24px;height:24px;border-radius:50%;background:var(--verde);color:#fff;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;}
-.li b{display:block;font-size:15px;color:var(--escuro);}
-.li span{font-size:14px;color:#555;}
-.cta{background:linear-gradient(135deg,#3483FA 0%,#2D3277 100%);color:#fff;text-align:center;border-radius:22px;padding:46px 26px;margin:10px 0 0;}
-.cta h2{color:#fff;font-size:26px;}
-.cta p{opacity:.92;max-width:560px;margin:0 auto 26px;}
-footer{text-align:center;padding:34px 0 46px;color:#8a90a8;font-size:13px;}
-@media(max-width:760px){.hero h1{font-size:27px;}.grid{grid-template-columns:1fr;}}
+.note{font-size:13px;opacity:.7;margin-top:14px;}
+a{text-decoration:none;}
 </style>
 </head>
 <body>
-
-<header class="hero">
-  <div class="wrap">
+  <div class="box">
     <div class="brand">ECF <b>|</b> CONSULTORIA &amp; ASSESSORIA</div>
     <span class="region">📍 Joinville e Região — SC</span>
-    <h1>Leve a sua marcenaria ou loja de móveis para <em>vender mais no Mercado Livre</em></h1>
-    <p>O <strong>Programa Polos</strong> é a iniciativa da ECF que estrutura fabricantes e lojistas de móveis da sua região para crescer as vendas no maior marketplace do Brasil — com método, acompanhamento e estratégia.</p>
+    <h1>Venda mais móveis no <em>Mercado Livre</em> com o Programa Polos</h1>
+    <p>Consultoria especializada para fabricantes e lojistas de móveis da sua região estruturarem e escalarem as vendas online.</p>
     <a class="btn" href="https://wa.link/95bepx">
       <svg viewBox="0 0 24 24" fill="none" stroke="#1b1f3b" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-8.5 8.5 8.5 8.5 0 0 1-3.8-.9L3 20l1.4-4.2A8.5 8.5 0 1 1 21 11.5z"/></svg>
       Falar com um especialista
     </a>
-    <div class="btn-note">Atendimento direto pela nossa equipe · Sem custo para tirar suas dúvidas</div>
+    <div class="note">Atendimento direto pela equipe ECF</div>
   </div>
-</header>
-
-<section>
-  <div class="wrap">
-    <span class="sec-tag">O que é</span>
-    <h2>Um programa pensado para o polo moveleiro da sua região</h2>
-    <p class="lead">Joinville e região concentram um forte ecossistema moveleiro. O Programa Polos conecta esses negócios às melhores práticas de venda online, ajudando você a transformar a operação física em uma operação digital lucrativa dentro do Mercado Livre.</p>
-    <div class="grid">
-      <div class="card">
-        <div class="ic">🎯</div>
-        <h3>Diagnóstico da sua operação</h3>
-        <p>Entendemos onde o seu negócio está hoje e o potencial de crescimento dentro do marketplace.</p>
-      </div>
-      <div class="card">
-        <div class="ic">📈</div>
-        <h3>Método validado</h3>
-        <p>Estratégia testada em centenas de operações do setor moveleiro para estruturar e escalar vendas.</p>
-      </div>
-      <div class="card">
-        <div class="ic">🤝</div>
-        <h3>Acompanhamento próximo</h3>
-        <p>Consultoria especializada para apoiar a sua equipe na execução, do anúncio à logística.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section style="background:#fff;border-top:1px solid #e7e9f5;border-bottom:1px solid #e7e9f5;">
-  <div class="wrap">
-    <span class="sec-tag">Para quem é</span>
-    <h2>Feito para fabricantes e lojistas de móveis</h2>
-    <div class="list">
-      <div class="li"><span class="ck">✓</span><div><b>Fabricantes de móveis</b><span>que querem abrir ou profissionalizar o canal de vendas online.</span></div></div>
-      <div class="li"><span class="ck">✓</span><div><b>Lojistas de móveis</b><span>buscando ampliar o alcance além da loja física.</span></div></div>
-      <div class="li"><span class="ck">✓</span><div><b>Negócios da região de Joinville</b><span>que já vendem ou pretendem começar no Mercado Livre.</span></div></div>
-    </div>
-  </div>
-</section>
-
-<section>
-  <div class="wrap">
-    <div class="cta">
-      <h2>Quer saber se o Programa Polos faz sentido para o seu negócio?</h2>
-      <p>Converse com um especialista da ECF. Vamos entender a sua operação e mostrar o caminho para crescer as vendas no Mercado Livre.</p>
-      <a class="btn" href="https://wa.link/95bepx">
-        <svg viewBox="0 0 24 24" fill="none" stroke="#1b1f3b" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-8.5 8.5 8.5 8.5 0 0 1-3.8-.9L3 20l1.4-4.2A8.5 8.5 0 1 1 21 11.5z"/></svg>
-        Falar com um especialista
-      </a>
-    </div>
-  </div>
-</section>
-
-<footer>
-  <div class="wrap">
-    ECF Consultoria &amp; Assessoria · Programa Polos — Joinville e Região (SC)<br>
-    Conteúdo informativo sobre o programa. As condições são apresentadas no atendimento.
-  </div>
-</footer>
-
 </body>
 </html>
