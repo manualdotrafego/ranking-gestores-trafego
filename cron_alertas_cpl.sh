@@ -18,3 +18,6 @@ fi
 
 # notifica Telegram (skip gracioso se sem token)
 "$PY" notificar_telegram.py
+
+# notifica Discord (com ping dos responsáveis; skip gracioso se sem webhook)
+"$PY" notificar_discord.py
