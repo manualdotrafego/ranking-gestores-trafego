@@ -20,8 +20,8 @@ OUT  = BASE / "alertas.json"
 # ─── critérios (ajustáveis) ───
 MIN_PCT      = 30.0   # variação mínima (%)
 MIN_ABS      = 1.0    # variação mínima (R$)
-MIN_MSG_REF  = 3      # mensagens mínimas no dia de referência
-MIN_MSG_BASE = 6      # mensagens mínimas somadas no baseline (3 dias)
+MIN_MSG_REF  = 5      # mensagens mínimas no dia de referência
+MIN_MSG_BASE = 10     # mensagens mínimas somadas no baseline (3 dias)
 DIRECAO      = "alta" # "alta" = só CPL subindo
 
 TAG_RE = re.compile(r'#(\d+)')

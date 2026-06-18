@@ -1,63 +1,217 @@
 {
-  "generated_at": "2026-06-17",
-  "ref_day": "2026-06-16",
+  "generated_at": "2026-06-18",
+  "ref_day": "2026-06-17",
   "baseline_days": [
-    "2026-06-13",
     "2026-06-14",
-    "2026-06-15"
+    "2026-06-15",
+    "2026-06-16"
   ],
   "criteria": {
     "min_pct": 30.0,
     "min_abs": 1.0,
     "direction": "alta",
-    "min_msg_ref": 3,
-    "min_msg_base": 6
+    "min_msg_ref": 5,
+    "min_msg_base": 10
   },
-  "count": 4,
+  "count": 18,
   "alerts": [
     {
+      "gestor": "Igor Teixeira",
+      "clinica": "TUCURUVI R$.",
+      "tag": "#432",
+      "cpl_ant": 5.72,
+      "cpl_atual": 14.21,
+      "var_abs": 8.49,
+      "var_pct": 148.4,
+      "msgs_atual": 5,
+      "spend_atual": 71.07
+    },
+    {
       "gestor": "Thiago Braga",
-      "clinica": "Curvelo Implante Marca",
-      "tag": "#281",
-      "cpl_ant": 4.91,
-      "cpl_atual": 8.11,
-      "var_abs": 3.2,
-      "var_pct": 65.1,
+      "clinica": "Votuporanga",
+      "tag": "#270",
+      "cpl_ant": 8.16,
+      "cpl_atual": 16.12,
+      "var_abs": 7.96,
+      "var_pct": 97.5,
       "msgs_atual": 6,
-      "spend_atual": 48.64
+      "spend_atual": 96.72
     },
     {
       "gestor": "Milena",
-      "clinica": "CP ITU 1K",
-      "tag": "#309",
-      "cpl_ant": 5.89,
-      "cpl_atual": 8.32,
-      "var_abs": 2.43,
-      "var_pct": 41.3,
+      "clinica": "CP ORTHO MAIS MOC 2,5K",
+      "tag": "#312",
+      "cpl_ant": 10.18,
+      "cpl_atual": 17.4,
+      "var_abs": 7.22,
+      "var_pct": 70.9,
       "msgs_atual": 5,
-      "spend_atual": 41.61
+      "spend_atual": 86.99
     },
     {
       "gestor": "Thiago Braga",
-      "clinica": "Quirinópolis COP CBO",
-      "tag": "#241",
-      "cpl_ant": 6.69,
-      "cpl_atual": 8.94,
-      "var_abs": 2.25,
-      "var_pct": 33.6,
-      "msgs_atual": 5,
-      "spend_atual": 44.68
-    },
-    {
-      "gestor": "Thiago Braga",
-      "clinica": "7 Ribeirão Preto Implante",
-      "tag": "#247",
-      "cpl_ant": 5.25,
-      "cpl_atual": 7.21,
-      "var_abs": 1.97,
-      "var_pct": 37.5,
+      "clinica": "[DBOUT] Betim MG ORTO",
+      "tag": "#208",
+      "cpl_ant": 5.07,
+      "cpl_atual": 12.01,
+      "var_abs": 6.95,
+      "var_pct": 137.1,
       "msgs_atual": 7,
-      "spend_atual": 50.5
+      "spend_atual": 84.08
+    },
+    {
+      "gestor": "Victor",
+      "clinica": "ABO [BRASILIA] R$2.orto oferta completa",
+      "tag": "#503",
+      "cpl_ant": 5.71,
+      "cpl_atual": 9.24,
+      "var_abs": 3.53,
+      "var_pct": 61.8,
+      "msgs_atual": 8,
+      "spend_atual": 73.94
+    },
+    {
+      "gestor": "Mota",
+      "clinica": "CP02 Campina Grande do Sul Camp Cesar 2.",
+      "tag": "#628",
+      "cpl_ant": 6.75,
+      "cpl_atual": 10.24,
+      "var_abs": 3.49,
+      "var_pct": 51.8,
+      "msgs_atual": 7,
+      "spend_atual": 71.68
+    },
+    {
+      "gestor": "Milena",
+      "clinica": "CP LUCAS DO RIO VERDE 3,1K",
+      "tag": "#321",
+      "cpl_ant": 6.68,
+      "cpl_atual": 9.34,
+      "var_abs": 2.67,
+      "var_pct": 40.0,
+      "msgs_atual": 8,
+      "spend_atual": 74.75
+    },
+    {
+      "gestor": "Thiago Braga",
+      "clinica": "Itapetininga SP",
+      "tag": "#224",
+      "cpl_ant": 5.62,
+      "cpl_atual": 8.22,
+      "var_abs": 2.6,
+      "var_pct": 46.2,
+      "msgs_atual": 13,
+      "spend_atual": 106.86
+    },
+    {
+      "gestor": "Thiago Braga",
+      "clinica": "Campina Grande",
+      "tag": "#211",
+      "cpl_ant": 2.67,
+      "cpl_atual": 5.25,
+      "var_abs": 2.58,
+      "var_pct": 96.4,
+      "msgs_atual": 6,
+      "spend_atual": 31.5
+    },
+    {
+      "gestor": "Igor Teixeira",
+      "clinica": "APARECIDA DE GOIÂNIA R$.",
+      "tag": null,
+      "cpl_ant": 1.99,
+      "cpl_atual": 4.52,
+      "var_abs": 2.53,
+      "var_pct": 127.3,
+      "msgs_atual": 19,
+      "spend_atual": 85.91
+    },
+    {
+      "gestor": "Thiago Braga",
+      "clinica": "Rede Orto Chapadinha",
+      "tag": "#389",
+      "cpl_ant": 2.24,
+      "cpl_atual": 4.71,
+      "var_abs": 2.47,
+      "var_pct": 110.6,
+      "msgs_atual": 12,
+      "spend_atual": 56.54
+    },
+    {
+      "gestor": "Mota",
+      "clinica": "Sao Mateus SP R$2...",
+      "tag": "#635",
+      "cpl_ant": 6.07,
+      "cpl_atual": 8.24,
+      "var_abs": 2.17,
+      "var_pct": 35.7,
+      "msgs_atual": 6,
+      "spend_atual": 49.43
+    },
+    {
+      "gestor": "Mota",
+      "clinica": "Soure PA R$1...",
+      "tag": "#643",
+      "cpl_ant": 3.98,
+      "cpl_atual": 5.97,
+      "var_abs": 1.99,
+      "var_pct": 50.1,
+      "msgs_atual": 7,
+      "spend_atual": 41.79
+    },
+    {
+      "gestor": "Igor Teixeira",
+      "clinica": "Osasco 2k .",
+      "tag": "#435",
+      "cpl_ant": 5.01,
+      "cpl_atual": 6.98,
+      "var_abs": 1.97,
+      "var_pct": 39.3,
+      "msgs_atual": 7,
+      "spend_atual": 48.85
+    },
+    {
+      "gestor": "Thiago Braga",
+      "clinica": "CDC Sete Lagoas",
+      "tag": "#264",
+      "cpl_ant": 4.44,
+      "cpl_atual": 6.34,
+      "var_abs": 1.89,
+      "var_pct": 42.6,
+      "msgs_atual": 12,
+      "spend_atual": 76.03
+    },
+    {
+      "gestor": "Thiago Braga",
+      "clinica": "Três Lagoas Orto",
+      "tag": "#261",
+      "cpl_ant": 4.74,
+      "cpl_atual": 6.39,
+      "var_abs": 1.65,
+      "var_pct": 34.9,
+      "msgs_atual": 9,
+      "spend_atual": 57.49
+    },
+    {
+      "gestor": "Thiago Braga",
+      "clinica": "Orthopride Santo André",
+      "tag": "#250",
+      "cpl_ant": 4.49,
+      "cpl_atual": 6.08,
+      "var_abs": 1.58,
+      "var_pct": 35.3,
+      "msgs_atual": 11,
+      "spend_atual": 66.86
+    },
+    {
+      "gestor": "Igor Teixeira",
+      "clinica": "São Leopoldo 1k .",
+      "tag": "#431",
+      "cpl_ant": 3.78,
+      "cpl_atual": 5.18,
+      "var_abs": 1.4,
+      "var_pct": 37.1,
+      "msgs_atual": 6,
+      "spend_atual": 31.06
     }
   ]
 }
