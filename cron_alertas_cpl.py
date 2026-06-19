@@ -77,8 +77,11 @@ def main():
             erros.append('publicação dashboard'); notify_failure('publicação dashboard', str(e))
 
     # 3) Telegram  | 4) Discord
-    if not run('envio Telegram', [PY, str(BASE / 'notificar_telegram.py')]): erros.append('Telegram')
-    if not run('envio Discord',  [PY, str(BASE / 'notificar_discord.py')]):  erros.append('Discord')
+    if os.getenv('DRY_RUN') == '1':
+        log('DRY_RUN=1 — envio de Telegram/Discord PULADO (validação sem notificar o time)')
+    else:
+        if not run('envio Telegram', [PY, str(BASE / 'notificar_telegram.py')]): erros.append('Telegram')
+        if not run('envio Discord',  [PY, str(BASE / 'notificar_discord.py')]):  erros.append('Discord')
 
     if erros:
         log(f'=== alertas CPL: fim COM FALHAS: {", ".join(erros)} ===')
