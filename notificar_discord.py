@@ -11,7 +11,7 @@ from pathlib import Path
 from dotenv import load_dotenv
 import requests
 
-BASE = Path("/Users/alexrangelalves/Downloads/Conexão mtds")
+BASE = Path(os.environ.get("PROJECT_DIR", "/Users/alexrangelalves/Downloads/Conexão mtds"))
 load_dotenv(dotenv_path=BASE / ".env")
 WEBHOOK = os.getenv("DISCORD_WEBHOOK_URL", "").strip()
 ALERTAS = BASE / "alertas.json"

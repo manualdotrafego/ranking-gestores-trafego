@@ -12,7 +12,7 @@ from pathlib import Path
 from dotenv import load_dotenv
 import requests
 
-BASE = Path("/Users/alexrangelalves/Downloads/Conexão mtds")
+BASE = Path(os.environ.get("PROJECT_DIR", "/Users/alexrangelalves/Downloads/Conexão mtds"))
 PY = sys.executable
 load_dotenv(dotenv_path=BASE / ".env")
 TG_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN", "").strip()
@@ -57,21 +57,24 @@ def main():
         # sem alertas.json válido não adianta seguir
         log('=== alertas CPL: abortado (falha na detecção) ==='); return
 
-    # 2) publica alertas.json (painel do dashboard)
-    try:
-        subprocess.run(['git', '-C', str(BASE), 'add', 'alertas.json'], capture_output=True, text=True, timeout=120)
-        c = subprocess.run(['git', '-C', str(BASE), 'commit', '-m', f'alertas CPL {time.strftime("%Y-%m-%d")}'],
-                           capture_output=True, text=True, timeout=120)
-        if c.returncode == 0:
-            p = subprocess.run(['git', '-C', str(BASE), 'push'], capture_output=True, text=True, timeout=300)
-            if p.returncode == 0:
-                log('alertas.json publicado')
+    # 2) publica alertas.json (painel do dashboard) — pulado no CI (workflow commita)
+    if os.getenv('SKIP_GIT') == '1':
+        log('SKIP_GIT=1 — publicação delegada ao workflow do GitHub Actions')
+    else:
+        try:
+            subprocess.run(['git', '-C', str(BASE), 'add', 'alertas.json'], capture_output=True, text=True, timeout=120)
+            c = subprocess.run(['git', '-C', str(BASE), 'commit', '-m', f'alertas CPL {time.strftime("%Y-%m-%d")}'],
+                               capture_output=True, text=True, timeout=120)
+            if c.returncode == 0:
+                p = subprocess.run(['git', '-C', str(BASE), 'push'], capture_output=True, text=True, timeout=300)
+                if p.returncode == 0:
+                    log('alertas.json publicado')
+                else:
+                    erros.append('publicação dashboard'); notify_failure('publicação dashboard (git push)', p.stderr[-400:])
             else:
-                erros.append('publicação dashboard'); notify_failure('publicação dashboard (git push)', p.stderr[-400:])
-        else:
-            log('alertas.json sem mudanças')
-    except Exception as e:
-        erros.append('publicação dashboard'); notify_failure('publicação dashboard', str(e))
+                log('alertas.json sem mudanças')
+        except Exception as e:
+            erros.append('publicação dashboard'); notify_failure('publicação dashboard', str(e))
 
     # 3) Telegram  | 4) Discord
     if not run('envio Telegram', [PY, str(BASE / 'notificar_telegram.py')]): erros.append('Telegram')

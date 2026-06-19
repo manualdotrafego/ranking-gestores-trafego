@@ -1,0 +1,55 @@
+name: Alertas CPL diário
+
+on:
+  schedule:
+    - cron: '35 12 * * 1-5'   # 09:35 BRT (UTC-3) — seg a sex
+  workflow_dispatch:           # permite disparo manual pela aba Actions
+
+permissions:
+  contents: write
+
+concurrency:
+  group: alertas-cpl
+  cancel-in-progress: false
+
+jobs:
+  alertas:
+    runs-on: ubuntu-latest
+    env:
+      PROJECT_DIR: ${{ github.workspace }}
+      SKIP_GIT: '1'
+      META_ACCESS_TOKEN: ${{ secrets.META_ACCESS_TOKEN }}
+      NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+      TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+      TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+      DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Instala dependências
+        run: pip install requests python-dotenv
+
+      - name: Atualiza dados do dashboard (fetch Meta)
+        run: python "fetch_dashboard_data.py"
+
+      - name: Detecta altas + envia Telegram e Discord
+        run: python "cron_alertas_cpl.py"
+
+      - name: Publica dados + alertas no GitHub Pages
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add dashboard_data.json alertas.json
+          if git diff --cached --quiet; then
+            echo "Sem mudanças para publicar"
+          else
+            git commit -m "alertas CPL $(date +%F) [CI]"
+            git pull --rebase --autostash origin main || true
+            git push
+          fi

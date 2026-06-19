@@ -11,7 +11,7 @@ from pathlib import Path
 from dotenv import load_dotenv
 import requests
 
-BASE = Path("/Users/alexrangelalves/Downloads/Conexão mtds")
+BASE = Path(os.environ.get("PROJECT_DIR", "/Users/alexrangelalves/Downloads/Conexão mtds"))
 load_dotenv(dotenv_path=BASE / ".env")
 TOKEN = os.getenv("TELEGRAM_BOT_TOKEN", "").strip()
 CHAT  = os.getenv("TELEGRAM_CHAT_ID", "").strip()

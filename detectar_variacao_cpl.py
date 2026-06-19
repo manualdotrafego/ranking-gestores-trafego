@@ -8,12 +8,12 @@ e imprime o resumo. O envio por Telegram é feito por notificar_telegram.py.
 Unidade = #NNN (soma de todas as campanhas/anúncios da tag no gestor).
 Critério: só ALTAS, variação >= 30% E >= R$1,00 (com guarda de volume).
 """
-import json, re, sys
+import os, json, re, sys
 from datetime import date
 from pathlib import Path
 from collections import defaultdict
 
-BASE = Path("/Users/alexrangelalves/Downloads/Conexão mtds")
+BASE = Path(os.environ.get("PROJECT_DIR", "/Users/alexrangelalves/Downloads/Conexão mtds"))
 DATA = BASE / "dashboard_data.json"
 OUT  = BASE / "alertas.json"
 
