@@ -22,9 +22,9 @@
       "cpl_ant": 5.09,
       "cpl_atual": 10.55,
       "var_abs": 5.46,
-      "var_pct": 107.3,
+      "var_pct": 107.4,
       "msgs_atual": 5,
-      "spend_atual": 52.75
+      "spend_atual": 52.77
     },
     {
       "gestor": "Thiago Braga",
@@ -68,29 +68,29 @@
       "var_abs": 3.28,
       "var_pct": 70.6,
       "msgs_atual": 7,
-      "spend_atual": 55.41
+      "spend_atual": 55.43
     },
     {
       "gestor": "Victor",
       "clinica": "ABO [SANTA CRUZ DO SUL] R$1.inst.",
       "tag": "#509",
       "cpl_ant": 3.22,
-      "cpl_atual": 6.02,
-      "var_abs": 2.8,
-      "var_pct": 86.9,
+      "cpl_atual": 6.03,
+      "var_abs": 2.81,
+      "var_pct": 87.0,
       "msgs_atual": 6,
-      "spend_atual": 36.15
+      "spend_atual": 36.18
     },
     {
       "gestor": "Bueno",
       "clinica": "ARARAQUARA R$ 2.(líquidos) [arara]",
       "tag": "#142",
       "cpl_ant": 7.53,
-      "cpl_atual": 10.14,
+      "cpl_atual": 10.15,
       "var_abs": 2.62,
       "var_pct": 34.8,
       "msgs_atual": 6,
-      "spend_atual": 60.86
+      "spend_atual": 60.89
     },
     {
       "gestor": "Victor",
@@ -134,7 +134,7 @@
       "var_abs": 2.36,
       "var_pct": 64.9,
       "msgs_atual": 8,
-      "spend_atual": 48.03
+      "spend_atual": 48.04
     },
     {
       "gestor": "Thiago Braga",
@@ -163,11 +163,11 @@
       "clinica": "CBO [SÃO LOURENÇO] 4 R$1.",
       "tag": "#540",
       "cpl_ant": 3.59,
-      "cpl_atual": 5.76,
-      "var_abs": 2.17,
-      "var_pct": 60.5,
+      "cpl_atual": 5.77,
+      "var_abs": 2.18,
+      "var_pct": 60.7,
       "msgs_atual": 5,
-      "spend_atual": 28.82
+      "spend_atual": 28.85
     },
     {
       "gestor": "Igor Teixeira",
@@ -178,7 +178,7 @@
       "var_abs": 1.94,
       "var_pct": 99.1,
       "msgs_atual": 37,
-      "spend_atual": 144.35
+      "spend_atual": 144.36
     },
     {
       "gestor": "Thiago Braga",
@@ -189,7 +189,7 @@
       "var_abs": 1.84,
       "var_pct": 41.5,
       "msgs_atual": 10,
-      "spend_atual": 62.71
+      "spend_atual": 62.72
     },
     {
       "gestor": "Mota",
@@ -220,9 +220,9 @@
       "cpl_ant": 2.89,
       "cpl_atual": 4.57,
       "var_abs": 1.68,
-      "var_pct": 58.3,
+      "var_pct": 58.4,
       "msgs_atual": 14,
-      "spend_atual": 64.0
+      "spend_atual": 64.01
     },
     {
       "gestor": "Bueno",
@@ -242,9 +242,9 @@
       "cpl_ant": 2.52,
       "cpl_atual": 4.16,
       "var_abs": 1.64,
-      "var_pct": 64.8,
+      "var_pct": 64.9,
       "msgs_atual": 8,
-      "spend_atual": 33.28
+      "spend_atual": 33.29
     },
     {
       "gestor": "Milena",
@@ -252,10 +252,10 @@
       "tag": "#343",
       "cpl_ant": 2.98,
       "cpl_atual": 4.61,
-      "var_abs": 1.63,
-      "var_pct": 54.9,
+      "var_abs": 1.64,
+      "var_pct": 55.0,
       "msgs_atual": 7,
-      "spend_atual": 32.28
+      "spend_atual": 32.29
     },
     {
       "gestor": "Mota",
@@ -275,9 +275,9 @@
       "cpl_ant": 3.37,
       "cpl_atual": 4.83,
       "var_abs": 1.46,
-      "var_pct": 43.2,
+      "var_pct": 43.3,
       "msgs_atual": 6,
-      "spend_atual": 28.99
+      "spend_atual": 29.0
     },
     {
       "gestor": "Igor Teixeira",
@@ -318,10 +318,10 @@
       "tag": "#444",
       "cpl_ant": 1.81,
       "cpl_atual": 3.19,
-      "var_abs": 1.37,
-      "var_pct": 75.8,
+      "var_abs": 1.38,
+      "var_pct": 75.9,
       "msgs_atual": 8,
-      "spend_atual": 25.5
+      "spend_atual": 25.51
     },
     {
       "gestor": "Thiago Braga",
@@ -372,11 +372,11 @@
       "clinica": "CP BARREIRAS CLÍNICO 1K",
       "tag": "#345",
       "cpl_ant": 3.27,
-      "cpl_atual": 4.29,
-      "var_abs": 1.01,
-      "var_pct": 31.0,
+      "cpl_atual": 4.3,
+      "var_abs": 1.02,
+      "var_pct": 31.2,
       "msgs_atual": 6,
-      "spend_atual": 25.72
+      "spend_atual": 25.77
     }
   ]
 }
