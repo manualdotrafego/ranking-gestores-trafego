@@ -24,6 +24,7 @@ jobs:
       PROJECT_DIR: ${{ github.workspace }}
       SKIP_GIT: '1'
       DRY_RUN: ${{ inputs.dry_run == true && '1' || '0' }}
+      FETCH_LITE: '1'   # nuvem: pula previews/idade (rápido); previews salvos são preservados
       META_ACCESS_TOKEN: ${{ secrets.META_ACCESS_TOKEN }}
       NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
       TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}

@@ -12,6 +12,10 @@ from dotenv import load_dotenv
 load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__), ".env"))
 
 TOKEN = os.getenv("META_ACCESS_TOKEN")
+# Modo "lite" (usado no GitHub Actions): pula a renovação de previews dos criativos
+# e o breakdown por idade — dados pesados que o alerta/gráficos de CPL não usam.
+# O fetch é incremental, então os previews/idade já existentes são preservados.
+LITE = os.getenv("FETCH_LITE") == "1"
 BASE  = "https://graph.facebook.com/v21.0"
 OUT   = os.path.join(os.path.dirname(__file__), "dashboard_data.json")
 
@@ -265,17 +269,21 @@ def fetch_account(acc, ad_lookup):
     })
     print(f"    {len(insights_raw)} linhas de insights diários")
 
-    # 3. Age breakdown — aggregate últimos 7 dias
-    print(f"    Buscando breakdown por idade...")
-    age_raw = get_all_pages(f"/act_{acct_id}/insights", {
-        "fields": "ad_id,spend,impressions,actions,cost_per_action_type",
-        "level": "ad",
-        "time_range": TIME_RANGE,
-        "breakdowns": "age",
-        "filtering": json.dumps([{"field": "campaign.id", "operator": "IN", "value": camp_ids}]),
-        "limit": 500,
-    })
-    print(f"    {len(age_raw)} linhas de breakdown")
+    # 3. Age breakdown — aggregate últimos 7 dias (pulado no modo LITE)
+    if LITE:
+        age_raw = []
+        print(f"    [LITE] breakdown por idade pulado")
+    else:
+        print(f"    Buscando breakdown por idade...")
+        age_raw = get_all_pages(f"/act_{acct_id}/insights", {
+            "fields": "ad_id,spend,impressions,actions,cost_per_action_type",
+            "level": "ad",
+            "time_range": TIME_RANGE,
+            "breakdowns": "age",
+            "filtering": json.dumps([{"field": "campaign.id", "operator": "IN", "value": camp_ids}]),
+            "limit": 500,
+        })
+        print(f"    {len(age_raw)} linhas de breakdown")
 
     # 4. Thumbnails e status
     print(f"    Buscando thumbnails...")
@@ -300,7 +308,7 @@ def fetch_account(acc, ad_lookup):
         ad["id"] for ad in ads_meta_raw
         if status_map.get(ad["id"]) == "ACTIVE"
     ]
-    if active_ids_needing_preview:
+    if active_ids_needing_preview and not LITE:
         print(f"    Buscando previews ({len(active_ids_needing_preview)} ads ativos)...")
         for ad_id_p in active_ids_needing_preview:
             prev = get(f"/{ad_id_p}/previews", {"ad_format": "MOBILE_FEED_STANDARD"})
@@ -310,6 +318,8 @@ def fetch_account(acc, ad_lookup):
                     preview_map[ad_id_p] = html_mod.unescape(m.group(1))
                     break
             time.sleep(0.1)
+    elif LITE:
+        print(f"    [LITE] previews pulados ({len(active_ids_needing_preview)} ads — mantém os já salvos)")
 
     # 5. Indexa insights diários por ad_id → date
     new_daily = {}   # {ad_id: {date_str: metrics}}
