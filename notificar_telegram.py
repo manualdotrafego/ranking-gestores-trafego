@@ -6,7 +6,7 @@ Configurar no .env:  TELEGRAM_BOT_TOKEN=...   TELEGRAM_CHAT_ID=...
 Se não houver token/chat configurado, sai sem erro (skip gracioso).
 Não envia mensagem quando não há altas (evita spam).
 """
-import os, json, html
+import os, sys, json, html
 from pathlib import Path
 from dotenv import load_dotenv
 import requests
@@ -54,6 +54,7 @@ def main():
         print(f'✅ Telegram enviado ({d["count"]} altas) para chat {CHAT}')
     else:
         print(f'❌ Telegram erro {r.status_code}: {r.text[:200]}')
+        sys.exit(1)
 
 if __name__ == '__main__':
     main()

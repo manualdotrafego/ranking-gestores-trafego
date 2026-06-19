@@ -104,6 +104,8 @@ def main():
             print(f'❌ Discord erro {r.status_code} (msg {i+1}/{len(msgs)}): {r.text[:200]}')
         time.sleep(0.5)
     print(f'✅ Discord: {ok}/{len(msgs)} mensagem(ns) enviada(s) ({d["count"]} altas){" [sem ping]" if silent else " [com ping]"}')
+    if ok < len(msgs):
+        sys.exit(1)
 
 if __name__ == '__main__':
     main()
