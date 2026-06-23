@@ -6,7 +6,7 @@ Configurar no .env:  TELEGRAM_BOT_TOKEN=...   TELEGRAM_CHAT_ID=...
 Se não houver token/chat configurado, sai sem erro (skip gracioso).
 Não envia mensagem quando não há altas (evita spam).
 """
-import os, sys, json, html
+import os, sys, json, html, time
 from pathlib import Path
 from dotenv import load_dotenv
 import requests
@@ -23,19 +23,33 @@ def fmt_day(iso):
 def brl(v):
     return 'R$ ' + f'{float(v):,.2f}'.replace(',', 'X').replace('.', ',').replace('X', '.')
 
-def build_message(d):
+LIMIT = 3800  # limite seguro abaixo dos 4096 do Telegram
+
+def build_messages(d):
+    """Quebra em várias mensagens (<=3800 chars) p/ respeitar o limite do Telegram."""
     base = d.get('baseline_days', [])
     base_txt = f'{fmt_day(base[0])}–{fmt_day(base[-1])}' if base else ''
     crit = d.get('criteria', {})
-    lines = [f'🔴 <b>{d["count"]} alta(s) de CPL</b> — dia {fmt_day(d["ref_day"])}',
-             f'<i>vs média de {base_txt} · ≥{crit.get("min_pct",30):.0f}% e ≥{brl(crit.get("min_abs",1))}</i>', '']
+    header = (f'🔴 <b>{d["count"]} alta(s) de CPL</b> — dia {fmt_day(d["ref_day"])}\n'
+              f'<i>vs média de {base_txt} · ≥{crit.get("min_pct",30):.0f}% e ≥{brl(crit.get("min_abs",1))}</i>')
+    blocks = []
     for a in d['alerts']:
         tag = f' {a["tag"]}' if a.get('tag') else ''
-        lines.append(
+        blocks.append(
             f'• <b>{html.escape(a["clinica"])}</b>{tag} — {html.escape(a["gestor"])}\n'
             f'   {brl(a["cpl_ant"])} → <b>{brl(a["cpl_atual"])}</b>  '
             f'+{brl(a["var_abs"])} (+{a["var_pct"]:.0f}%) · {a["msgs_atual"]} msgs')
-    return '\n'.join(lines)
+    msgs, cur = [], header
+    for b in blocks:
+        if len(cur) + len(b) + 2 > LIMIT:
+            msgs.append(cur); cur = b
+        else:
+            cur = cur + '\n\n' + b
+    if cur: msgs.append(cur)
+    n = len(msgs)
+    if n > 1:
+        msgs = [m + f'\n\n<i>({i+1}/{n})</i>' for i, m in enumerate(msgs)]
+    return msgs
 
 def main():
     if not ALERTAS.exists():
@@ -46,14 +60,18 @@ def main():
     if not TOKEN or not CHAT:
         print('⚠️  TELEGRAM_BOT_TOKEN/TELEGRAM_CHAT_ID não configurados no .env — skip.')
         print(f'   ({d["count"]} altas estariam no envio)'); return
-    msg = build_message(d)
-    r = requests.post(f'https://api.telegram.org/bot{TOKEN}/sendMessage',
-                      json={'chat_id': CHAT, 'text': msg, 'parse_mode': 'HTML',
-                            'disable_web_page_preview': True}, timeout=30)
-    if r.status_code == 200:
-        print(f'✅ Telegram enviado ({d["count"]} altas) para chat {CHAT}')
-    else:
-        print(f'❌ Telegram erro {r.status_code}: {r.text[:200]}')
+    msgs = build_messages(d); ok = 0
+    for m in msgs:
+        r = requests.post(f'https://api.telegram.org/bot{TOKEN}/sendMessage',
+                          json={'chat_id': CHAT, 'text': m, 'parse_mode': 'HTML',
+                                'disable_web_page_preview': True}, timeout=30)
+        if r.status_code == 200:
+            ok += 1
+        else:
+            print(f'❌ Telegram erro {r.status_code}: {r.text[:200]}')
+        time.sleep(0.4)
+    print(f'✅ Telegram: {ok}/{len(msgs)} mensagem(ns) ({d["count"]} altas) para chat {CHAT}')
+    if ok < len(msgs):
         sys.exit(1)
 
 if __name__ == '__main__':
