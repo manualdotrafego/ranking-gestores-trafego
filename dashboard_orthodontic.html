@@ -85,6 +85,11 @@ html,body{height:100%;font-family:'Inter',sans-serif;background:var(--bg);color:
 .gestor-info{display:flex;flex-direction:column;line-height:1.2}
 .gestor-name{font-size:12px}
 .gestor-accts{font-size:9px;color:var(--muted);font-weight:400}
+.gestor-cpl5d{margin-top:12px;padding:11px 13px;border-radius:9px;
+              background:linear-gradient(135deg,var(--p4),var(--p3));border:1px solid var(--b3)}
+.gestor-cpl5d .g5-label{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;font-weight:700}
+.gestor-cpl5d .g5-value{font-size:22px;font-weight:800;color:var(--p2);line-height:1.1;margin-top:3px}
+.gestor-cpl5d .g5-sub{font-size:9px;color:var(--muted);margin-top:4px;line-height:1.3}
 
 /* Account selector */
 .sb-account-wrap{padding:0 18px 16px}
@@ -317,6 +322,7 @@ html,body{height:100%;font-family:'Inter',sans-serif;background:var(--bg);color:
   <div class="sb-section-label">Gestor</div>
   <div class="sb-gestor-wrap">
     <div class="gestor-btns" id="gestorBtns"></div>
+    <div class="gestor-cpl5d" id="gestorCpl5d" style="display:none"></div>
   </div>
 
   <div class="sb-divider"></div>
@@ -700,6 +706,35 @@ function buildGestorSelector() {
   });
 }
 
+// CPL médio dos últimos 5 dias, somando TODAS as campanhas e contas do gestor.
+// Usa o diário por anúncio (ad.daily), agregando spend e msgs no período.
+function computeGestor5dCpl(g) {
+  const dates = new Set();
+  (g.accounts || []).forEach(a => (a.campaigns || []).forEach(c => (c.ads || []).forEach(ad => {
+    Object.keys(ad.daily || {}).forEach(dt => dates.add(dt));
+  })));
+  const last5 = [...dates].sort().slice(-5);
+  let spend = 0, msgs = 0;
+  (g.accounts || []).forEach(a => (a.campaigns || []).forEach(c => (c.ads || []).forEach(ad => {
+    last5.forEach(dt => { const dd = (ad.daily || {})[dt]; if (dd) { spend += dd.spend || 0; msgs += dd.msgs || 0; } });
+  })));
+  return { cpl: msgs > 0 ? spend / msgs : 0, spend, msgs, days: last5 };
+}
+
+function renderGestor5dCpl(g) {
+  const el = document.getElementById('gestorCpl5d');
+  if (!el) return;
+  const r = computeGestor5dCpl(g);
+  if (!r.msgs || !r.days.length) { el.style.display = 'none'; return; }
+  const fmtD = s => s ? s.slice(8, 10) + '/' + s.slice(5, 7) : '';
+  const range = fmtD(r.days[0]) + '–' + fmtD(r.days[r.days.length - 1]);
+  el.style.display = 'block';
+  el.innerHTML = `
+    <div class="g5-label">CPL médio · últimos 5 dias · todas as contas</div>
+    <div class="g5-value">${fmtBRL(r.cpl)}</div>
+    <div class="g5-sub">${range} · ${fmtNum(r.msgs)} msgs · ${fmtBRL(r.spend)} investido</div>`;
+}
+
 function selectGestor(id) {
   const gestores = dashData.gestores || [];
   selectedGestor = gestores.find(g => g.id === id) || null;
@@ -710,6 +745,9 @@ function selectGestor(id) {
   });
 
   if (!selectedGestor) return;
+
+  // CPL médio 5D do gestor (todas as contas/campanhas)
+  renderGestor5dCpl(selectedGestor);
 
   // Populate account dropdown for this gestor
   const sel = document.getElementById('accountSelect');
