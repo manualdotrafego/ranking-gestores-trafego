@@ -13,6 +13,7 @@ import re
 import time
 from datetime import datetime, date
 from math import log
+from typing import Optional
 
 import pandas as pd
 from playwright.sync_api import sync_playwright
@@ -23,13 +24,13 @@ from playwright.sync_api import sync_playwright
 
 TERMOS_NICHO = [
     "aparelho dental",
-    "implante dental",
-    "canal dentário",
+    "aparelho ortodôntico",
+    "aparelho invisível",
     "ortodontia",
-    "clínica odontológica",
-    "dental implant",
     "orthodontic braces",
-    "root canal",
+    "invisalign",
+    "aparelho dentário",
+    "alinhador dental",
 ]
 
 PAISES = ["BR", "US", "PT"]
@@ -47,7 +48,7 @@ MESES_EN = {
 # PARSING DE DATA
 # ─────────────────────────────────────────
 
-def _parse_data(texto: str) -> date | None:
+def _parse_data(texto: str) -> Optional[date]:
     """
     Extrai data de strings como:
       'Veiculação iniciada em 18 de out de 2024'
@@ -77,7 +78,7 @@ def _parse_data(texto: str) -> date | None:
     return None
 
 
-def _dias_no_ar(inicio: date | None) -> int:
+def _dias_no_ar(inicio: Optional[date]) -> int:
     if not inicio:
         return 0
     return max((date.today() - inicio).days, 0)
@@ -191,7 +192,7 @@ def scrape_ads(termo: str, pais: str, limite: int, page) -> list[dict]:
     url = (
         f"https://www.facebook.com/ads/library/"
         f"?active_status=all&ad_type=all&country={pais}"
-        f"&q={termo.replace(' ', '+')}&search_type=keyword_unordered&media_type=all"
+        f"&q={termo.replace(' ', '+')}&search_type=keyword_unordered&media_type=video"
     )
 
     print(f"  [{pais}] '{termo}' → {url[:70]}...")
@@ -259,15 +260,67 @@ def processar(todos: list[dict], ultimos_dias: int = 0) -> pd.DataFrame:
 # EXPORTAÇÃO
 # ─────────────────────────────────────────
 
-def exportar(df: pd.DataFrame):
+def exportar(df: pd.DataFrame, sufixo: str = ""):
+    from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
+    from openpyxl.utils import get_column_letter
+
     ts = datetime.now().strftime("%Y%m%d_%H%M%S")
-    arquivo = f"criativos_dental_{ts}.xlsx"
+    arquivo = f"criativos_dental_{ts}{sufixo}.xlsx"
+
+    # Prepara df sem a coluna de link (vai ser recriada como hiperlink)
+    df_export = df.copy()
+    links = df_export["link_criativo"].tolist() if "link_criativo" in df_export.columns else []
+    df_export = df_export.drop(columns=["link_criativo"], errors="ignore")
 
     with pd.ExcelWriter(arquivo, engine="openpyxl") as writer:
-        df.to_excel(writer, sheet_name="Ranking Criativos")
-        ws = writer.sheets["Ranking Criativos"]
-        for col, w in {"B": 40, "C": 6, "D": 10, "E": 12, "F": 10, "G": 10, "H": 80, "I": 60}.items():
+        df_export.to_excel(writer, sheet_name="Criativos", index=True)
+        ws = writer.sheets["Criativos"]
+
+        # Larguras das colunas
+        larguras = {"A": 6, "B": 42, "C": 8, "D": 8, "E": 13, "F": 8, "G": 8, "H": 90}
+        for col, w in larguras.items():
             ws.column_dimensions[col].width = w
+
+        # Cabeçalho — fundo azul escuro, texto branco, negrito
+        header_fill = PatternFill("solid", fgColor="1F3864")
+        header_font = Font(bold=True, color="FFFFFF", size=10)
+        for cell in ws[1]:
+            cell.fill = header_fill
+            cell.font = header_font
+            cell.alignment = Alignment(horizontal="center", vertical="center", wrap_text=True)
+
+        # Adiciona coluna "Ver Criativo" com hiperlinks clicáveis
+        link_col = ws.max_column + 1
+        link_col_letter = get_column_letter(link_col)
+        ws.column_dimensions[link_col_letter].width = 18
+        ws.cell(row=1, column=link_col, value="Ver Criativo").font = header_font
+        ws.cell(row=1, column=link_col).fill = header_fill
+        ws.cell(row=1, column=link_col).alignment = Alignment(horizontal="center")
+
+        link_font = Font(color="1155CC", underline="single", size=10)
+        alt_fill = PatternFill("solid", fgColor="EEF2F7")
+
+        for i, url in enumerate(links):
+            row = i + 2
+            cell = ws.cell(row=row, column=link_col)
+            if url:
+                cell.value = "🔗 Abrir anúncio"
+                cell.hyperlink = url
+                cell.font = link_font
+            cell.alignment = Alignment(horizontal="center", vertical="center")
+
+            # Zebrado nas linhas
+            if i % 2 == 1:
+                for c in range(1, link_col + 1):
+                    ws.cell(row=row, column=c).fill = alt_fill
+
+            # Altura e wrap nas linhas de dados
+            ws.row_dimensions[row].height = 40
+            for c in range(1, link_col):
+                ws.cell(row=row, column=c).alignment = Alignment(vertical="center", wrap_text=True)
+
+        # Congela linha do cabeçalho
+        ws.freeze_panes = "A2"
 
     print(f"\nExportado: {arquivo}")
     return arquivo

@@ -28,6 +28,11 @@ POLO_GROUPS = {
     "POLOS ARAPONGAS":         ["ARAPONGAS"],
 }
 
+# Campanhas extras de leads (objetivo OUTCOME_LEADS) por id explícito.
+EXTRA_LEAD_CAMPAIGNS = [
+    {"id": "120243549705150620", "label": "GESTÃO ADS — ABO — VALIDAÇÃO"},
+]
+
 def meta_get(path, params=None):
     p = {"access_token": TOKEN}
     if params:
@@ -187,6 +192,43 @@ def gerar_relatorio(since=None, until=None):
                 f"📊 CTR: {fmt_ctr(cl_o, imp_o)}"
             )
 
+    # ── VALIDAÇÃO / outras campanhas de leads (por id) ─────────────────
+    valid_periodo = []
+    valid_hoje    = []
+    valid_ontem   = []
+
+    for extra in EXTRA_LEAD_CAMPAIGNS:
+        cid, label = extra["id"], extra["label"]
+
+        sp_p, leads_p, imp_p, cl_p = get_insights(cid, since, until)
+        sp_h, leads_h, imp_h, cl_h = get_insights(cid, today, today)
+        sp_o, leads_o, imp_o, cl_o = get_insights(cid, yesterday, yesterday)
+
+        if sp_p > 0 or leads_p > 0:
+            valid_periodo.append(
+                f"*[{label}]*\n"
+                f"💰 Gasto: {fmt_money(sp_p)}\n"
+                f"👥 Leads: {leads_p}\n"
+                f"📉 CPL: {fmt_cpl(sp_p, leads_p)}\n"
+                f"📊 CTR: {fmt_ctr(cl_p, imp_p)}"
+            )
+        if sp_h > 0 or leads_h > 0:
+            valid_hoje.append(
+                f"*[{label}]*\n"
+                f"💰 Gasto: {fmt_money(sp_h)}\n"
+                f"👥 Leads: {leads_h}\n"
+                f"📉 CPL: {fmt_cpl(sp_h, leads_h)}\n"
+                f"📊 CTR: {fmt_ctr(cl_h, imp_h)}"
+            )
+        if sp_o > 0 or leads_o > 0:
+            valid_ontem.append(
+                f"*[{label}]*\n"
+                f"💰 Gasto: {fmt_money(sp_o)}\n"
+                f"👥 Leads: {leads_o}\n"
+                f"📉 CPL: {fmt_cpl(sp_o, leads_o)}\n"
+                f"📊 CTR: {fmt_ctr(cl_o, imp_o)}"
+            )
+
     # ── VENDAS (apenas campanhas OUTCOME_SALES ativas) ─────────────────
     sales_camps = all_campaigns(objective="OUTCOME_SALES", status=["ACTIVE"])
     vendas_periodo = []
@@ -238,6 +280,13 @@ def gerar_relatorio(since=None, until=None):
         msg += "━━━━━━━━━━━━━━\n"
         msg += "\n\n".join(linhas_periodo)
 
+    # Acumulado — validação
+    if valid_periodo:
+        msg += f"\n\n━━━━━━━━━━━━━━\n"
+        msg += f"🧪 *ACUMULADO — VALIDAÇÃO ({since_fmt} → {until_fmt})*\n"
+        msg += "━━━━━━━━━━━━━━\n"
+        msg += "\n\n".join(valid_periodo)
+
     # Acumulado — vendas
     if vendas_periodo:
         msg += f"\n\n━━━━━━━━━━━━━━\n"
@@ -251,6 +300,13 @@ def gerar_relatorio(since=None, until=None):
         msg += f"🟢 *HOJE — POLOS*\n"
         msg += "━━━━━━━━━━━━━━\n"
         msg += "\n\n".join(linhas_hoje)
+
+    # Hoje — validação
+    if valid_hoje:
+        msg += f"\n\n━━━━━━━━━━━━━━\n"
+        msg += f"🧪 *HOJE — VALIDAÇÃO*\n"
+        msg += "━━━━━━━━━━━━━━\n"
+        msg += "\n\n".join(valid_hoje)
 
     # Hoje — vendas
     if vendas_hoje:
@@ -266,6 +322,13 @@ def gerar_relatorio(since=None, until=None):
         msg += "━━━━━━━━━━━━━━\n"
         msg += "\n\n".join(linhas_ontem)
 
+    # Ontem — validação
+    if valid_ontem:
+        msg += f"\n\n━━━━━━━━━━━━━━\n"
+        msg += f"🧪 *ONTEM — VALIDAÇÃO*\n"
+        msg += "━━━━━━━━━━━━━━\n"
+        msg += "\n\n".join(valid_ontem)
+
     # Ontem — vendas
     if vendas_ontem:
         msg += f"\n\n━━━━━━━━━━━━━━\n"
@@ -273,8 +336,9 @@ def gerar_relatorio(since=None, until=None):
         msg += "━━━━━━━━━━━━━━\n"
         msg += "\n\n".join(vendas_ontem)
 
-    if not any([linhas_periodo, vendas_periodo, linhas_hoje, vendas_hoje,
-                linhas_ontem, vendas_ontem]):
+    if not any([linhas_periodo, vendas_periodo, valid_periodo,
+                linhas_hoje, vendas_hoje, valid_hoje,
+                linhas_ontem, vendas_ontem, valid_ontem]):
         msg += "\n_Nenhuma campanha com dados no período._"
 
     return msg

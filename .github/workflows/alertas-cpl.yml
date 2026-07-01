@@ -2,8 +2,9 @@ name: Alertas CPL diário
 
 on:
   schedule:
-    - cron: '35 12 * * 1-5'   # 09:35 BRT (UTC-3) — seg a sex
-  workflow_dispatch:           # permite disparo manual pela aba Actions
+    - cron: '35 12 * * 1-5'   # 09:35 BRT — execução principal
+    - cron: '30 14 * * 1-5'   # 11:30 BRT — reforço (heartbeat): só roda se o principal não rodou hoje
+  workflow_dispatch:
     inputs:
       dry_run:
         description: 'Teste seco: valida fetch/detecção/publicação SEM enviar Telegram/Discord'
@@ -35,20 +36,45 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Verifica se já rodou hoje (de-dup do heartbeat)
+        id: guard
+        run: |
+          TODAY=$(date -u +%F)
+          GEN=$(python3 -c "import json;print(json.load(open('alertas.json')).get('generated_at',''))" 2>/dev/null || echo "")
+          if [ "${{ github.event_name }}" = "schedule" ] && [ "$GEN" = "$TODAY" ]; then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            echo "alertas.json já é de hoje ($GEN) — execução já feita, pulando."
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+            echo "Vai rodar (gen=$GEN | hoje=$TODAY | evento=${{ github.event_name }} | schedule=${{ github.event.schedule }})"
+          fi
+
+      - name: Aviso de heartbeat (o principal das 09:35 não rodou)
+        if: steps.guard.outputs.skip != 'true' && github.event.schedule == '30 14 * * 1-5'
+        run: |
+          curl -s -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
+            -d chat_id="${TELEGRAM_CHAT_ID}" \
+            --data-urlencode "text=⚠️ O alerta automático das 09:35 não rodou hoje — disparando agora pelo reforço (heartbeat das 11:30)." >/dev/null || true
+
       - uses: actions/setup-python@v5
+        if: steps.guard.outputs.skip != 'true'
         with:
           python-version: '3.12'
 
       - name: Instala dependências
+        if: steps.guard.outputs.skip != 'true'
         run: pip install requests python-dotenv
 
       - name: Atualiza dados do dashboard (fetch Meta)
+        if: steps.guard.outputs.skip != 'true'
         run: python "fetch_dashboard_data.py"
 
       - name: Detecta altas + envia Telegram e Discord
+        if: steps.guard.outputs.skip != 'true'
         run: python "cron_alertas_cpl.py"
 
       - name: Publica dados + alertas no GitHub Pages
+        if: steps.guard.outputs.skip != 'true'
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"

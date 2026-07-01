@@ -1,5 +1,8 @@
 .env
 accounts.json
+google-ads.yaml
+google_ads_credentials.json
+google_service_account.json
 __pycache__/
 *.pyc
 *.pyo

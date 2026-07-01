@@ -43,6 +43,19 @@ GESTOR_CFG = {
                      '959827441932943','782257763801898','1221130892436075','3894814770656049']),
 }
 
+# Campanhas extra a mesclar num card específico (ex.: clínica que trocou de
+# gestor — junta a campanha pausada do gestor antigo com a ativa do novo).
+EXTRA_CAMPAIGNS = {
+    ('braga', '#287'): [{
+        'id': '120243326195610145',
+        'name': '#127 | São José dos Campos - R$ 4000(3.520) - [01 sjc] (Bueno - pausada)',
+        'account': '1874417206315032', 'status': 'PAUSED'}],
+    ('braga', '#288'): [{
+        'id': '120244069345300145',
+        'name': '#145 | São José dos Campos(Cônego) - MARCA R$ 600(528) (Bueno - movida)',
+        'account': '1874417206315032', 'status': 'PAUSED'}],
+}
+
 slug = sys.argv[1].lower() if len(sys.argv) > 1 else None
 if slug not in GESTOR_CFG:
     print(f'Uso: python3 pipeline_gestor.py <{"|".join(GESTOR_CFG)}>'); sys.exit(1)
@@ -91,12 +104,16 @@ jobs, sem_match = [], []
 for c in cards:
     if c['tag'] in dups:
         print(f'  ⏭️  {c["tag"]} PULADO (mesma tag em >1 card)'); continue
-    matches = camp_by_tag.get(c['tag'], [])
+    matches = list(camp_by_tag.get(c['tag'], []))
+    extra = EXTRA_CAMPAIGNS.get((slug, c['tag']), [])
+    if extra:
+        matches += extra
+        print(f'  ➕ {c["tag"]} +{len(extra)} camp(s) extra (merge entre gestores)')
     if not matches:
         sem_match.append(c); continue
     primary = next((m['account'] for m in matches if m['status']=='ACTIVE'), matches[0]['account'])
     if len(matches) > 1:
-        print(f'  🔀 {c["tag"]} mescla {len(matches)} camps (mesma tag)')
+        print(f'  🔀 {c["tag"]} mescla {len(matches)} camps')
     jobs.append({'slug': f'{slug}_{slugify(c["name"])[:50]}_{c["num"]}',
                  'clinic': c['name'], 'page_id': c['page_id'], 'account': primary,
                  'campaigns': [{'id':m['id'],'name':m['name'],'effective_status':m['status']} for m in matches]})
