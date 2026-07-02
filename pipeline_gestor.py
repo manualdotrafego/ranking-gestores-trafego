@@ -18,8 +18,8 @@ import requests
 from gerar_relatorios_todos_v2 import (
     META_BASE, GH_PAGES_BASE, FIXED_SINCE, FIXED_UNTIL,
     fetch_daily_insights, merge_daily, generate_html, take_screenshots,
-    notion_update_preview_image, start_local_server, notion_get_pages,
-    parse_notion_page, slugify,
+    notion_update_preview_image, notion_update_relatorio_novo,
+    start_local_server, notion_get_pages, parse_notion_page, slugify,
 )
 
 META_TOKEN = os.getenv("META_ACCESS_TOKEN")
@@ -134,6 +134,29 @@ for job in jobs:
 port = start_local_server(str(BASE_DIR), 0)
 take_screenshots([{'slug':i['slug'],'html_filename':i['html_filename'],'png_path':i['png_path']} for i in items], port)
 
+# 5b. Remove relatórios órfãos: mesmo #NNN de um card atual, mas com nome de
+# arquivo antigo (o card foi renomeado → o slug mudou e sobrou o arquivo velho).
+# Só remove quando existe o arquivo canônico atual p/ aquele #NNN (nunca remove
+# relatório de card que apenas saiu de ON).
+current_files = {i['html_filename'] for i in items} | {i['png_filename'] for i in items}
+lead_re = re.compile(rf'^relatorio_{slug}_(\d+)_')
+current_nums = {m.group(1) for i in items if (m := lead_re.match(i['html_filename']))}
+orphans = []
+for f in BASE_DIR.glob(f'relatorio_{slug}_*.html'):
+    if f.name in current_files:
+        continue
+    m = lead_re.match(f.name)
+    if m and m.group(1) in current_nums:
+        orphans.append(f.name)
+        png = f.with_suffix('.png').name
+        if (BASE_DIR / png).exists():
+            orphans.append(png)
+if orphans:
+    subprocess.run(['git','-C',str(BASE_DIR),'rm','-q','--ignore-unmatch']
+                   + [str(BASE_DIR / o) for o in orphans])
+    print(f'  🧹 {len(orphans)} órfão(s) removido(s): ' + ', '.join(orphans[:6])
+          + ('…' if len(orphans) > 6 else ''))
+
 # 6. Push
 files = [str(i['html_path']) for i in items] + [str(i['png_path']) for i in items]
 subprocess.run(['git','-C',str(BASE_DIR),'add']+files, check=True)
@@ -146,10 +169,11 @@ if res.returncode == 0:
 else:
     print('  ℹ️  Sem mudanças')
 
-# 7. Notion
+# 7. Notion — atualiza preview (imagem) E link "Relatório Novo" (HTML)
 ok = 0
 for i in items:
     try:
+        notion_update_relatorio_novo(i['page_id'], f'{GH_PAGES_BASE}/{i["html_filename"]}')
         if notion_update_preview_image(i['page_id'], f'{GH_PAGES_BASE}/{i["png_filename"]}'):
             ok += 1
     except Exception as e:
