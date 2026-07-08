@@ -22,9 +22,9 @@ body{font-family:'Inter',sans-serif;background:#f0f2f5;color:#1c1e21;font-size:1
 .dbout-logo{width:52px;height:52px;border-radius:50%;object-fit:cover;box-shadow:0 2px 8px rgba(0,0,0,.15);border:1px solid #e8e8e8;flex-shrink:0}
 .camp-info{background:#fff;border-radius:8px;padding:13px 20px;margin-bottom:16px;
            box-shadow:0 1px 3px rgba(0,0,0,.1);display:flex;align-items:center;gap:12px}
-.camp-dot{width:10px;height:10px;border-radius:50%;background:#42b72a;flex-shrink:0}
+.camp-dot{width:10px;height:10px;border-radius:50%;background:#e2a01d;flex-shrink:0}
 .camp-name{font-size:13px;font-weight:600;color:#1c1e21}
-.camp-status{font-size:11px;color:#42b72a;font-weight:700}
+.camp-status{font-size:11px;color:#e2a01d;font-weight:700}
 .camp-account{font-size:11px;color:#8a8d91;margin-left:auto;white-space:nowrap}
 .date-range-wrap{display:flex;justify-content:center;margin-bottom:18px;gap:8px;flex-wrap:wrap}
 .date-input-wrap{position:relative}
@@ -102,7 +102,7 @@ tbody td:first-child{text-align:left;color:#606770;font-weight:600}
   <div class="camp-dot"></div>
   <div>
     <div class="camp-name">#529 - C- [ARARAQUARA] R$ 1056 INST+CLAR 06/07 FORMS + #529 - C1 - [ARARAQUARA] R$ 1056 INST+CLAR 03/02</div>
-    <div class="camp-status">Ativa</div>
+    <div class="camp-status">Pausada</div>
   </div>
   <div class="camp-account">Conta: 1145079426101184</div>
 </div>
@@ -167,15 +167,15 @@ tbody td:first-child{text-align:left;color:#606770;font-weight:600}
 </div>
 
 <div class="footer">
-  Gerado em 07/07/2026 · #529 - Araraquara · Meta API v21.0
+  Gerado em 08/07/2026 · #529 - Araraquara · Meta API v21.0
 </div>
 </div>
 
 <script>
-const DAILY = [{"date": "2026-07-07", "spend": 11.72, "msgs": 1, "cost_msg": 11.72, "impr": 1062, "cpm": 10.33, "ctr": 0.48}, {"date": "2026-07-06", "spend": 36.03, "msgs": 1, "cost_msg": 36.03, "impr": 3130, "cpm": 10.46, "ctr": 0.78}, {"date": "2026-07-05", "spend": 30.41, "msgs": 1, "cost_msg": 30.41, "impr": 2434, "cpm": 12.49, "ctr": 0.33}, {"date": "2026-07-04", "spend": 32.29, "msgs": 0, "cost_msg": 0.0, "impr": 3764, "cpm": 8.58, "ctr": 0.29}, {"date": "2026-07-03", "spend": 31.1, "msgs": 6, "cost_msg": 5.18, "impr": 3410, "cpm": 9.12, "ctr": 0.47}, {"date": "2026-07-02", "spend": 31.73, "msgs": 6, "cost_msg": 5.29, "impr": 3399, "cpm": 9.34, "ctr": 0.74}, {"date": "2026-07-01", "spend": 34.34, "msgs": 3, "cost_msg": 11.45, "impr": 4123, "cpm": 8.33, "ctr": 0.44}];
+const DAILY = [{"date": "2026-07-08", "spend": 31.56, "msgs": 1, "cost_msg": 31.56, "impr": 2818, "cpm": 12.97, "ctr": 0.7}, {"date": "2026-07-07", "spend": 47.74, "msgs": 1, "cost_msg": 47.74, "impr": 4401, "cpm": 11.07, "ctr": 0.66}, {"date": "2026-07-06", "spend": 36.07, "msgs": 1, "cost_msg": 36.07, "impr": 3137, "cpm": 10.43, "ctr": 0.88}, {"date": "2026-07-05", "spend": 30.41, "msgs": 1, "cost_msg": 30.41, "impr": 2434, "cpm": 12.49, "ctr": 0.33}, {"date": "2026-07-04", "spend": 32.29, "msgs": 0, "cost_msg": 0.0, "impr": 3764, "cpm": 8.58, "ctr": 0.29}, {"date": "2026-07-03", "spend": 31.1, "msgs": 6, "cost_msg": 5.18, "impr": 3410, "cpm": 9.12, "ctr": 0.47}, {"date": "2026-07-02", "spend": 31.73, "msgs": 6, "cost_msg": 5.29, "impr": 3399, "cpm": 9.34, "ctr": 0.74}, {"date": "2026-07-01", "spend": 34.34, "msgs": 3, "cost_msg": 11.45, "impr": 4123, "cpm": 8.33, "ctr": 0.44}];
 const DEFAULT_DAYS = 15;
 const FIXED_SINCE = '2026-07-01';
-const FIXED_UNTIL = '2026-07-07';
+const FIXED_UNTIL = '2026-07-08';
 const PT_M = ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
 const PT_MF = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
 let chart=null, activeSince=null, activeUntil=null;
