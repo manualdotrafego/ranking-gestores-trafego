@@ -38,7 +38,7 @@ DAYS_BACK = 29   # fetchamos 30 dias para ter histórico completo
 DEFAULT_DISPLAY = 15   # fallback (não usado quando FIXED_RANGE ativo)
 # Período fixo de exibição padrão nos relatórios
 FIXED_SINCE = "2026-07-01"
-FIXED_UNTIL = "2026-07-07"
+FIXED_UNTIL = "2026-07-09"
 
 # ─── CONTAS POR GESTOR ────────────────────────────────────────────────────────
 GESTORES_ACCOUNTS = {
@@ -365,13 +365,24 @@ def fetch_daily_insights(campaign_id: str, since: str, until: str) -> list[dict]
 
         daily = []
         for row in rows:
-            msgs = 0
+            # Conversão unificada: conversas iniciadas (campanhas de mensagem)
+            # OU preenchimentos de formulário nativo (campanhas lead gen ON_AD).
+            # 1 lead de formulário conta como 1 mensagem. Usamos max() em vez de
+            # soma porque campanhas de formulário puro ainda registram algumas
+            # mensagens incidentais — somar contaria a mesma pessoa duas vezes.
+            conv_msg = 0
+            form_leads = 0
             for a in row.get("actions", []):
-                if a.get("action_type") == "onsite_conversion.messaging_conversation_started_7d":
-                    try:
-                        msgs += int(float(a["value"]))
-                    except Exception:
-                        pass
+                at = a.get("action_type")
+                try:
+                    v = int(float(a["value"]))
+                except Exception:
+                    continue
+                if at == "onsite_conversion.messaging_conversation_started_7d":
+                    conv_msg += v
+                elif at == "onsite_conversion.lead_grouped":
+                    form_leads += v
+            msgs = max(conv_msg, form_leads)
             spend = float(row.get("spend", 0))
             impr  = int(row.get("impressions", 0))
             cpm   = float(row.get("cpm", 0))
