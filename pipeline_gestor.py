@@ -54,6 +54,23 @@ EXTRA_CAMPAIGNS = {
         'id': '120244069345300145',
         'name': '#145 | São José dos Campos(Cônego) - MARCA R$ 600(528) (Bueno - movida)',
         'account': '1874417206315032', 'status': 'PAUSED'}],
+    # Campanhas de FORMULÁRIO nativo sem o #código no nome — mescladas ao card certo.
+    ('igor', '#429'): [{
+        'id': '120251128984110421',
+        'name': '429 | 3078 - CURITIBA XV NOV FORMULÁRIO - 07.07',
+        'account': '391009870578696', 'status': 'ACTIVE'}],
+    ('igor', '#465'): [{
+        'id': '120248607838040239',
+        'name': 'FORMS DIADEMA - 03.07',
+        'account': '412153471621510', 'status': 'ACTIVE'}],
+    ('igor', '#425'): [{
+        'id': '120251623192790606',
+        'name': 'FORMULÁRIO QUEIMADAS E ESPERANÇA - 01.07',
+        'account': '566170923166415', 'status': 'ACTIVE'}],
+    ('bueno', '#124'): [{
+        'id': '120247109265370413',
+        'name': 'JAÚ - FORMULÁRIO',
+        'account': '646063993729347', 'status': 'ACTIVE'}],
 }
 
 slug = sys.argv[1].lower() if len(sys.argv) > 1 else None
