@@ -38,7 +38,7 @@ DAYS_BACK = 29   # fetchamos 30 dias para ter histórico completo
 DEFAULT_DISPLAY = 15   # fallback (não usado quando FIXED_RANGE ativo)
 # Período fixo de exibição padrão nos relatórios
 FIXED_SINCE = "2026-07-01"
-FIXED_UNTIL = "2026-07-09"
+FIXED_UNTIL = "2026-07-13"
 
 # ─── CONTAS POR GESTOR ────────────────────────────────────────────────────────
 GESTORES_ACCOUNTS = {
