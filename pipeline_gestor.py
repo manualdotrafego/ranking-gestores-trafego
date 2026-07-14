@@ -175,14 +175,31 @@ if orphans:
           + ('…' if len(orphans) > 6 else ''))
 
 # 6. Push
+# dashboard_data.json/alertas.json são reescritos pelo cron do fetch e pela CI;
+# descartamos alterações locais deles para não travar o commit nem conflitar no rebase.
+def git(*args, **kw):
+    return subprocess.run(['git', '-C', str(BASE_DIR), *args],
+                          capture_output=True, text=True, **kw)
+
+for f in ('dashboard_data.json', 'alertas.json'):
+    git('checkout', '--', f)
+
 files = [str(i['html_path']) for i in items] + [str(i['png_path']) for i in items]
-subprocess.run(['git','-C',str(BASE_DIR),'add']+files, check=True)
-res = subprocess.run(['git','-C',str(BASE_DIR),'commit','-m',
-    f'{GESTOR_NOTION} #NNN — {FIXED_SINCE}→{FIXED_UNTIL} ({len(items)} cards)'],
-    capture_output=True, text=True)
+git('add', *files)
+res = git('commit', '-m',
+          f'{GESTOR_NOTION} #NNN — {FIXED_SINCE}→{FIXED_UNTIL} ({len(items)} cards)')
 if res.returncode == 0:
-    subprocess.run(['git','-C',str(BASE_DIR),'push'], check=True)
-    print('  ⏳ 15s GH Pages...'); time.sleep(15)
+    # origin pode ter avançado (CI de alertas / cron): rebase antes de empurrar.
+    for tentativa in range(3):
+        git('pull', '--rebase', '--autostash', 'origin', 'main')
+        for f in ('dashboard_data.json', 'alertas.json'):
+            git('checkout', '--theirs', f); git('add', f)
+        if git('push').returncode == 0:
+            print('  ⏳ 15s GH Pages...'); time.sleep(15)
+            break
+        print(f'  ↻ push rejeitado, tentando de novo ({tentativa + 1}/3)')
+    else:
+        print('  ⚠️  push falhou após 3 tentativas — Notion será atualizado mesmo assim')
 else:
     print('  ℹ️  Sem mudanças')
 
