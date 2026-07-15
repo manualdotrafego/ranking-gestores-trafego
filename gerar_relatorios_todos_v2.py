@@ -38,7 +38,7 @@ DAYS_BACK = 29   # fetchamos 30 dias para ter histórico completo
 DEFAULT_DISPLAY = 15   # fallback (não usado quando FIXED_RANGE ativo)
 # Período fixo de exibição padrão nos relatórios
 FIXED_SINCE = "2026-07-01"
-FIXED_UNTIL = "2026-07-13"
+FIXED_UNTIL = "2026-07-14"
 
 # ─── CONTAS POR GESTOR ────────────────────────────────────────────────────────
 GESTORES_ACCOUNTS = {
@@ -99,6 +99,7 @@ GESTORES_ACCOUNTS = {
         "140805155678128",   # CT1 - Mota
         "959827441932943",   # CT04 - Cartão Cliente Pinhais
         "782257763801898",   # CT06 - Mota
+        "716772110646661",   # CT07 - Dbout Mota (Formosa #652 etc.)
     },
 }
 
