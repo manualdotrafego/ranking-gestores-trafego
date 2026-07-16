@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Estrutura de contingência · Meta Ads · ECF Consultoria</title>
+<meta name="description" content="Estrutura de contingência do Meta Ads: perfil principal compartilha ativos para BMs e contas de contingência.">
+<style>
+  :root{
+    --yellow:#FFE600; --navy:#2D3277; --blue:#3483FA;
+    --paper:#F4F5FA; --card:#FFFFFF; --ink:#141735; --muted:#6E7291;
+    --line:#DEE0EC; --line-strong:#B9BCD2; --chip:#EDEFF7;
+    --font-display:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    --font-mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    --step:clamp(.9rem,.85rem + .2vw,1rem);
+  }
+  @media (prefers-color-scheme:dark){
+    :root{ --paper:#0B0D22; --card:#141735; --ink:#EDEEF7; --muted:#9BA0BF;
+      --line:#2A2E52; --line-strong:#454A78; --chip:#1D2145; --navy:#8B92D8; --blue:#6BA5F5; }
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font-display);
+    line-height:1.6;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1060px;margin:0 auto;padding:56px 24px 80px}
+  .eyebrow{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--muted);display:inline-flex;align-items:center;gap:10px}
+  .eyebrow::after{content:"";width:34px;height:3px;background:var(--yellow);border-radius:2px}
+  h1{font-size:clamp(2rem,1.4rem + 2.4vw,3rem);line-height:1.08;letter-spacing:-.02em;font-weight:800;
+    margin:16px 0 14px;text-wrap:balance}
+  .lead{font-size:clamp(1rem,.95rem + .35vw,1.18rem);color:var(--muted);max-width:62ch;margin:0}
+  h2{font-size:1.12rem;font-weight:700;letter-spacing:-.01em;margin:0 0 4px}
+  .sec{margin-top:64px}
+  .sec-head{margin-bottom:24px}
+  .sec-head p{margin:0;color:var(--muted);font-size:var(--step)}
+  .tree{display:flex;flex-direction:column;align-items:center}
+  .node{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 20px;
+    text-align:center;min-width:210px;transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease}
+  .node:hover{transform:translateY(-6px);border-color:var(--line-strong);box-shadow:0 10px 28px rgba(20,23,53,.13)}
+  .node .tag{font-family:var(--font-mono);font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;
+    display:inline-block;padding:3px 9px;border-radius:20px;background:var(--chip);color:var(--muted);margin-bottom:9px}
+  .node .name{font-weight:700;font-size:1rem;letter-spacing:-.01em}
+  .node .sub{font-size:.85rem;color:var(--muted);margin-top:3px}
+  .node--core{border-color:var(--navy);border-width:2px}
+  .node--core .tag{background:var(--yellow);color:#2D3277}
+  .node--own{border-color:var(--navy)}
+  .node--cg{border-color:var(--blue)}
+  .node--cg .tag{background:var(--chip);color:var(--blue)}
+  .assets{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;margin-top:12px}
+  .asset{font-family:var(--font-mono);font-size:.72rem;padding:4px 10px;border:1px solid var(--line);
+    border-radius:20px;color:var(--ink);background:var(--paper);transition:transform .2s ease,border-color .2s ease}
+  .asset:hover{transform:translateY(-3px);border-color:var(--navy)}
+  .core-wrap{width:100%;max-width:560px}
+  .stem{width:2px;height:30px;background:var(--line-strong)}
+  .split{width:100%;max-width:840px;position:relative;padding-top:34px}
+  .split::before{content:"";position:absolute;top:0;left:14%;right:14%;height:2px;background:var(--line-strong)}
+  .cols{display:grid;grid-template-columns:repeat(3,1fr);gap:26px}
+  .col{display:flex;flex-direction:column;align-items:center;position:relative}
+  .col::before{content:"";position:absolute;top:-34px;width:2px;height:34px;background:var(--line-strong)}
+  .share{font-family:var(--font-mono);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--muted);background:var(--paper);padding:0 10px;position:relative;top:-9px}
+  .rules{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px}
+  .rule{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:22px;
+    transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease}
+  .rule:hover{transform:translateY(-6px);border-color:var(--navy);box-shadow:0 10px 28px rgba(20,23,53,.13)}
+  .rule .n{font-family:var(--font-mono);font-size:.78rem;font-weight:700;color:#2D3277;background:var(--yellow);
+    width:26px;height:26px;border-radius:7px;display:grid;place-items:center;margin-bottom:12px}
+  .rule h3{margin:0 0 6px;font-size:.98rem;font-weight:700;letter-spacing:-.01em}
+  .rule p{margin:0;font-size:.9rem;color:var(--muted)}
+  .pay{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-top:18px}
+  .pay div{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+    transition:transform .22s ease,border-color .22s ease}
+  .pay div:hover{transform:translateY(-5px);border-color:var(--yellow)}
+  .pay b{display:block;font-size:.92rem;margin-bottom:4px}
+  .pay span{font-size:.85rem;color:var(--muted)}
+  .why{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px}
+  .why div{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;
+    transition:transform .22s ease,border-color .22s ease}
+  .why div:hover{transform:translateY(-5px);border-color:var(--blue)}
+  .why b{display:block;font-size:.94rem;margin-bottom:4px}
+  .why span{font-size:.86rem;color:var(--muted)}
+  .fall{margin-top:26px;border:1px solid var(--line);border-left:4px solid var(--yellow);border-radius:0;
+    background:var(--card);padding:18px 20px;font-size:var(--step)}
+  footer{margin-top:72px;padding-top:22px;border-top:1px solid var(--line);color:var(--muted);
+    font-family:var(--font-mono);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase}
+  @media (max-width:760px){ .cols{grid-template-columns:1fr;gap:34px} .split::before{display:none} .col::before{display:none} }
+  @media (prefers-reduced-motion:reduce){ *{transition:none !important} }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <span class="eyebrow">ECF Consultoria · Meta Ads</span>
+  <h1>Estrutura de contingência</h1>
+  <p class="lead">O que o Meta bane é a conta de anúncio e a BM, quase nunca os ativos. A estrutura isola o risco: o que dói perder fica num único lugar seguro e é emprestado, nunca duplicado.</p>
+
+  <div class="sec">
+    <div class="tree">
+      <div class="node node--core">
+        <span class="tag">origem</span>
+        <div class="name">Perfil principal</div>
+        <div class="sub">admin dos ativos, nunca anuncia</div>
+      </div>
+      <div class="stem"></div>
+      <div class="core-wrap">
+        <div class="node node--core">
+          <span class="tag">cofre</span>
+          <div class="name">BM principal</div>
+          <div class="sub">concentra tudo que não pode cair</div>
+          <div class="assets">
+            <span class="asset">página</span><span class="asset">pixel</span>
+            <span class="asset">domínio</span><span class="asset">catálogo</span>
+            <span class="asset">formulários</span><span class="asset">públicos</span>
+          </div>
+        </div>
+      </div>
+      <div class="stem"></div>
+      <span class="share">compartilha ativos via parceiros</span>
+      <div class="split">
+        <div class="cols">
+          <div class="col">
+            <div class="node node--own">
+              <span class="tag">principal</span>
+              <div class="name">Contas próprias</div>
+              <div class="sub">001 · 002</div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="node node--cg">
+              <span class="tag">contingência</span>
+              <div class="name">Perfil 2</div>
+              <div class="sub">admin próprio</div>
+            </div>
+            <div class="stem"></div>
+            <div class="node node--cg">
+              <span class="tag">bm</span>
+              <div class="name">BM 2</div>
+              <div class="sub">recebe ativos</div>
+            </div>
+            <div class="stem"></div>
+            <div class="node node--cg">
+              <span class="tag">contas</span>
+              <div class="name">003 · 004</div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="node node--cg">
+              <span class="tag">contingência</span>
+              <div class="name">Perfil 3</div>
+              <div class="sub">admin próprio</div>
+            </div>
+            <div class="stem"></div>
+            <div class="node node--cg">
+              <span class="tag">bm</span>
+              <div class="name">BM 3</div>
+              <div class="sub">recebe ativos</div>
+            </div>
+            <div class="stem"></div>
+            <div class="node node--cg">
+              <span class="tag">contas</span>
+              <div class="name">005 · 006</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-head">
+      <h2>As três regras que sustentam a estrutura</h2>
+      <p>Sem elas, a árvore acima vira um único ponto de falha com passos extras.</p>
+    </div>
+    <div class="rules">
+      <div class="rule">
+        <div class="n">1</div>
+        <h3>O perfil principal nunca roda anúncio</h3>
+        <p>Ele só administra e compartilha. Perfil que não anuncia raramente é banido.</p>
+      </div>
+      <div class="rule">
+        <div class="n">2</div>
+        <h3>Cada contingência tem admin próprio</h3>
+        <p>Pessoa e dispositivo diferentes. Sem isso, o Meta vincula os perfis e o ban se espalha por associação.</p>
+      </div>
+      <div class="rule">
+        <div class="n">3</div>
+        <h3>Informações de pagamento diferentes por BM</h3>
+        <p>Cada BM precisa do seu próprio meio de pagamento. Dado de pagamento repetido é o vetor mais comum de ban em cascata.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-head">
+      <h2>O que precisa ser diferente no pagamento</h2>
+      <p>É o dado que mais vincula contas entre si. Repetir qualquer um destes liga as BMs para o Meta.</p>
+    </div>
+    <div class="pay">
+      <div><b>Cartão</b><span>um cartão por BM, nunca o mesmo número em duas.</span></div>
+      <div><b>Dados de cobrança</b><span>titularidade e endereço de cobrança próprios de cada BM.</span></div>
+      <div><b>Fatura e CNPJ</b><span>quando possível, separar a entidade que paga cada estrutura.</span></div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-head">
+      <h2>Por que compartilhar em vez de duplicar</h2>
+      <p>O ativo continua sendo um só. As três BMs usam o mesmo, sem perder histórico.</p>
+    </div>
+    <div class="why">
+      <div><b>Pixel</b><span>o mesmo nas três BMs, então histórico de conversão e públicos não se perdem quando uma conta cai.</span></div>
+      <div><b>Página</b><span>uma só, mantendo prova social e histórico de anúncios.</span></div>
+      <div><b>Domínio</b><span>verificado no principal, as outras BMs herdam a permissão de usar.</span></div>
+    </div>
+    <div class="fall">
+      <b>Na queda:</b> se a conta 003 ou a BM 2 inteira for banida, as contas 001, 002, 005 e 006 seguem rodando com os mesmos ativos. Sobe o criativo na BM que restou e a operação continua no mesmo dia.
+    </div>
+  </div>
+
+  <footer>ECF Consultoria &amp; Assessoria · estrutura de contingência Meta Ads</footer>
+</div>
+</body>
+</html>
