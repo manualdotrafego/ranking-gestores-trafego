@@ -72,6 +72,15 @@ EXTRA_CAMPAIGNS = {
         'id': '120247109265370413',
         'name': 'JAÚ - FORMULÁRIO',
         'account': '646063993729347', 'status': 'ACTIVE'}],
+    # Mogi das Cruzes: campanhas nomeadas "346 | ..." sem o # — não casam pela tag.
+    ('milena', '#346'): [
+        {'id': '120249062414480052',
+         'name': '346 | CP - MOGI DAS CRUZES - 1054K - 03/07',
+         'account': '929466455169259', 'status': 'ACTIVE'},
+        {'id': '120249156678210052',
+         'name': '346 | CP FORMS - MOGI DAS CRUZES - 1054K - 06/07',
+         'account': '929466455169259', 'status': 'PAUSED'},
+    ],
 }
 
 slug = sys.argv[1].lower() if len(sys.argv) > 1 else None
