@@ -80,8 +80,21 @@
   .why span{font-size:.86rem;color:var(--muted)}
   .fall{margin-top:26px;border:1px solid var(--line);border-left:4px solid var(--yellow);border-radius:0;
     background:var(--card);padding:18px 20px;font-size:var(--step)}
+  .flow{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;align-items:stretch}
+  .step{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px 16px;position:relative;
+    transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease}
+  .step:hover{transform:translateY(-6px);border-color:var(--blue);box-shadow:0 10px 28px rgba(20,23,53,.13)}
+  .step--risk:hover{border-color:var(--yellow)}
+  .step .k{font-family:var(--font-mono);font-size:.64rem;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--muted);display:block;margin-bottom:8px}
+  .step--risk .k{color:#8A6D00}
+  .step b{display:block;font-size:.94rem;font-weight:700;margin-bottom:5px;letter-spacing:-.01em}
+  .step span.d{font-size:.83rem;color:var(--muted);display:block}
+  .step:not(:last-child)::after{content:"";position:absolute;right:-13px;top:50%;width:14px;height:2px;
+    background:var(--line-strong);z-index:1}
   footer{margin-top:72px;padding-top:22px;border-top:1px solid var(--line);color:var(--muted);
     font-family:var(--font-mono);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase}
+  @media (max-width:900px){ .flow{grid-template-columns:1fr} .step:not(:last-child)::after{right:auto;left:50%;top:auto;bottom:-13px;width:2px;height:14px} }
   @media (max-width:760px){ .cols{grid-template-columns:1fr;gap:34px} .split::before{display:none} .col::before{display:none} }
   @media (prefers-reduced-motion:reduce){ *{transition:none !important} }
 </style>
@@ -211,7 +224,44 @@
       <div><b>Domínio</b><span>verificado no principal, as outras BMs herdam a permissão de usar.</span></div>
     </div>
     <div class="fall">
-      <b>Na queda:</b> se a conta 003 ou a BM 2 inteira for banida, as contas 001, 002, 005 e 006 seguem rodando com os mesmos ativos. Sobe o criativo na BM que restou e a operação continua no mesmo dia.
+      <b>Na queda parcial:</b> se a conta 003 ou a BM 2 inteira for banida, as contas 001, 002, 005 e 006 seguem rodando com os mesmos ativos. Sobe o criativo na BM que restou e a operação continua no mesmo dia.
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-head">
+      <h2>Se os perfis 2 e 3 caírem juntos</h2>
+      <p>O pior cenário. A operação não para, porque o cofre nunca esteve na ramificação que caiu.</p>
+    </div>
+    <div class="flow">
+      <div class="step step--risk">
+        <span class="k">queda</span>
+        <b>Perfis 2 e 3 banidos</b>
+        <span class="d">as contas 003 a 006 param de entregar.</span>
+      </div>
+      <div class="step">
+        <span class="k">o que sobra</span>
+        <b>Ativos intactos</b>
+        <span class="d">página, pixel, domínio e públicos seguem no BM principal.</span>
+      </div>
+      <div class="step">
+        <span class="k">no mesmo dia</span>
+        <b>Contas 001 e 002 absorvem</b>
+        <span class="d">a verba das contas caídas migra para o que já está ativo.</span>
+      </div>
+      <div class="step">
+        <span class="k">reconstrução</span>
+        <b>Perfil 4 e BM 4</b>
+        <span class="d">pessoa real nova como admin, BM criada do zero.</span>
+      </div>
+      <div class="step">
+        <span class="k">volta</span>
+        <b>Recompartilha e escala</b>
+        <span class="d">os mesmos ativos entram na BM nova por parceria e a verba se redistribui.</span>
+      </div>
+    </div>
+    <div class="fall">
+      <b>O ponto que segura tudo:</b> o perfil principal não estava na ramificação banida, então ele nunca é atingido. É por isso que ele não roda anúncio e não divide meio de pagamento com ninguém.
     </div>
   </div>
 
