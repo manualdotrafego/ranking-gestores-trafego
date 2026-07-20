@@ -38,7 +38,8 @@ GESTOR_CFG = {
     'victor': ('Victor Coutinho', ['816831793052077','1145079426101184','1229765484942576']),
     'bueno': ('Gustavo Bueno', ['844368963369490','762767474947500','514946917180994','646063993729347',
                      '1473069363640157','1512288279712118','1874417206315032','3656827834577801',
-                     '421023317498662','969549934748192','1417247788994678']),
+                     '421023317498662','969549934748192','1417247788994678',
+                     '3143685079159710']),  # +01 Cayman (Planaltina/GO #150)
     'mota': ('Gustavo Motta', ['5278613945567179','388602330121239','140805155678128',
                      '959827441932943','782257763801898','1221130892436075','3894814770656049',
                      '716772110646661']),  # +CT07 Dbout Mota (Formosa #652)
@@ -72,11 +73,17 @@ EXTRA_CAMPAIGNS = {
         'id': '120247109265370413',
         'name': 'JAÚ - FORMULÁRIO',
         'account': '646063993729347', 'status': 'ACTIVE'}],
-    # Mogi das Cruzes: campanhas nomeadas "346 | ..." sem o # — não casam pela tag.
+    # Águas Lindas: unidade transferida Braga → Igor. Card #201 movido no Notion;
+    # a campanha roda na CT01-DRACO (Igor) e não tem o #201 no nome.
+    ('igor', '#201'): [{
+        'id': '120250558802770663',
+        'name': 'AGUAS LINDAS FORMULÁRIO - 30.06',
+        'account': '1583196522529565', 'status': 'ACTIVE'}],
+    # (#150 Planaltina/GO não precisa de regra: a campanha foi renomeada com o
+    #  #150 e a conta 01 Cayman está na lista do Bueno — casa pelo scan normal.)
+    # Mogi das Cruzes: a CP principal já foi renomeada com "#346" e casa pelo scan.
+    # Só a de FORMS segue nomeada "346 | ..." (sem #) e precisa da regra.
     ('milena', '#346'): [
-        {'id': '120249062414480052',
-         'name': '346 | CP - MOGI DAS CRUZES - 1054K - 03/07',
-         'account': '929466455169259', 'status': 'ACTIVE'},
         {'id': '120249156678210052',
          'name': '346 | CP FORMS - MOGI DAS CRUZES - 1054K - 06/07',
          'account': '929466455169259', 'status': 'PAUSED'},
@@ -136,6 +143,15 @@ for c in cards:
     if extra:
         matches += extra
         print(f'  ➕ {c["tag"]} +{len(extra)} camp(s) extra (merge entre gestores)')
+    # Dedup por ID: uma campanha com regra EXTRA que depois foi renomeada com a
+    # #tag apareceria aqui duas vezes (pelo scan e pela regra), dobrando gasto/leads.
+    seen_ids, uniq = set(), []
+    for m in matches:
+        if m['id'] in seen_ids:
+            print(f'  ⚠️  {c["tag"]} campanha {m["id"]} duplicada (scan + EXTRA) — contada 1x')
+            continue
+        seen_ids.add(m['id']); uniq.append(m)
+    matches = uniq
     if not matches:
         sem_match.append(c); continue
     primary = next((m['account'] for m in matches if m['status']=='ACTIVE'), matches[0]['account'])

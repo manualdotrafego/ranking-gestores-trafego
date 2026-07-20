@@ -38,7 +38,7 @@ DAYS_BACK = 29   # fetchamos 30 dias para ter histórico completo
 DEFAULT_DISPLAY = 15   # fallback (não usado quando FIXED_RANGE ativo)
 # Período fixo de exibição padrão nos relatórios
 FIXED_SINCE = "2026-07-01"
-FIXED_UNTIL = "2026-07-14"
+FIXED_UNTIL = "2026-07-17"
 
 # ─── CONTAS POR GESTOR ────────────────────────────────────────────────────────
 GESTORES_ACCOUNTS = {
@@ -92,6 +92,7 @@ GESTORES_ACCOUNTS = {
         "3656827834577801",  # CT14 - BM04 Closer Brasil
         "421023317498662",   # CT13 - BM04 Closer Brasil
         "969549934748192",   # CT11 - BM04 Closer Brasil
+        "3143685079159710",  # 01 Cayman - BM Carazinhosorrisoperfeito (Planaltina/GO #150)
     },
     "Gustavo Motta": {
         "5278613945567179",  # CT01 - BM02 - Mota
