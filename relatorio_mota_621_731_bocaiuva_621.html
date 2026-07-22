@@ -40,6 +40,16 @@ body{font-family:'Inter',sans-serif;background:#f0f2f5;color:#1c1e21;font-size:1
         font-family:'Inter',sans-serif;transition:all .15s}
 .ps-btn:hover{border-color:#1877f2;color:#1877f2}
 .ps-btn.active{background:#1877f2;color:#fff;border-color:#1877f2}
+.day-picker{margin-top:14px;padding-top:12px;border-top:1px solid #e4e6eb}
+.day-picker-label{font-size:10px;font-weight:700;color:#606770;text-transform:uppercase;
+                  letter-spacing:.4px;margin-bottom:8px}
+.day-btns{display:flex;flex-wrap:wrap;gap:5px;max-height:132px;overflow-y:auto;padding-right:4px}
+.day-btn{padding:5px 9px;border-radius:6px;font-size:10.5px;font-weight:600;cursor:pointer;
+         border:1px solid #dddfe2;background:#fff;color:#606770;white-space:nowrap;line-height:1.3}
+.day-btn:hover{border-color:#1877f2;color:#1877f2}
+.day-btn.active{background:#1877f2;color:#fff;border-color:#1877f2}
+.day-btn.weekend{background:#fffbe6;color:#8a6d1d;border-color:#f0e2b6}
+.day-btn.weekend.active{background:#1877f2;color:#fff;border-color:#1877f2}
 .kpi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:18px}
 .kpi-card{background:#fff;border-radius:8px;padding:18px 22px;
           box-shadow:0 1px 3px rgba(0,0,0,.12);border-top:3px solid #1877f2}
@@ -118,6 +128,11 @@ tbody td:first-child{text-align:left;color:#606770;font-weight:600}
     <button class="ps-btn" onclick="applyShortcut(7)">Últimos 7 dias</button>
     <button class="ps-btn" onclick="applyShortcut(15)">Últimos 15 dias</button>
     <button class="ps-btn" onclick="applyShortcut(30)">Últimos 30 dias</button>
+    <button class="ps-btn" onclick="applyShortcut(45)">Últimos 45 dias</button>
+  </div>
+  <div class="day-picker">
+    <div class="day-picker-label">Ou escolha um dia específico</div>
+    <div class="day-btns" id="dayBtns"></div>
   </div>
 </div>
 
@@ -167,15 +182,15 @@ tbody td:first-child{text-align:left;color:#606770;font-weight:600}
 </div>
 
 <div class="footer">
-  Gerado em 16/07/2026 · #621 | 731 - Bocaiuva · Meta API v21.0
+  Gerado em 22/07/2026 · #621 | 731 - Bocaiuva · Meta API v21.0
 </div>
 </div>
 
 <script>
-const DAILY = [{"date": "2026-07-15", "spend": 58.25, "msgs": 4, "cost_msg": 14.56, "impr": 7645, "cpm": 7.62, "ctr": 0.48}, {"date": "2026-07-14", "spend": 71.9, "msgs": 6, "cost_msg": 11.98, "impr": 9417, "cpm": 7.64, "ctr": 0.54}, {"date": "2026-07-13", "spend": 30.24, "msgs": 1, "cost_msg": 30.24, "impr": 4235, "cpm": 7.14, "ctr": 0.57}, {"date": "2026-07-12", "spend": 41.71, "msgs": 5, "cost_msg": 8.34, "impr": 4842, "cpm": 8.61, "ctr": 0.48}, {"date": "2026-07-11", "spend": 38.89, "msgs": 2, "cost_msg": 19.45, "impr": 5766, "cpm": 6.74, "ctr": 0.42}, {"date": "2026-07-10", "spend": 39.31, "msgs": 3, "cost_msg": 13.1, "impr": 4615, "cpm": 8.52, "ctr": 0.5}, {"date": "2026-07-09", "spend": 40.0, "msgs": 5, "cost_msg": 8.0, "impr": 4591, "cpm": 8.71, "ctr": 0.46}, {"date": "2026-07-08", "spend": 55.62, "msgs": 5, "cost_msg": 11.12, "impr": 6113, "cpm": 9.1, "ctr": 0.57}, {"date": "2026-07-07", "spend": 70.13, "msgs": 7, "cost_msg": 10.02, "impr": 7857, "cpm": 8.93, "ctr": 0.41}, {"date": "2026-07-06", "spend": 69.89, "msgs": 7, "cost_msg": 9.98, "impr": 7440, "cpm": 9.39, "ctr": 0.52}, {"date": "2026-07-05", "spend": 34.31, "msgs": 4, "cost_msg": 8.58, "impr": 4476, "cpm": 7.67, "ctr": 0.76}, {"date": "2026-07-04", "spend": 54.44, "msgs": 5, "cost_msg": 10.89, "impr": 7311, "cpm": 7.45, "ctr": 0.64}, {"date": "2026-07-03", "spend": 33.85, "msgs": 0, "cost_msg": 0.0, "impr": 3908, "cpm": 8.66, "ctr": 0.67}, {"date": "2026-07-02", "spend": 41.07, "msgs": 6, "cost_msg": 6.84, "impr": 5047, "cpm": 8.14, "ctr": 0.73}, {"date": "2026-07-01", "spend": 62.33, "msgs": 9, "cost_msg": 6.93, "impr": 7981, "cpm": 7.81, "ctr": 0.56}];
+const DAILY = [{"date": "2026-07-22", "spend": 17.82, "msgs": 1, "cost_msg": 17.82, "impr": 1791, "cpm": 9.95, "ctr": 0.89}, {"date": "2026-07-21", "spend": 33.26, "msgs": 5, "cost_msg": 6.65, "impr": 3235, "cpm": 10.28, "ctr": 0.71}, {"date": "2026-07-20", "spend": 53.15, "msgs": 1, "cost_msg": 53.15, "impr": 5437, "cpm": 9.78, "ctr": 0.46}, {"date": "2026-07-19", "spend": 40.42, "msgs": 5, "cost_msg": 8.08, "impr": 5207, "cpm": 7.76, "ctr": 0.71}, {"date": "2026-07-18", "spend": 54.11, "msgs": 5, "cost_msg": 10.82, "impr": 6187, "cpm": 8.75, "ctr": 0.52}, {"date": "2026-07-17", "spend": 49.64, "msgs": 1, "cost_msg": 49.64, "impr": 6039, "cpm": 8.22, "ctr": 0.6}, {"date": "2026-07-16", "spend": 42.71, "msgs": 2, "cost_msg": 21.36, "impr": 5941, "cpm": 7.19, "ctr": 0.64}, {"date": "2026-07-15", "spend": 58.27, "msgs": 4, "cost_msg": 14.57, "impr": 7653, "cpm": 7.61, "ctr": 0.48}, {"date": "2026-07-14", "spend": 71.9, "msgs": 6, "cost_msg": 11.98, "impr": 9417, "cpm": 7.64, "ctr": 0.54}, {"date": "2026-07-13", "spend": 30.24, "msgs": 1, "cost_msg": 30.24, "impr": 4235, "cpm": 7.14, "ctr": 0.57}, {"date": "2026-07-12", "spend": 41.71, "msgs": 5, "cost_msg": 8.34, "impr": 4842, "cpm": 8.61, "ctr": 0.48}, {"date": "2026-07-11", "spend": 38.89, "msgs": 2, "cost_msg": 19.45, "impr": 5766, "cpm": 6.74, "ctr": 0.42}, {"date": "2026-07-10", "spend": 39.31, "msgs": 3, "cost_msg": 13.1, "impr": 4615, "cpm": 8.52, "ctr": 0.5}, {"date": "2026-07-09", "spend": 40.0, "msgs": 5, "cost_msg": 8.0, "impr": 4591, "cpm": 8.71, "ctr": 0.46}, {"date": "2026-07-08", "spend": 55.62, "msgs": 5, "cost_msg": 11.12, "impr": 6113, "cpm": 9.1, "ctr": 0.57}, {"date": "2026-07-07", "spend": 70.13, "msgs": 7, "cost_msg": 10.02, "impr": 7857, "cpm": 8.93, "ctr": 0.41}, {"date": "2026-07-06", "spend": 69.89, "msgs": 7, "cost_msg": 9.98, "impr": 7440, "cpm": 9.39, "ctr": 0.52}, {"date": "2026-07-05", "spend": 34.31, "msgs": 4, "cost_msg": 8.58, "impr": 4476, "cpm": 7.67, "ctr": 0.76}, {"date": "2026-07-04", "spend": 54.44, "msgs": 5, "cost_msg": 10.89, "impr": 7311, "cpm": 7.45, "ctr": 0.64}, {"date": "2026-07-03", "spend": 33.85, "msgs": 0, "cost_msg": 0.0, "impr": 3908, "cpm": 8.66, "ctr": 0.67}, {"date": "2026-07-02", "spend": 41.07, "msgs": 6, "cost_msg": 6.84, "impr": 5047, "cpm": 8.14, "ctr": 0.73}, {"date": "2026-07-01", "spend": 62.33, "msgs": 9, "cost_msg": 6.93, "impr": 7981, "cpm": 7.81, "ctr": 0.56}, {"date": "2026-06-30", "spend": 70.78, "msgs": 4, "cost_msg": 17.7, "impr": 8530, "cpm": 8.3, "ctr": 0.54}, {"date": "2026-06-29", "spend": 53.01, "msgs": 3, "cost_msg": 17.67, "impr": 4874, "cpm": 10.88, "ctr": 0.76}, {"date": "2026-06-28", "spend": 33.72, "msgs": 7, "cost_msg": 4.82, "impr": 3367, "cpm": 10.01, "ctr": 0.86}, {"date": "2026-06-27", "spend": 48.44, "msgs": 3, "cost_msg": 16.15, "impr": 6304, "cpm": 7.68, "ctr": 0.4}, {"date": "2026-06-26", "spend": 38.89, "msgs": 3, "cost_msg": 12.96, "impr": 4875, "cpm": 7.98, "ctr": 0.62}, {"date": "2026-06-25", "spend": 48.72, "msgs": 2, "cost_msg": 24.36, "impr": 5806, "cpm": 8.39, "ctr": 0.64}, {"date": "2026-06-24", "spend": 48.32, "msgs": 8, "cost_msg": 6.04, "impr": 5746, "cpm": 8.41, "ctr": 0.59}, {"date": "2026-06-23", "spend": 49.96, "msgs": 2, "cost_msg": 24.98, "impr": 5935, "cpm": 8.42, "ctr": 0.42}, {"date": "2026-06-22", "spend": 23.27, "msgs": 0, "cost_msg": 0.0, "impr": 2832, "cpm": 8.22, "ctr": 0.35}, {"date": "2026-06-21", "spend": 14.34, "msgs": 1, "cost_msg": 14.34, "impr": 1835, "cpm": 7.81, "ctr": 0.44}, {"date": "2026-06-20", "spend": 19.77, "msgs": 1, "cost_msg": 19.77, "impr": 2596, "cpm": 7.62, "ctr": 0.54}, {"date": "2026-06-19", "spend": 37.95, "msgs": 1, "cost_msg": 37.95, "impr": 4073, "cpm": 9.32, "ctr": 0.88}, {"date": "2026-06-18", "spend": 27.4, "msgs": 1, "cost_msg": 27.4, "impr": 3487, "cpm": 7.86, "ctr": 0.69}, {"date": "2026-06-17", "spend": 40.17, "msgs": 4, "cost_msg": 10.04, "impr": 4869, "cpm": 8.25, "ctr": 0.53}, {"date": "2026-06-16", "spend": 52.83, "msgs": 6, "cost_msg": 8.8, "impr": 6221, "cpm": 8.49, "ctr": 0.61}, {"date": "2026-06-15", "spend": 56.15, "msgs": 3, "cost_msg": 18.72, "impr": 6368, "cpm": 8.82, "ctr": 0.69}, {"date": "2026-06-14", "spend": 11.88, "msgs": 2, "cost_msg": 5.94, "impr": 1576, "cpm": 7.54, "ctr": 0.57}, {"date": "2026-06-13", "spend": 13.01, "msgs": 2, "cost_msg": 6.5, "impr": 2046, "cpm": 6.36, "ctr": 0.34}, {"date": "2026-06-12", "spend": 15.37, "msgs": 1, "cost_msg": 15.37, "impr": 2188, "cpm": 7.02, "ctr": 0.55}, {"date": "2026-06-11", "spend": 21.34, "msgs": 3, "cost_msg": 7.11, "impr": 3011, "cpm": 7.09, "ctr": 0.63}, {"date": "2026-06-10", "spend": 23.88, "msgs": 1, "cost_msg": 23.88, "impr": 3220, "cpm": 7.42, "ctr": 0.53}, {"date": "2026-06-09", "spend": 33.93, "msgs": 4, "cost_msg": 8.48, "impr": 4560, "cpm": 7.44, "ctr": 0.48}, {"date": "2026-06-08", "spend": 24.74, "msgs": 2, "cost_msg": 12.37, "impr": 3258, "cpm": 7.59, "ctr": 0.46}];
 const DEFAULT_DAYS = 15;
-const FIXED_SINCE = '2026-07-01';
-const FIXED_UNTIL = '2026-07-15';
+const FIXED_SINCE = '2026-06-08';
+const FIXED_UNTIL = '2026-07-22';
 const PT_M = ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
 const PT_MF = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
 let chart=null, activeSince=null, activeUntil=null;
@@ -192,15 +207,15 @@ const fp=flatpickr('#dateRangeInput',{
   minDate,maxDate,showMonths:1,
   onChange(selectedDates){
     if(selectedDates.length===2){
-      clearShortcuts();
+      clearShortcuts(); clearDayButtons();
       applyRange(selectedDates[0].toISOString().slice(0,10),selectedDates[1].toISOString().slice(0,10));
     }
   }
 });
 function applyShortcut(days){
-  clearShortcuts();
+  clearShortcuts(); clearDayButtons();
   const btns=document.querySelectorAll('.ps-btn');
-  const idx=[0,1,7,15,30].indexOf(days);
+  const idx=[0,1,7,15,30,45].indexOf(days);
   if(idx>=0)btns[idx].classList.add('active');
   const until=today();
   const since=days===0?until:days===1?addDays(until,-1):addDays(until,-(days-1));
@@ -209,6 +224,30 @@ function applyShortcut(days){
   applyRange(since,sinceEnd);
 }
 function clearShortcuts(){document.querySelectorAll('.ps-btn').forEach(b=>b.classList.remove('active'))}
+const PT_WD=['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+function buildDayButtons(){
+  const box=document.getElementById('dayBtns'); if(!box)return;
+  box.innerHTML='';
+  // DAILY vem ordenado do mais recente para o mais antigo
+  DAILY.forEach(d=>{
+    const dt=new Date(d.date+'T12:00:00');
+    const wd=dt.getDay();
+    const b=document.createElement('button');
+    b.className='day-btn'+(wd===0||wd===6?' weekend':'');
+    b.dataset.date=d.date;
+    b.textContent=`${PT_WD[wd]} ${d.date.slice(8,10)}/${d.date.slice(5,7)}`;
+    b.onclick=()=>selectSingleDay(d.date);
+    box.appendChild(b);
+  });
+}
+function clearDayButtons(){document.querySelectorAll('.day-btn').forEach(b=>b.classList.remove('active'))}
+function selectSingleDay(iso){
+  clearShortcuts(); clearDayButtons();
+  const b=document.querySelector(`.day-btn[data-date="${iso}"]`);
+  if(b)b.classList.add('active');
+  fp.setDate([iso,iso],false);
+  applyRange(iso,iso);
+}
 function applyRange(since,until){
   activeSince=since;activeUntil=until;
   const inRange=DAILY.filter(d=>d.date>=since&&d.date<=until).sort((a,b)=>a.date.localeCompare(b.date));
@@ -290,8 +329,10 @@ function renderTable(since,until){
   });
 }
 window.addEventListener('load',()=>{
-  fp.setDate([FIXED_SINCE,FIXED_UNTIL],false);
-  applyRange(FIXED_SINCE,FIXED_UNTIL);
+  // Abre nos últimos 15 dias por padrão. O histórico completo continua
+  // disponível no calendário, nos atalhos e nos botões dia a dia.
+  buildDayButtons();
+  applyShortcut(15);
 });
 </script>
 </body>
