@@ -406,6 +406,29 @@ def fetch_daily_insights(campaign_id: str, since: str, until: str) -> list[dict]
         return []
 
 
+def load_existing_daily(html_path) -> list[dict]:
+    """Lê o array DAILY do relatório já publicado (histórico acumulado).
+    Retorna [] se o arquivo não existe ou não tem DAILY."""
+    try:
+        p = Path(html_path)
+        if not p.exists():
+            return []
+        m = re.search(r'const DAILY = (\[.*?\]);', p.read_text(encoding="utf-8"), flags=re.S)
+        return json.loads(m.group(1)) if m else []
+    except Exception:
+        return []
+
+
+def accumulate_daily(existing: list[dict], fresh: list[dict]) -> list[dict]:
+    """Une o histórico já publicado com os dias recém-buscados.
+    Dias novos são acrescentados; dias que voltaram na busca são atualizados
+    (a atribuição do Meta muda nos primeiros dias). Nenhum dia é apagado."""
+    by_date = {d["date"]: d for d in existing if isinstance(d, dict) and d.get("date")}
+    for d in fresh:
+        by_date[d["date"]] = d
+    return sorted(by_date.values(), key=lambda x: x["date"], reverse=True)
+
+
 def merge_daily(all_daily: list[list[dict]]) -> list[dict]:
     """Consolida insights de múltiplas campanhas por data (soma spend + msgs)."""
     by_date: dict[str, dict] = {}
@@ -494,6 +517,16 @@ body{{font-family:'Inter',sans-serif;background:#f0f2f5;color:#1c1e21;font-size:
         font-family:'Inter',sans-serif;transition:all .15s}}
 .ps-btn:hover{{border-color:#1877f2;color:#1877f2}}
 .ps-btn.active{{background:#1877f2;color:#fff;border-color:#1877f2}}
+.day-picker{{margin-top:14px;padding-top:12px;border-top:1px solid #e4e6eb}}
+.day-picker-label{{font-size:10px;font-weight:700;color:#606770;text-transform:uppercase;
+                  letter-spacing:.4px;margin-bottom:8px}}
+.day-btns{{display:flex;flex-wrap:wrap;gap:5px;max-height:132px;overflow-y:auto;padding-right:4px}}
+.day-btn{{padding:5px 9px;border-radius:6px;font-size:10.5px;font-weight:600;cursor:pointer;
+         border:1px solid #dddfe2;background:#fff;color:#606770;white-space:nowrap;line-height:1.3}}
+.day-btn:hover{{border-color:#1877f2;color:#1877f2}}
+.day-btn.active{{background:#1877f2;color:#fff;border-color:#1877f2}}
+.day-btn.weekend{{background:#fffbe6;color:#8a6d1d;border-color:#f0e2b6}}
+.day-btn.weekend.active{{background:#1877f2;color:#fff;border-color:#1877f2}}
 .kpi-grid{{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:18px}}
 .kpi-card{{background:#fff;border-radius:8px;padding:18px 22px;
           box-shadow:0 1px 3px rgba(0,0,0,.12);border-top:3px solid #1877f2}}
@@ -574,6 +607,10 @@ tbody td:first-child{{text-align:left;color:#606770;font-weight:600}}
     <button class="ps-btn" onclick="applyShortcut(30)">Últimos 30 dias</button>
     <button class="ps-btn" onclick="applyShortcut(45)">Últimos 45 dias</button>
   </div>
+  <div class="day-picker">
+    <div class="day-picker-label">Ou escolha um dia específico</div>
+    <div class="day-btns" id="dayBtns"></div>
+  </div>
 </div>
 
 <div class="kpi-grid">
@@ -647,13 +684,13 @@ const fp=flatpickr('#dateRangeInput',{{
   minDate,maxDate,showMonths:1,
   onChange(selectedDates){{
     if(selectedDates.length===2){{
-      clearShortcuts();
+      clearShortcuts(); clearDayButtons();
       applyRange(selectedDates[0].toISOString().slice(0,10),selectedDates[1].toISOString().slice(0,10));
     }}
   }}
 }});
 function applyShortcut(days){{
-  clearShortcuts();
+  clearShortcuts(); clearDayButtons();
   const btns=document.querySelectorAll('.ps-btn');
   const idx=[0,1,7,15,30,45].indexOf(days);
   if(idx>=0)btns[idx].classList.add('active');
@@ -664,6 +701,30 @@ function applyShortcut(days){{
   applyRange(since,sinceEnd);
 }}
 function clearShortcuts(){{document.querySelectorAll('.ps-btn').forEach(b=>b.classList.remove('active'))}}
+const PT_WD=['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+function buildDayButtons(){{
+  const box=document.getElementById('dayBtns'); if(!box)return;
+  box.innerHTML='';
+  // DAILY vem ordenado do mais recente para o mais antigo
+  DAILY.forEach(d=>{{
+    const dt=new Date(d.date+'T12:00:00');
+    const wd=dt.getDay();
+    const b=document.createElement('button');
+    b.className='day-btn'+(wd===0||wd===6?' weekend':'');
+    b.dataset.date=d.date;
+    b.textContent=`${{PT_WD[wd]}} ${{d.date.slice(8,10)}}/${{d.date.slice(5,7)}}`;
+    b.onclick=()=>selectSingleDay(d.date);
+    box.appendChild(b);
+  }});
+}}
+function clearDayButtons(){{document.querySelectorAll('.day-btn').forEach(b=>b.classList.remove('active'))}}
+function selectSingleDay(iso){{
+  clearShortcuts(); clearDayButtons();
+  const b=document.querySelector(`.day-btn[data-date="${{iso}}"]`);
+  if(b)b.classList.add('active');
+  fp.setDate([iso,iso],false);
+  applyRange(iso,iso);
+}}
 function applyRange(since,until){{
   activeSince=since;activeUntil=until;
   const inRange=DAILY.filter(d=>d.date>=since&&d.date<=until).sort((a,b)=>a.date.localeCompare(b.date));
@@ -745,8 +806,10 @@ function renderTable(since,until){{
   }});
 }}
 window.addEventListener('load',()=>{{
-  fp.setDate([FIXED_SINCE,FIXED_UNTIL],false);
-  applyRange(FIXED_SINCE,FIXED_UNTIL);
+  // Abre nos últimos 15 dias por padrão. O histórico completo continua
+  // disponível no calendário, nos atalhos e nos botões dia a dia.
+  buildDayButtons();
+  applyShortcut(15);
 }});
 </script>
 </body>

@@ -20,6 +20,7 @@ from gerar_relatorios_todos_v2 import (
     fetch_daily_insights, merge_daily, generate_html, take_screenshots,
     notion_update_preview_image, notion_update_relatorio_novo,
     start_local_server, notion_get_pages, parse_notion_page, slugify,
+    load_existing_daily, accumulate_daily,
 )
 
 META_TOKEN = os.getenv("META_ACCESS_TOKEN")
@@ -166,9 +167,12 @@ print(f'\n  → {len(jobs)} jobs | {len(sem_match)} sem match')
 items = []
 for job in jobs:
     rows = [fetch_daily_insights(c['id'], FIXED_SINCE, FIXED_UNTIL) for c in job['campaigns']]
-    daily = merge_daily(rows) if len(rows) > 1 else (rows[0] if rows else [])
+    fresh = merge_daily(rows) if len(rows) > 1 else (rows[0] if rows else [])
     hp = BASE_DIR / f'relatorio_{job["slug"]}.html'
     pp = BASE_DIR / f'relatorio_{job["slug"]}.png'
+    # Histórico acumulado: mantém todos os dias já publicados e acrescenta/atualiza
+    # os da janela buscada. Nenhum dia antigo é perdido a cada rodada.
+    daily = accumulate_daily(load_existing_daily(hp), fresh)
     hp.write_text(generate_html(job['clinic'], job['campaigns'], job['account'], daily, FIXED_SINCE, FIXED_UNTIL), encoding='utf-8')
     items.append({'slug':job['slug'],'html_filename':hp.name,'png_filename':pp.name,
                   'html_path':hp,'png_path':pp,'page_id':job['page_id'],'clinic':job['clinic']})
