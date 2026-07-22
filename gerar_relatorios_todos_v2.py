@@ -34,11 +34,11 @@ NOTION_BASE   = "https://api.notion.com/v1"
 GH_PAGES_BASE = "https://manualdotrafego.github.io/ranking-gestores-trafego"
 LOCAL_PORT    = 0   # 0 = escolhe porta livre automaticamente
 
-DAYS_BACK = 29   # fetchamos 30 dias para ter histórico completo
+DAYS_BACK = 45   # janela móvel: mínimo 40 dias de histórico navegável
 DEFAULT_DISPLAY = 15   # fallback (não usado quando FIXED_RANGE ativo)
 # Período fixo de exibição padrão nos relatórios
-FIXED_SINCE = "2026-07-01"
-FIXED_UNTIL = "2026-07-17"
+FIXED_SINCE = "2026-06-08"
+FIXED_UNTIL = "2026-07-22"
 
 # ─── CONTAS POR GESTOR ────────────────────────────────────────────────────────
 GESTORES_ACCOUNTS = {
@@ -360,7 +360,7 @@ def fetch_daily_insights(campaign_id: str, since: str, until: str) -> list[dict]
             "fields": "date_start,spend,actions,impressions,cpm,ctr",
             "time_range": json.dumps({"since": since, "until": until}),
             "time_increment": "1",
-            "limit": 50,
+            "limit": 400,   # janela de 40+ dias: 50 truncaria os dias mais antigos
         })
         rows = resp.get("data", [])
         time.sleep(0.25)
@@ -572,6 +572,7 @@ tbody td:first-child{{text-align:left;color:#606770;font-weight:600}}
     <button class="ps-btn" onclick="applyShortcut(7)">Últimos 7 dias</button>
     <button class="ps-btn" onclick="applyShortcut(15)">Últimos 15 dias</button>
     <button class="ps-btn" onclick="applyShortcut(30)">Últimos 30 dias</button>
+    <button class="ps-btn" onclick="applyShortcut(45)">Últimos 45 dias</button>
   </div>
 </div>
 
@@ -654,7 +655,7 @@ const fp=flatpickr('#dateRangeInput',{{
 function applyShortcut(days){{
   clearShortcuts();
   const btns=document.querySelectorAll('.ps-btn');
-  const idx=[0,1,7,15,30].indexOf(days);
+  const idx=[0,1,7,15,30,45].indexOf(days);
   if(idx>=0)btns[idx].classList.add('active');
   const until=today();
   const since=days===0?until:days===1?addDays(until,-1):addDays(until,-(days-1));
