@@ -207,7 +207,7 @@ const fp=flatpickr('#dateRangeInput',{
   minDate,maxDate,showMonths:1,
   onChange(selectedDates){
     if(selectedDates.length===2){
-      clearShortcuts();
+      clearShortcuts(); clearDayButtons();
       applyRange(selectedDates[0].toISOString().slice(0,10),selectedDates[1].toISOString().slice(0,10));
     }
   }
@@ -330,7 +330,8 @@ function renderTable(since,until){
 }
 window.addEventListener('load',()=>{
   // Abre nos últimos 15 dias por padrão. O histórico completo continua
-  // disponível no calendário e nos atalhos (o DAILY acumula todos os dias).
+  // disponível no calendário, nos atalhos e nos botões dia a dia.
+  buildDayButtons();
   applyShortcut(15);
 });
 </script>
