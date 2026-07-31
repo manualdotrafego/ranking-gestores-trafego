@@ -37,8 +37,8 @@ LOCAL_PORT    = 0   # 0 = escolhe porta livre automaticamente
 DAYS_BACK = 45   # janela móvel: mínimo 40 dias de histórico navegável
 DEFAULT_DISPLAY = 15   # fallback (não usado quando FIXED_RANGE ativo)
 # Período fixo de exibição padrão nos relatórios
-FIXED_SINCE = "2026-06-08"
-FIXED_UNTIL = "2026-07-22"
+FIXED_SINCE = "2026-06-14"
+FIXED_UNTIL = "2026-07-28"
 
 # ─── CONTAS POR GESTOR ────────────────────────────────────────────────────────
 GESTORES_ACCOUNTS = {
