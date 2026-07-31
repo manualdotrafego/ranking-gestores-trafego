@@ -70,10 +70,8 @@ EXTRA_CAMPAIGNS = {
         'id': '120251623192790606',
         'name': 'FORMULÁRIO QUEIMADAS E ESPERANÇA - 01.07',
         'account': '566170923166415', 'status': 'ACTIVE'}],
-    ('bueno', '#124'): [{
-        'id': '120247109265370413',
-        'name': 'JAÚ - FORMULÁRIO',
-        'account': '646063993729347', 'status': 'ACTIVE'}],
+    # (#124 Jaú não precisa mais de regra: a campanha de formulário foi renomeada
+    #  com "#124" e casa pelo scan. Regra removida para não ficar redundante.)
     # Águas Lindas: unidade transferida Braga → Igor. Card #201 movido no Notion;
     # a campanha roda na CT01-DRACO (Igor) e não tem o #201 no nome.
     ('igor', '#201'): [{
