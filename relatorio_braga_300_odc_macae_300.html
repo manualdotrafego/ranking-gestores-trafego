@@ -182,14 +182,14 @@ tbody td:first-child{text-align:left;color:#606770;font-weight:600}
 </div>
 
 <div class="footer">
-  Gerado em 31/07/2026 · #300 | ODC Macaé · Meta API v21.0
+  Gerado em 02/08/2026 · #300 | ODC Macaé · Meta API v21.0
 </div>
 </div>
 
 <script>
 const DAILY = [{"date": "2026-07-28", "spend": 0.0, "msgs": 0, "cost_msg": 0.0, "impr": 0, "cpm": 0.0, "ctr": 0.0}, {"date": "2026-07-27", "spend": 23.4, "msgs": 9, "cost_msg": 2.6, "impr": 1214, "cpm": 19.28, "ctr": 2.47}, {"date": "2026-07-26", "spend": 24.52, "msgs": 8, "cost_msg": 3.06, "impr": 1731, "cpm": 14.17, "ctr": 2.08}, {"date": "2026-07-25", "spend": 29.32, "msgs": 10, "cost_msg": 2.93, "impr": 2628, "cpm": 11.16, "ctr": 1.83}, {"date": "2026-07-24", "spend": 28.15, "msgs": 26, "cost_msg": 1.08, "impr": 2497, "cpm": 11.27, "ctr": 3.16}, {"date": "2026-07-23", "spend": 33.47, "msgs": 32, "cost_msg": 1.05, "impr": 2542, "cpm": 13.17, "ctr": 3.62}, {"date": "2026-07-22", "spend": 48.1, "msgs": 25, "cost_msg": 1.92, "impr": 3493, "cpm": 13.77, "ctr": 2.89}, {"date": "2026-07-21", "spend": 19.08, "msgs": 8, "cost_msg": 2.38, "impr": 1592, "cpm": 11.98, "ctr": 2.07}];
 const DEFAULT_DAYS = 15;
-const FIXED_SINCE = '2026-06-17';
+const FIXED_SINCE = '2026-07-16';
 const FIXED_UNTIL = '2026-07-31';
 const PT_M = ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
 const PT_MF = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
@@ -329,10 +329,13 @@ function renderTable(since,until){
   });
 }
 window.addEventListener('load',()=>{
-  // Abre nos últimos 15 dias por padrão. O histórico completo continua
-  // disponível no calendário, nos atalhos e nos botões dia a dia.
+  // PERÍODO FIXO temporário: abre no intervalo FIXED_SINCE→FIXED_UNTIL (16-31/07)
+  // a pedido, até liberar a retomada. O histórico completo continua disponível
+  // no calendário, nos atalhos e nos botões dia a dia.
   buildDayButtons();
-  applyShortcut(15);
+  clearShortcuts(); clearDayButtons();
+  fp.setDate([FIXED_SINCE,FIXED_UNTIL],false);
+  applyRange(FIXED_SINCE,FIXED_UNTIL);
 });
 </script>
 </body>
