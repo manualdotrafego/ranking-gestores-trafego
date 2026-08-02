@@ -11,3 +11,4 @@ relatorio_*.xlsx
 relatorio_*.csv
 *.zip
 deploy.zip
+.pause_relatorios

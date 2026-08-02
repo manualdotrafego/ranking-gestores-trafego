@@ -14,6 +14,15 @@ PY = sys.executable
 def log(msg):
     print(f'[{time.strftime("%Y-%m-%d %H:%M:%S")}] {msg}', flush=True)
 
+# ── PAUSA ──────────────────────────────────────────────────────────────────────
+# Se existir o arquivo-flag, a atualização diária fica suspensa (período fixo
+# definido manualmente). Basta apagar o flag para retomar a rotina normal.
+PAUSE_FLAG = BASE / '.pause_relatorios'
+if PAUSE_FLAG.exists():
+    log(f'PAUSADO ({PAUSE_FLAG.name} existe) — atualização diária suspensa. '
+        f'Apague o flag para retomar.')
+    sys.exit(0)
+
 # Janela móvel dos últimos WINDOW_DAYS dias (mínimo exigido: 40).
 # Antes era "1º dia do mês → hoje", que no começo do mês deixava o relatório
 # com 1-2 dias de dados e sem histórico para navegar por data.
