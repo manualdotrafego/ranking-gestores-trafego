@@ -182,14 +182,14 @@ tbody td:first-child{text-align:left;color:#606770;font-weight:600}
 </div>
 
 <div class="footer">
-  Gerado em 31/07/2026 · #549 - Ortho Brasil Forteleza · Meta API v21.0
+  Gerado em 02/08/2026 · #549 - Ortho Brasil Forteleza · Meta API v21.0
 </div>
 </div>
 
 <script>
 const DAILY = [{"date": "2026-06-09", "spend": 0.0, "msgs": 0, "cost_msg": 0.0, "impr": 0, "cpm": 0.0, "ctr": 0.0}, {"date": "2026-06-08", "spend": 8.23, "msgs": 0, "cost_msg": 0.0, "impr": 913, "cpm": 9.01, "ctr": 0.77}, {"date": "2026-06-07", "spend": 35.86, "msgs": 19, "cost_msg": 1.89, "impr": 4020, "cpm": 8.92, "ctr": 1.32}, {"date": "2026-06-06", "spend": 23.26, "msgs": 11, "cost_msg": 2.11, "impr": 2758, "cpm": 8.43, "ctr": 1.2}, {"date": "2026-06-05", "spend": 25.05, "msgs": 7, "cost_msg": 3.58, "impr": 2551, "cpm": 9.82, "ctr": 1.29}, {"date": "2026-06-04", "spend": 30.16, "msgs": 20, "cost_msg": 1.51, "impr": 3191, "cpm": 9.45, "ctr": 1.25}, {"date": "2026-06-03", "spend": 36.93, "msgs": 28, "cost_msg": 1.32, "impr": 3482, "cpm": 10.61, "ctr": 1.75}, {"date": "2026-06-02", "spend": 39.92, "msgs": 20, "cost_msg": 2.0, "impr": 3326, "cpm": 12.0, "ctr": 1.14}, {"date": "2026-06-01", "spend": 30.44, "msgs": 17, "cost_msg": 1.79, "impr": 3303, "cpm": 9.22, "ctr": 1.12}, {"date": "2026-05-31", "spend": 23.66, "msgs": 17, "cost_msg": 1.39, "impr": 2381, "cpm": 9.94, "ctr": 1.47}, {"date": "2026-05-30", "spend": 25.61, "msgs": 25, "cost_msg": 1.02, "impr": 2322, "cpm": 11.03, "ctr": 1.81}, {"date": "2026-05-29", "spend": 18.26, "msgs": 10, "cost_msg": 1.83, "impr": 1381, "cpm": 13.22, "ctr": 1.59}, {"date": "2026-05-28", "spend": 20.26, "msgs": 12, "cost_msg": 1.69, "impr": 2035, "cpm": 9.96, "ctr": 1.47}, {"date": "2026-05-27", "spend": 35.74, "msgs": 21, "cost_msg": 1.7, "impr": 3441, "cpm": 10.39, "ctr": 1.28}, {"date": "2026-05-26", "spend": 39.95, "msgs": 20, "cost_msg": 2.0, "impr": 3267, "cpm": 12.23, "ctr": 1.1}];
 const DEFAULT_DAYS = 15;
-const FIXED_SINCE = '2026-06-17';
+const FIXED_SINCE = '2026-07-16';
 const FIXED_UNTIL = '2026-07-31';
 const PT_M = ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
 const PT_MF = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
@@ -329,10 +329,13 @@ function renderTable(since,until){
   });
 }
 window.addEventListener('load',()=>{
-  // Abre nos últimos 15 dias por padrão. O histórico completo continua
-  // disponível no calendário, nos atalhos e nos botões dia a dia.
+  // PERÍODO FIXO temporário: abre no intervalo FIXED_SINCE→FIXED_UNTIL (16-31/07)
+  // a pedido, até liberar a retomada. O histórico completo continua disponível
+  // no calendário, nos atalhos e nos botões dia a dia.
   buildDayButtons();
-  applyShortcut(15);
+  clearShortcuts(); clearDayButtons();
+  fp.setDate([FIXED_SINCE,FIXED_UNTIL],false);
+  applyRange(FIXED_SINCE,FIXED_UNTIL);
 });
 </script>
 </body>
