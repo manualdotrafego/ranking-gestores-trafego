@@ -40,6 +40,16 @@ body{font-family:'Inter',sans-serif;background:#f0f2f5;color:#1c1e21;font-size:1
         font-family:'Inter',sans-serif;transition:all .15s}
 .ps-btn:hover{border-color:#1877f2;color:#1877f2}
 .ps-btn.active{background:#1877f2;color:#fff;border-color:#1877f2}
+.day-picker{margin-top:14px;padding-top:12px;border-top:1px solid #e4e6eb}
+.day-picker-label{font-size:10px;font-weight:700;color:#606770;text-transform:uppercase;
+                  letter-spacing:.4px;margin-bottom:8px}
+.day-btns{display:flex;flex-wrap:wrap;gap:5px;max-height:132px;overflow-y:auto;padding-right:4px}
+.day-btn{padding:5px 9px;border-radius:6px;font-size:10.5px;font-weight:600;cursor:pointer;
+         border:1px solid #dddfe2;background:#fff;color:#606770;white-space:nowrap;line-height:1.3}
+.day-btn:hover{border-color:#1877f2;color:#1877f2}
+.day-btn.active{background:#1877f2;color:#fff;border-color:#1877f2}
+.day-btn.weekend{background:#fffbe6;color:#8a6d1d;border-color:#f0e2b6}
+.day-btn.weekend.active{background:#1877f2;color:#fff;border-color:#1877f2}
 .kpi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:18px}
 .kpi-card{background:#fff;border-radius:8px;padding:18px 22px;
           box-shadow:0 1px 3px rgba(0,0,0,.12);border-top:3px solid #1877f2}
@@ -118,6 +128,11 @@ tbody td:first-child{text-align:left;color:#606770;font-weight:600}
     <button class="ps-btn" onclick="applyShortcut(7)">Últimos 7 dias</button>
     <button class="ps-btn" onclick="applyShortcut(15)">Últimos 15 dias</button>
     <button class="ps-btn" onclick="applyShortcut(30)">Últimos 30 dias</button>
+    <button class="ps-btn" onclick="applyShortcut(45)">Últimos 45 dias</button>
+  </div>
+  <div class="day-picker">
+    <div class="day-picker-label">Ou escolha um dia específico</div>
+    <div class="day-btns" id="dayBtns"></div>
   </div>
 </div>
 
@@ -167,15 +182,15 @@ tbody td:first-child{text-align:left;color:#606770;font-weight:600}
 </div>
 
 <div class="footer">
-  Gerado em 02/07/2026 · #225 | 128 - Itumbiara · Meta API v21.0
+  Gerado em 04/08/2026 · #225 | 128 - Itumbiara · Meta API v21.0
 </div>
 </div>
 
 <script>
-const DAILY = [{"date": "2026-06-30", "spend": 119.12, "msgs": 13, "cost_msg": 9.16, "impr": 10135, "cpm": 11.57, "ctr": 0.84}, {"date": "2026-06-29", "spend": 102.0, "msgs": 9, "cost_msg": 11.33, "impr": 9346, "cpm": 10.9, "ctr": 0.7}, {"date": "2026-06-28", "spend": 90.88, "msgs": 9, "cost_msg": 10.1, "impr": 9510, "cpm": 9.77, "ctr": 0.8}, {"date": "2026-06-27", "spend": 88.36, "msgs": 6, "cost_msg": 14.73, "impr": 8823, "cpm": 10.0, "ctr": 0.65}, {"date": "2026-06-26", "spend": 105.37, "msgs": 14, "cost_msg": 7.53, "impr": 11057, "cpm": 9.61, "ctr": 0.97}, {"date": "2026-06-25", "spend": 103.95, "msgs": 15, "cost_msg": 6.93, "impr": 10964, "cpm": 9.59, "ctr": 0.92}, {"date": "2026-06-24", "spend": 96.06, "msgs": 13, "cost_msg": 7.39, "impr": 9898, "cpm": 9.56, "ctr": 0.92}, {"date": "2026-06-23", "spend": 107.4, "msgs": 8, "cost_msg": 13.43, "impr": 8926, "cpm": 11.84, "ctr": 1.04}, {"date": "2026-06-22", "spend": 120.72, "msgs": 14, "cost_msg": 8.62, "impr": 14099, "cpm": 8.62, "ctr": 0.94}, {"date": "2026-06-21", "spend": 94.9, "msgs": 13, "cost_msg": 7.3, "impr": 11023, "cpm": 8.82, "ctr": 1.25}, {"date": "2026-06-20", "spend": 80.43, "msgs": 10, "cost_msg": 8.04, "impr": 9824, "cpm": 8.29, "ctr": 0.83}, {"date": "2026-06-19", "spend": 85.71, "msgs": 12, "cost_msg": 7.14, "impr": 8807, "cpm": 9.87, "ctr": 0.9}, {"date": "2026-06-18", "spend": 80.81, "msgs": 12, "cost_msg": 6.73, "impr": 6682, "cpm": 11.92, "ctr": 0.93}, {"date": "2026-06-17", "spend": 110.65, "msgs": 22, "cost_msg": 5.03, "impr": 7131, "cpm": 15.55, "ctr": 1.27}, {"date": "2026-06-16", "spend": 126.76, "msgs": 21, "cost_msg": 6.04, "impr": 9035, "cpm": 13.6, "ctr": 0.92}];
+const DAILY = [{"date": "2026-08-04", "spend": 51.31, "msgs": 9, "cost_msg": 5.7, "impr": 5463, "cpm": 9.66, "ctr": 0.77}, {"date": "2026-08-03", "spend": 110.13, "msgs": 14, "cost_msg": 7.87, "impr": 12349, "cpm": 9.51, "ctr": 0.64}, {"date": "2026-08-02", "spend": 89.22, "msgs": 8, "cost_msg": 11.15, "impr": 10219, "cpm": 8.99, "ctr": 0.59}, {"date": "2026-08-01", "spend": 93.35, "msgs": 12, "cost_msg": 7.78, "impr": 10720, "cpm": 9.17, "ctr": 0.65}, {"date": "2026-07-31", "spend": 72.43, "msgs": 15, "cost_msg": 4.83, "impr": 5193, "cpm": 14.64, "ctr": 1.38}, {"date": "2026-07-30", "spend": 101.83, "msgs": 14, "cost_msg": 7.27, "impr": 7905, "cpm": 12.87, "ctr": 0.84}, {"date": "2026-07-29", "spend": 122.26, "msgs": 16, "cost_msg": 7.64, "impr": 9292, "cpm": 12.94, "ctr": 0.82}, {"date": "2026-07-28", "spend": 154.56, "msgs": 16, "cost_msg": 9.66, "impr": 9067, "cpm": 17.55, "ctr": 0.93}, {"date": "2026-07-27", "spend": 113.23, "msgs": 13, "cost_msg": 8.71, "impr": 9972, "cpm": 11.04, "ctr": 0.81}, {"date": "2026-07-26", "spend": 79.79, "msgs": 13, "cost_msg": 6.14, "impr": 8495, "cpm": 10.24, "ctr": 0.64}, {"date": "2026-07-25", "spend": 90.42, "msgs": 10, "cost_msg": 9.04, "impr": 9039, "cpm": 10.21, "ctr": 0.79}, {"date": "2026-07-24", "spend": 85.78, "msgs": 7, "cost_msg": 12.25, "impr": 7993, "cpm": 10.81, "ctr": 1.0}, {"date": "2026-07-23", "spend": 84.52, "msgs": 11, "cost_msg": 7.68, "impr": 8237, "cpm": 10.44, "ctr": 0.77}, {"date": "2026-07-22", "spend": 91.87, "msgs": 13, "cost_msg": 7.07, "impr": 8612, "cpm": 11.05, "ctr": 1.04}, {"date": "2026-07-21", "spend": 125.13, "msgs": 13, "cost_msg": 9.63, "impr": 10023, "cpm": 12.16, "ctr": 1.0}, {"date": "2026-07-20", "spend": 106.78, "msgs": 13, "cost_msg": 8.21, "impr": 12633, "cpm": 8.6, "ctr": 0.83}, {"date": "2026-07-19", "spend": 112.58, "msgs": 12, "cost_msg": 9.38, "impr": 11510, "cpm": 9.25, "ctr": 1.01}, {"date": "2026-07-18", "spend": 102.93, "msgs": 11, "cost_msg": 9.36, "impr": 10728, "cpm": 9.26, "ctr": 0.77}, {"date": "2026-07-17", "spend": 88.42, "msgs": 12, "cost_msg": 7.37, "impr": 7879, "cpm": 10.96, "ctr": 0.85}, {"date": "2026-07-16", "spend": 91.61, "msgs": 10, "cost_msg": 9.16, "impr": 8342, "cpm": 10.75, "ctr": 0.84}, {"date": "2026-07-15", "spend": 128.28, "msgs": 16, "cost_msg": 8.02, "impr": 10876, "cpm": 11.36, "ctr": 0.8}, {"date": "2026-07-14", "spend": 149.76, "msgs": 22, "cost_msg": 6.81, "impr": 10689, "cpm": 13.68, "ctr": 0.71}, {"date": "2026-07-13", "spend": 60.77, "msgs": 9, "cost_msg": 6.75, "impr": 4489, "cpm": 13.83, "ctr": 0.95}, {"date": "2026-07-12", "spend": 75.74, "msgs": 6, "cost_msg": 12.62, "impr": 6689, "cpm": 11.29, "ctr": 0.73}, {"date": "2026-07-11", "spend": 81.64, "msgs": 6, "cost_msg": 13.61, "impr": 9755, "cpm": 8.3, "ctr": 0.74}, {"date": "2026-07-10", "spend": 86.82, "msgs": 5, "cost_msg": 17.36, "impr": 6253, "cpm": 14.0, "ctr": 0.82}, {"date": "2026-07-09", "spend": 91.89, "msgs": 11, "cost_msg": 8.35, "impr": 6868, "cpm": 12.77, "ctr": 1.12}, {"date": "2026-07-08", "spend": 127.69, "msgs": 13, "cost_msg": 9.82, "impr": 7583, "cpm": 16.23, "ctr": 0.82}, {"date": "2026-07-07", "spend": 153.14, "msgs": 14, "cost_msg": 10.94, "impr": 11109, "cpm": 13.19, "ctr": 0.72}, {"date": "2026-07-06", "spend": 108.99, "msgs": 12, "cost_msg": 9.08, "impr": 11378, "cpm": 9.86, "ctr": 0.66}, {"date": "2026-07-05", "spend": 41.95, "msgs": 5, "cost_msg": 8.39, "impr": 3719, "cpm": 10.86, "ctr": 0.75}, {"date": "2026-07-04", "spend": 59.44, "msgs": 2, "cost_msg": 29.72, "impr": 6796, "cpm": 9.62, "ctr": 0.51}, {"date": "2026-07-03", "spend": 59.47, "msgs": 7, "cost_msg": 8.5, "impr": 4485, "cpm": 13.44, "ctr": 1.04}, {"date": "2026-07-02", "spend": 105.15, "msgs": 25, "cost_msg": 4.21, "impr": 7071, "cpm": 13.99, "ctr": 1.17}, {"date": "2026-07-01", "spend": 144.44, "msgs": 20, "cost_msg": 7.22, "impr": 10267, "cpm": 13.46, "ctr": 0.88}, {"date": "2026-06-30", "spend": 119.12, "msgs": 13, "cost_msg": 9.16, "impr": 10135, "cpm": 11.57, "ctr": 0.84}, {"date": "2026-06-29", "spend": 102.0, "msgs": 9, "cost_msg": 11.33, "impr": 9346, "cpm": 10.9, "ctr": 0.7}, {"date": "2026-06-28", "spend": 90.88, "msgs": 9, "cost_msg": 10.1, "impr": 9510, "cpm": 9.77, "ctr": 0.8}, {"date": "2026-06-27", "spend": 88.36, "msgs": 6, "cost_msg": 14.73, "impr": 8823, "cpm": 10.0, "ctr": 0.65}, {"date": "2026-06-26", "spend": 105.37, "msgs": 14, "cost_msg": 7.53, "impr": 11057, "cpm": 9.61, "ctr": 0.97}, {"date": "2026-06-25", "spend": 103.95, "msgs": 15, "cost_msg": 6.93, "impr": 10964, "cpm": 9.59, "ctr": 0.92}, {"date": "2026-06-24", "spend": 96.06, "msgs": 13, "cost_msg": 7.39, "impr": 9898, "cpm": 9.56, "ctr": 0.92}, {"date": "2026-06-23", "spend": 107.4, "msgs": 8, "cost_msg": 13.43, "impr": 8926, "cpm": 11.84, "ctr": 1.04}, {"date": "2026-06-22", "spend": 120.72, "msgs": 14, "cost_msg": 8.62, "impr": 14099, "cpm": 8.62, "ctr": 0.94}, {"date": "2026-06-21", "spend": 94.9, "msgs": 13, "cost_msg": 7.3, "impr": 11023, "cpm": 8.82, "ctr": 1.25}, {"date": "2026-06-20", "spend": 80.43, "msgs": 10, "cost_msg": 8.04, "impr": 9824, "cpm": 8.29, "ctr": 0.83}, {"date": "2026-06-19", "spend": 85.71, "msgs": 12, "cost_msg": 7.14, "impr": 8807, "cpm": 9.87, "ctr": 0.9}, {"date": "2026-06-18", "spend": 80.81, "msgs": 12, "cost_msg": 6.73, "impr": 6682, "cpm": 11.92, "ctr": 0.93}, {"date": "2026-06-17", "spend": 110.65, "msgs": 22, "cost_msg": 5.03, "impr": 7131, "cpm": 15.55, "ctr": 1.27}, {"date": "2026-06-16", "spend": 126.76, "msgs": 21, "cost_msg": 6.04, "impr": 9035, "cpm": 13.6, "ctr": 0.92}];
 const DEFAULT_DAYS = 15;
-const FIXED_SINCE = '2026-06-16';
-const FIXED_UNTIL = '2026-06-30';
+const FIXED_SINCE = '2026-06-21';
+const FIXED_UNTIL = '2026-08-04';
 const PT_M = ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
 const PT_MF = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
 let chart=null, activeSince=null, activeUntil=null;
@@ -192,15 +207,15 @@ const fp=flatpickr('#dateRangeInput',{
   minDate,maxDate,showMonths:1,
   onChange(selectedDates){
     if(selectedDates.length===2){
-      clearShortcuts();
+      clearShortcuts(); clearDayButtons();
       applyRange(selectedDates[0].toISOString().slice(0,10),selectedDates[1].toISOString().slice(0,10));
     }
   }
 });
 function applyShortcut(days){
-  clearShortcuts();
+  clearShortcuts(); clearDayButtons();
   const btns=document.querySelectorAll('.ps-btn');
-  const idx=[0,1,7,15,30].indexOf(days);
+  const idx=[0,1,7,15,30,45].indexOf(days);
   if(idx>=0)btns[idx].classList.add('active');
   const until=today();
   const since=days===0?until:days===1?addDays(until,-1):addDays(until,-(days-1));
@@ -209,6 +224,30 @@ function applyShortcut(days){
   applyRange(since,sinceEnd);
 }
 function clearShortcuts(){document.querySelectorAll('.ps-btn').forEach(b=>b.classList.remove('active'))}
+const PT_WD=['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+function buildDayButtons(){
+  const box=document.getElementById('dayBtns'); if(!box)return;
+  box.innerHTML='';
+  // DAILY vem ordenado do mais recente para o mais antigo
+  DAILY.forEach(d=>{
+    const dt=new Date(d.date+'T12:00:00');
+    const wd=dt.getDay();
+    const b=document.createElement('button');
+    b.className='day-btn'+(wd===0||wd===6?' weekend':'');
+    b.dataset.date=d.date;
+    b.textContent=`${PT_WD[wd]} ${d.date.slice(8,10)}/${d.date.slice(5,7)}`;
+    b.onclick=()=>selectSingleDay(d.date);
+    box.appendChild(b);
+  });
+}
+function clearDayButtons(){document.querySelectorAll('.day-btn').forEach(b=>b.classList.remove('active'))}
+function selectSingleDay(iso){
+  clearShortcuts(); clearDayButtons();
+  const b=document.querySelector(`.day-btn[data-date="${iso}"]`);
+  if(b)b.classList.add('active');
+  fp.setDate([iso,iso],false);
+  applyRange(iso,iso);
+}
 function applyRange(since,until){
   activeSince=since;activeUntil=until;
   const inRange=DAILY.filter(d=>d.date>=since&&d.date<=until).sort((a,b)=>a.date.localeCompare(b.date));
@@ -290,8 +329,10 @@ function renderTable(since,until){
   });
 }
 window.addEventListener('load',()=>{
-  fp.setDate([FIXED_SINCE,FIXED_UNTIL],false);
-  applyRange(FIXED_SINCE,FIXED_UNTIL);
+  // Abre nos últimos 15 dias por padrão. O histórico completo continua
+  // disponível no calendário, nos atalhos e nos botões dia a dia.
+  buildDayButtons();
+  applyShortcut(15);
 });
 </script>
 </body>
