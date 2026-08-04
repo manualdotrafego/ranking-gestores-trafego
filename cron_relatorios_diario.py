@@ -26,7 +26,7 @@ if PAUSE_FLAG.exists():
 # Janela móvel dos últimos WINDOW_DAYS dias (mínimo exigido: 40).
 # Antes era "1º dia do mês → hoje", que no começo do mês deixava o relatório
 # com 1-2 dias de dados e sem histórico para navegar por data.
-WINDOW_DAYS = 45
+WINDOW_DAYS = 90
 today = date.today()
 since = (today - timedelta(days=WINDOW_DAYS - 1)).isoformat()
 until = today.isoformat()

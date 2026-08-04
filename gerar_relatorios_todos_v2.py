@@ -34,10 +34,10 @@ NOTION_BASE   = "https://api.notion.com/v1"
 GH_PAGES_BASE = "https://manualdotrafego.github.io/ranking-gestores-trafego"
 LOCAL_PORT    = 0   # 0 = escolhe porta livre automaticamente
 
-DAYS_BACK = 45   # janela móvel: mínimo 40 dias de histórico navegável
+DAYS_BACK = 90   # janela móvel: mínimo 40 dias de histórico navegável
 DEFAULT_DISPLAY = 15   # fallback (não usado quando FIXED_RANGE ativo)
 # Período fixo de exibição padrão nos relatórios
-FIXED_SINCE = "2026-06-21"
+FIXED_SINCE = "2026-05-07"
 FIXED_UNTIL = "2026-08-04"
 
 # ─── CONTAS POR GESTOR ────────────────────────────────────────────────────────
