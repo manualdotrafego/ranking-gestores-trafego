@@ -10,7 +10,7 @@ from pathlib import Path
 from dotenv import load_dotenv
 from collections import Counter
 
-BASE_DIR = Path("/Users/alexrangelalves/Downloads/Conexão mtds")
+BASE_DIR = Path(os.environ.get("PROJECT_DIR", "/Users/alexrangelalves/Downloads/Conexão mtds"))
 sys.path.insert(0, str(BASE_DIR))
 load_dotenv(dotenv_path=BASE_DIR / ".env")
 

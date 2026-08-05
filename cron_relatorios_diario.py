@@ -4,11 +4,11 @@ Atualiza diariamente os relatórios (prints) + links 'Relatório Novo' no Notion
 de TODOS os gestores, com janela móvel dos últimos WINDOW_DAYS dias.
 Agendado via crontab às 09:00. Roda os 6 gestores em sequência.
 """
-import subprocess, re, sys, time
+import os, subprocess, re, sys, time
 from datetime import date, timedelta
 from pathlib import Path
 
-BASE = Path('/Users/alexrangelalves/Downloads/Conexão mtds')
+BASE = Path(os.environ.get("PROJECT_DIR", '/Users/alexrangelalves/Downloads/Conexão mtds'))
 PY = sys.executable
 
 def log(msg):
