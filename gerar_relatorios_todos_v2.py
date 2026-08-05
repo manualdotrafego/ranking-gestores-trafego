@@ -23,7 +23,7 @@ from dotenv import load_dotenv
 
 # ─── CONFIG ───────────────────────────────────────────────────────────────────
 BASE_DIR  = Path(os.environ.get("PROJECT_DIR", "/Users/alexrangelalves/Downloads/Conexão mtds"))
-LOGO_PATH = Path("/Users/alexrangelalves/Downloads/Logo Dbout.png")
+LOGO_PATH = Path(os.environ.get("LOGO_PATH", str(BASE_DIR / "Logo Dbout.png")))
 load_dotenv(dotenv_path=BASE_DIR / ".env")
 
 META_TOKEN    = os.getenv("META_ACCESS_TOKEN")
@@ -37,8 +37,8 @@ LOCAL_PORT    = 0   # 0 = escolhe porta livre automaticamente
 DAYS_BACK = 90   # janela móvel: mínimo 40 dias de histórico navegável
 DEFAULT_DISPLAY = 15   # fallback (não usado quando FIXED_RANGE ativo)
 # Período fixo de exibição padrão nos relatórios
-FIXED_SINCE = "2026-05-07"
-FIXED_UNTIL = "2026-08-04"
+FIXED_SINCE = "2026-05-08"
+FIXED_UNTIL = "2026-08-05"
 
 # ─── CONTAS POR GESTOR ────────────────────────────────────────────────────────
 GESTORES_ACCOUNTS = {
