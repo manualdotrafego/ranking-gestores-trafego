@@ -182,12 +182,12 @@ tbody td:first-child{text-align:left;color:#606770;font-weight:600}
 </div>
 
 <div class="footer">
-  Gerado em 16/08/2026 · #360 | CP - CURITIBA - 1,2K - 13/08 · Meta API v21.0
+  Gerado em 17/08/2026 · #360 | CP - CURITIBA - 1,2K - 13/08 · Meta API v21.0
 </div>
 </div>
 
 <script>
-const DAILY = [{"date": "2026-08-16", "spend": 6.71, "msgs": 3, "cost_msg": 2.24, "impr": 250, "cpm": 26.84, "ctr": 4.0}, {"date": "2026-08-15", "spend": 35.2, "msgs": 8, "cost_msg": 4.4, "impr": 1833, "cpm": 19.2, "ctr": 1.64}, {"date": "2026-08-14", "spend": 31.38, "msgs": 8, "cost_msg": 3.92, "impr": 1485, "cpm": 21.13, "ctr": 1.48}, {"date": "2026-08-13", "spend": 47.5, "msgs": 11, "cost_msg": 4.32, "impr": 1925, "cpm": 24.68, "ctr": 1.35}];
+const DAILY = [{"date": "2026-08-16", "spend": 31.36, "msgs": 7, "cost_msg": 4.48, "impr": 1388, "cpm": 22.59, "ctr": 1.8}, {"date": "2026-08-15", "spend": 35.21, "msgs": 8, "cost_msg": 4.4, "impr": 1837, "cpm": 19.17, "ctr": 1.63}, {"date": "2026-08-14", "spend": 31.38, "msgs": 8, "cost_msg": 3.92, "impr": 1485, "cpm": 21.13, "ctr": 1.48}, {"date": "2026-08-13", "spend": 47.5, "msgs": 11, "cost_msg": 4.32, "impr": 1925, "cpm": 24.68, "ctr": 1.35}];
 const DEFAULT_DAYS = 15;
 const FIXED_SINCE = '2026-05-19';
 const FIXED_UNTIL = '2026-08-16';
@@ -332,7 +332,7 @@ window.addEventListener('load',()=>{
   // Abre nos últimos 15 dias por padrão. O histórico completo continua
   // disponível no calendário, nos atalhos e nos botões dia a dia.
   buildDayButtons();
-  applyShortcut(15);
+  applyRange("2026-08-01","2026-08-15");
 });
 </script>
 </body>
