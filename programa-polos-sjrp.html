@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Programa Polos · São José do Rio Preto | ECF Consultoria</title>
+<meta name="description" content="Estruture sua operação no Mercado Livre para crescer com margem. Programa Polos ECF em São José do Rio Preto e região. Vagas gratuitas e limitadas.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --coral:#F0503C; --orange:#F07818; --gold:#F0B41E;
+    --grad:linear-gradient(100deg,#F0503C 0%,#F07818 52%,#F0B41E 100%);
+    --ink:#141110; --muted:#6B6560; --line:#ECE7E1;
+    --bg:#FBFAF8; --card:#FFFFFF; --ok:#1DA65A;
+    --shadow:0 24px 60px -24px rgba(20,17,16,.35);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{font-family:'Inter',system-ui,sans-serif;color:var(--ink);background:var(--bg);line-height:1.55;-webkit-font-smoothing:antialiased}
+  h1,h2,h3,.h{font-family:'Poppins',sans-serif;line-height:1.1;letter-spacing:-.02em}
+  img{max-width:100%;display:block}
+  a{color:inherit}
+
+  /* top bar */
+  .topbar{position:sticky;top:0;z-index:30;background:rgba(255,255,255,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  .topbar .in{max-width:1140px;margin:0 auto;padding:14px 22px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+  .logo{height:34px;width:auto}
+  .tag{font-size:12.5px;font-weight:600;color:var(--muted);border:1px solid var(--line);border-radius:100px;padding:6px 12px;white-space:nowrap}
+  .tag b{color:var(--orange)}
+
+  /* hero */
+  .hero{position:relative;overflow:hidden}
+  .hero::before{content:"";position:absolute;inset:0;background:
+      radial-gradient(900px 420px at 88% -10%, rgba(240,180,30,.14), transparent 60%),
+      radial-gradient(760px 420px at -6% 10%, rgba(240,80,60,.10), transparent 55%);pointer-events:none}
+  .wrap{max-width:1140px;margin:0 auto;padding:56px 22px 40px;display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:start}
+  .eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--coral)}
+  .eyebrow .dot{width:8px;height:8px;border-radius:50%;background:var(--grad)}
+  h1{font-size:clamp(30px,4.3vw,50px);font-weight:800;margin:16px 0 14px}
+  h1 .mark{background:var(--grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+  .lead{font-size:clamp(16px,1.7vw,18.5px);color:var(--muted);max-width:33ch}
+  .bullets{list-style:none;margin:26px 0 0;display:grid;gap:13px}
+  .bullets li{display:flex;gap:12px;align-items:flex-start;font-size:15.5px;font-weight:500}
+  .chk{flex:none;width:24px;height:24px;border-radius:7px;background:var(--grad);display:grid;place-items:center;color:#fff;font-size:13px;font-weight:700;box-shadow:0 6px 14px -6px rgba(240,120,24,.7)}
+  .note{margin-top:26px;display:flex;align-items:center;gap:10px;font-size:13.5px;color:var(--muted)}
+  .pulse{width:9px;height:9px;border-radius:50%;background:var(--ok);box-shadow:0 0 0 0 rgba(29,166,90,.5);animation:p 1.8s infinite}
+  @keyframes p{0%{box-shadow:0 0 0 0 rgba(29,166,90,.5)}70%{box-shadow:0 0 0 10px rgba(29,166,90,0)}100%{box-shadow:0 0 0 0 rgba(29,166,90,0)}}
+
+  /* form card */
+  .card{background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);overflow:hidden;position:relative}
+  .card .bar{height:6px;background:var(--grad)}
+  .card .pad{padding:26px 26px 24px}
+  .card h2{font-size:22px;font-weight:700}
+  .card .sub{font-size:14px;color:var(--muted);margin:6px 0 20px}
+  .field{margin-bottom:14px}
+  label{display:block;font-size:13px;font-weight:600;margin-bottom:6px}
+  label .req{color:var(--coral)}
+  input,select{width:100%;font-family:inherit;font-size:15px;color:var(--ink);background:#fff;border:1.5px solid var(--line);border-radius:11px;padding:12px 13px;transition:border-color .15s,box-shadow .15s;appearance:none}
+  select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236B6560' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:36px}
+  input:focus,select:focus{outline:none;border-color:var(--orange);box-shadow:0 0 0 3px rgba(240,120,24,.15)}
+  input.bad{border-color:var(--coral);box-shadow:0 0 0 3px rgba(240,80,60,.12)}
+  .hint{font-size:12px;margin-top:5px;color:var(--muted)}
+  .hint.err{color:var(--coral);font-weight:600}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .cta{width:100%;border:0;cursor:pointer;font-family:'Poppins',sans-serif;font-weight:700;font-size:16.5px;color:#fff;background:var(--grad);border-radius:12px;padding:15px;margin-top:6px;box-shadow:0 16px 30px -12px rgba(240,120,24,.75);transition:transform .12s,filter .15s}
+  .cta:hover{filter:brightness(1.04)}
+  .cta:active{transform:translateY(1px)}
+  .cta[disabled]{opacity:.7;cursor:progress}
+  .legal{font-size:12px;color:var(--muted);text-align:center;margin-top:14px}
+  .legal a{color:var(--orange);text-decoration:none}
+
+  /* trust */
+  .trust{border-top:1px solid var(--line);background:#fff}
+  .trust .in{max-width:1140px;margin:0 auto;padding:22px;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:14px 34px}
+  .trust span{font-size:13px;font-weight:600;color:var(--muted);display:flex;align-items:center;gap:8px}
+  .trust .st{color:var(--gold)}
+
+  footer{max-width:1140px;margin:0 auto;padding:26px 22px 40px;color:var(--muted);font-size:13px;display:flex;flex-wrap:wrap;gap:8px 18px;align-items:center;justify-content:space-between}
+  footer .logo{height:26px;opacity:.85}
+
+  /* success overlay */
+  .ok-ov{position:fixed;inset:0;z-index:50;background:rgba(20,17,16,.55);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;padding:24px}
+  .ok-ov.on{display:flex}
+  .ok-box{background:#fff;border-radius:20px;max-width:400px;width:100%;padding:34px 28px;text-align:center;box-shadow:var(--shadow)}
+  .ok-ic{width:66px;height:66px;border-radius:50%;background:var(--grad);display:grid;place-items:center;margin:0 auto 16px;color:#fff;font-size:30px}
+  .ok-box h3{font-size:22px;margin-bottom:8px}
+  .ok-box p{color:var(--muted);font-size:15px}
+
+  @media (max-width:900px){
+    .wrap{grid-template-columns:1fr;gap:30px;padding:34px 18px 26px}
+    .lead{max-width:none}
+    .tag{display:none}
+  }
+</style>
+</head>
+<body>
+
+  <div class="topbar">
+    <div class="in">
+      <img class="logo" src="https://ecfconsultoria.com.br/img/logo.png" alt="ECF Consultoria">
+      <span class="tag">Programa Polos · <b>São José do Rio Preto</b></span>
+    </div>
+  </div>
+
+  <section class="hero">
+    <div class="wrap">
+      <div class="col">
+        <span class="eyebrow"><span class="dot"></span>Programa Polos · SJRP e região</span>
+        <h1>Venda mais no <span class="mark">Mercado Livre</span> com margem — não só com faturamento.</h1>
+        <p class="lead">A ECF estrutura sua operação de marketplace de ponta a ponta: gestão, mídia, anúncios, ERP e otimização de processos.</p>
+        <ul class="bullets">
+          <li><span class="chk">✓</span><span>Diagnóstico gratuito da sua operação no Mercado Livre.</span></li>
+          <li><span class="chk">✓</span><span>Estratégia de logística, tendências e ferramentas para vender mais.</span></li>
+          <li><span class="chk">✓</span><span>Acompanhamento próximo de quem é <b>Platinum</b> e <b>Premier Partner</b>.</span></li>
+          <li><span class="chk">✓</span><span>Foco em <b>lucro</b>: crescer com margem, não só com receita.</span></li>
+        </ul>
+        <div class="note"><span class="pulse"></span> Vagas gratuitas e limitadas para São José do Rio Preto e região.</div>
+      </div>
+
+      <div class="card">
+        <div class="bar"></div>
+        <div class="pad">
+          <h2>Garanta sua vaga</h2>
+          <p class="sub">Preencha e nossa equipe entra em contato pelo WhatsApp.</p>
+          <form id="lead" novalidate>
+            <div class="field">
+              <label>Qual é o seu segmento? <span class="req">*</span></label>
+              <select name="segmento" required>
+                <option value="" disabled selected>Selecione…</option>
+                <option>Fabricante de móveis</option>
+                <option>Marcenaria</option>
+                <option>Loja de móveis / Estofados</option>
+                <option>Distribuidor de móveis</option>
+                <option>Não trabalho com móveis</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Faturamento no Mercado Livre (últimos 60 dias) <span class="req">*</span></label>
+              <select name="faturamento" required>
+                <option value="" disabled selected>Selecione…</option>
+                <option>Ainda não vendo</option>
+                <option>0 a 50 mil</option>
+                <option>50 a 100 mil</option>
+                <option>100 a 300 mil</option>
+                <option>300 a 500 mil</option>
+                <option>500 mil a 1 milhão</option>
+                <option>Mais de 1 milhão</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>CNPJ <span class="req">*</span></label>
+              <input name="cnpj" inputmode="numeric" autocomplete="off" maxlength="18" placeholder="Somente números" required>
+              <div class="hint" data-for="cnpj">Digite apenas os números do CNPJ.</div>
+            </div>
+            <div class="field">
+              <label>Nome completo <span class="req">*</span></label>
+              <input name="nome" autocomplete="name" placeholder="Seu nome" required>
+            </div>
+            <div class="row2">
+              <div class="field">
+                <label>WhatsApp <span class="req">*</span></label>
+                <input name="whatsapp" inputmode="tel" autocomplete="tel" placeholder="(00) 00000-0000" required>
+              </div>
+              <div class="field">
+                <label>Cidade <span class="req">*</span></label>
+                <input name="cidade" autocomplete="address-level2" placeholder="Sua cidade" required>
+              </div>
+            </div>
+            <div class="field">
+              <label>E-mail <span class="req">*</span></label>
+              <input name="email" type="email" autocomplete="email" placeholder="voce@email.com" required>
+            </div>
+            <button class="cta" type="submit">Quero minha análise gratuita</button>
+            <p class="legal">Ao enviar, você concorda com a <a href="https://ecfconsultoria.com.br/politica-de-privacidade" target="_blank" rel="noopener">Política de Privacidade</a>.</p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="trust">
+    <div class="in">
+      <span><span class="st">★</span> Certificação Platinum Mercado Livre</span>
+      <span><span class="st">★</span> Premier Partner</span>
+      <span><span class="st">★</span> Operações estruturadas com margem</span>
+    </div>
+  </div>
+
+  <footer>
+    <img class="logo" src="https://ecfconsultoria.com.br/img/logo.png" alt="ECF Consultoria">
+    <span>© ECF Consultoria &amp; Assessoria · Programa Polos · São José do Rio Preto e região</span>
+  </footer>
+
+  <div class="ok-ov" id="ok">
+    <div class="ok-box">
+      <div class="ok-ic">✓</div>
+      <h3>Vaga registrada!</h3>
+      <p>Recebemos seus dados. Em instantes você será direcionado ao nosso atendimento no WhatsApp.</p>
+    </div>
+  </div>
+
+<script>
+/* ===== CONFIG DE ENVIO =====================================================
+   Para capturar os leads numa planilha, cole aqui o endpoint de um Google
+   Forms (formResponse) e o mapeamento entry.XXXX de cada campo. Enquanto
+   vazio, o formulário valida, mostra sucesso e redireciona ao atendimento.
+=========================================================================== */
+const CONFIG = {
+  gformAction: "",            // ex: https://docs.google.com/forms/d/e/FORM_ID/formResponse
+  entries: { segmento:"", faturamento:"", cnpj:"", nome:"", whatsapp:"", email:"", cidade:"" },
+  redirectUrl: "https://manualdotrafego.github.io/saojosedoriopretoatendimento/"
+};
+
+const form = document.getElementById('lead');
+const okOv = document.getElementById('ok');
+
+function digits(s){ return (s||'').replace(/\D/g,''); }
+function cnpjOk(raw){
+  const d = digits(raw);
+  if(d.length!==14 || /^(\d)\1{13}$/.test(d)) return false;
+  const calc = (base, pesos)=>{ let s=0; for(let i=0;i<pesos.length;i++) s+=base[i]*pesos[i]; const r=s%11; return r<2?0:11-r; };
+  const n = d.split('').map(Number);
+  if(calc(n.slice(0,12),[5,4,3,2,9,8,7,6,5,4,3,2]) !== n[12]) return false;
+  if(calc(n.slice(0,13),[6,5,4,3,2,9,8,7,6,5,4,3,2]) !== n[13]) return false;
+  return true;
+}
+// máscara + validação de CNPJ
+const cnpjEl = form.cnpj, cnpjHint = document.querySelector('[data-for="cnpj"]');
+cnpjEl.addEventListener('input', ()=>{
+  let d = digits(cnpjEl.value).slice(0,14);
+  cnpjEl.value = d
+    .replace(/^(\d{2})(\d)/,'$1.$2')
+    .replace(/^(\d{2})\.(\d{3})(\d)/,'$1.$2.$3')
+    .replace(/\.(\d{3})(\d)/,'.$1/$2')
+    .replace(/(\d{4})(\d)/,'$1-$2');
+  cnpjEl.classList.remove('bad'); cnpjHint.classList.remove('err'); cnpjHint.textContent='Digite apenas os números do CNPJ.';
+});
+
+form.addEventListener('submit', async (e)=>{
+  e.preventDefault();
+  // validação nativa
+  if(!form.checkValidity()){ form.reportValidity(); return; }
+  // CNPJ
+  if(!cnpjOk(cnpjEl.value)){
+    cnpjEl.classList.add('bad'); cnpjHint.classList.add('err'); cnpjHint.textContent='CNPJ inválido — confira os números.';
+    cnpjEl.focus(); return;
+  }
+  const btn = form.querySelector('.cta'); btn.disabled = true; btn.textContent = 'Enviando…';
+  const data = {
+    segmento: form.segmento.value, faturamento: form.faturamento.value,
+    cnpj: digits(cnpjEl.value), nome: form.nome.value.trim(),
+    whatsapp: form.whatsapp.value.trim(), email: form.email.value.trim(), cidade: form.cidade.value.trim()
+  };
+  // envio p/ Google Forms (se configurado)
+  try{
+    if(CONFIG.gformAction){
+      const body = new URLSearchParams();
+      for(const k in CONFIG.entries){ if(CONFIG.entries[k]) body.append(CONFIG.entries[k], data[k]); }
+      await fetch(CONFIG.gformAction, { method:'POST', mode:'no-cors', body });
+    }
+  }catch(err){ /* segue mesmo se o webhook falhar */ }
+  okOv.classList.add('on');
+  setTimeout(()=>{ if(CONFIG.redirectUrl) location.href = CONFIG.redirectUrl; }, 1800);
+});
+</script>
+</body>
+</html>
