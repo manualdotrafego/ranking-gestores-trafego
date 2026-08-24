@@ -182,12 +182,12 @@ tbody td:first-child{text-align:left;color:#606770;font-weight:600}
 </div>
 
 <div class="footer">
-  Gerado em 23/08/2026 · #572 - Gaspar - SC · Meta API v21.0
+  Gerado em 24/08/2026 · #572 - Gaspar - SC · Meta API v21.0
 </div>
 </div>
 
 <script>
-const DAILY = [{"date": "2026-08-23", "spend": 8.85, "msgs": 0, "cost_msg": 0.0, "impr": 637, "cpm": 13.89, "ctr": 0.16}, {"date": "2026-08-22", "spend": 50.88, "msgs": 8, "cost_msg": 6.36, "impr": 4206, "cpm": 12.1, "ctr": 0.83}, {"date": "2026-08-21", "spend": 45.96, "msgs": 5, "cost_msg": 9.19, "impr": 3749, "cpm": 12.26, "ctr": 0.8}, {"date": "2026-08-20", "spend": 41.38, "msgs": 15, "cost_msg": 2.76, "impr": 3054, "cpm": 13.55, "ctr": 1.24}, {"date": "2026-08-19", "spend": 40.46, "msgs": 5, "cost_msg": 8.09, "impr": 3176, "cpm": 12.74, "ctr": 0.85}, {"date": "2026-08-18", "spend": 40.84, "msgs": 3, "cost_msg": 13.61, "impr": 3311, "cpm": 12.33, "ctr": 0.82}, {"date": "2026-08-17", "spend": 25.4, "msgs": 6, "cost_msg": 4.23, "impr": 2243, "cpm": 11.32, "ctr": 0.98}, {"date": "2026-08-16", "spend": 27.28, "msgs": 11, "cost_msg": 2.48, "impr": 2494, "cpm": 10.94, "ctr": 1.2}, {"date": "2026-08-15", "spend": 26.34, "msgs": 11, "cost_msg": 2.39, "impr": 2746, "cpm": 9.59, "ctr": 0.98}, {"date": "2026-08-14", "spend": 30.5, "msgs": 9, "cost_msg": 3.39, "impr": 2477, "cpm": 12.31, "ctr": 1.17}, {"date": "2026-08-13", "spend": 27.99, "msgs": 9, "cost_msg": 3.11, "impr": 1781, "cpm": 15.72, "ctr": 1.07}];
+const DAILY = [{"date": "2026-08-23", "spend": 39.29, "msgs": 6, "cost_msg": 6.55, "impr": 3468, "cpm": 11.33, "ctr": 0.69}, {"date": "2026-08-22", "spend": 50.9, "msgs": 8, "cost_msg": 6.36, "impr": 4208, "cpm": 12.1, "ctr": 0.83}, {"date": "2026-08-21", "spend": 45.96, "msgs": 5, "cost_msg": 9.19, "impr": 3749, "cpm": 12.26, "ctr": 0.8}, {"date": "2026-08-20", "spend": 41.38, "msgs": 15, "cost_msg": 2.76, "impr": 3054, "cpm": 13.55, "ctr": 1.24}, {"date": "2026-08-19", "spend": 40.46, "msgs": 5, "cost_msg": 8.09, "impr": 3176, "cpm": 12.74, "ctr": 0.85}, {"date": "2026-08-18", "spend": 40.84, "msgs": 3, "cost_msg": 13.61, "impr": 3311, "cpm": 12.33, "ctr": 0.82}, {"date": "2026-08-17", "spend": 25.4, "msgs": 6, "cost_msg": 4.23, "impr": 2243, "cpm": 11.32, "ctr": 0.98}, {"date": "2026-08-16", "spend": 27.28, "msgs": 11, "cost_msg": 2.48, "impr": 2494, "cpm": 10.94, "ctr": 1.2}, {"date": "2026-08-15", "spend": 26.34, "msgs": 11, "cost_msg": 2.39, "impr": 2746, "cpm": 9.59, "ctr": 0.98}, {"date": "2026-08-14", "spend": 30.5, "msgs": 9, "cost_msg": 3.39, "impr": 2477, "cpm": 12.31, "ctr": 1.17}, {"date": "2026-08-13", "spend": 27.99, "msgs": 9, "cost_msg": 3.11, "impr": 1781, "cpm": 15.72, "ctr": 1.07}];
 const DEFAULT_DAYS = 15;
 const FIXED_SINCE = '2026-05-26';
 const FIXED_UNTIL = '2026-08-23';
@@ -332,7 +332,7 @@ window.addEventListener('load',()=>{
   // Abre nos últimos 15 dias por padrão. O histórico completo continua
   // disponível no calendário, nos atalhos e nos botões dia a dia.
   buildDayButtons();
-  applyRange("2026-08-01","2026-08-15");
+  applyShortcut(15);
 });
 </script>
 </body>
