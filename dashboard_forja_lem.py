@@ -164,11 +164,11 @@ const cards=[
  ['CPM',brl(k.cpm),''],
 ];
 document.getElementById('kpis').innerHTML=cards.map(c=>`<div class="card ${c[2]}"><div class="lbl">${c[0]}</div><div class="val">${c[1]}</div></div>`).join('');
-const top=D.funnel[0][1]||1;
+const topN=D.funnel[0][1]||1;
 document.getElementById('fnl').innerHTML=D.funnel.map((f,i)=>{
  const prev=i>0?D.funnel[i-1][1]:f[1];
  const stepPct=prev? (f[1]/prev*100):0;
- const w=Math.max(2,(f[1]/top*100));
+ const w=Math.max(2,(f[1]/topN*100));
  return `<div class="frow"><div class="fn">${f[0]}</div><div class="fbar"><span style="width:${w}%"></span></div><div class="fv"><b>${num(f[1])}</b>${i>0?` <span class="pct">(${stepPct.toFixed(1)}%)</span>`:''}</div></div>`;
 }).join('');
 const labels=D.days.map(d=>d.date.slice(8,10)+'/'+d.date.slice(5,7));
