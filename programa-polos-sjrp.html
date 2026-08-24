@@ -94,6 +94,18 @@
     .tag{display:none}
   }
 </style>
+<!-- Meta Pixel · ECF -->
+<script>
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+document,'script','https://connect.facebook.net/en_US/fbevents.js');
+fbq('init','1647781639198432');fbq('track','PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none" alt=""
+src="https://www.facebook.com/tr?id=1647781639198432&ev=PageView&noscript=1"/></noscript>
+<!-- End Meta Pixel -->
 </head>
 <body>
 
@@ -203,15 +215,24 @@
 
 <script>
 /* ===== CONFIG DE ENVIO =====================================================
-   Para capturar os leads numa planilha, cole aqui o endpoint de um Google
-   Forms (formResponse) e o mapeamento entry.XXXX de cada campo. Enquanto
-   vazio, o formulário valida, mostra sucesso e redireciona ao atendimento.
+   Grava o lead na planilha do SJRP (aba "Leads Landing Site") via endpoint da
+   VPS e dispara o evento Lead (Pixel no navegador + CAPI no servidor, com o
+   mesmo event_id para deduplicar). Depois redireciona ao atendimento.
 =========================================================================== */
 const CONFIG = {
-  gformAction: "",            // ex: https://docs.google.com/forms/d/e/FORM_ID/formResponse
-  entries: { segmento:"", faturamento:"", cnpj:"", nome:"", whatsapp:"", email:"", cidade:"" },
+  endpoint: "https://srv1809067.hstgr.cloud/polos-lead",
   redirectUrl: "https://manualdotrafego.github.io/saojosedoriopretoatendimento/"
 };
+// rastreamento (UTM + fbclid) e event_id compartilhado navegador/servidor
+const qs = new URLSearchParams(location.search);
+function ck(n){ const m=document.cookie.match('(^|;)\\s*'+n+'=\\s*([^;]+)'); return m?m.pop():''; }
+const tracking = {
+  utm_source: qs.get('utm_source')||'', utm_medium: qs.get('utm_medium')||'',
+  utm_campaign: qs.get('utm_campaign')||'', utm_content: qs.get('utm_content')||'',
+  utm_term: qs.get('utm_term')||'', fbclid: qs.get('fbclid')||ck('_fbc')||'',
+  page_url: location.href
+};
+const eventId = 'lead_'+Date.now()+'_'+Math.random().toString(36).slice(2,9);
 
 const form = document.getElementById('lead');
 const okOv = document.getElementById('ok');
@@ -253,14 +274,13 @@ form.addEventListener('submit', async (e)=>{
     cnpj: digits(cnpjEl.value), nome: form.nome.value.trim(),
     whatsapp: form.whatsapp.value.trim(), email: form.email.value.trim(), cidade: form.cidade.value.trim()
   };
-  // envio p/ Google Forms (se configurado)
+  // evento Lead no navegador (Pixel) — mesmo event_id do CAPI p/ deduplicar
+  try{ if(window.fbq) fbq('track','Lead',{content_name:'Programa Polos SJRP - Landing'},{eventID:eventId}); }catch(e){}
+  // grava na planilha do SJRP + dispara CAPI no servidor
   try{
-    if(CONFIG.gformAction){
-      const body = new URLSearchParams();
-      for(const k in CONFIG.entries){ if(CONFIG.entries[k]) body.append(CONFIG.entries[k], data[k]); }
-      await fetch(CONFIG.gformAction, { method:'POST', mode:'no-cors', body });
-    }
-  }catch(err){ /* segue mesmo se o webhook falhar */ }
+    await fetch(CONFIG.endpoint, { method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify(Object.assign({}, data, tracking, { event_id: eventId })) });
+  }catch(err){ /* segue mesmo se o envio falhar */ }
   okOv.classList.add('on');
   setTimeout(()=>{ if(CONFIG.redirectUrl) location.href = CONFIG.redirectUrl; }, 1800);
 });
