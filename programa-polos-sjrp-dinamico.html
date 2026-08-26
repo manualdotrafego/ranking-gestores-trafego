@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="theme-color" content="#141110" />
+<title>Programa Polos · São José do Rio Preto | ECF Consultoria</title>
+<meta name="description" content="Venda mais no Mercado Livre com margem. Programa Polos ECF em São José do Rio Preto. Exclusivo para o setor moveleiro. Vagas gratuitas e limitadas." />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23141110'/%3E%3Ctext x='50' y='70' font-size='54' text-anchor='middle'%3E%F0%9F%93%A6%3C/text%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@700;800&display=swap" rel="stylesheet">
+
+<!-- Meta Pixel · ECF -->
+<script>
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+document,'script','https://connect.facebook.net/en_US/fbevents.js');
+fbq('init','1647781639198432');fbq('track','PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none" alt=""
+src="https://www.facebook.com/tr?id=1647781639198432&ev=PageView&noscript=1"/></noscript>
+<!-- End Meta Pixel -->
+
+<script>
+  /* Envio: mesmo endpoint da VPS que grava na planilha do SJRP (aba "Leads Landing Site") */
+  const CONFIG = {
+    endpoint: "https://srv1809067.hstgr.cloud/polos-lead",
+    redirectUrl: "https://manualdotrafego.github.io/saojosedoriopretoatendimento/"
+  };
+</script>
+
+<style>
+  :root{
+    --coral:#F0503C; --orange:#F07818; --gold:#F0B41E;
+    --grad:linear-gradient(100deg,#F0503C 0%,#F07818 52%,#F0B41E 100%);
+    --ink:#141110; --muted:#6B6560; --line:#E7E1DA; --bg:#FBFAF8; --ok:#1DA65A;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+  html,body{height:100%}
+  body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+    background:var(--bg);color:var(--ink);display:flex;justify-content:center;min-height:100dvh}
+  h1{font-family:'Poppins',sans-serif;font-size:27px;line-height:1.18;font-weight:800;letter-spacing:-.5px;margin-bottom:12px}
+  h1 .hl{background:var(--grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+  .app{width:100%;max-width:460px;min-height:100dvh;display:flex;flex-direction:column;
+    padding:22px 22px calc(24px + env(safe-area-inset-bottom));position:relative}
+
+  .brandbar{display:flex;justify-content:center;margin-bottom:18px}
+  .brandbar .chip{background:var(--ink);border-radius:14px;padding:11px 20px;box-shadow:0 8px 22px rgba(20,17,16,.18)}
+  .brandbar img{height:26px;display:block}
+
+  .progress-wrap{height:6px;background:#EDE7E0;border-radius:999px;overflow:hidden;margin-bottom:26px;transition:opacity .3s}
+  .progress-bar{height:100%;width:0%;background:var(--grad);border-radius:999px;transition:width .45s cubic-bezier(.16,1,.3,1)}
+
+  .step{display:none;flex-direction:column;flex:1;animation:fade .4s ease both}
+  .step.active{display:flex}
+  @keyframes fade{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+  .spacer{flex:1}
+
+  .sub{font-size:15.5px;color:var(--muted);line-height:1.5;margin-bottom:22px}
+  .label{font-size:14px;font-weight:600;color:var(--muted);margin-bottom:10px;display:block}
+  .field{width:100%;border:2px solid var(--line);border-radius:14px;padding:17px 16px;font-size:17px;
+    outline:none;transition:border-color .2s,box-shadow .2s;background:#fff;color:var(--ink);font-family:inherit}
+  .field:focus{border-color:var(--orange);box-shadow:0 0 0 3px rgba(240,120,24,.13)}
+  .field::placeholder{color:#a8a29b}
+  .field.bad{border-color:var(--coral)}
+  .erro{color:var(--coral);font-size:13px;margin-top:8px;min-height:16px;display:none;font-weight:600}
+  .erro.show{display:block}
+
+  .opcoes{display:flex;flex-direction:column;gap:11px}
+  .opt{width:100%;border:2px solid var(--line);border-radius:14px;padding:17px 16px;font-size:16.5px;font-weight:600;
+    background:#fff;color:var(--ink);cursor:pointer;text-align:left;transition:border-color .2s,background .2s,transform .12s;
+    display:flex;align-items:center;gap:12px}
+  .opt:active{transform:scale(.99)}
+  .opt.sel{border-color:var(--orange);background:#FFF6EC}
+  .opt .ic{width:26px;height:26px;border-radius:8px;background:#F4EEE7;display:grid;place-items:center;font-size:15px;flex:none}
+  .opt.sel .ic{background:var(--grad)}
+
+  .btn{width:100%;border:none;border-radius:14px;padding:17px;font-size:16.5px;font-weight:700;font-family:'Poppins',sans-serif;
+    cursor:pointer;background:var(--grad);color:#fff;transition:transform .12s,filter .2s,opacity .2s;
+    display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 14px 26px -12px rgba(240,120,24,.7)}
+  .btn:active{transform:scale(.98)}
+  .btn:hover{filter:brightness(1.04)}
+  .btn:disabled{opacity:.5;cursor:not-allowed}
+  .btn-area{margin-top:18px}
+
+  .badge{display:flex;align-items:center;justify-content:center;gap:7px;width:fit-content;margin:0 auto 14px;
+    background:#FFF0EC;color:var(--coral);font-weight:700;font-size:13.5px;padding:9px 15px;border-radius:999px;text-align:center}
+  .disc{background:#FFF6EC;border:1px solid #F6D6A6;border-left:4px solid var(--orange);border-radius:12px;
+    padding:11px 13px;font-size:13px;font-weight:600;color:#8A4A12;line-height:1.42;margin-bottom:20px}
+  .hero-emoji{font-size:54px;margin-bottom:18px}
+  .bullets{list-style:none;margin:4px 0 0;display:grid;gap:10px}
+  .bullets li{display:flex;gap:10px;align-items:flex-start;font-size:14.5px;font-weight:500;color:var(--ink)}
+  .bullets .ck{flex:none;width:22px;height:22px;border-radius:7px;background:var(--grad);display:grid;place-items:center;color:#fff;font-size:12px;font-weight:700}
+
+  .check{width:82px;height:82px;border-radius:50%;background:var(--grad);display:flex;align-items:center;justify-content:center;
+    color:#fff;font-size:40px;margin:0 auto 22px;animation:pop .5s cubic-bezier(.16,1.3,.4,1) both}
+  @keyframes pop{from{transform:scale(0)}to{transform:scale(1)}}
+  .center{text-align:center}
+  .loader{width:20px;height:20px;border:3px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;
+    animation:spin .7s linear infinite;display:none}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .foot{margin-top:16px;text-align:center;font-size:11.5px;color:var(--muted)}
+  .foot a{color:var(--orange);text-decoration:none}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <div class="brandbar"><span class="chip"><img src="https://ecfconsultoria.com.br/img/logo.png" alt="ECF Consultoria" /></span></div>
+  <div class="progress-wrap" id="progressWrap"><div class="progress-bar" id="progressBar"></div></div>
+
+  <!-- PASSO 0 · BOAS-VINDAS -->
+  <section class="step active" data-step="0">
+    <div class="spacer"></div>
+    <div class="hero-emoji">📦</div>
+    <h1>Venda mais no <span class="hl">Mercado Livre</span> com margem, não só com faturamento.</h1>
+    <p class="sub">Programa Polos ECF em São José do Rio Preto. Diagnóstico gratuito da sua operação.</p>
+    <ul class="bullets">
+      <li><span class="ck">✓</span><span>Estratégia de logística, tendências e ferramentas.</span></li>
+      <li><span class="ck">✓</span><span>Acompanhamento de quem é Platinum e Premier Partner.</span></li>
+    </ul>
+    <div class="spacer"></div>
+    <div class="disc">⚠️ <b>Exclusivo para o setor moveleiro</b> — fabricantes, marcenarias, lojas e distribuidores de móveis.</div>
+    <div class="btn-area">
+      <span class="badge">🔥 Vagas gratuitas e limitadas</span>
+      <button class="btn" onclick="next()">Quero minha análise gratuita</button>
+    </div>
+  </section>
+
+  <!-- PASSO 1 · SEGMENTO -->
+  <section class="step" data-step="1">
+    <h1>Qual é o seu <span class="hl">segmento</span>?</h1>
+    <p class="sub">Assim confirmamos se o programa é para você.</p>
+    <div class="opcoes">
+      <button type="button" class="opt" onclick="escolha(this,'segmento','Fabricante de móveis')"><span class="ic">🏭</span>Fabricante de móveis</button>
+      <button type="button" class="opt" onclick="escolha(this,'segmento','Marcenaria')"><span class="ic">🪵</span>Marcenaria</button>
+      <button type="button" class="opt" onclick="escolha(this,'segmento','Loja de móveis / Estofados')"><span class="ic">🛋️</span>Loja de móveis / Estofados</button>
+      <button type="button" class="opt" onclick="escolha(this,'segmento','Distribuidor de móveis')"><span class="ic">🚚</span>Distribuidor de móveis</button>
+      <button type="button" class="opt" onclick="escolha(this,'segmento','Não trabalho com móveis')"><span class="ic">🚫</span>Não trabalho com móveis</button>
+    </div>
+    <div class="spacer"></div>
+  </section>
+
+  <!-- PASSO 2 · FATURAMENTO -->
+  <section class="step" data-step="2">
+    <h1>Qual seu <span class="hl">faturamento</span> no Mercado Livre?</h1>
+    <p class="sub">Nos últimos 60 dias, uma média serve.</p>
+    <div class="opcoes">
+      <button type="button" class="opt" onclick="escolha(this,'faturamento','Ainda não vendo')">Ainda não vendo</button>
+      <button type="button" class="opt" onclick="escolha(this,'faturamento','0 a 50 mil')">0 a 50 mil</button>
+      <button type="button" class="opt" onclick="escolha(this,'faturamento','50 a 100 mil')">50 a 100 mil</button>
+      <button type="button" class="opt" onclick="escolha(this,'faturamento','100 a 300 mil')">100 a 300 mil</button>
+      <button type="button" class="opt" onclick="escolha(this,'faturamento','300 a 500 mil')">300 a 500 mil</button>
+      <button type="button" class="opt" onclick="escolha(this,'faturamento','500 mil a 1 milhão')">500 mil a 1 milhão</button>
+      <button type="button" class="opt" onclick="escolha(this,'faturamento','Mais de 1 milhão')">Mais de 1 milhão</button>
+    </div>
+    <div class="spacer"></div>
+  </section>
+
+  <!-- PASSO 3 · CNPJ -->
+  <section class="step" data-step="3">
+    <h1>Qual o seu <span class="hl">CNPJ</span>?</h1>
+    <p class="sub">Somente números. É rapidinho.</p>
+    <label class="label" for="cnpj">CNPJ</label>
+    <input class="field" id="cnpj" inputmode="numeric" maxlength="18" placeholder="00.000.000/0000-00" autocomplete="off" />
+    <div class="erro" id="erroCnpj">CNPJ inválido — confira os números.</div>
+    <div class="spacer"></div>
+    <div class="btn-area"><button class="btn" onclick="validarCnpj()">Continuar</button></div>
+  </section>
+
+  <!-- PASSO 4 · NOME -->
+  <section class="step" data-step="4">
+    <h1>Qual é o seu <span class="hl">nome</span>?</h1>
+    <p class="sub">Para a nossa equipe saber como te chamar.</p>
+    <label class="label" for="nome">Nome completo</label>
+    <input class="field" id="nome" type="text" placeholder="Digite seu nome" autocomplete="name" />
+    <div class="erro" id="erroNome">Por favor, digite seu nome.</div>
+    <div class="spacer"></div>
+    <div class="btn-area"><button class="btn" onclick="validarNome()">Continuar</button></div>
+  </section>
+
+  <!-- PASSO 5 · WHATSAPP -->
+  <section class="step" data-step="5">
+    <h1>Qual o seu <span class="hl">WhatsApp</span>?</h1>
+    <p class="sub">É por onde nossa equipe entra em contato.</p>
+    <label class="label" for="whatsapp">WhatsApp com DDD</label>
+    <input class="field" id="whatsapp" inputmode="tel" placeholder="(17) 90000-0000" autocomplete="tel" />
+    <div class="erro" id="erroWa">Informe um WhatsApp válido com DDD.</div>
+    <div class="spacer"></div>
+    <div class="btn-area"><button class="btn" onclick="validarWa()">Continuar</button></div>
+  </section>
+
+  <!-- PASSO 6 · E-MAIL + CIDADE -->
+  <section class="step" data-step="6">
+    <h1>Só mais um <span class="hl">detalhe</span>.</h1>
+    <p class="sub">Para finalizar sua inscrição.</p>
+    <label class="label" for="email">E-mail</label>
+    <input class="field" id="email" type="email" placeholder="voce@email.com" autocomplete="email" />
+    <div class="erro" id="erroEmail">Informe um e-mail válido.</div>
+    <label class="label" for="cidade" style="margin-top:16px">Cidade</label>
+    <input class="field" id="cidade" type="text" placeholder="Sua cidade" autocomplete="address-level2" />
+    <div class="erro" id="erroCidade">Informe sua cidade.</div>
+    <div class="spacer"></div>
+    <div class="btn-area">
+      <button class="btn" id="btnEnviar" onclick="enviar()"><span id="btnTxt">Garantir minha vaga</span><span class="loader" id="ld"></span></button>
+      <p class="foot">Ao enviar, você concorda com a <a href="https://ecfconsultoria.com.br/politica-de-privacidade" target="_blank" rel="noopener">Política de Privacidade</a>.</p>
+    </div>
+  </section>
+
+  <!-- PASSO 7 · SUCESSO -->
+  <section class="step" data-step="7">
+    <div class="spacer"></div>
+    <div class="check">✓</div>
+    <h1 class="center">Vaga registrada! 🎉</h1>
+    <p class="sub center">Recebemos seus dados. Em instantes você será direcionado ao nosso atendimento no WhatsApp.</p>
+    <div class="spacer"></div>
+  </section>
+
+</div>
+
+<script>
+  const TOTAL_Q = 6; // passos que contam na barra (1..6)
+  let cur = 0;
+  const dados = {};
+  const steps = [...document.querySelectorAll('.step')];
+  const bar = document.getElementById('progressBar');
+  const pWrap = document.getElementById('progressWrap');
+
+  // rastreamento (UTM + fbclid) + event_id compartilhado navegador/servidor
+  const qs = new URLSearchParams(location.search);
+  function ck(n){ const m=document.cookie.match('(^|;)\\s*'+n+'=\\s*([^;]+)'); return m?m.pop():''; }
+  const tracking = {
+    utm_source: qs.get('utm_source')||'', utm_medium: qs.get('utm_medium')||'',
+    utm_campaign: qs.get('utm_campaign')||'', utm_content: qs.get('utm_content')||'',
+    utm_term: qs.get('utm_term')||'', fbclid: qs.get('fbclid')||ck('_fbc')||'', page_url: location.href
+  };
+  const eventId = 'lead_'+Date.now()+'_'+Math.random().toString(36).slice(2,9);
+
+  function show(n){
+    steps.forEach(s=>s.classList.toggle('active', +s.dataset.step===n));
+    cur = n;
+    const q = Math.min(Math.max(n,0), TOTAL_Q);
+    bar.style.width = (q/TOTAL_Q*100)+'%';
+    pWrap.style.opacity = (n===0 || n>TOTAL_Q) ? 0 : 1;
+    window.scrollTo(0,0);
+    const inp = steps[n] && steps[n].querySelector('input');
+    if(inp) setTimeout(()=>inp.focus({preventScroll:true}), 250);
+  }
+  function next(){ show(cur+1); }
+
+  function escolha(el, campo, valor){
+    dados[campo] = valor;
+    el.parentElement.querySelectorAll('.opt').forEach(o=>o.classList.remove('sel'));
+    el.classList.add('sel');
+    setTimeout(next, 240);
+  }
+
+  function digits(s){ return (s||'').replace(/\D/g,''); }
+  function cnpjOk(raw){
+    const d=digits(raw); if(d.length!==14 || /^(\d)\1{13}$/.test(d)) return false;
+    const calc=(b,p)=>{let s=0;for(let i=0;i<p.length;i++)s+=b[i]*p[i];const r=s%11;return r<2?0:11-r;};
+    const n=d.split('').map(Number);
+    if(calc(n.slice(0,12),[5,4,3,2,9,8,7,6,5,4,3,2])!==n[12])return false;
+    if(calc(n.slice(0,13),[6,5,4,3,2,9,8,7,6,5,4,3,2])!==n[13])return false;
+    return true;
+  }
+  const cnpjEl=document.getElementById('cnpj');
+  cnpjEl.addEventListener('input',()=>{
+    let d=digits(cnpjEl.value).slice(0,14);
+    cnpjEl.value=d.replace(/^(\d{2})(\d)/,'$1.$2').replace(/^(\d{2})\.(\d{3})(\d)/,'$1.$2.$3').replace(/\.(\d{3})(\d)/,'.$1/$2').replace(/(\d{4})(\d)/,'$1-$2');
+    cnpjEl.classList.remove('bad'); erro('erroCnpj',false);
+  });
+
+  function erro(id,on){ document.getElementById(id).classList.toggle('show', on); }
+  function validarCnpj(){
+    if(!cnpjOk(cnpjEl.value)){ cnpjEl.classList.add('bad'); erro('erroCnpj',true); return; }
+    dados.cnpj = digits(cnpjEl.value); next();
+  }
+  function validarNome(){
+    const v=document.getElementById('nome').value.trim();
+    if(v.length<2){ erro('erroNome',true); return; }
+    dados.nome=v; next();
+  }
+  function validarWa(){
+    const v=document.getElementById('whatsapp').value; const d=digits(v);
+    if(d.length<10){ document.getElementById('whatsapp').classList.add('bad'); erro('erroWa',true); return; }
+    dados.whatsapp=v.trim(); next();
+  }
+  async function enviar(){
+    const email=document.getElementById('email').value.trim();
+    const cidade=document.getElementById('cidade').value.trim();
+    if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){ document.getElementById('email').classList.add('bad'); erro('erroEmail',true); return; }
+    if(cidade.length<2){ document.getElementById('cidade').classList.add('bad'); erro('erroCidade',true); return; }
+    dados.email=email; dados.cidade=cidade;
+    const btn=document.getElementById('btnEnviar'); btn.disabled=true;
+    document.getElementById('btnTxt').textContent='Enviando'; document.getElementById('ld').style.display='inline-block';
+    // evento Lead no navegador (mesmo event_id do CAPI p/ deduplicar)
+    try{ if(window.fbq) fbq('track','Lead',{content_name:'Programa Polos SJRP - Landing dinâmica'},{eventID:eventId}); }catch(e){}
+    // grava na planilha do SJRP + CAPI no servidor
+    try{
+      await fetch(CONFIG.endpoint,{method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify(Object.assign({},dados,tracking,{event_id:eventId}))});
+    }catch(err){}
+    show(7);
+    setTimeout(()=>{ if(CONFIG.redirectUrl) location.href=CONFIG.redirectUrl; }, 1900);
+  }
+  show(0);
+</script>
+</body>
+</html>
