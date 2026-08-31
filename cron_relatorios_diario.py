@@ -38,6 +38,12 @@ s = re.sub(r'FIXED_SINCE = "[\d-]+"', f'FIXED_SINCE = "{since}"', s)
 s = re.sub(r'FIXED_UNTIL = "[\d-]+"', f'FIXED_UNTIL = "{until}"', s)
 f.write_text(s)
 
+# AUTO-HEAL: limpa qualquer rebase/merge preso de execucoes anteriores
+import subprocess as _sp
+for _c in (('rebase','--abort'),('merge','--abort')):
+    _sp.run(['git','-C',str(BASE),*_c], capture_output=True)
+_sp.run(['git','-C',str(BASE),'checkout','--','dashboard_data.json','alertas.json'], capture_output=True)
+
 log(f'=== INÍCIO — período {since} → {until} ===')
 
 GESTORES = ['braga','igor','milena','victor','bueno','mota']
