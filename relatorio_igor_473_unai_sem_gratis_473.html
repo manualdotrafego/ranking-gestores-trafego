@@ -200,8 +200,8 @@ function fmtShort(iso){const[y,m,d]=iso.split('-');return `${+d} de ${PT_M[+m-1]
 function fmtFull(iso){const[y,m,d]=iso.split('-');return `${+d} de ${PT_MF[+m-1]} de ${y}`}
 function addDays(iso,n){const d=new Date(iso+'T12:00:00');d.setDate(d.getDate()+n);return d.toISOString().slice(0,10)}
 function today(){return DAILY.length>0?DAILY[0].date:new Date().toISOString().slice(0,10)}
-const minDate=DAILY.length>0?DAILY[DAILY.length-1].date:undefined;
-const maxDate=DAILY.length>0?DAILY[0].date:undefined;
+const minDate=DAILY.length>0?new Date(DAILY[DAILY.length-1].date+"T00:00:00"):undefined;
+const maxDate=DAILY.length>0?new Date(DAILY[0].date+"T00:00:00"):undefined;
 const fp=flatpickr('#dateRangeInput',{
   mode:'range',locale:'pt',dateFormat:'d \de M. \de Y',
   minDate,maxDate,showMonths:1,
