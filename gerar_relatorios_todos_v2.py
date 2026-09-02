@@ -37,8 +37,8 @@ LOCAL_PORT    = 0   # 0 = escolhe porta livre automaticamente
 DAYS_BACK = 90   # janela móvel: mínimo 40 dias de histórico navegável
 DEFAULT_DISPLAY = 15   # fallback (não usado quando FIXED_RANGE ativo)
 # Período fixo de exibição padrão nos relatórios
-FIXED_SINCE = "2026-05-26"
-FIXED_UNTIL = "2026-08-23"
+FIXED_SINCE = "2026-06-05"
+FIXED_UNTIL = "2026-09-02"
 
 # ─── CONTAS POR GESTOR ────────────────────────────────────────────────────────
 GESTORES_ACCOUNTS = {
@@ -677,8 +677,8 @@ function fmtShort(iso){{const[y,m,d]=iso.split('-');return `${{+d}} de ${{PT_M[+
 function fmtFull(iso){{const[y,m,d]=iso.split('-');return `${{+d}} de ${{PT_MF[+m-1]}} de ${{y}}`}}
 function addDays(iso,n){{const d=new Date(iso+'T12:00:00');d.setDate(d.getDate()+n);return d.toISOString().slice(0,10)}}
 function today(){{return DAILY.length>0?DAILY[0].date:new Date().toISOString().slice(0,10)}}
-const minDate=DAILY.length>0?DAILY[DAILY.length-1].date:undefined;
-const maxDate=DAILY.length>0?DAILY[0].date:undefined;
+const minDate=DAILY.length>0?new Date(DAILY[DAILY.length-1].date+"T00:00:00"):undefined;
+const maxDate=DAILY.length>0?new Date(DAILY[0].date+"T00:00:00"):undefined;
 const fp=flatpickr('#dateRangeInput',{{
   mode:'range',locale:'pt',dateFormat:'d \\de M. \\de Y',
   minDate,maxDate,showMonths:1,
