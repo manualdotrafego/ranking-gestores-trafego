@@ -37,8 +37,8 @@ LOCAL_PORT    = 0   # 0 = escolhe porta livre automaticamente
 DAYS_BACK = 90   # janela móvel: mínimo 40 dias de histórico navegável
 DEFAULT_DISPLAY = 15   # fallback (não usado quando FIXED_RANGE ativo)
 # Período fixo de exibição padrão nos relatórios
-FIXED_SINCE = "2026-06-05"
-FIXED_UNTIL = "2026-09-02"
+FIXED_SINCE = "2026-06-06"
+FIXED_UNTIL = "2026-09-03"
 
 # ─── CONTAS POR GESTOR ────────────────────────────────────────────────────────
 GESTORES_ACCOUNTS = {
@@ -809,7 +809,7 @@ window.addEventListener('load',()=>{{
   // Abre nos últimos 15 dias por padrão. O histórico completo continua
   // disponível no calendário, nos atalhos e nos botões dia a dia.
   buildDayButtons();
-  applyRange("2026-08-16","2026-08-31");
+  applyShortcut(15);
 }});
 </script>
 </body>
