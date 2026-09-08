@@ -185,7 +185,7 @@ td{text-align:right}
   <div class="sec">
     <div class="sec-h">
       <h2>Visão geral do período</h2>
-      <span>Dia 08/09 parcial · fuso America/Sao_Paulo</span>
+      <span>Dia 08/09 parcial · fuso America/Sao_Paulo · receita inclui 2 vendas confirmadas fora do gerenciador</span>
     </div>
     <div class="grid k4">
       <div class="card kpi hero">
@@ -196,21 +196,22 @@ td{text-align:right}
       </div>
       <div class="card kpi hero">
         <div class="lab">Receita</div>
-        <div class="val"><small>R$</small>788,00</div>
-        <div class="sub">4 compras · ticket de R$ 197,00</div>
+        <div class="val"><small>R$</small>1.182,00</div>
+        <div class="sub">6 compras · ticket de R$ 197,00</div>
+        <span class="chip up">4 no pixel + 2 confirmadas fora do gerenciador</span>
         <svg class="spark" id="sp-rev" viewBox="0 0 120 34" preserveAspectRatio="none"></svg>
       </div>
       <div class="card kpi">
         <div class="lab">ROAS</div>
-        <div class="val">1,57<small style="margin-left:4px">x</small></div>
+        <div class="val">2,35<small style="margin-left:4px">x</small></div>
         <div class="sub">Retorno bruto sobre o investido</div>
-        <span class="chip up">Acima do ponto de equilíbrio bruto (1,00x)</span>
+        <span class="chip neu">Cai para 1,57x se contar só o que o pixel registrou</span>
       </div>
       <div class="card kpi">
         <div class="lab">CPA</div>
-        <div class="val"><small>R$</small>125,58</div>
-        <div class="sub">Custo por compra no pixel</div>
-        <span class="chip neu">63,7% do ticket de R$ 197</span>
+        <div class="val"><small>R$</small>83,72</div>
+        <div class="sub">Custo por compra sobre as 6 vendas</div>
+        <span class="chip up">42,5% do ticket de R$ 197</span>
       </div>
     </div>
 
@@ -256,6 +257,7 @@ td{text-align:right}
           <span><i style="background:var(--green)"></i>ROAS</span>
         </div>
         <svg id="chart-daily" viewBox="0 0 720 300" style="width:100%;height:auto"></svg>
+        <p style="font-size:11.5px;color:var(--muted);margin-top:10px">A receita por dia usa só o que o pixel registrou. As <b style="color:var(--txt)">2 vendas confirmadas fora do gerenciador</b> não têm data atribuída e entram apenas nos totais e na linha do ad2.MOV.</p>
       </div>
       <div class="card">
         <div class="legend"><span><i style="background:var(--gold)"></i>Visitas na página por dia</span></div>
@@ -279,7 +281,7 @@ td{text-align:right}
             <div class="ins-ico">!</div>
             <div class="ins-tx">
               <h4>Checkout iniciado que não vira compra</h4>
-              <p><b>38 checkouts</b> iniciados para <b>4 compras</b>. São 34 pessoas que chegaram no pagamento e desistiram, o equivalente a <b>R$ 6.698 de receita potencial</b> parada.</p>
+              <p><b>38 checkouts</b> iniciados para <b>6 compras</b>. São 32 pessoas que chegaram no pagamento e desistiram, o equivalente a <b>R$ 6.304 de receita potencial</b> parada.</p>
             </div>
           </div>
           <div class="ins-item alert">
@@ -328,7 +330,7 @@ td{text-align:right}
     </div>
     <div class="grid k2">
       <div class="card">
-        <div class="legend"><span><i style="background:var(--gold)"></i>Investimento por posicionamento</span><span><i style="background:var(--green)"></i>Com compra</span></div>
+        <div class="legend"><span><i style="background:var(--gold)"></i>Investimento por posicionamento</span><span><i style="background:var(--green)"></i>Com compra rastreada</span></div>
         <svg id="chart-place" viewBox="0 0 420 280" style="width:100%;height:auto"></svg>
       </div>
       <div class="card">
@@ -365,36 +367,43 @@ td{text-align:right}
       <div class="ins-item win">
         <div class="ins-ico">1</div>
         <div class="ins-tx">
-          <h4>Realocar verba para o AD SET 1.2</h4>
-          <p>O <b>ad3.MOV</b> entrega <b>ROAS 2,32x</b> com CPA de <b>R$ 84,75</b> e CPM de R$ 19,12. O <b>ad2.MOV</b> gastou 61% a mais para o mesmo número de vendas, com ROAS 1,44x e CPM de R$ 28,79. Subir o 1.2 para R$ 80/dia e manter o 1.1 em R$ 50 tende a puxar o ROAS agregado para perto de 2,0x com o mesmo orçamento.</p>
+          <h4>Escalar os dois conjuntos, com prioridade para o ad2.MOV</h4>
+          <p>Com as 2 vendas confirmadas fora do gerenciador, o <b>ad2.MOV</b> passa a somar <b>4 vendas</b>, <b>ROAS 2,88x</b> e CPA de <b>R$ 68,43</b>. O <b>ad3.MOV</b> segue forte, com 2 vendas, <b>ROAS 2,32x</b> e CPA de R$ 84,75. Os dois estão acima de 2x e nenhum precisa ser cortado: subir o AD SET 1.1 para R$ 80/dia e o 1.2 para R$ 70/dia, em degraus de 20% a cada 48h para não resetar o aprendizado.</p>
         </div>
       </div>
       <div class="ins-item alert">
         <div class="ins-ico">2</div>
         <div class="ins-tx">
-          <h4>Remarketing de checkout abandonado</h4>
-          <p>34 checkouts abandonados em 6 dias, sem nenhuma campanha de retomada no ar. Um público de <b>InitiateCheckout sem Purchase de 7 dias</b> com R$ 20 a R$ 30/dia é a alavanca mais barata do momento: recuperar 3 desses 34 já dobra a receita do período.</p>
+          <h4>O pixel está perdendo 1 a cada 3 vendas</h4>
+          <p>2 das 6 vendas do período vieram do tráfego e não foram registradas no gerenciador. Além de subestimar o ROAS em <b>0,78x</b>, isso alimenta o algoritmo com sinal incompleto e encarece a otimização. Conferir a <b>API de Conversões</b> no checkout, o deduplicador de <b>event_id</b> e as UTMs da landing antes de escalar mais orçamento.</p>
         </div>
       </div>
       <div class="ins-item alert">
         <div class="ins-ico">3</div>
+        <div class="ins-tx">
+          <h4>Remarketing de checkout abandonado</h4>
+          <p>32 checkouts abandonados em 6 dias, sem nenhuma campanha de retomada no ar. Um público de <b>InitiateCheckout sem Purchase de 7 dias</b> com R$ 20 a R$ 30/dia é a alavanca mais barata do momento: recuperar 3 desses 32 já soma R$ 591 de receita, mais do que o período inteiro do ad3.MOV.</p>
+        </div>
+      </div>
+      <div class="ins-item alert">
+        <div class="ins-ico">4</div>
         <div class="ins-tx">
           <h4>Frequência em 3,22x com alcance de só 6.672 pessoas</h4>
           <p>Público quente pequeno e já saturando. O CPM do AD SET 1.1 subiu para <b>R$ 28,79</b> contra R$ 19,12 do 1.2 e as visitas na página caíram de 106 (03/09) para 58 (06/09). Abrir um conjunto frio com público aberto ou lookalike de compradores antes que o CPA suba mais.</p>
         </div>
       </div>
       <div class="ins-item">
-        <div class="ins-ico">4</div>
+        <div class="ins-ico">5</div>
         <div class="ins-tx">
           <h4>Cortar o que não converte</h4>
-          <p><b>Instagram Reels</b> consumiu R$ 118,06 sem nenhuma compra e o <b>Facebook inteiro</b> R$ 36,80 também sem venda. Juntos são R$ 154,86, ou 31% do investimento, com zero receita. Stories e Feed do Instagram concentram as 4 vendas.</p>
+          <p><b>Instagram Reels</b> consumiu R$ 118,06 sem nenhuma compra e o <b>Facebook inteiro</b> R$ 36,80 também sem venda. Juntos são R$ 154,86, ou 31% do investimento, com zero receita. Stories e Feed do Instagram concentram as 4 vendas rastreadas. Ressalva: as 2 vendas fora do gerenciador não têm posicionamento, então corte primeiro o Facebook, que é o menor volume, e reavalie o Reels em mais 5 dias.</p>
         </div>
       </div>
       <div class="ins-item">
-        <div class="ins-ico">5</div>
+        <div class="ins-ico">6</div>
         <div class="ins-tx">
           <h4>Ajuste fino de público</h4>
-          <p>A faixa <b>18-24 masculino</b> trouxe 2 compras com R$ 47,92 investidos, um CPA de R$ 23,96. Já <b>35-44 masculino</b> queimou R$ 110,43 sem venda. O público feminino levou R$ 68,46 e também não converteu. Vale testar um conjunto restrito a homens de 18 a 34 anos.</p>
+          <p>A faixa <b>18-24 masculino</b> trouxe 2 compras com R$ 47,92 investidos, um CPA de R$ 23,96. Já <b>35-44 masculino</b> queimou R$ 110,43 sem venda. O público feminino levou R$ 68,46 e também não converteu. Vale testar um conjunto restrito a homens de 18 a 34 anos. Como os cortes por público só enxergam as 4 vendas do pixel, use isso como teste, não como corte definitivo.</p>
         </div>
       </div>
     </div>
@@ -413,7 +422,7 @@ td{text-align:right}
   </div>
 
   <div class="foot">
-    <span>Dados extraídos da Graph API da Meta v21.0 em 08/09/2026 · janela de atribuição padrão da conta</span>
+    <span>Dados da Graph API da Meta v21.0 em 08/09/2026 · janela de atribuição padrão da conta · mais 2 vendas confirmadas manualmente pelo time</span>
     <span>Landing: <a href="https://www.tradergeneration.com.br/mpr/" target="_blank" rel="noopener">tradergeneration.com.br/mpr</a> · Dbout Mídia</span>
   </div>
 </div>
@@ -432,9 +441,9 @@ const daily = [
   {d:'08/09', spend:11.67, impr:504,  clicks:29,  ctr:5.75, lpv:7,   ic:3, purch:0, rev:0}
 ];
 const ads = [
-  {n:'ad3.MOV', set:'[AD SET 1.2] · QUENTE', on:true,  spend:169.50, impr:8863, ctr:4.01, cpm:19.12, lpv:147, purch:2, rev:394},
-  {n:'ad2.MOV', set:'[AD SET 1.1] · QUENTE', on:true,  spend:273.70, impr:9506, ctr:3.69, cpm:28.79, lpv:178, purch:2, rev:394},
-  {n:'ad1.MOV', set:'[AD SET 1.1] · pausado',on:false, spend:59.10,  impr:3129, ctr:4.12, cpm:18.89, lpv:75,  purch:0, rev:0}
+  {n:'ad2.MOV', set:'[AD SET 1.1] · QUENTE', on:true,  spend:273.70, impr:9506, ctr:3.69, cpm:28.79, lpv:178, purch:4, rev:788, extra:2},
+  {n:'ad3.MOV', set:'[AD SET 1.2] · QUENTE', on:true,  spend:169.50, impr:8863, ctr:4.01, cpm:19.12, lpv:147, purch:2, rev:394, extra:0},
+  {n:'ad1.MOV', set:'[AD SET 1.1] · pausado',on:false, spend:59.10,  impr:3129, ctr:4.12, cpm:18.89, lpv:75,  purch:0, rev:0,   extra:0}
 ];
 const places = [
   {n:'Instagram Stories', spend:174.57, purch:2},
@@ -473,7 +482,7 @@ const funil = [
   {n:'Visitas na página', sub:'81,3% dos cliques',        v:400,   cost:1.26,   rate:81.30},
   {n:'Carrinho',          sub:'11,75% das visitas',       v:47,    cost:10.69,  rate:11.75},
   {n:'Checkout iniciado', sub:'80,9% dos carrinhos',      v:38,    cost:13.22,  rate:80.85},
-  {n:'Compra',            sub:'10,5% dos checkouts',      v:4,     cost:125.58, rate:10.53}
+  {n:'Compra',            sub:'15,8% dos checkouts · 4 pixel + 2 manuais', v:6, cost:83.72, rate:15.79}
 ];
 
 const NS='http://www.w3.org/2000/svg';
@@ -577,7 +586,7 @@ spark('sp-rev',   daily.map(d=>d.rev),   G2);
       <td>${a.ctr.toFixed(2).replace('.',',')}%</td>
       <td>R$ ${brl(a.cpm)}</td>
       <td>${a.lpv}</td>
-      <td>${a.purch}</td>
+      <td>${a.purch}${a.extra?`<em style="display:block;font-style:normal;font-size:10px;color:#8B90A7;font-weight:600;margin-top:2px">${a.purch-a.extra} pixel + ${a.extra} manual</em>`:''}</td>
       <td>${cpa?'R$ '+brl(cpa):'<span style="color:#8B90A7">sem venda</span>'}</td>
       <td>R$ ${brl(a.rev)}</td>
       <td class="roas ${cls}">${roas.toFixed(2).replace('.',',')}x</td>`;
