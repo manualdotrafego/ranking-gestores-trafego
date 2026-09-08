@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Protocolo MPR | Relatório de Tráfego Pago · Alves Trader</title>
+<link rel="icon" href="assets/logo-mpr-tg.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,300&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#04050A; --bg1:#060810; --bg2:#090C18;
+  --white:#F5F7FF; --txt:#E2E5F0; --muted:#8B90A7;
+  --gold:#E8A820; --gold2:#FDD247; --gold3:#A86E08; --gold4:#FFE96A;
+  --green:#2ECC71; --red:#E74C3C;
+  --glass:rgba(255,255,255,.038); --b:rgba(255,255,255,.08);
+  --glow:rgba(232,168,32,.25);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg); color:var(--txt);
+  font-family:'Plus Jakarta Sans',system-ui,-apple-system,sans-serif;
+  -webkit-font-smoothing:antialiased; line-height:1.5; overflow-x:hidden;
+}
+body::before{
+  content:''; position:fixed; inset:0; z-index:-1; pointer-events:none;
+  background:
+    radial-gradient(1100px 620px at 12% -8%, rgba(232,168,32,.16), transparent 62%),
+    radial-gradient(900px 520px at 96% 4%, rgba(232,168,32,.08), transparent 60%),
+    radial-gradient(800px 700px at 50% 108%, rgba(91,91,214,.07), transparent 65%);
+}
+.wrap{max-width:1280px;margin:0 auto;padding:26px 20px 80px}
+
+/* ---------- header ---------- */
+.topbar{
+  display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap;
+  padding:16px 20px;border:1px solid var(--b);border-radius:18px;
+  background:linear-gradient(180deg,rgba(232,168,32,.07),var(--glass));
+  box-shadow:0 24px 60px -32px var(--glow);
+}
+.brand{display:flex;align-items:center;gap:14px}
+.brand img{height:40px;width:auto;display:block}
+.brand .sep{width:1px;height:34px;background:var(--b)}
+.brand h1{font-size:15px;font-weight:800;letter-spacing:-.01em;color:var(--white)}
+.brand p{font-size:11.5px;color:var(--muted);font-weight:500;letter-spacing:.06em;text-transform:uppercase}
+.meta{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.pill{
+  display:inline-flex;align-items:center;gap:7px;font-size:11.5px;font-weight:700;
+  padding:7px 13px;border-radius:999px;border:1px solid var(--b);background:var(--glass);color:var(--txt);
+}
+.pill.live{border-color:rgba(46,204,113,.32);background:rgba(46,204,113,.09);color:#8AE9B4}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 0 0 rgba(46,204,113,.6);animation:pulse 2.2s infinite}
+@keyframes pulse{70%{box-shadow:0 0 0 9px rgba(46,204,113,0)}100%{box-shadow:0 0 0 0 rgba(46,204,113,0)}}
+.pill.gold{border-color:rgba(232,168,32,.3);background:rgba(232,168,32,.08);color:var(--gold2)}
+
+/* ---------- section ---------- */
+.sec{margin-top:34px}
+.sec-h{display:flex;align-items:baseline;justify-content:space-between;gap:14px;margin-bottom:14px;flex-wrap:wrap}
+.sec-h h2{
+  font-size:13px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;
+  background:linear-gradient(92deg,var(--gold4),var(--gold),var(--gold3));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.sec-h span{font-size:12px;color:var(--muted);font-weight:500}
+
+.card{
+  border:1px solid var(--b);border-radius:16px;background:var(--glass);
+  backdrop-filter:blur(6px);padding:18px;
+}
+.grid{display:grid;gap:14px}
+.k4{grid-template-columns:repeat(4,1fr)}
+.k3{grid-template-columns:repeat(3,1fr)}
+.k2{grid-template-columns:repeat(2,1fr)}
+.split{grid-template-columns:1.55fr 1fr}
+
+/* ---------- kpi ---------- */
+.kpi{position:relative;overflow:hidden}
+.kpi::after{content:'';position:absolute;left:0;top:0;height:2px;width:100%;background:linear-gradient(90deg,var(--gold),transparent)}
+.kpi .lab{font-size:11px;font-weight:700;letter-spacing:.11em;text-transform:uppercase;color:var(--muted)}
+.kpi .val{font-size:29px;font-weight:800;letter-spacing:-.025em;color:var(--white);margin:8px 0 2px;font-variant-numeric:tabular-nums}
+.kpi .val small{font-size:15px;font-weight:700;color:var(--muted);margin-right:3px}
+.kpi .sub{font-size:12px;color:var(--muted);font-weight:500}
+.kpi.hero{background:linear-gradient(160deg,rgba(232,168,32,.13),var(--glass));border-color:rgba(232,168,32,.26)}
+.kpi.hero .val{background:linear-gradient(92deg,var(--gold4),var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent}
+.chip{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:800;padding:3px 8px;border-radius:999px;margin-top:9px}
+.chip.up{background:rgba(46,204,113,.12);color:#7DE3AC;border:1px solid rgba(46,204,113,.25)}
+.chip.down{background:rgba(231,76,60,.12);color:#FF9E93;border:1px solid rgba(231,76,60,.25)}
+.chip.neu{background:rgba(255,255,255,.05);color:var(--muted);border:1px solid var(--b)}
+.spark{margin-top:10px;display:block;width:100%;height:34px}
+
+/* ---------- charts ---------- */
+.legend{display:flex;gap:16px;flex-wrap:wrap;font-size:11.5px;color:var(--muted);font-weight:600;margin-bottom:6px}
+.legend i{display:inline-block;width:9px;height:9px;border-radius:3px;margin-right:6px;vertical-align:middle}
+svg text{font-family:'Plus Jakarta Sans',sans-serif}
+
+/* ---------- funil ---------- */
+.fun-row{display:grid;grid-template-columns:150px 1fr 128px;gap:14px;align-items:center;padding:9px 0;border-bottom:1px dashed rgba(255,255,255,.06)}
+.fun-row:last-child{border-bottom:0}
+.fun-name{font-size:12.5px;font-weight:700;color:var(--txt)}
+.fun-name em{display:block;font-style:normal;font-size:11px;color:var(--muted);font-weight:500}
+.fun-bar{height:26px;border-radius:7px;background:rgba(255,255,255,.04);overflow:hidden;position:relative}
+.fun-fill{height:100%;border-radius:7px;background:linear-gradient(90deg,var(--gold3),var(--gold),var(--gold2));display:flex;align-items:center;padding-left:11px;min-width:52px}
+.fun-fill span{font-size:12px;font-weight:800;color:#1A1204;font-variant-numeric:tabular-nums}
+.fun-side{text-align:right;font-size:12px;font-variant-numeric:tabular-nums}
+.fun-side b{color:var(--white);font-weight:800;display:block;font-size:13px}
+.fun-side em{font-style:normal;color:var(--muted);font-size:11px}
+
+/* ---------- tabela ---------- */
+table{width:100%;border-collapse:collapse;font-size:12.5px}
+th{
+  text-align:right;font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);
+  font-weight:800;padding:0 10px 10px;border-bottom:1px solid var(--b);white-space:nowrap;
+}
+th:first-child,td:first-child{text-align:left}
+td{padding:12px 10px;border-bottom:1px solid rgba(255,255,255,.045);font-variant-numeric:tabular-nums;white-space:nowrap}
+tbody tr:last-child td{border-bottom:0}
+tbody tr:hover{background:rgba(255,255,255,.022)}
+td{text-align:right}
+.nm{font-weight:700;color:var(--white)}
+.nm em{display:block;font-style:normal;font-size:11px;color:var(--muted);font-weight:500;margin-top:2px}
+.tag{display:inline-block;font-size:10px;font-weight:800;padding:3px 8px;border-radius:6px;letter-spacing:.05em}
+.tag.on{background:rgba(46,204,113,.13);color:#7DE3AC;border:1px solid rgba(46,204,113,.24)}
+.tag.off{background:rgba(139,144,167,.12);color:var(--muted);border:1px solid var(--b)}
+.roas{font-weight:800}
+.roas.good{color:var(--green)} .roas.mid{color:var(--gold2)} .roas.bad{color:var(--red)}
+.mini{height:6px;border-radius:99px;background:rgba(255,255,255,.06);overflow:hidden;margin-top:6px}
+.mini i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,var(--gold3),var(--gold2))}
+
+/* ---------- heatmap ---------- */
+.heat{display:grid;grid-template-columns:repeat(24,1fr);gap:4px}
+.heat div{aspect-ratio:1;border-radius:5px;border:1px solid rgba(255,255,255,.05);position:relative}
+.heat-lab{display:grid;grid-template-columns:repeat(24,1fr);gap:4px;margin-top:6px;font-size:9px;color:var(--muted);text-align:center;font-weight:600}
+
+/* ---------- insights ---------- */
+.ins{display:grid;gap:12px}
+.ins-item{display:flex;gap:13px;padding:15px 16px;border:1px solid var(--b);border-radius:14px;background:var(--glass)}
+.ins-item.alert{border-color:rgba(231,76,60,.26);background:linear-gradient(160deg,rgba(231,76,60,.07),var(--glass))}
+.ins-item.win{border-color:rgba(46,204,113,.24);background:linear-gradient(160deg,rgba(46,204,113,.06),var(--glass))}
+.ins-ico{
+  flex:0 0 30px;height:30px;border-radius:9px;display:grid;place-items:center;
+  font-size:14px;font-weight:800;background:rgba(232,168,32,.12);color:var(--gold2);border:1px solid rgba(232,168,32,.24)
+}
+.ins-item.alert .ins-ico{background:rgba(231,76,60,.13);color:#FF9E93;border-color:rgba(231,76,60,.25)}
+.ins-item.win .ins-ico{background:rgba(46,204,113,.12);color:#7DE3AC;border-color:rgba(46,204,113,.24)}
+.ins-tx h4{font-size:13px;font-weight:800;color:var(--white);margin-bottom:4px}
+.ins-tx p{font-size:12.5px;color:var(--muted);line-height:1.6}
+.ins-tx b{color:var(--txt);font-weight:700}
+
+.foot{margin-top:44px;padding-top:20px;border-top:1px solid var(--b);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:11.5px;color:var(--muted)}
+.foot a{color:var(--gold2);text-decoration:none;font-weight:700}
+
+@media(max-width:1020px){.k4{grid-template-columns:repeat(2,1fr)}.split{grid-template-columns:1fr}.k3{grid-template-columns:1fr}}
+@media(max-width:640px){
+  .k4,.k2{grid-template-columns:1fr}
+  .fun-row{grid-template-columns:1fr;gap:6px}
+  .fun-side{text-align:left}
+  .tbl-scroll{overflow-x:auto}
+  .brand img{height:32px}
+}
+.tbl-scroll{overflow-x:auto}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="topbar">
+    <div class="brand">
+      <img src="assets/logo-mpr-tg.png" alt="Protocolo MPR · Trader Generation">
+      <div class="sep"></div>
+      <div>
+        <h1>Relatório de Tráfego Pago</h1>
+        <p>Alves Trader · act_528294041754381</p>
+      </div>
+    </div>
+    <div class="meta">
+      <span class="pill live"><span class="dot"></span>Campanha no ar</span>
+      <span class="pill gold">[VENDAS] PROJETO MPR</span>
+      <span class="pill">03/09 a 08/09/2026 · 6 dias</span>
+    </div>
+  </div>
+
+  <!-- ============ KPIs ============ -->
+  <div class="sec">
+    <div class="sec-h">
+      <h2>Visão geral do período</h2>
+      <span>Dia 08/09 parcial · fuso America/Sao_Paulo</span>
+    </div>
+    <div class="grid k4">
+      <div class="card kpi hero">
+        <div class="lab">Investimento</div>
+        <div class="val"><small>R$</small>502,30</div>
+        <div class="sub">R$ 100,00/dia em 2 conjuntos ativos</div>
+        <svg class="spark" id="sp-spend" viewBox="0 0 120 34" preserveAspectRatio="none"></svg>
+      </div>
+      <div class="card kpi hero">
+        <div class="lab">Receita</div>
+        <div class="val"><small>R$</small>788,00</div>
+        <div class="sub">4 compras · ticket de R$ 197,00</div>
+        <svg class="spark" id="sp-rev" viewBox="0 0 120 34" preserveAspectRatio="none"></svg>
+      </div>
+      <div class="card kpi">
+        <div class="lab">ROAS</div>
+        <div class="val">1,57<small style="margin-left:4px">x</small></div>
+        <div class="sub">Retorno bruto sobre o investido</div>
+        <span class="chip up">Acima do ponto de equilíbrio bruto (1,00x)</span>
+      </div>
+      <div class="card kpi">
+        <div class="lab">CPA</div>
+        <div class="val"><small>R$</small>125,58</div>
+        <div class="sub">Custo por compra no pixel</div>
+        <span class="chip neu">63,7% do ticket de R$ 197</span>
+      </div>
+    </div>
+
+    <div class="grid k4" style="margin-top:14px">
+      <div class="card kpi">
+        <div class="lab">Impressões</div>
+        <div class="val">21.498</div>
+        <div class="sub">Alcance de 6.672 pessoas</div>
+        <span class="chip down">Frequência 3,22x em 6 dias</span>
+      </div>
+      <div class="card kpi">
+        <div class="lab">CTR</div>
+        <div class="val">3,88<small style="margin-left:3px">%</small></div>
+        <div class="sub">835 cliques · 492 cliques no link</div>
+        <span class="chip up">Bem acima da média de infoproduto (1,0 a 1,5%)</span>
+      </div>
+      <div class="card kpi">
+        <div class="lab">CPM</div>
+        <div class="val"><small>R$</small>23,36</div>
+        <div class="sub">CPC no link de R$ 1,02</div>
+        <span class="chip neu">Varia de R$ 18,89 a R$ 28,79 por conjunto</span>
+      </div>
+      <div class="card kpi">
+        <div class="lab">Visitas na página</div>
+        <div class="val">400</div>
+        <div class="sub">R$ 1,26 por visita qualificada</div>
+        <span class="chip up">81,3% dos cliques carregam a página</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ Evolução ============ -->
+  <div class="sec">
+    <div class="sec-h">
+      <h2>Evolução diária</h2>
+      <span>Investimento x receita x ROAS</span>
+    </div>
+    <div class="grid split">
+      <div class="card">
+        <div class="legend">
+          <span><i style="background:linear-gradient(180deg,#3A3F55,#22263a)"></i>Investimento</span>
+          <span><i style="background:linear-gradient(180deg,var(--gold2),var(--gold3))"></i>Receita</span>
+          <span><i style="background:var(--green)"></i>ROAS</span>
+        </div>
+        <svg id="chart-daily" viewBox="0 0 720 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="card">
+        <div class="legend"><span><i style="background:var(--gold)"></i>Visitas na página por dia</span></div>
+        <svg id="chart-lpv" viewBox="0 0 340 300" style="width:100%;height:auto"></svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ Funil ============ -->
+  <div class="sec">
+    <div class="sec-h">
+      <h2>Funil de conversão</h2>
+      <span>Volume, taxa de passagem e custo por etapa</span>
+    </div>
+    <div class="grid split">
+      <div class="card" id="funil"></div>
+      <div class="card">
+        <div class="lab" style="font-size:11px;font-weight:700;letter-spacing:.11em;text-transform:uppercase;color:var(--muted);margin-bottom:14px">Onde o dinheiro trava</div>
+        <div class="ins">
+          <div class="ins-item alert">
+            <div class="ins-ico">!</div>
+            <div class="ins-tx">
+              <h4>Checkout iniciado que não vira compra</h4>
+              <p><b>38 checkouts</b> iniciados para <b>4 compras</b>. São 34 pessoas que chegaram no pagamento e desistiram, o equivalente a <b>R$ 6.698 de receita potencial</b> parada.</p>
+            </div>
+          </div>
+          <div class="ins-item alert">
+            <div class="ins-ico">!</div>
+            <div class="ins-tx">
+              <h4>Da visita para o carrinho</h4>
+              <p>Só <b>11,75%</b> das 400 visitas chegam ao carrinho. É a etapa com maior queda percentual do funil e depende de oferta e prova na página, não de mídia.</p>
+            </div>
+          </div>
+          <div class="ins-item win">
+            <div class="ins-ico">✓</div>
+            <div class="ins-tx">
+              <h4>Topo saudável</h4>
+              <p>CTR de <b>3,88%</b> e <b>81,3%</b> de carregamento da página. O criativo e a velocidade da landing não são o gargalo.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ Criativos ============ -->
+  <div class="sec">
+    <div class="sec-h">
+      <h2>Desempenho por criativo</h2>
+      <span>3 vídeos rodando na mesma copy e mesma oferta</span>
+    </div>
+    <div class="card tbl-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>Criativo</th><th>Status</th><th>Investido</th><th>Impressões</th>
+            <th>CTR</th><th>CPM</th><th>Visitas</th><th>Compras</th><th>CPA</th><th>Receita</th><th>ROAS</th>
+          </tr>
+        </thead>
+        <tbody id="tb-ads"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ============ Posicionamento e público ============ -->
+  <div class="sec">
+    <div class="sec-h">
+      <h2>Onde o anúncio aparece e para quem</h2>
+      <span>Investimento e compras por posicionamento, público e dispositivo</span>
+    </div>
+    <div class="grid k2">
+      <div class="card">
+        <div class="legend"><span><i style="background:var(--gold)"></i>Investimento por posicionamento</span><span><i style="background:var(--green)"></i>Com compra</span></div>
+        <svg id="chart-place" viewBox="0 0 420 280" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="card">
+        <div class="legend"><span><i style="background:var(--gold)"></i>Investimento por faixa etária e gênero</span></div>
+        <svg id="chart-demo" viewBox="0 0 420 280" style="width:100%;height:auto"></svg>
+      </div>
+    </div>
+    <div class="grid k2" style="margin-top:14px">
+      <div class="card">
+        <div class="lab" style="font-size:11px;font-weight:700;letter-spacing:.11em;text-transform:uppercase;color:var(--muted);margin-bottom:12px">Dispositivo</div>
+        <div class="tbl-scroll">
+          <table>
+            <thead><tr><th>Aparelho</th><th>Investido</th><th>Impressões</th><th>Cliques</th><th>Compras</th><th>Receita</th></tr></thead>
+            <tbody id="tb-dev"></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="card">
+        <div class="lab" style="font-size:11px;font-weight:700;letter-spacing:.11em;text-transform:uppercase;color:var(--muted);margin-bottom:12px">Investimento por hora do dia</div>
+        <div class="heat" id="heat"></div>
+        <div class="heat-lab" id="heat-lab"></div>
+        <p style="font-size:11.5px;color:var(--muted);margin-top:12px">Pico de entrega entre <b style="color:var(--txt)">22h e 00h</b> e no bloco de <b style="color:var(--txt)">13h e 14h</b>. As 4 compras aconteceram às 7h, 15h, 20h e 21h.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ Plano de ação ============ -->
+  <div class="sec">
+    <div class="sec-h">
+      <h2>Plano de ação</h2>
+      <span>Prioridade pelo impacto em receita</span>
+    </div>
+    <div class="ins">
+      <div class="ins-item win">
+        <div class="ins-ico">1</div>
+        <div class="ins-tx">
+          <h4>Realocar verba para o AD SET 1.2</h4>
+          <p>O <b>ad3.MOV</b> entrega <b>ROAS 2,32x</b> com CPA de <b>R$ 84,75</b> e CPM de R$ 19,12. O <b>ad2.MOV</b> gastou 61% a mais para o mesmo número de vendas, com ROAS 1,44x e CPM de R$ 28,79. Subir o 1.2 para R$ 80/dia e manter o 1.1 em R$ 50 tende a puxar o ROAS agregado para perto de 2,0x com o mesmo orçamento.</p>
+        </div>
+      </div>
+      <div class="ins-item alert">
+        <div class="ins-ico">2</div>
+        <div class="ins-tx">
+          <h4>Remarketing de checkout abandonado</h4>
+          <p>34 checkouts abandonados em 6 dias, sem nenhuma campanha de retomada no ar. Um público de <b>InitiateCheckout sem Purchase de 7 dias</b> com R$ 20 a R$ 30/dia é a alavanca mais barata do momento: recuperar 3 desses 34 já dobra a receita do período.</p>
+        </div>
+      </div>
+      <div class="ins-item alert">
+        <div class="ins-ico">3</div>
+        <div class="ins-tx">
+          <h4>Frequência em 3,22x com alcance de só 6.672 pessoas</h4>
+          <p>Público quente pequeno e já saturando. O CPM do AD SET 1.1 subiu para <b>R$ 28,79</b> contra R$ 19,12 do 1.2 e as visitas na página caíram de 106 (03/09) para 58 (06/09). Abrir um conjunto frio com público aberto ou lookalike de compradores antes que o CPA suba mais.</p>
+        </div>
+      </div>
+      <div class="ins-item">
+        <div class="ins-ico">4</div>
+        <div class="ins-tx">
+          <h4>Cortar o que não converte</h4>
+          <p><b>Instagram Reels</b> consumiu R$ 118,06 sem nenhuma compra e o <b>Facebook inteiro</b> R$ 36,80 também sem venda. Juntos são R$ 154,86, ou 31% do investimento, com zero receita. Stories e Feed do Instagram concentram as 4 vendas.</p>
+        </div>
+      </div>
+      <div class="ins-item">
+        <div class="ins-ico">5</div>
+        <div class="ins-tx">
+          <h4>Ajuste fino de público</h4>
+          <p>A faixa <b>18-24 masculino</b> trouxe 2 compras com R$ 47,92 investidos, um CPA de R$ 23,96. Já <b>35-44 masculino</b> queimou R$ 110,43 sem venda. O público feminino levou R$ 68,46 e também não converteu. Vale testar um conjunto restrito a homens de 18 a 34 anos.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ Contexto da conta ============ -->
+  <div class="sec">
+    <div class="sec-h">
+      <h2>Contexto da conta em 2026</h2>
+      <span>Investimento mensal da Alves Trader · lifetime de R$ 332.487,35</span>
+    </div>
+    <div class="card">
+      <svg id="chart-ano" viewBox="0 0 720 220" style="width:100%;height:auto"></svg>
+      <p style="font-size:12px;color:var(--muted);margin-top:12px">A conta ficou <b style="color:var(--txt)">parada de junho a agosto</b>. O Projeto MPR reabriu a operação em 03/09 e é hoje a única das 176 campanhas da conta com entrega ativa.</p>
+    </div>
+  </div>
+
+  <div class="foot">
+    <span>Dados extraídos da Graph API da Meta v21.0 em 08/09/2026 · janela de atribuição padrão da conta</span>
+    <span>Landing: <a href="https://www.tradergeneration.com.br/mpr/" target="_blank" rel="noopener">tradergeneration.com.br/mpr</a> · Dbout Mídia</span>
+  </div>
+</div>
+
+<script>
+const G='#E8A820', G2='#FDD247', G3='#A86E08', MU='#8B90A7', GR='#2ECC71', RD='#E74C3C';
+const brl = n => n.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
+const num = n => n.toLocaleString('pt-BR');
+
+const daily = [
+  {d:'03/09', spend:92.98, impr:4352, clicks:193, ctr:4.43, lpv:106, ic:6, purch:0, rev:0},
+  {d:'04/09', spend:87.62, impr:4007, clicks:165, ctr:4.12, lpv:89,  ic:8, purch:0, rev:0},
+  {d:'05/09', spend:98.91, impr:4489, clicks:149, ctr:3.32, lpv:81,  ic:10,purch:2, rev:394},
+  {d:'06/09', spend:110.84,impr:4772, clicks:155, ctr:3.25, lpv:58,  ic:6, purch:1, rev:197},
+  {d:'07/09', spend:100.28,impr:3374, clicks:144, ctr:4.27, lpv:59,  ic:5, purch:1, rev:197},
+  {d:'08/09', spend:11.67, impr:504,  clicks:29,  ctr:5.75, lpv:7,   ic:3, purch:0, rev:0}
+];
+const ads = [
+  {n:'ad3.MOV', set:'[AD SET 1.2] · QUENTE', on:true,  spend:169.50, impr:8863, ctr:4.01, cpm:19.12, lpv:147, purch:2, rev:394},
+  {n:'ad2.MOV', set:'[AD SET 1.1] · QUENTE', on:true,  spend:273.70, impr:9506, ctr:3.69, cpm:28.79, lpv:178, purch:2, rev:394},
+  {n:'ad1.MOV', set:'[AD SET 1.1] · pausado',on:false, spend:59.10,  impr:3129, ctr:4.12, cpm:18.89, lpv:75,  purch:0, rev:0}
+];
+const places = [
+  {n:'Instagram Stories', spend:174.57, purch:2},
+  {n:'Instagram Feed',    spend:170.57, purch:2},
+  {n:'Instagram Reels',   spend:118.06, purch:0},
+  {n:'Facebook Feed',     spend:21.51,  purch:0},
+  {n:'Facebook Reels',    spend:12.30,  purch:0},
+  {n:'Outros',            spend:5.29,   purch:0}
+];
+const demo = [
+  {n:'25-34 H', spend:225.60, purch:2},
+  {n:'35-44 H', spend:110.43, purch:0},
+  {n:'18-24 H', spend:47.92,  purch:2},
+  {n:'45-54 H', spend:41.53,  purch:0},
+  {n:'25-34 M', spend:36.73,  purch:0},
+  {n:'35-44 M', spend:22.42,  purch:0},
+  {n:'Outros',  spend:17.67,  purch:0}
+];
+const devs = [
+  {n:'Android smartphone', spend:255.48, impr:11651, clicks:408, purch:1, rev:197},
+  {n:'iPhone',             spend:242.84, impr:9643,  clicks:422, purch:3, rev:591},
+  {n:'Android tablet',     spend:2.23,   impr:53,    clicks:5,   purch:0, rev:0},
+  {n:'Desktop',            spend:1.48,   impr:131,   clicks:0,   purch:0, rev:0},
+  {n:'iPad',               spend:0.26,   impr:20,    clicks:0,   purch:0, rev:0}
+];
+const hours = [16.37,11.76,4.77,2.83,1.83,5.21,9.31,19.19,22.11,23.14,22.52,21.18,27.19,32.66,28.59,24.47,21.83,22.08,24.30,29.05,31.99,29.35,33.95,36.62];
+const hourPurch = [0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,1,1,0,0];
+const meses = [
+  {m:'Fev', spend:7071.12}, {m:'Mar', spend:4523.07}, {m:'Abr', spend:442.44},
+  {m:'Mai', spend:585.69},  {m:'Jun', spend:0}, {m:'Jul', spend:0}, {m:'Ago', spend:0},
+  {m:'Set', spend:502.30}
+];
+const funil = [
+  {n:'Impressões',        sub:'6.672 pessoas alcançadas', v:21498, cost:null,   rate:null},
+  {n:'Cliques no link',   sub:'CTR de link 2,29%',        v:492,   cost:1.02,   rate:2.29},
+  {n:'Visitas na página', sub:'81,3% dos cliques',        v:400,   cost:1.26,   rate:81.30},
+  {n:'Carrinho',          sub:'11,75% das visitas',       v:47,    cost:10.69,  rate:11.75},
+  {n:'Checkout iniciado', sub:'80,9% dos carrinhos',      v:38,    cost:13.22,  rate:80.85},
+  {n:'Compra',            sub:'10,5% dos checkouts',      v:4,     cost:125.58, rate:10.53}
+];
+
+const NS='http://www.w3.org/2000/svg';
+const el=(t,a={})=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);return e;};
+const txt=(x,y,s,a={})=>{const t=el('text',Object.assign({x,y,fill:MU,'font-size':10,'font-weight':600},a));t.textContent=s;return t;};
+
+/* sparklines */
+function spark(id, vals, color){
+  const s=document.getElementById(id); if(!s)return;
+  const mx=Math.max(...vals)||1, w=120, h=34, st=w/(vals.length-1);
+  const pts=vals.map((v,i)=>[i*st, h-3-(v/mx)*(h-8)]);
+  const d=pts.map((p,i)=>(i?'L':'M')+p[0].toFixed(1)+' '+p[1].toFixed(1)).join(' ');
+  const gid='g'+id;
+  const defs=el('defs'); const lg=el('linearGradient',{id:gid,x1:0,y1:0,x2:0,y2:1});
+  lg.appendChild(el('stop',{offset:'0%','stop-color':color,'stop-opacity':.34}));
+  lg.appendChild(el('stop',{offset:'100%','stop-color':color,'stop-opacity':0}));
+  defs.appendChild(lg); s.appendChild(defs);
+  s.appendChild(el('path',{d:d+` L ${w} ${h} L 0 ${h} Z`,fill:`url(#${gid})`}));
+  s.appendChild(el('path',{d,fill:'none',stroke:color,'stroke-width':1.8,'stroke-linejoin':'round','stroke-linecap':'round'}));
+  const last=pts[pts.length-1];
+  s.appendChild(el('circle',{cx:last[0]-1,cy:last[1],r:2.4,fill:color}));
+}
+spark('sp-spend', daily.map(d=>d.spend), G);
+spark('sp-rev',   daily.map(d=>d.rev),   G2);
+
+/* chart diario */
+(function(){
+  const s=document.getElementById('chart-daily'), W=720,H=300, ml=48,mr=44,mt=16,mb=34;
+  const iw=W-ml-mr, ih=H-mt-mb, n=daily.length, bw=iw/n;
+  const mx=Math.max(...daily.map(d=>Math.max(d.spend,d.rev)))*1.18;
+  for(let i=0;i<=4;i++){
+    const y=mt+ih-(ih/4)*i;
+    s.appendChild(el('line',{x1:ml,y1:y,x2:ml+iw,y2:y,stroke:'rgba(255,255,255,.055)','stroke-width':1}));
+    s.appendChild(txt(ml-8,y+3,'R$ '+Math.round(mx/4*i),{'text-anchor':'end','font-size':9.5}));
+  }
+  const defs=el('defs');
+  const g1=el('linearGradient',{id:'gRev',x1:0,y1:0,x2:0,y2:1});
+  g1.appendChild(el('stop',{offset:'0%','stop-color':G2})); g1.appendChild(el('stop',{offset:'100%','stop-color':G3}));
+  defs.appendChild(g1); s.appendChild(defs);
+  daily.forEach((d,i)=>{
+    const x=ml+i*bw, cw=bw*.32;
+    const hs=(d.spend/mx)*ih, hr=(d.rev/mx)*ih;
+    s.appendChild(el('rect',{x:x+bw*.16,y:mt+ih-hs,width:cw,height:hs,rx:4,fill:'#2C3145'}));
+    s.appendChild(el('rect',{x:x+bw*.52,y:mt+ih-hr,width:cw,height:Math.max(hr,d.rev?2:0),rx:4,fill:'url(#gRev)'}));
+    s.appendChild(txt(x+bw/2,H-12,d.d,{'text-anchor':'middle','font-size':10}));
+    if(d.rev) s.appendChild(txt(x+bw*.52+cw/2, mt+ih-hr-6, 'R$'+d.rev,{'text-anchor':'middle','font-size':9,fill:G2,'font-weight':800}));
+  });
+  const mroas=Math.max(...daily.map(d=>d.spend?d.rev/d.spend:0))*1.5||1;
+  const pts=daily.map((d,i)=>[ml+i*bw+bw/2, mt+ih-((d.spend?d.rev/d.spend:0)/mroas)*ih]);
+  s.appendChild(el('path',{d:pts.map((p,i)=>(i?'L':'M')+p[0].toFixed(1)+' '+p[1].toFixed(1)).join(' '),fill:'none',stroke:GR,'stroke-width':2,'stroke-dasharray':'5 4','stroke-linejoin':'round'}));
+  daily.forEach((d,i)=>{
+    const r=d.spend?d.rev/d.spend:0;
+    s.appendChild(el('circle',{cx:pts[i][0],cy:pts[i][1],r:3.4,fill:'#04050A',stroke:GR,'stroke-width':2}));
+    if(r>0) s.appendChild(txt(pts[i][0],pts[i][1]-9,r.toFixed(2).replace('.',',')+'x',{'text-anchor':'middle','font-size':9.5,fill:GR,'font-weight':800}));
+  });
+})();
+
+/* chart LPV */
+(function(){
+  const s=document.getElementById('chart-lpv'), W=340,H=300, ml=32,mr=12,mt=16,mb=34;
+  const iw=W-ml-mr, ih=H-mt-mb, n=daily.length, bw=iw/n, mx=Math.max(...daily.map(d=>d.lpv))*1.25;
+  for(let i=0;i<=4;i++){
+    const y=mt+ih-(ih/4)*i;
+    s.appendChild(el('line',{x1:ml,y1:y,x2:ml+iw,y2:y,stroke:'rgba(255,255,255,.055)'}));
+    s.appendChild(txt(ml-7,y+3,Math.round(mx/4*i),{'text-anchor':'end','font-size':9.5}));
+  }
+  daily.forEach((d,i)=>{
+    const h=(d.lpv/mx)*ih, x=ml+i*bw+bw*.22;
+    s.appendChild(el('rect',{x,y:mt+ih-h,width:bw*.56,height:h,rx:5,fill:G,opacity:i===daily.length-1?.4:.85}));
+    s.appendChild(txt(x+bw*.28,mt+ih-h-6,d.lpv,{'text-anchor':'middle','font-size':10,fill:'#F5F7FF','font-weight':800}));
+    s.appendChild(txt(x+bw*.28,H-12,d.d,{'text-anchor':'middle','font-size':9.5}));
+  });
+})();
+
+/* funil */
+(function(){
+  const box=document.getElementById('funil'), mx=funil[0].v;
+  funil.forEach(f=>{
+    const pct=Math.max((f.v/mx)*100, 3.2);
+    const row=document.createElement('div'); row.className='fun-row';
+    row.innerHTML=`
+      <div class="fun-name">${f.n}<em>${f.sub}</em></div>
+      <div class="fun-bar"><div class="fun-fill" style="width:${pct}%"><span>${num(f.v)}</span></div></div>
+      <div class="fun-side">${f.cost!==null?`<b>R$ ${brl(f.cost)}</b><em>custo por evento</em>`:`<b>${num(21498)}</b><em>base do funil</em>`}</div>`;
+    box.appendChild(row);
+  });
+})();
+
+/* tabela criativos */
+(function(){
+  const tb=document.getElementById('tb-ads');
+  ads.forEach(a=>{
+    const roas=a.spend?a.rev/a.spend:0, cpa=a.purch?a.spend/a.purch:0;
+    const cls=roas>=2?'good':roas>=1?'mid':'bad';
+    const tr=document.createElement('tr');
+    tr.innerHTML=`
+      <td class="nm">${a.n}<em>${a.set}</em></td>
+      <td><span class="tag ${a.on?'on':'off'}">${a.on?'ATIVO':'PAUSADO'}</span></td>
+      <td>R$ ${brl(a.spend)}<div class="mini"><i style="width:${(a.spend/502.3*100).toFixed(0)}%"></i></div></td>
+      <td>${num(a.impr)}</td>
+      <td>${a.ctr.toFixed(2).replace('.',',')}%</td>
+      <td>R$ ${brl(a.cpm)}</td>
+      <td>${a.lpv}</td>
+      <td>${a.purch}</td>
+      <td>${cpa?'R$ '+brl(cpa):'<span style="color:#8B90A7">sem venda</span>'}</td>
+      <td>R$ ${brl(a.rev)}</td>
+      <td class="roas ${cls}">${roas.toFixed(2).replace('.',',')}x</td>`;
+    tb.appendChild(tr);
+  });
+})();
+
+/* barras horizontais reutilizavel */
+function hbar(id, rows, W, H){
+  const s=document.getElementById(id), ml=118, mr=58, mt=8, mb=8;
+  const iw=W-ml-mr, ih=H-mt-mb, bh=ih/rows.length, mx=Math.max(...rows.map(r=>r.spend));
+  rows.forEach((r,i)=>{
+    const y=mt+i*bh, w=Math.max((r.spend/mx)*iw,2);
+    s.appendChild(txt(ml-10, y+bh/2+3.5, r.n, {'text-anchor':'end','font-size':10.5,fill:'#E2E5F0'}));
+    s.appendChild(el('rect',{x:ml,y:y+bh*.18,width:iw,height:bh*.64,rx:5,fill:'rgba(255,255,255,.035)'}));
+    s.appendChild(el('rect',{x:ml,y:y+bh*.18,width:w,height:bh*.64,rx:5,fill:r.purch?GR:G,opacity:r.purch?.9:.72}));
+    const lab=txt(ml+w+8, y+bh/2+3.5, 'R$ '+brl(r.spend), {'font-size':10,fill:'#F5F7FF','font-weight':800});
+    s.appendChild(lab);
+    if(r.purch) s.appendChild(txt(ml+8, y+bh/2+3.5, r.purch+' compra'+(r.purch>1?'s':''), {'font-size':9.5,fill:'#04050A','font-weight':800}));
+  });
+}
+hbar('chart-place', places, 420, 280);
+hbar('chart-demo',  demo,   420, 280);
+
+/* tabela dispositivos */
+(function(){
+  const tb=document.getElementById('tb-dev');
+  devs.forEach(d=>{
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td class="nm">${d.n}</td><td>R$ ${brl(d.spend)}</td><td>${num(d.impr)}</td><td>${d.clicks}</td>
+      <td style="color:${d.purch?'#2ECC71':'#8B90A7'};font-weight:800">${d.purch}</td><td>R$ ${brl(d.rev)}</td>`;
+    tb.appendChild(tr);
+  });
+})();
+
+/* heatmap horas */
+(function(){
+  const h=document.getElementById('heat'), l=document.getElementById('heat-lab'), mx=Math.max(...hours);
+  hours.forEach((v,i)=>{
+    const o=.10+(v/mx)*.90, d=document.createElement('div');
+    d.style.background=hourPurch[i]?`rgba(46,204,113,${o})`:`rgba(232,168,32,${o})`;
+    if(hourPurch[i]) d.style.borderColor='rgba(46,204,113,.6)';
+    d.title=`${String(i).padStart(2,'0')}h · R$ ${brl(v)}${hourPurch[i]?' · '+hourPurch[i]+' compra':''}`;
+    h.appendChild(d);
+    const s=document.createElement('span'); s.textContent=i%3===0?i:''; l.appendChild(s);
+  });
+})();
+
+/* chart ano */
+(function(){
+  const s=document.getElementById('chart-ano'), W=720,H=220, ml=52,mr=16,mt=16,mb=32;
+  const iw=W-ml-mr, ih=H-mt-mb, bw=iw/meses.length, mx=Math.max(...meses.map(m=>m.spend))*1.15;
+  for(let i=0;i<=3;i++){
+    const y=mt+ih-(ih/3)*i;
+    s.appendChild(el('line',{x1:ml,y1:y,x2:ml+iw,y2:y,stroke:'rgba(255,255,255,.055)'}));
+    s.appendChild(txt(ml-8,y+3,'R$ '+(mx/3*i/1000).toFixed(1).replace('.',',')+'k',{'text-anchor':'end','font-size':9.5}));
+  }
+  meses.forEach((m,i)=>{
+    const hh=(m.spend/mx)*ih, x=ml+i*bw+bw*.22, on=m.m==='Set';
+    if(m.spend>0){
+      s.appendChild(el('rect',{x,y:mt+ih-hh,width:bw*.56,height:Math.max(hh,2),rx:5,fill:on?G2:'#2C3145'}));
+      s.appendChild(txt(x+bw*.28,mt+ih-hh-6,'R$ '+(m.spend>=1000?(m.spend/1000).toFixed(1).replace('.',',')+'k':Math.round(m.spend)),{'text-anchor':'middle','font-size':9.5,fill:on?G2:MU,'font-weight':800}));
+    } else {
+      s.appendChild(el('rect',{x,y:mt+ih-4,width:bw*.56,height:4,rx:2,fill:'rgba(255,255,255,.07)'}));
+      s.appendChild(txt(x+bw*.28,mt+ih-12,'parada',{'text-anchor':'middle','font-size':9,fill:'#5A5F75','font-weight':700}));
+    }
+    s.appendChild(txt(x+bw*.28,H-10,m.m,{'text-anchor':'middle','font-size':10,fill:on?G2:MU}));
+  });
+})();
+</script>
+</body>
+</html>
