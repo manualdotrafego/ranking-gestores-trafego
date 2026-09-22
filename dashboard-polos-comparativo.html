@@ -1,210 +1,159 @@
-<!DOCTYPE html><html lang="pt-BR"><head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Programa Polos · Comparativo de Períodos</title>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Programa Polos · Dashboard ao vivo</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23FFE600'/%3E%3Ctext x='50' y='70' font-size='54' text-anchor='middle'%3E%F0%9F%93%A6%3C/text%3E%3C/svg%3E">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,'Segoe UI',Roboto,Arial,sans-serif}
-body{background:#0e1130;color:#e9ecff;padding:26px;min-height:100vh}.wrap{max-width:1180px;margin:0 auto}
-.hdr{border-bottom:2px solid #2D3277;padding-bottom:18px;margin-bottom:22px}
-.tag{display:inline-flex;align-items:center;gap:7px;background:#FFE60022;color:#FFE600;font-weight:700;font-size:11px;padding:5px 11px;border-radius:20px;letter-spacing:.5px}
-.pulse{width:8px;height:8px;border-radius:50%;background:#FFE600;animation:p 1.6s infinite}
-@keyframes p{0%{box-shadow:0 0 0 0 #FFE60099}70%{box-shadow:0 0 0 8px #FFE60000}100%{box-shadow:0 0 0 0 #FFE60000}}
-h1{font-size:25px;margin:9px 0 5px;font-weight:800}h1 em{color:#FFE600;font-style:normal}
-.sub{font-size:12px;color:#8a90c8}
-.legend{display:flex;gap:18px;margin-top:10px;font-size:11px;color:#9aa0d6}
-.legend b{font-weight:700}
-.tot{display:grid;grid-template-columns:repeat(4,1fr);gap:13px;margin-bottom:24px}
-.k{background:#161a44;border:1px solid #242a63;border-radius:14px;padding:14px 16px}
-.k .l{font-size:11px;color:#9aa0d6;margin-bottom:6px}.k .v{font-size:21px;font-weight:800;color:#FFE600}
-.k .d{font-size:11px;margin-top:3px}
-.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
-.card{background:#161a44;border:1px solid #242a63;border-radius:16px;overflow:hidden}
-.card-h{background:#3483FA;color:#fff;font-weight:800;font-size:15px;padding:12px 16px}
-table{width:100%;border-collapse:collapse}
-th{font-size:10.5px;color:#9aa0d6;font-weight:600;text-align:right;padding:9px 14px 7px;border-bottom:1px solid #242a63}
-th:first-child{text-align:left}
-td{font-size:13px;padding:9px 14px;border-bottom:1px solid #20254e;text-align:right}
-tr:last-child td{border-bottom:none}
-.ml{text-align:left;color:#cfd4ff;font-weight:600}
-.va{font-weight:800;color:#fff}.vb{color:#8a90c8}.dl{font-weight:800;font-size:12px}
-.foot{text-align:center;font-size:11px;color:#6b72a8;border-top:1px solid #242a63;padding-top:16px;margin-top:22px}
-@media(max-width:820px){.tot{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:1fr}}
-</style></head><body><div class="wrap">
-<div class="hdr">
-  <div class="tag"><span class="pulse"></span>PROGRAMA POLOS · COMPARATIVO</div>
-  <h1>Comparativo de <em>2 períodos</em> por campanha</h1>
-  <div class="sub">Conta 001 · act_310500857276337 · Período A 16/06→23/06 vs Período B 08/06→15/06 (8 dias cada)</div>
-  <div class="legend"><span><b style="color:#00E676">🟢 verde</b> = melhora</span><span><b style="color:#FF5C7A">🔴 vermelho</b> = piora</span><span>var = A vs B</span></div>
-</div>
-<div class="tot">
-  <div class="k"><div class="l">💰 Investimento (A)</div><div class="v">R$ 5.281,92</div><div class="d" style="color:#00E676">+57% vs B</div></div>
-  <div class="k"><div class="l">🎯 Leads (A)</div><div class="v">160</div><div class="d" style="color:#00E676">+44% vs B</div></div>
-  <div class="k"><div class="l">📊 CPL médio (A)</div><div class="v">R$ 33,01</div><div class="d" style="color:#FF5C7A">+9% vs B</div></div>
-  <div class="k"><div class="l">🔗 Links Clicks (A)</div><div class="v">1125</div><div class="d" style="color:#00E676">+58% vs B</div></div>
-</div>
-<div class="grid"><div class="card">
-      <div class="card-h">📍 SJRP</div>
-      <table>
-        <thead><tr><th></th><th>16→23/06</th><th>08→15/06</th><th>var</th></tr></thead>
-        <tbody><tr>
-      <td class="ml">💰 Investimento</td>
-      <td class="va">R$ 1.022,11</td>
-      <td class="vb">R$ 696,42</td>
-      <td class="dl" style="color:#00E676">+47%</td>
-    </tr><tr>
-      <td class="ml">🎯 Leads</td>
-      <td class="va">35</td>
-      <td class="vb">32</td>
-      <td class="dl" style="color:#00E676">+9%</td>
-    </tr><tr>
-      <td class="ml">🔗 Links Clicks</td>
-      <td class="va">173</td>
-      <td class="vb">136</td>
-      <td class="dl" style="color:#00E676">+27%</td>
-    </tr><tr>
-      <td class="ml">CPC</td>
-      <td class="va">R$ 5,91</td>
-      <td class="vb">R$ 5,12</td>
-      <td class="dl" style="color:#FF5C7A">+15%</td>
-    </tr><tr>
-      <td class="ml">CTR</td>
-      <td class="va">0.99%</td>
-      <td class="vb">0.88%</td>
-      <td class="dl" style="color:#00E676">+13%</td>
-    </tr><tr>
-      <td class="ml">CPL</td>
-      <td class="va">R$ 29,20</td>
-      <td class="vb">R$ 21,76</td>
-      <td class="dl" style="color:#FF5C7A">+34%</td>
-    </tr><tr>
-      <td class="ml">Frequência</td>
-      <td class="va">1.54</td>
-      <td class="vb">1.61</td>
-      <td class="dl" style="color:#00E676">-5%</td>
-    </tr></tbody>
-      </table>
-    </div><div class="card">
-      <div class="card-h">📍 JOINVILLE</div>
-      <table>
-        <thead><tr><th></th><th>16→23/06</th><th>08→15/06</th><th>var</th></tr></thead>
-        <tbody><tr>
-      <td class="ml">💰 Investimento</td>
-      <td class="va">R$ 1.616,43</td>
-      <td class="vb">R$ 1.017,36</td>
-      <td class="dl" style="color:#00E676">+59%</td>
-    </tr><tr>
-      <td class="ml">🎯 Leads</td>
-      <td class="va">57</td>
-      <td class="vb">39</td>
-      <td class="dl" style="color:#00E676">+46%</td>
-    </tr><tr>
-      <td class="ml">🔗 Links Clicks</td>
-      <td class="va">306</td>
-      <td class="vb">196</td>
-      <td class="dl" style="color:#00E676">+56%</td>
-    </tr><tr>
-      <td class="ml">CPC</td>
-      <td class="va">R$ 5,28</td>
-      <td class="vb">R$ 5,19</td>
-      <td class="dl" style="color:#FF5C7A">+2%</td>
-    </tr><tr>
-      <td class="ml">CTR</td>
-      <td class="va">0.57%</td>
-      <td class="vb">0.57%</td>
-      <td class="dl" style="color:#00E676">+0%</td>
-    </tr><tr>
-      <td class="ml">CPL</td>
-      <td class="va">R$ 28,36</td>
-      <td class="vb">R$ 26,09</td>
-      <td class="dl" style="color:#FF5C7A">+9%</td>
-    </tr><tr>
-      <td class="ml">Frequência</td>
-      <td class="va">2.33</td>
-      <td class="vb">2.13</td>
-      <td class="dl" style="color:#FF5C7A">+9%</td>
-    </tr></tbody>
-      </table>
-    </div><div class="card">
-      <div class="card-h">📍 SERRA GAÚCHA</div>
-      <table>
-        <thead><tr><th></th><th>16→23/06</th><th>08→15/06</th><th>var</th></tr></thead>
-        <tbody><tr>
-      <td class="ml">💰 Investimento</td>
-      <td class="va">R$ 1.112,69</td>
-      <td class="vb">R$ 669,05</td>
-      <td class="dl" style="color:#00E676">+66%</td>
-    </tr><tr>
-      <td class="ml">🎯 Leads</td>
-      <td class="va">29</td>
-      <td class="vb">14</td>
-      <td class="dl" style="color:#00E676">+107%</td>
-    </tr><tr>
-      <td class="ml">🔗 Links Clicks</td>
-      <td class="va">220</td>
-      <td class="vb">110</td>
-      <td class="dl" style="color:#00E676">+100%</td>
-    </tr><tr>
-      <td class="ml">CPC</td>
-      <td class="va">R$ 5,06</td>
-      <td class="vb">R$ 6,08</td>
-      <td class="dl" style="color:#00E676">-17%</td>
-    </tr><tr>
-      <td class="ml">CTR</td>
-      <td class="va">0.67%</td>
-      <td class="vb">0.49%</td>
-      <td class="dl" style="color:#00E676">+35%</td>
-    </tr><tr>
-      <td class="ml">CPL</td>
-      <td class="va">R$ 38,37</td>
-      <td class="vb">R$ 47,79</td>
-      <td class="dl" style="color:#00E676">-20%</td>
-    </tr><tr>
-      <td class="ml">Frequência</td>
-      <td class="va">2.20</td>
-      <td class="vb">1.82</td>
-      <td class="dl" style="color:#FF5C7A">+21%</td>
-    </tr></tbody>
-      </table>
-    </div><div class="card">
-      <div class="card-h">📍 ARAPONGAS</div>
-      <table>
-        <thead><tr><th></th><th>16→23/06</th><th>08→15/06</th><th>var</th></tr></thead>
-        <tbody><tr>
-      <td class="ml">💰 Investimento</td>
-      <td class="va">R$ 1.530,69</td>
-      <td class="vb">R$ 987,76</td>
-      <td class="dl" style="color:#00E676">+55%</td>
-    </tr><tr>
-      <td class="ml">🎯 Leads</td>
-      <td class="va">39</td>
-      <td class="vb">26</td>
-      <td class="dl" style="color:#00E676">+50%</td>
-    </tr><tr>
-      <td class="ml">🔗 Links Clicks</td>
-      <td class="va">426</td>
-      <td class="vb">269</td>
-      <td class="dl" style="color:#00E676">+58%</td>
-    </tr><tr>
-      <td class="ml">CPC</td>
-      <td class="va">R$ 3,59</td>
-      <td class="vb">R$ 3,67</td>
-      <td class="dl" style="color:#00E676">-2%</td>
-    </tr><tr>
-      <td class="ml">CTR</td>
-      <td class="va">0.98%</td>
-      <td class="vb">0.85%</td>
-      <td class="dl" style="color:#00E676">+15%</td>
-    </tr><tr>
-      <td class="ml">CPL</td>
-      <td class="va">R$ 39,25</td>
-      <td class="vb">R$ 37,99</td>
-      <td class="dl" style="color:#FF5C7A">+3%</td>
-    </tr><tr>
-      <td class="ml">Frequência</td>
-      <td class="va">2.21</td>
-      <td class="vb">2.14</td>
-      <td class="dl" style="color:#FF5C7A">+3%</td>
-    </tr></tbody>
-      </table>
-    </div></div>
-<div class="foot">Gerado em 23/06/2026 · Conta 001 · Dados Meta Ads · Período A (16–23/06) vs Período B (08–15/06) · Identidade visual Mercado Livre</div>
-</div></body></html>
+  :root{--yel:#FFE600;--dblue:#2D3277;--blue:#3483FA;--ink:#1F1F2E;--muted:#6B7280;--line:#E6E8F0;--bg:#F5F6FA;--card:#fff;
+        --ok:#00A650;--bad:#E5322D}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,'Segoe UI',Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.45}
+  .top{background:var(--yel);border-bottom:3px solid var(--dblue)}
+  .top .in{max-width:1240px;margin:0 auto;padding:16px 22px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px}
+  .top h1{font-size:20px;color:var(--dblue);font-weight:800;letter-spacing:-.2px}
+  .top h1 span{font-weight:500;opacity:.8}
+  .chip{background:var(--dblue);color:#fff;border-radius:100px;padding:6px 12px;font-size:12.5px;font-weight:600;display:inline-flex;gap:8px;align-items:center}
+  .dot{width:8px;height:8px;border-radius:50%;background:#7CFF9B;box-shadow:0 0 0 0 rgba(124,255,155,.6);animation:p 1.8s infinite}
+  .dot.err{background:#ff8a80;animation:none}
+  @keyframes p{0%{box-shadow:0 0 0 0 rgba(124,255,155,.6)}70%{box-shadow:0 0 0 9px rgba(124,255,155,0)}100%{box-shadow:0 0 0 0 rgba(124,255,155,0)}}
+  .wrap{max-width:1240px;margin:0 auto;padding:22px}
+  h2{font-size:15px;color:var(--dblue);text-transform:uppercase;letter-spacing:.06em;margin:22px 0 10px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  h2 small{font-weight:500;color:var(--muted);text-transform:none;letter-spacing:0;font-size:13px}
+  .grid{display:grid;gap:14px}
+  .g4{grid-template-columns:repeat(4,1fr)} .g5{grid-template-columns:repeat(5,1fr)} .g2{grid-template-columns:1fr 1fr}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px;box-shadow:0 4px 18px -12px rgba(45,50,119,.25);min-width:0}
+  .kpi .l{font-size:12px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.05em}
+  .kpi .v{font-size:26px;font-weight:800;color:var(--dblue);margin-top:4px;letter-spacing:-.5px}
+  .kpi .s{font-size:12.5px;color:var(--muted);margin-top:4px}
+  .delta{font-weight:700;padding:2px 7px;border-radius:6px;font-size:12px;white-space:nowrap}
+  .delta.up{background:#E8F7EE;color:var(--ok)} .delta.down{background:#FDECEC;color:var(--bad)} .delta.flat{background:#EEF0F5;color:var(--muted)}
+  .polo{border-top:5px solid var(--pc,var(--blue))}
+  .polo .nm{font-size:16px;font-weight:800;color:var(--dblue);display:flex;justify-content:space-between;align-items:center;gap:8px}
+  .polo .big{font-size:30px;font-weight:800;color:var(--dblue);margin:6px 0 2px}
+  .polo .row{display:flex;justify-content:space-between;gap:8px;font-size:13px;padding:5px 0;border-top:1px dashed var(--line)}
+  .polo .row b{color:var(--ink);text-align:right}
+  .cplpill{background:var(--yel);color:var(--dblue);font-weight:800;padding:3px 9px;border-radius:8px;font-size:13px;white-space:nowrap}
+  canvas{max-height:300px}
+  .tblwrap{overflow-x:auto}
+  table{width:100%;border-collapse:collapse;font-size:13px}
+  th{text-align:left;font-size:11.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;padding:8px;border-bottom:2px solid var(--line);white-space:nowrap}
+  td{padding:8px;border-bottom:1px solid var(--line)}
+  tr:last-child td{border-bottom:0}
+  .st{font-size:11px;font-weight:700;padding:2px 7px;border-radius:6px;white-space:nowrap}
+  .st.on{background:#E8F7EE;color:var(--ok)} .st.off{background:#F1F2F6;color:var(--muted)} .st.issue{background:#FFF4E0;color:#B45309}
+  .tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+  .tab{border:1px solid var(--line);background:#fff;border-radius:100px;padding:6px 13px;font-size:13px;font-weight:600;cursor:pointer;color:var(--dblue)}
+  .tab.on{background:var(--dblue);color:#fff;border-color:var(--dblue)}
+  .empty{padding:36px;text-align:center;color:var(--muted)}
+  .foot{color:var(--muted);font-size:12px;text-align:center;padding:26px 16px 10px}
+  @media(max-width:980px){.g4,.g5{grid-template-columns:repeat(2,1fr)}.g2{grid-template-columns:1fr}}
+  @media(max-width:520px){.g4,.g5{grid-template-columns:1fr}.top h1{font-size:17px}}
+</style>
+</head>
+<body>
+<div class="top"><div class="in">
+  <h1>📦 Programa Polos <span>· Dashboard ao vivo</span></h1>
+  <div class="chip"><span class="dot" id="dot"></span><span id="upd">carregando…</span></div>
+</div></div>
+
+<div class="wrap" id="app"><div class="empty" id="loading">Carregando dados dos polos…</div></div>
+<div class="foot">Fonte: API Meta Ads · Conta 001 · dados atualizados a cada hora na VPS · a página recarrega sozinha a cada 15 min</div>
+
+<script>
+const SRC = "https://srv1809067.hstgr.cloud/polos-dashboard.json";
+const COLORS = {"SJRP":"#3483FA","JOINVILLE":"#00A650","SERRA GAUCHA":"#F59E0B","ARAPONGAS":"#E5322D"};
+const LABEL  = {"SJRP":"SJRP","JOINVILLE":"Joinville + S. Bento","SERRA GAUCHA":"Serra Gaúcha","ARAPONGAS":"Arapongas"};
+const brl = v => v==null ? "–" : "R$ " + v.toLocaleString("pt-BR",{minimumFractionDigits:2,maximumFractionDigits:2});
+const num = v => v==null ? "–" : v.toLocaleString("pt-BR");
+const ddmm = s => s.slice(8,10)+"/"+s.slice(5,7);
+function delta(now, prev, lowerIsBetter){
+  if(now==null||prev==null||prev===0) return '<span class="delta flat">–</span>';
+  const p=(now-prev)/prev*100; const good = lowerIsBetter ? p<0 : p>0;
+  const cls = Math.abs(p)<1 ? "flat" : (good?"up":"down");
+  return `<span class="delta ${cls}">${p>0?"+":""}${p.toFixed(0)}%</span>`;
+}
+function stBadge(s){ if(s==="ACTIVE")return'<span class="st on">ativo</span>'; if(s==="PAUSED")return'<span class="st off">pausado</span>'; return`<span class="st issue">${(s||"?").toLowerCase().replace("_"," ")}</span>`; }
+
+let charts=[];
+function render(D){
+  charts.forEach(c=>c.destroy()); charts=[];
+  const P=D.polos;
+  const T = k => P.reduce((a,p)=>a+(p[k].spend||0),0), L = k => P.reduce((a,p)=>a+(p[k].leads||0),0);
+  const mtdS=T("mtd"), mtdL=L("mtd"), prS=T("prev"), prL=L("prev"), l7S=T("last7"), l7L=L("last7"), p7S=T("prev7"), p7L=L("prev7");
+  const cpl=(s,l)=>l?s/l:null;
+  document.getElementById("upd").textContent = "atualizado " + D.generated_at.replace("T"," ").slice(0,16);
+  document.getElementById("dot").classList.remove("err");
+
+  let h = `
+  <h2>Visão geral · ${D.month} <small>01/${D.month_start.slice(5,7)} a ${ddmm(D.today)} · comparado com ${D.prev_month}</small></h2>
+  <div class="grid g5">
+    <div class="card kpi"><div class="l">Investido no mês</div><div class="v">${brl(mtdS)}</div><div class="s">${D.prev_month}: ${brl(prS)}</div></div>
+    <div class="card kpi"><div class="l">Leads no mês</div><div class="v">${num(mtdL)}</div><div class="s">${D.prev_month}: ${num(prL)} ${delta(mtdL,prL,false)}</div></div>
+    <div class="card kpi"><div class="l">CPL do mês</div><div class="v">${brl(cpl(mtdS,mtdL))}</div><div class="s">${D.prev_month}: ${brl(cpl(prS,prL))} ${delta(cpl(mtdS,mtdL),cpl(prS,prL),true)}</div></div>
+    <div class="card kpi"><div class="l">Últimos 7 dias</div><div class="v">${num(l7L)} <span style="font-size:14px">leads</span></div><div class="s">${brl(l7S)} · CPL ${brl(cpl(l7S,l7L))}</div></div>
+    <div class="card kpi"><div class="l">7 dias anteriores</div><div class="v">${num(p7L)} <span style="font-size:14px">leads</span></div><div class="s">${brl(p7S)} · CPL ${brl(cpl(p7S,p7L))} ${delta(cpl(l7S,l7L),cpl(p7S,p7L),true)}</div></div>
+  </div>
+
+  <h2>Por polo · ${D.month}</h2>
+  <div class="grid g4">` +
+  P.map(p=>`
+    <div class="card polo" style="--pc:${COLORS[p.key]}">
+      <div class="nm">${LABEL[p.key]} <span class="cplpill">CPL ${brl(p.mtd.cpl)}</span></div>
+      <div class="big">${num(p.mtd.leads)} <span style="font-size:13px;font-weight:600;color:var(--muted)">leads</span></div>
+      <div class="row"><span>Investido</span><b>${brl(p.mtd.spend)}</b></div>
+      <div class="row"><span>CPL em ${D.prev_month}</span><b>${brl(p.prev.cpl)} ${delta(p.mtd.cpl,p.prev.cpl,true)}</b></div>
+      <div class="row"><span>Leads em ${D.prev_month}</span><b>${num(p.prev.leads)} ${delta(p.mtd.leads,p.prev.leads,false)}</b></div>
+      <div class="row"><span>Últimos 7d</span><b>${num(p.last7.leads)} leads · CPL ${brl(p.last7.cpl)} ${delta(p.last7.cpl,p.prev7.cpl,true)}</b></div>
+      <div class="row"><span>Conversão clique › lead</span><b>${p.mtd.conv==null?"–":p.mtd.conv.toLocaleString("pt-BR")+"%"}</b></div>
+    </div>`).join("") + `
+  </div>
+
+  <div class="grid g2" style="margin-top:14px">
+    <div class="card"><h2 style="margin-top:0">Leads por dia</h2><canvas id="cLeads"></canvas></div>
+    <div class="card"><h2 style="margin-top:0">CPL por polo <small>mês atual × anterior</small></h2><canvas id="cCpl"></canvas></div>
+  </div>
+
+  <h2>Criativos do mês <small>ordenados por leads · só os que tiveram gasto</small></h2>
+  <div class="tabs" id="tabs">` + P.map((p,i)=>`<button class="tab ${i===0?"on":""}" data-i="${i}">${LABEL[p.key]}</button>`).join("") + `</div>
+  <div class="card tblwrap" id="crbox"></div>`;
+  document.getElementById("app").innerHTML = h;
+
+  const crbox=document.getElementById("crbox");
+  const showCr = i => {
+    const p=P[i];
+    crbox.innerHTML = p.creatives.length ? `<table><thead><tr><th>Criativo</th><th>Status</th><th>Leads</th><th>Investido</th><th>CPL</th><th>CTR</th></tr></thead><tbody>` +
+      p.creatives.map(c=>`<tr><td><b>${c.name}</b></td><td>${stBadge(c.status)}</td><td>${num(c.leads)}</td><td>${brl(c.spend)}</td><td>${brl(c.cpl)}</td><td>${c.ctr.toLocaleString("pt-BR")}%</td></tr>`).join("") +
+      `</tbody></table>` : `<div class="empty">Sem criativos com gasto neste mês.</div>`;
+  };
+  showCr(0);
+  document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>{document.querySelectorAll(".tab").forEach(x=>x.classList.remove("on"));b.classList.add("on");showCr(+b.dataset.i);});
+
+  const days=[...new Set(P.flatMap(p=>p.daily.map(d=>d.d)))].sort();
+  charts.push(new Chart(document.getElementById("cLeads"),{type:"line",data:{labels:days.map(ddmm),
+    datasets:P.map(p=>({label:LABEL[p.key],data:days.map(d=>(p.daily.find(x=>x.d===d)||{}).leads??0),borderColor:COLORS[p.key],backgroundColor:COLORS[p.key],tension:.3,pointRadius:2,borderWidth:2}))},
+    options:{responsive:true,plugins:{legend:{position:"bottom"}},scales:{y:{beginAtZero:true,ticks:{precision:0}}}}}));
+  charts.push(new Chart(document.getElementById("cCpl"),{type:"bar",data:{labels:P.map(p=>LABEL[p.key]),
+    datasets:[{label:D.month,data:P.map(p=>p.mtd.cpl),backgroundColor:"#2D3277"},{label:D.prev_month,data:P.map(p=>p.prev.cpl),backgroundColor:"#FFE600",borderColor:"#2D3277",borderWidth:1}]},
+    options:{responsive:true,plugins:{legend:{position:"bottom"},tooltip:{callbacks:{label:c=>c.dataset.label+": "+brl(c.parsed.y)}}},scales:{y:{beginAtZero:true,ticks:{callback:v=>"R$ "+v}}}}}));
+}
+
+async function load(){
+  try{
+    const r=await fetch(SRC+"?cb="+Date.now(),{cache:"no-store"});
+    if(!r.ok) throw new Error("HTTP "+r.status);
+    render(await r.json());
+  }catch(e){
+    document.getElementById("dot").classList.add("err");
+    document.getElementById("upd").textContent="falha ao carregar";
+    document.getElementById("app").innerHTML=`<div class="card empty">Não consegui carregar os dados agora (${e.message}). Tento de novo em 1 min.</div>`;
+    setTimeout(load,60000);
+  }
+}
+load(); setInterval(load, 15*60*1000);
+</script>
+</body>
+</html>
