@@ -13,7 +13,7 @@
   --bg:#04050A; --bg1:#060810; --bg2:#090C18;
   --white:#F5F7FF; --txt:#E2E5F0; --muted:#8B90A7;
   --gold:#E8A820; --gold2:#FDD247; --gold3:#A86E08; --gold4:#FFE96A;
-  --green:#2ECC71; --red:#E74C3C;
+  --green:#2ECC71; --red:#E74C3C; --blue:#5B5BD6;
   --glass:rgba(255,255,255,.038); --b:rgba(255,255,255,.08);
   --glow:rgba(232,168,32,.25);
 }
@@ -33,7 +33,6 @@ body::before{
 }
 .wrap{max-width:1280px;margin:0 auto;padding:26px 20px 80px}
 
-/* ---------- header ---------- */
 .topbar{
   display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap;
   padding:16px 20px;border:1px solid var(--b);border-radius:18px;
@@ -51,11 +50,11 @@ body::before{
   padding:7px 13px;border-radius:999px;border:1px solid var(--b);background:var(--glass);color:var(--txt);
 }
 .pill.live{border-color:rgba(46,204,113,.32);background:rgba(46,204,113,.09);color:#8AE9B4}
+.pill.dead{border-color:rgba(231,76,60,.3);background:rgba(231,76,60,.08);color:#FF9E93}
 .dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 0 0 rgba(46,204,113,.6);animation:pulse 2.2s infinite}
 @keyframes pulse{70%{box-shadow:0 0 0 9px rgba(46,204,113,0)}100%{box-shadow:0 0 0 0 rgba(46,204,113,0)}}
 .pill.gold{border-color:rgba(232,168,32,.3);background:rgba(232,168,32,.08);color:var(--gold2)}
 
-/* ---------- section ---------- */
 .sec{margin-top:34px}
 .sec-h{display:flex;align-items:baseline;justify-content:space-between;gap:14px;margin-bottom:14px;flex-wrap:wrap}
 .sec-h h2{
@@ -65,17 +64,29 @@ body::before{
 }
 .sec-h span{font-size:12px;color:var(--muted);font-weight:500}
 
-.card{
-  border:1px solid var(--b);border-radius:16px;background:var(--glass);
-  backdrop-filter:blur(6px);padding:18px;
-}
+.card{border:1px solid var(--b);border-radius:16px;background:var(--glass);backdrop-filter:blur(6px);padding:18px}
 .grid{display:grid;gap:14px}
 .k4{grid-template-columns:repeat(4,1fr)}
 .k3{grid-template-columns:repeat(3,1fr)}
 .k2{grid-template-columns:repeat(2,1fr)}
 .split{grid-template-columns:1.55fr 1fr}
 
-/* ---------- kpi ---------- */
+/* linha do tempo da troca de conta */
+.tl{display:grid;grid-template-columns:1fr auto 1fr;gap:0;align-items:stretch}
+.tl-box{padding:16px 18px;border:1px solid var(--b);border-radius:14px;background:var(--glass)}
+.tl-box.old{border-color:rgba(231,76,60,.24);background:linear-gradient(160deg,rgba(231,76,60,.06),var(--glass))}
+.tl-box.new{border-color:rgba(46,204,113,.26);background:linear-gradient(160deg,rgba(46,204,113,.06),var(--glass))}
+.tl-gap{display:grid;place-items:center;padding:0 18px;min-width:150px}
+.tl-gap div{text-align:center}
+.tl-gap b{display:block;font-size:22px;font-weight:800;color:var(--red)}
+.tl-gap em{font-style:normal;font-size:11px;color:var(--muted);font-weight:600;letter-spacing:.06em;text-transform:uppercase}
+.tl-box h3{font-size:13.5px;font-weight:800;color:var(--white);margin-bottom:2px}
+.tl-box .id{font-size:11px;color:var(--muted);font-weight:600;margin-bottom:12px}
+.tl-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.tl-stats div{font-size:11px;color:var(--muted);font-weight:600}
+.tl-stats b{display:block;font-size:16px;color:var(--white);font-weight:800;font-variant-numeric:tabular-nums;margin-top:2px}
+.tl-stats b.g{color:var(--green)} .tl-stats b.r{color:#FF9E93}
+
 .kpi{position:relative;overflow:hidden}
 .kpi::after{content:'';position:absolute;left:0;top:0;height:2px;width:100%;background:linear-gradient(90deg,var(--gold),transparent)}
 .kpi .lab{font-size:11px;font-weight:700;letter-spacing:.11em;text-transform:uppercase;color:var(--muted)}
@@ -90,12 +101,10 @@ body::before{
 .chip.neu{background:rgba(255,255,255,.05);color:var(--muted);border:1px solid var(--b)}
 .spark{margin-top:10px;display:block;width:100%;height:34px}
 
-/* ---------- charts ---------- */
 .legend{display:flex;gap:16px;flex-wrap:wrap;font-size:11.5px;color:var(--muted);font-weight:600;margin-bottom:6px}
 .legend i{display:inline-block;width:9px;height:9px;border-radius:3px;margin-right:6px;vertical-align:middle}
 svg text{font-family:'Plus Jakarta Sans',sans-serif}
 
-/* ---------- funil ---------- */
 .fun-row{display:grid;grid-template-columns:150px 1fr 128px;gap:14px;align-items:center;padding:9px 0;border-bottom:1px dashed rgba(255,255,255,.06)}
 .fun-row:last-child{border-bottom:0}
 .fun-name{font-size:12.5px;font-weight:700;color:var(--txt)}
@@ -107,41 +116,32 @@ svg text{font-family:'Plus Jakarta Sans',sans-serif}
 .fun-side b{color:var(--white);font-weight:800;display:block;font-size:13px}
 .fun-side em{font-style:normal;color:var(--muted);font-size:11px}
 
-/* ---------- tabela ---------- */
 table{width:100%;border-collapse:collapse;font-size:12.5px}
-th{
-  text-align:right;font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);
-  font-weight:800;padding:0 10px 10px;border-bottom:1px solid var(--b);white-space:nowrap;
-}
+th{text-align:right;font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);font-weight:800;padding:0 10px 10px;border-bottom:1px solid var(--b);white-space:nowrap}
 th:first-child,td:first-child{text-align:left}
-td{padding:12px 10px;border-bottom:1px solid rgba(255,255,255,.045);font-variant-numeric:tabular-nums;white-space:nowrap}
+td{padding:12px 10px;border-bottom:1px solid rgba(255,255,255,.045);font-variant-numeric:tabular-nums;white-space:nowrap;text-align:right}
 tbody tr:last-child td{border-bottom:0}
 tbody tr:hover{background:rgba(255,255,255,.022)}
-td{text-align:right}
 .nm{font-weight:700;color:var(--white)}
 .nm em{display:block;font-style:normal;font-size:11px;color:var(--muted);font-weight:500;margin-top:2px}
 .tag{display:inline-block;font-size:10px;font-weight:800;padding:3px 8px;border-radius:6px;letter-spacing:.05em}
 .tag.on{background:rgba(46,204,113,.13);color:#7DE3AC;border:1px solid rgba(46,204,113,.24)}
 .tag.off{background:rgba(139,144,167,.12);color:var(--muted);border:1px solid var(--b)}
+.tag.dead{background:rgba(231,76,60,.12);color:#FF9E93;border:1px solid rgba(231,76,60,.24)}
 .roas{font-weight:800}
 .roas.good{color:var(--green)} .roas.mid{color:var(--gold2)} .roas.bad{color:var(--red)}
 .mini{height:6px;border-radius:99px;background:rgba(255,255,255,.06);overflow:hidden;margin-top:6px}
 .mini i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,var(--gold3),var(--gold2))}
 
-/* ---------- heatmap ---------- */
 .heat{display:grid;grid-template-columns:repeat(24,1fr);gap:4px}
-.heat div{aspect-ratio:1;border-radius:5px;border:1px solid rgba(255,255,255,.05);position:relative}
+.heat div{aspect-ratio:1;border-radius:5px;border:1px solid rgba(255,255,255,.05)}
 .heat-lab{display:grid;grid-template-columns:repeat(24,1fr);gap:4px;margin-top:6px;font-size:9px;color:var(--muted);text-align:center;font-weight:600}
 
-/* ---------- insights ---------- */
 .ins{display:grid;gap:12px}
 .ins-item{display:flex;gap:13px;padding:15px 16px;border:1px solid var(--b);border-radius:14px;background:var(--glass)}
 .ins-item.alert{border-color:rgba(231,76,60,.26);background:linear-gradient(160deg,rgba(231,76,60,.07),var(--glass))}
 .ins-item.win{border-color:rgba(46,204,113,.24);background:linear-gradient(160deg,rgba(46,204,113,.06),var(--glass))}
-.ins-ico{
-  flex:0 0 30px;height:30px;border-radius:9px;display:grid;place-items:center;
-  font-size:14px;font-weight:800;background:rgba(232,168,32,.12);color:var(--gold2);border:1px solid rgba(232,168,32,.24)
-}
+.ins-ico{flex:0 0 30px;height:30px;border-radius:9px;display:grid;place-items:center;font-size:14px;font-weight:800;background:rgba(232,168,32,.12);color:var(--gold2);border:1px solid rgba(232,168,32,.24)}
 .ins-item.alert .ins-ico{background:rgba(231,76,60,.13);color:#FF9E93;border-color:rgba(231,76,60,.25)}
 .ins-item.win .ins-ico{background:rgba(46,204,113,.12);color:#7DE3AC;border-color:rgba(46,204,113,.24)}
 .ins-tx h4{font-size:13px;font-weight:800;color:var(--white);margin-bottom:4px}
@@ -150,16 +150,16 @@ td{text-align:right}
 
 .foot{margin-top:44px;padding-top:20px;border-top:1px solid var(--b);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:11.5px;color:var(--muted)}
 .foot a{color:var(--gold2);text-decoration:none;font-weight:700}
+.tbl-scroll{overflow-x:auto}
 
-@media(max-width:1020px){.k4{grid-template-columns:repeat(2,1fr)}.split{grid-template-columns:1fr}.k3{grid-template-columns:1fr}}
+@media(max-width:1020px){.k4{grid-template-columns:repeat(2,1fr)}.split{grid-template-columns:1fr}.k3{grid-template-columns:1fr}.tl{grid-template-columns:1fr}.tl-gap{padding:14px 0}}
 @media(max-width:640px){
   .k4,.k2{grid-template-columns:1fr}
   .fun-row{grid-template-columns:1fr;gap:6px}
   .fun-side{text-align:left}
-  .tbl-scroll{overflow-x:auto}
+  .tl-stats{grid-template-columns:repeat(2,1fr)}
   .brand img{height:32px}
 }
-.tbl-scroll{overflow-x:auto}
 </style>
 </head>
 <body>
@@ -171,74 +171,110 @@ td{text-align:right}
       <div class="sep"></div>
       <div>
         <h1>Relatório de Tráfego Pago</h1>
-        <p>Alves Trader · act_528294041754381</p>
+        <p>Alves Trader · operação consolidada</p>
       </div>
     </div>
     <div class="meta">
-      <span class="pill live"><span class="dot"></span>Campanha no ar</span>
-      <span class="pill gold">[VENDAS] PROJETO MPR</span>
-      <span class="pill">03/09 a 08/09/2026 · 6 dias</span>
+      <span class="pill live"><span class="dot"></span>Contingência 02 no ar</span>
+      <span class="pill gold">[CBO - TESTE INICIAL]</span>
+      <span class="pill">03/09 a 27/09/2026 · 21 dias de entrega</span>
     </div>
+  </div>
+
+  <!-- ============ Troca de conta ============ -->
+  <div class="sec">
+    <div class="sec-h">
+      <h2>A operação mudou de conta no meio do mês</h2>
+      <span>O relatório junta as duas para não deixar buraco na série</span>
+    </div>
+    <div class="tl">
+      <div class="tl-box old">
+        <h3>Alves Trader <span class="tag dead" style="margin-left:6px">DESATIVADA</span></h3>
+        <div class="id">act_528294041754381 · [VENDAS] PROJETO MPR · 03/09 a 11/09</div>
+        <div class="tl-stats">
+          <div>Investido<b>R$ 854,11</b></div>
+          <div>Vendas<b>8</b></div>
+          <div>Receita<b>R$ 1.576</b></div>
+          <div>ROAS<b class="r">1,85x</b></div>
+        </div>
+      </div>
+      <div class="tl-gap">
+        <div>
+          <b>4 dias</b>
+          <em>sem entrega<br>12 a 15/09</em>
+        </div>
+      </div>
+      <div class="tl-box new">
+        <h3>Contingência 02 <span class="tag on" style="margin-left:6px">ATIVA</span></h3>
+        <div class="id">act_471233265258172 · [CBO - TESTE INICIAL] · 16/09 a 27/09</div>
+        <div class="tl-stats">
+          <div>Investido<b>R$ 549,99</b></div>
+          <div>Vendas<b>10</b></div>
+          <div>Receita<b>R$ 1.970</b></div>
+          <div>ROAS<b class="g">3,58x</b></div>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12px;color:var(--muted);margin-top:12px">A conta principal foi desativada em 11/09 por <b style="color:var(--txt)">violação de política de integridade de anúncios</b> (<code style="color:#FF9E93">disable_reason 1</code>). A operação voltou em 16/09 na conta de contingência, mesma BM, mesma oferta e mesma landing.</p>
   </div>
 
   <!-- ============ KPIs ============ -->
   <div class="sec">
     <div class="sec-h">
-      <h2>Visão geral do período</h2>
-      <span>Dia 08/09 parcial · fuso America/Sao_Paulo · receita inclui 2 vendas confirmadas fora do gerenciador</span>
+      <h2>Consolidado das duas contas</h2>
+      <span>03/09 a 27/09 · fuso America/Sao_Paulo · inclui 2 vendas confirmadas fora do gerenciador</span>
     </div>
     <div class="grid k4">
       <div class="card kpi hero">
         <div class="lab">Investimento</div>
-        <div class="val"><small>R$</small>502,30</div>
-        <div class="sub">R$ 100,00/dia em 2 conjuntos ativos</div>
+        <div class="val"><small>R$</small>1.404,10</div>
+        <div class="sub">R$ 854,11 na antiga + R$ 549,99 na nova</div>
         <svg class="spark" id="sp-spend" viewBox="0 0 120 34" preserveAspectRatio="none"></svg>
       </div>
       <div class="card kpi hero">
         <div class="lab">Receita</div>
-        <div class="val"><small>R$</small>1.182,00</div>
-        <div class="sub">6 compras · ticket de R$ 197,00</div>
-        <span class="chip up">4 no pixel + 2 confirmadas fora do gerenciador</span>
+        <div class="val"><small>R$</small>3.546,00</div>
+        <div class="sub">18 vendas · ticket de R$ 197,00</div>
         <svg class="spark" id="sp-rev" viewBox="0 0 120 34" preserveAspectRatio="none"></svg>
       </div>
       <div class="card kpi">
         <div class="lab">ROAS</div>
-        <div class="val">2,35<small style="margin-left:4px">x</small></div>
+        <div class="val">2,53<small style="margin-left:4px">x</small></div>
         <div class="sub">Retorno bruto sobre o investido</div>
-        <span class="chip neu">Cai para 1,57x se contar só o que o pixel registrou</span>
+        <span class="chip up">3,58x considerando só a conta nova</span>
       </div>
       <div class="card kpi">
         <div class="lab">CPA</div>
-        <div class="val"><small>R$</small>83,72</div>
-        <div class="sub">Custo por compra sobre as 6 vendas</div>
-        <span class="chip up">42,5% do ticket de R$ 197</span>
+        <div class="val"><small>R$</small>78,01</div>
+        <div class="sub">Custo por compra nas 18 vendas</div>
+        <span class="chip up">Caiu para R$ 55,00 na Contingência 02</span>
       </div>
     </div>
 
     <div class="grid k4" style="margin-top:14px">
       <div class="card kpi">
         <div class="lab">Impressões</div>
-        <div class="val">21.498</div>
-        <div class="sub">Alcance de 6.672 pessoas</div>
-        <span class="chip down">Frequência 3,22x em 6 dias</span>
+        <div class="val">60.193</div>
+        <div class="sub">2.057 cliques · 1.184 no link</div>
+        <span class="chip neu">Frequência de 4,07x na antiga e 3,13x na nova</span>
       </div>
       <div class="card kpi">
         <div class="lab">CTR</div>
-        <div class="val">3,88<small style="margin-left:3px">%</small></div>
-        <div class="sub">835 cliques · 492 cliques no link</div>
-        <span class="chip up">Bem acima da média de infoproduto (1,0 a 1,5%)</span>
+        <div class="val">3,42<small style="margin-left:3px">%</small></div>
+        <div class="sub">3,76% na antiga · 2,90% na nova</div>
+        <span class="chip up">Acima da média de infoproduto (1,0 a 1,5%)</span>
       </div>
       <div class="card kpi">
         <div class="lab">CPM</div>
-        <div class="val"><small>R$</small>23,36</div>
-        <div class="sub">CPC no link de R$ 1,02</div>
-        <span class="chip neu">Varia de R$ 18,89 a R$ 28,79 por conjunto</span>
+        <div class="val"><small>R$</small>23,33</div>
+        <div class="sub">CPC no link de R$ 1,19</div>
+        <span class="chip neu">Praticamente igual nas duas contas</span>
       </div>
       <div class="card kpi">
         <div class="lab">Visitas na página</div>
-        <div class="val">400</div>
-        <div class="sub">R$ 1,26 por visita qualificada</div>
-        <span class="chip up">81,3% dos cliques carregam a página</span>
+        <div class="val">1.001</div>
+        <div class="sub">R$ 1,40 por visita qualificada</div>
+        <span class="chip up">84,5% dos cliques carregam a página</span>
       </div>
     </div>
   </div>
@@ -247,21 +283,22 @@ td{text-align:right}
   <div class="sec">
     <div class="sec-h">
       <h2>Evolução diária</h2>
-      <span>Investimento x receita x ROAS</span>
+      <span>Investimento, receita e ROAS dia a dia, com a janela parada em destaque</span>
     </div>
     <div class="grid split">
       <div class="card">
         <div class="legend">
-          <span><i style="background:linear-gradient(180deg,#3A3F55,#22263a)"></i>Investimento</span>
+          <span><i style="background:#2C3145"></i>Investido (conta antiga)</span>
+          <span><i style="background:#3D6B52"></i>Investido (Contingência 02)</span>
           <span><i style="background:linear-gradient(180deg,var(--gold2),var(--gold3))"></i>Receita</span>
           <span><i style="background:var(--green)"></i>ROAS</span>
         </div>
-        <svg id="chart-daily" viewBox="0 0 720 300" style="width:100%;height:auto"></svg>
-        <p style="font-size:11.5px;color:var(--muted);margin-top:10px">A receita por dia usa só o que o pixel registrou. As <b style="color:var(--txt)">2 vendas confirmadas fora do gerenciador</b> não têm data atribuída e entram apenas nos totais e na linha do ad2.MOV.</p>
+        <svg id="chart-daily" viewBox="0 0 760 320" style="width:100%;height:auto"></svg>
+        <p style="font-size:11.5px;color:var(--muted);margin-top:10px">As <b style="color:var(--txt)">2 vendas confirmadas fora do gerenciador</b> (ad2.MOV, conta antiga) não têm data e entram só nos totais e na linha do criativo.</p>
       </div>
       <div class="card">
         <div class="legend"><span><i style="background:var(--gold)"></i>Visitas na página por dia</span></div>
-        <svg id="chart-lpv" viewBox="0 0 340 300" style="width:100%;height:auto"></svg>
+        <svg id="chart-lpv" viewBox="0 0 340 320" style="width:100%;height:auto"></svg>
       </div>
     </div>
   </div>
@@ -269,33 +306,33 @@ td{text-align:right}
   <!-- ============ Funil ============ -->
   <div class="sec">
     <div class="sec-h">
-      <h2>Funil de conversão</h2>
-      <span>Volume, taxa de passagem e custo por etapa</span>
+      <h2>Funil de conversão consolidado</h2>
+      <span>Volume, taxa de passagem e custo por etapa nos 21 dias de entrega</span>
     </div>
     <div class="grid split">
       <div class="card" id="funil"></div>
       <div class="card">
-        <div class="lab" style="font-size:11px;font-weight:700;letter-spacing:.11em;text-transform:uppercase;color:var(--muted);margin-bottom:14px">Onde o dinheiro trava</div>
+        <div style="font-size:11px;font-weight:700;letter-spacing:.11em;text-transform:uppercase;color:var(--muted);margin-bottom:14px">Onde o dinheiro trava</div>
         <div class="ins">
           <div class="ins-item alert">
             <div class="ins-ico">!</div>
             <div class="ins-tx">
-              <h4>Checkout iniciado que não vira compra</h4>
-              <p><b>38 checkouts</b> iniciados para <b>6 compras</b>. São 32 pessoas que chegaram no pagamento e desistiram, o equivalente a <b>R$ 6.304 de receita potencial</b> parada.</p>
-            </div>
-          </div>
-          <div class="ins-item alert">
-            <div class="ins-ico">!</div>
-            <div class="ins-tx">
-              <h4>Da visita para o carrinho</h4>
-              <p>Só <b>11,75%</b> das 400 visitas chegam ao carrinho. É a etapa com maior queda percentual do funil e depende de oferta e prova na página, não de mídia.</p>
+              <h4>87 checkouts abandonados</h4>
+              <p><b>105 checkouts</b> iniciados para <b>18 compras</b>. São 87 pessoas que chegaram no pagamento e desistiram, o equivalente a <b>R$ 17.139 de receita potencial</b> parada, e segue sem nenhuma campanha de retomada.</p>
             </div>
           </div>
           <div class="ins-item win">
             <div class="ins-ico">✓</div>
             <div class="ins-tx">
-              <h4>Topo saudável</h4>
-              <p>CTR de <b>3,88%</b> e <b>81,3%</b> de carregamento da página. O criativo e a velocidade da landing não são o gargalo.</p>
+              <h4>A conta nova converte melhor por dentro</h4>
+              <p>Mesmo com CTR menor, a Contingência 02 tira <b>27,1%</b> de carrinho das visitas contra 10,4% da antiga, e fecha <b>18,9%</b> dos checkouts contra 15,4%. Tráfego menor e mais qualificado.</p>
+            </div>
+          </div>
+          <div class="ins-item">
+            <div class="ins-ico">i</div>
+            <div class="ins-tx">
+              <h4>Topo continua saudável</h4>
+              <p>CTR de <b>3,42%</b> e <b>84,5%</b> de carregamento da página nos 21 dias. Criativo e velocidade da landing não são o gargalo.</p>
             </div>
           </div>
         </div>
@@ -307,14 +344,14 @@ td{text-align:right}
   <div class="sec">
     <div class="sec-h">
       <h2>Desempenho por criativo</h2>
-      <span>3 vídeos rodando na mesma copy e mesma oferta</span>
+      <span>6 vídeos nas duas contas · mesma oferta e mesma landing</span>
     </div>
     <div class="card tbl-scroll">
       <table>
         <thead>
           <tr>
-            <th>Criativo</th><th>Status</th><th>Investido</th><th>Impressões</th>
-            <th>CTR</th><th>CPM</th><th>Visitas</th><th>Compras</th><th>CPA</th><th>Receita</th><th>ROAS</th>
+            <th>Criativo</th><th>Conta</th><th>Status</th><th>Investido</th><th>Impressões</th>
+            <th>CTR</th><th>CPM</th><th>Visitas</th><th>Vendas</th><th>CPA</th><th>Receita</th><th>ROAS</th>
           </tr>
         </thead>
         <tbody id="tb-ads"></tbody>
@@ -326,11 +363,11 @@ td{text-align:right}
   <div class="sec">
     <div class="sec-h">
       <h2>Onde o anúncio aparece e para quem</h2>
-      <span>Investimento e compras por posicionamento, público e dispositivo</span>
+      <span>Soma das duas contas nos 21 dias de entrega</span>
     </div>
     <div class="grid k2">
       <div class="card">
-        <div class="legend"><span><i style="background:var(--gold)"></i>Investimento por posicionamento</span><span><i style="background:var(--green)"></i>Com compra rastreada</span></div>
+        <div class="legend"><span><i style="background:var(--gold)"></i>Investimento por posicionamento</span><span><i style="background:var(--green)"></i>Com venda rastreada</span></div>
         <svg id="chart-place" viewBox="0 0 420 280" style="width:100%;height:auto"></svg>
       </div>
       <div class="card">
@@ -340,19 +377,19 @@ td{text-align:right}
     </div>
     <div class="grid k2" style="margin-top:14px">
       <div class="card">
-        <div class="lab" style="font-size:11px;font-weight:700;letter-spacing:.11em;text-transform:uppercase;color:var(--muted);margin-bottom:12px">Dispositivo</div>
+        <div style="font-size:11px;font-weight:700;letter-spacing:.11em;text-transform:uppercase;color:var(--muted);margin-bottom:12px">Dispositivo</div>
         <div class="tbl-scroll">
           <table>
-            <thead><tr><th>Aparelho</th><th>Investido</th><th>Impressões</th><th>Cliques</th><th>Compras</th><th>Receita</th></tr></thead>
+            <thead><tr><th>Aparelho</th><th>Investido</th><th>Impressões</th><th>Vendas</th><th>Receita</th><th>ROAS</th></tr></thead>
             <tbody id="tb-dev"></tbody>
           </table>
         </div>
       </div>
       <div class="card">
-        <div class="lab" style="font-size:11px;font-weight:700;letter-spacing:.11em;text-transform:uppercase;color:var(--muted);margin-bottom:12px">Investimento por hora do dia</div>
+        <div style="font-size:11px;font-weight:700;letter-spacing:.11em;text-transform:uppercase;color:var(--muted);margin-bottom:12px">Investimento por hora do dia</div>
         <div class="heat" id="heat"></div>
         <div class="heat-lab" id="heat-lab"></div>
-        <p style="font-size:11.5px;color:var(--muted);margin-top:12px">Pico de entrega entre <b style="color:var(--txt)">22h e 00h</b> e no bloco de <b style="color:var(--txt)">13h e 14h</b>. As 4 compras aconteceram às 7h, 15h, 20h e 21h.</p>
+        <p style="font-size:11.5px;color:var(--muted);margin-top:12px">Entrega concentrada entre <b style="color:var(--txt)">18h e 00h</b>, com pico às 22h. As vendas seguem o mesmo bloco: <b style="color:var(--txt)">7 das 16 rastreadas</b> saíram entre 19h e 23h, e o horário de 21h sozinho fez 3.</p>
       </div>
     </div>
   </div>
@@ -361,69 +398,64 @@ td{text-align:right}
   <div class="sec">
     <div class="sec-h">
       <h2>Plano de ação</h2>
-      <span>Prioridade pelo impacto em receita</span>
+      <span>Prioridade pelo impacto em receita e pelo risco da operação</span>
     </div>
     <div class="ins">
       <div class="ins-item win">
         <div class="ins-ico">1</div>
         <div class="ins-tx">
-          <h4>Escalar os dois conjuntos, com prioridade para o ad2.MOV</h4>
-          <p>Com as 2 vendas confirmadas fora do gerenciador, o <b>ad2.MOV</b> passa a somar <b>4 vendas</b>, <b>ROAS 2,88x</b> e CPA de <b>R$ 68,43</b>. O <b>ad3.MOV</b> segue forte, com 2 vendas, <b>ROAS 2,32x</b> e CPA de R$ 84,75. Os dois estão acima de 2x e nenhum precisa ser cortado: subir o AD SET 1.1 para R$ 80/dia e o 1.2 para R$ 70/dia, em degraus de 20% a cada 48h para não resetar o aprendizado.</p>
+          <h4>Escalar o CBO da Contingência 02</h4>
+          <p>A conta nova entrega <b>ROAS 3,58x</b> com CPA de <b>R$ 55,00</b>, metade do custo da conta antiga (R$ 106,76). O CBO está travado em <b>R$ 50/dia</b> e já sustentou 10 vendas em 12 dias. Subir para R$ 70/dia agora e R$ 90/dia em 48h, em degraus de até 20% para não resetar o aprendizado.</p>
         </div>
       </div>
       <div class="ins-item alert">
         <div class="ins-ico">2</div>
         <div class="ins-tx">
-          <h4>O pixel está perdendo 1 a cada 3 vendas</h4>
-          <p>2 das 6 vendas do período vieram do tráfego e não foram registradas no gerenciador. Além de subestimar o ROAS em <b>0,78x</b>, isso alimenta o algoritmo com sinal incompleto e encarece a otimização. Conferir a <b>API de Conversões</b> no checkout, o deduplicador de <b>event_id</b> e as UTMs da landing antes de escalar mais orçamento.</p>
+          <h4>Risco alto: um criativo e uma conta só</h4>
+          <p>O <b>AD01 - LIMPO</b> responde por <b>100% da receita</b> da operação atual, rodando num único conjunto, numa conta de contingência com <b>saldo de R$ 56,18</b>, enquanto a conta principal já foi desativada por política. Subir 2 ou 3 variações do mesmo ângulo esta semana e deixar uma terceira conta aquecida antes de escalar mais.</p>
         </div>
       </div>
       <div class="ins-item alert">
         <div class="ins-ico">3</div>
         <div class="ins-tx">
           <h4>Remarketing de checkout abandonado</h4>
-          <p>32 checkouts abandonados em 6 dias, sem nenhuma campanha de retomada no ar. Um público de <b>InitiateCheckout sem Purchase de 7 dias</b> com R$ 20 a R$ 30/dia é a alavanca mais barata do momento: recuperar 3 desses 32 já soma R$ 591 de receita, mais do que o período inteiro do ad3.MOV.</p>
+          <p>87 checkouts abandonados em 21 dias e nenhuma campanha de retomada no ar. Um público de <b>InitiateCheckout sem Purchase de 7 dias</b> com R$ 20 a R$ 30/dia é a alavanca mais barata: recuperar 5 dos 87 já soma R$ 985, quase o que a conta antiga inteira faturou com o ad2.MOV.</p>
         </div>
       </div>
       <div class="ins-item alert">
         <div class="ins-ico">4</div>
         <div class="ins-tx">
-          <h4>Frequência em 3,22x com alcance de só 6.672 pessoas</h4>
-          <p>Público quente pequeno e já saturando. O CPM do AD SET 1.1 subiu para <b>R$ 28,79</b> contra R$ 19,12 do 1.2 e as visitas na página caíram de 106 (03/09) para 58 (06/09). Abrir um conjunto frio com público aberto ou lookalike de compradores antes que o CPA suba mais.</p>
+          <h4>O gap de 4 dias custou caro</h4>
+          <p>De 12 a 15/09 a operação ficou parada esperando a conta nova. No ritmo que a Contingência 02 provou depois (R$ 55 por venda), esses 4 dias a R$ 50/dia valeriam cerca de <b>3 a 4 vendas</b>, algo entre <b>R$ 600 e R$ 790</b> de receita. Ter a conta reserva já com pixel, página e público prontos encurta isso para menos de 24h na próxima vez.</p>
         </div>
       </div>
       <div class="ins-item">
         <div class="ins-ico">5</div>
         <div class="ins-tx">
-          <h4>Cortar o que não converte</h4>
-          <p><b>Instagram Reels</b> consumiu R$ 118,06 sem nenhuma compra e o <b>Facebook inteiro</b> R$ 36,80 também sem venda. Juntos são R$ 154,86, ou 31% do investimento, com zero receita. Stories e Feed do Instagram concentram as 4 vendas rastreadas. Ressalva: as 2 vendas fora do gerenciador não têm posicionamento, então corte primeiro o Facebook, que é o menor volume, e reavalie o Reels em mais 5 dias.</p>
+          <h4>Cortar Reels e Facebook</h4>
+          <p><b>Instagram Reels</b> consumiu R$ 332,01 em 21 dias e trouxe 1 venda (ROAS 0,59x). O <b>Facebook inteiro</b> levou R$ 92,86 sem nenhuma venda. Já o <b>Stories</b> fez 9 vendas com ROAS 3,69x e o <b>Feed</b> 6 vendas com 2,39x. Restringir o posicionamento a Feed e Stories do Instagram devolve cerca de 30% do orçamento para onde a venda acontece.</p>
         </div>
       </div>
       <div class="ins-item">
         <div class="ins-ico">6</div>
         <div class="ins-tx">
-          <h4>Ajuste fino de público</h4>
-          <p>A faixa <b>18-24 masculino</b> trouxe 2 compras com R$ 47,92 investidos, um CPA de R$ 23,96. Já <b>35-44 masculino</b> queimou R$ 110,43 sem venda. O público feminino levou R$ 68,46 e também não converteu. Vale testar um conjunto restrito a homens de 18 a 34 anos. Como os cortes por público só enxergam as 4 vendas do pixel, use isso como teste, não como corte definitivo.</p>
+          <h4>Estreitar o público</h4>
+          <p>O conjunto da conta nova está aberto de <b>18 a 65 anos</b>, mas homens de <b>25 a 44</b> concentram 11 das 16 vendas rastreadas e 69% do investimento. O público feminino levou R$ 167,87 e devolveu 1 venda. Vale um conjunto espelho restrito a homens de 25 a 44 para comparar CPA em 7 dias.</p>
+        </div>
+      </div>
+      <div class="ins-item">
+        <div class="ins-ico">7</div>
+        <div class="ins-tx">
+          <h4>Rastreamento</h4>
+          <p>Na conta antiga, 2 das 8 vendas não chegaram ao gerenciador. Na Contingência 02 o pixel está fechando certo: <b>10 compras x R$ 197 = R$ 1.970</b>, sem diferença contra o financeiro. Manter a API de Conversões e o <b>event_id</b> como estão e revisar sempre que trocar de conta ou de página.</p>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- ============ Contexto da conta ============ -->
-  <div class="sec">
-    <div class="sec-h">
-      <h2>Contexto da conta em 2026</h2>
-      <span>Investimento mensal da Alves Trader · lifetime de R$ 332.487,35</span>
-    </div>
-    <div class="card">
-      <svg id="chart-ano" viewBox="0 0 720 220" style="width:100%;height:auto"></svg>
-      <p style="font-size:12px;color:var(--muted);margin-top:12px">A conta ficou <b style="color:var(--txt)">parada de junho a agosto</b>. O Projeto MPR reabriu a operação em 03/09 e é hoje a única das 176 campanhas da conta com entrega ativa.</p>
-    </div>
-  </div>
-
   <div class="foot">
-    <span>Dados da Graph API da Meta v21.0 em 08/09/2026 · janela de atribuição padrão da conta · mais 2 vendas confirmadas manualmente pelo time</span>
-    <span>Landing: <a href="https://www.tradergeneration.com.br/mpr/" target="_blank" rel="noopener">tradergeneration.com.br/mpr</a> · Dbout Mídia</span>
+    <span>Dados da Graph API da Meta v21.0 em 28/09/2026 · 28/09 em curso fica de fora · janela de atribuição padrão das contas · mais 2 vendas confirmadas manualmente pelo time</span>
+    <span>Landing: <a href="https://tradergeneration.com.br/protocolompr/" target="_blank" rel="noopener">tradergeneration.com.br/protocolompr</a> · Dbout Mídia</span>
   </div>
 </div>
 
@@ -432,64 +464,84 @@ const G='#E8A820', G2='#FDD247', G3='#A86E08', MU='#8B90A7', GR='#2ECC71', RD='#
 const brl = n => n.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
 const num = n => n.toLocaleString('pt-BR');
 
+/* c: 'old' | 'gap' | 'new' */
 const daily = [
-  {d:'03/09', spend:92.98, impr:4352, clicks:193, ctr:4.43, lpv:106, ic:6, purch:0, rev:0},
-  {d:'04/09', spend:87.62, impr:4007, clicks:165, ctr:4.12, lpv:89,  ic:8, purch:0, rev:0},
-  {d:'05/09', spend:98.91, impr:4489, clicks:149, ctr:3.32, lpv:81,  ic:10,purch:2, rev:394},
-  {d:'06/09', spend:110.84,impr:4772, clicks:155, ctr:3.25, lpv:58,  ic:6, purch:1, rev:197},
-  {d:'07/09', spend:100.28,impr:3374, clicks:144, ctr:4.27, lpv:59,  ic:5, purch:1, rev:197},
-  {d:'08/09', spend:11.67, impr:504,  clicks:29,  ctr:5.75, lpv:7,   ic:3, purch:0, rev:0}
+  {d:'03/09', c:'old', spend:92.98,  impr:4352, clicks:193, ctr:4.43, lpv:106, purch:0, rev:0},
+  {d:'04/09', c:'old', spend:87.62,  impr:4007, clicks:165, ctr:4.12, lpv:89,  purch:0, rev:0},
+  {d:'05/09', c:'old', spend:98.91,  impr:4489, clicks:149, ctr:3.32, lpv:81,  purch:2, rev:394},
+  {d:'06/09', c:'old', spend:110.84, impr:4772, clicks:155, ctr:3.25, lpv:58,  purch:1, rev:197},
+  {d:'07/09', c:'old', spend:100.53, impr:3378, clicks:144, ctr:4.26, lpv:59,  purch:1, rev:197},
+  {d:'08/09', c:'old', spend:125.34, impr:5956, clicks:241, ctr:4.05, lpv:109, purch:1, rev:197},
+  {d:'09/09', c:'old', spend:152.65, impr:6489, clicks:223, ctr:3.44, lpv:106, purch:1, rev:197},
+  {d:'10/09', c:'old', spend:82.33,  impr:2594, clicks:87,  ctr:3.35, lpv:38,  purch:0, rev:0},
+  {d:'11/09', c:'old', spend:2.91,   impr:104,  clicks:3,   ctr:2.88, lpv:1,   purch:0, rev:0},
+  {d:'12/09', c:'gap', spend:0, impr:0, clicks:0, ctr:0, lpv:0, purch:0, rev:0},
+  {d:'13/09', c:'gap', spend:0, impr:0, clicks:0, ctr:0, lpv:0, purch:0, rev:0},
+  {d:'14/09', c:'gap', spend:0, impr:0, clicks:0, ctr:0, lpv:0, purch:0, rev:0},
+  {d:'15/09', c:'gap', spend:0, impr:0, clicks:0, ctr:0, lpv:0, purch:0, rev:0},
+  {d:'16/09', c:'new', spend:11.51, impr:480,  clicks:30, ctr:6.25, lpv:18, purch:0, rev:0},
+  {d:'17/09', c:'new', spend:32.53, impr:1290, clicks:40, ctr:3.10, lpv:25, purch:2, rev:394},
+  {d:'18/09', c:'new', spend:47.46, impr:1981, clicks:49, ctr:2.47, lpv:27, purch:1, rev:197},
+  {d:'19/09', c:'new', spend:49.52, impr:2122, clicks:83, ctr:3.91, lpv:45, purch:0, rev:0},
+  {d:'20/09', c:'new', spend:61.63, impr:2999, clicks:93, ctr:3.10, lpv:52, purch:1, rev:197},
+  {d:'21/09', c:'new', spend:57.26, impr:2263, clicks:71, ctr:3.14, lpv:25, purch:2, rev:394},
+  {d:'22/09', c:'new', spend:54.25, impr:2732, clicks:69, ctr:2.53, lpv:43, purch:1, rev:197},
+  {d:'23/09', c:'new', spend:48.91, impr:2308, clicks:67, ctr:2.90, lpv:35, purch:1, rev:197},
+  {d:'24/09', c:'new', spend:45.91, impr:1724, clicks:54, ctr:3.13, lpv:30, purch:1, rev:197},
+  {d:'25/09', c:'new', spend:37.99, impr:1548, clicks:40, ctr:2.58, lpv:12, purch:0, rev:0},
+  {d:'26/09', c:'new', spend:43.63, impr:2098, clicks:51, ctr:2.43, lpv:20, purch:1, rev:197},
+  {d:'27/09', c:'new', spend:59.39, impr:2507, clicks:50, ctr:1.99, lpv:22, purch:0, rev:0}
 ];
+
 const ads = [
-  {n:'ad2.MOV', set:'[AD SET 1.1] · QUENTE', on:true,  spend:273.70, impr:9506, ctr:3.69, cpm:28.79, lpv:178, purch:4, rev:788, extra:2},
-  {n:'ad3.MOV', set:'[AD SET 1.2] · QUENTE', on:true,  spend:169.50, impr:8863, ctr:4.01, cpm:19.12, lpv:147, purch:2, rev:394, extra:0},
-  {n:'ad1.MOV', set:'[AD SET 1.1] · pausado',on:false, spend:59.10,  impr:3129, ctr:4.12, cpm:18.89, lpv:75,  purch:0, rev:0,   extra:0}
+  {n:'AD01 - LIMPO', set:'[AD SET 1.1] · ALFA', conta:'Contingência 02', st:'on',   spend:549.99, impr:24052, ctr:2.90, cpm:22.87, lpv:354, purch:10, rev:1970, extra:0},
+  {n:'ad2.MOV',      set:'[AD SET 1.1] · QUENTE', conta:'Alves Trader',  st:'dead', spend:410.22, impr:13388, ctr:3.62, cpm:30.64, lpv:248, purch:5,  rev:985,  extra:2},
+  {n:'ad3.MOV',      set:'[AD SET 1.2] · QUENTE', conta:'Alves Trader',  st:'dead', spend:294.06, impr:15521, ctr:3.98, cpm:18.95, lpv:255, purch:3,  rev:591,  extra:0},
+  {n:'ad4.MOV',      set:'[AD SET 1.3] · QUENTE', conta:'Alves Trader',  st:'dead', spend:88.09,  impr:3987,  ctr:3.14, cpm:22.09, lpv:67,  purch:0,  rev:0,    extra:0},
+  {n:'ad1.MOV',      set:'[AD SET 1.1] · QUENTE', conta:'Alves Trader',  st:'dead', spend:59.10,  impr:3129,  ctr:4.12, cpm:18.89, lpv:75,  purch:0,  rev:0,    extra:0},
+  {n:'ad5 + ad06',   set:'[AD SET 1.1] · teste',  conta:'Alves Trader',  st:'dead', spend:2.64,   impr:116,   ctr:3.45, cpm:22.76, lpv:2,   purch:0,  rev:0,    extra:0}
 ];
+
 const places = [
-  {n:'Instagram Stories', spend:174.57, purch:2},
-  {n:'Instagram Feed',    spend:170.57, purch:2},
-  {n:'Instagram Reels',   spend:118.06, purch:0},
-  {n:'Facebook Feed',     spend:21.51,  purch:0},
-  {n:'Facebook Reels',    spend:12.30,  purch:0},
-  {n:'Outros',            spend:5.29,   purch:0}
+  {n:'Instagram Feed',    spend:493.91, purch:6},
+  {n:'Instagram Stories', spend:479.81, purch:9},
+  {n:'Instagram Reels',   spend:332.01, purch:1},
+  {n:'Facebook Feed',     spend:52.75,  purch:0},
+  {n:'Facebook Reels',    spend:30.24,  purch:0},
+  {n:'Outros',            spend:15.38,  purch:0}
 ];
 const demo = [
-  {n:'25-34 H', spend:225.60, purch:2},
-  {n:'35-44 H', spend:110.43, purch:0},
-  {n:'18-24 H', spend:47.92,  purch:2},
-  {n:'45-54 H', spend:41.53,  purch:0},
-  {n:'25-34 M', spend:36.73,  purch:0},
-  {n:'35-44 M', spend:22.42,  purch:0},
-  {n:'Outros',  spend:17.67,  purch:0}
+  {n:'25-34 H', spend:678.00, purch:8},
+  {n:'35-44 H', spend:292.76, purch:3},
+  {n:'18-24 H', spend:136.10, purch:2},
+  {n:'45-54 H', spend:101.00, purch:1},
+  {n:'25-34 M', spend:95.96,  purch:1},
+  {n:'35-44 M', spend:43.94,  purch:0},
+  {n:'Outros',  spend:56.34,  purch:1}
 ];
 const devs = [
-  {n:'Android smartphone', spend:255.48, impr:11651, clicks:408, purch:1, rev:197},
-  {n:'iPhone',             spend:242.84, impr:9643,  clicks:422, purch:3, rev:591},
-  {n:'Android tablet',     spend:2.23,   impr:53,    clicks:5,   purch:0, rev:0},
-  {n:'Desktop',            spend:1.48,   impr:131,   clicks:0,   purch:0, rev:0},
-  {n:'iPad',               spend:0.26,   impr:20,    clicks:0,   purch:0, rev:0}
+  {n:'Android smartphone', spend:708.86, impr:31306, purch:10, rev:1970},
+  {n:'iPhone',             spend:682.56, impr:28281, purch:6,  rev:1182},
+  {n:'Desktop',            spend:5.95,   impr:416,   purch:0,  rev:0},
+  {n:'Android tablet',     spend:5.91,   impr:144,   purch:0,  rev:0},
+  {n:'iPad',               spend:0.82,   impr:46,    purch:0,  rev:0}
 ];
-const hours = [16.37,11.76,4.77,2.83,1.83,5.21,9.31,19.19,22.11,23.14,22.52,21.18,27.19,32.66,28.59,24.47,21.83,22.08,24.30,29.05,31.99,29.35,33.95,36.62];
-const hourPurch = [0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,1,1,0,0];
-const meses = [
-  {m:'Fev', spend:7071.12}, {m:'Mar', spend:4523.07}, {m:'Abr', spend:442.44},
-  {m:'Mai', spend:585.69},  {m:'Jun', spend:0}, {m:'Jul', spend:0}, {m:'Ago', spend:0},
-  {m:'Set', spend:502.30}
-];
+const hours      = [37.22,24.47,12.85,6.80,6.16,14.00,25.78,49.88,60.45,62.92,72.72,75.08,82.81,85.68,74.18,68.24,63.01,72.68,82.07,83.14,85.50,91.16,92.56,74.74];
+const hourPurch  = [0,0,0,0,0,0,0,1,0,0,0,2,1,2,0,2,0,1,0,1,1,3,1,1];
+
 const funil = [
-  {n:'Impressões',        sub:'6.672 pessoas alcançadas', v:21498, cost:null,   rate:null},
-  {n:'Cliques no link',   sub:'CTR de link 2,29%',        v:492,   cost:1.02,   rate:2.29},
-  {n:'Visitas na página', sub:'81,3% dos cliques',        v:400,   cost:1.26,   rate:81.30},
-  {n:'Carrinho',          sub:'11,75% das visitas',       v:47,    cost:10.69,  rate:11.75},
-  {n:'Checkout iniciado', sub:'80,9% dos carrinhos',      v:38,    cost:13.22,  rate:80.85},
-  {n:'Compra',            sub:'15,8% dos checkouts · 4 pixel + 2 manuais', v:6, cost:83.72, rate:15.79}
+  {n:'Impressões',        sub:'alcance somado de 16.583 contas', v:60193, cost:null,  rate:null},
+  {n:'Cliques no link',   sub:'CTR de link 1,97%',              v:1184,  cost:1.19,  rate:1.97},
+  {n:'Visitas na página', sub:'84,5% dos cliques',              v:1001,  cost:1.40,  rate:84.50},
+  {n:'Carrinho',          sub:'16,3% das visitas',              v:163,   cost:8.61,  rate:16.28},
+  {n:'Checkout iniciado', sub:'64,4% dos carrinhos',            v:105,   cost:13.37, rate:64.42},
+  {n:'Compra',            sub:'17,1% dos checkouts · 16 pixel + 2 manuais', v:18, cost:78.01, rate:17.14}
 ];
 
 const NS='http://www.w3.org/2000/svg';
 const el=(t,a={})=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);return e;};
 const txt=(x,y,s,a={})=>{const t=el('text',Object.assign({x,y,fill:MU,'font-size':10,'font-weight':600},a));t.textContent=s;return t;};
 
-/* sparklines */
 function spark(id, vals, color){
   const s=document.getElementById(id); if(!s)return;
   const mx=Math.max(...vals)||1, w=120, h=34, st=w/(vals.length-1);
@@ -510,9 +562,16 @@ spark('sp-rev',   daily.map(d=>d.rev),   G2);
 
 /* chart diario */
 (function(){
-  const s=document.getElementById('chart-daily'), W=720,H=300, ml=48,mr=44,mt=16,mb=34;
+  const s=document.getElementById('chart-daily'), W=760,H=320, ml=48,mr=16,mt=18,mb=44;
   const iw=W-ml-mr, ih=H-mt-mb, n=daily.length, bw=iw/n;
   const mx=Math.max(...daily.map(d=>Math.max(d.spend,d.rev)))*1.18;
+  // faixa do gap
+  const gi=daily.findIndex(d=>d.c==='gap'), gn=daily.filter(d=>d.c==='gap').length;
+  if(gi>=0){
+    s.appendChild(el('rect',{x:ml+gi*bw,y:mt,width:bw*gn,height:ih,fill:'rgba(231,76,60,.07)',rx:5}));
+    s.appendChild(txt(ml+gi*bw+bw*gn/2, mt+ih/2, 'conta desativada', {'text-anchor':'middle','font-size':9.5,fill:'#FF9E93','font-weight':800}));
+    s.appendChild(txt(ml+gi*bw+bw*gn/2, mt+ih/2+13, '4 dias parados', {'text-anchor':'middle','font-size':9,fill:'#8B90A7','font-weight':600}));
+  }
   for(let i=0;i<=4;i++){
     const y=mt+ih-(ih/4)*i;
     s.appendChild(el('line',{x1:ml,y1:y,x2:ml+iw,y2:y,stroke:'rgba(255,255,255,.055)','stroke-width':1}));
@@ -523,38 +582,52 @@ spark('sp-rev',   daily.map(d=>d.rev),   G2);
   g1.appendChild(el('stop',{offset:'0%','stop-color':G2})); g1.appendChild(el('stop',{offset:'100%','stop-color':G3}));
   defs.appendChild(g1); s.appendChild(defs);
   daily.forEach((d,i)=>{
-    const x=ml+i*bw, cw=bw*.32;
+    const x=ml+i*bw, cw=bw*.34;
     const hs=(d.spend/mx)*ih, hr=(d.rev/mx)*ih;
-    s.appendChild(el('rect',{x:x+bw*.16,y:mt+ih-hs,width:cw,height:hs,rx:4,fill:'#2C3145'}));
-    s.appendChild(el('rect',{x:x+bw*.52,y:mt+ih-hr,width:cw,height:Math.max(hr,d.rev?2:0),rx:4,fill:'url(#gRev)'}));
-    s.appendChild(txt(x+bw/2,H-12,d.d,{'text-anchor':'middle','font-size':10}));
-    if(d.rev) s.appendChild(txt(x+bw*.52+cw/2, mt+ih-hr-6, 'R$'+d.rev,{'text-anchor':'middle','font-size':9,fill:G2,'font-weight':800}));
+    if(d.spend>0) s.appendChild(el('rect',{x:x+bw*.12,y:mt+ih-hs,width:cw,height:hs,rx:3,fill:d.c==='new'?'#3D6B52':'#2C3145'}));
+    if(d.rev>0)   s.appendChild(el('rect',{x:x+bw*.52,y:mt+ih-hr,width:cw,height:hr,rx:3,fill:'url(#gRev)'}));
+    if(i%2===0) s.appendChild(txt(x+bw/2,H-26,d.d,{'text-anchor':'middle','font-size':9}));
   });
-  const mroas=Math.max(...daily.map(d=>d.spend?d.rev/d.spend:0))*1.5||1;
-  const pts=daily.map((d,i)=>[ml+i*bw+bw/2, mt+ih-((d.spend?d.rev/d.spend:0)/mroas)*ih]);
-  s.appendChild(el('path',{d:pts.map((p,i)=>(i?'L':'M')+p[0].toFixed(1)+' '+p[1].toFixed(1)).join(' '),fill:'none',stroke:GR,'stroke-width':2,'stroke-dasharray':'5 4','stroke-linejoin':'round'}));
-  daily.forEach((d,i)=>{
-    const r=d.spend?d.rev/d.spend:0;
-    s.appendChild(el('circle',{cx:pts[i][0],cy:pts[i][1],r:3.4,fill:'#04050A',stroke:GR,'stroke-width':2}));
-    if(r>0) s.appendChild(txt(pts[i][0],pts[i][1]-9,r.toFixed(2).replace('.',',')+'x',{'text-anchor':'middle','font-size':9.5,fill:GR,'font-weight':800}));
+  // eixo de contas
+  const oi=daily.filter(d=>d.c==='old').length, ni=daily.filter(d=>d.c==='new').length;
+  s.appendChild(el('line',{x1:ml,y1:H-14,x2:ml+oi*bw-3,y2:H-14,stroke:'#2C3145','stroke-width':3,'stroke-linecap':'round'}));
+  s.appendChild(txt(ml+oi*bw/2,H-4,'Alves Trader',{'text-anchor':'middle','font-size':9,fill:'#8B90A7','font-weight':700}));
+  s.appendChild(el('line',{x1:ml+(oi+gn)*bw+3,y1:H-14,x2:ml+iw,y2:H-14,stroke:'#3D6B52','stroke-width':3,'stroke-linecap':'round'}));
+  s.appendChild(txt(ml+(oi+gn)*bw+(ni*bw)/2,H-4,'Contingência 02',{'text-anchor':'middle','font-size':9,fill:'#7DE3AC','font-weight':700}));
+  // linha de ROAS
+  const roas=d=>d.spend?d.rev/d.spend:0;
+  const mroas=Math.max(...daily.map(roas))*1.45||1;
+  const seg=[];
+  daily.forEach((d,i)=>{ if(d.spend>0) seg.push([ml+i*bw+bw/2, mt+ih-(roas(d)/mroas)*ih, i]); });
+  const parts=[[]];
+  seg.forEach((p,k)=>{ if(k>0 && p[2]-seg[k-1][2]>1) parts.push([]); parts[parts.length-1].push(p); });
+  parts.forEach(pp=>{
+    if(pp.length<2) return;
+    s.appendChild(el('path',{d:pp.map((p,i)=>(i?'L':'M')+p[0].toFixed(1)+' '+p[1].toFixed(1)).join(' '),fill:'none',stroke:GR,'stroke-width':2,'stroke-dasharray':'5 4','stroke-linejoin':'round'}));
+  });
+  seg.forEach(p=>{
+    const d=daily[p[2]], r=roas(d);
+    s.appendChild(el('circle',{cx:p[0],cy:p[1],r:3,fill:'#04050A',stroke:GR,'stroke-width':1.8}));
+    if(r>0) s.appendChild(txt(p[0],p[1]-8,r.toFixed(1).replace('.',',')+'x',{'text-anchor':'middle','font-size':8.5,fill:GR,'font-weight':800}));
   });
 })();
 
 /* chart LPV */
 (function(){
-  const s=document.getElementById('chart-lpv'), W=340,H=300, ml=32,mr=12,mt=16,mb=34;
-  const iw=W-ml-mr, ih=H-mt-mb, n=daily.length, bw=iw/n, mx=Math.max(...daily.map(d=>d.lpv))*1.25;
+  const s=document.getElementById('chart-lpv'), W=340,H=320, ml=30,mr=8,mt=14,mb=34;
+  const iw=W-ml-mr, ih=H-mt-mb, n=daily.length, bw=iw/n, mx=Math.max(...daily.map(d=>d.lpv))*1.2;
   for(let i=0;i<=4;i++){
     const y=mt+ih-(ih/4)*i;
     s.appendChild(el('line',{x1:ml,y1:y,x2:ml+iw,y2:y,stroke:'rgba(255,255,255,.055)'}));
-    s.appendChild(txt(ml-7,y+3,Math.round(mx/4*i),{'text-anchor':'end','font-size':9.5}));
+    s.appendChild(txt(ml-6,y+3,Math.round(mx/4*i),{'text-anchor':'end','font-size':9}));
   }
   daily.forEach((d,i)=>{
-    const h=(d.lpv/mx)*ih, x=ml+i*bw+bw*.22;
-    s.appendChild(el('rect',{x,y:mt+ih-h,width:bw*.56,height:h,rx:5,fill:G,opacity:i===daily.length-1?.4:.85}));
-    s.appendChild(txt(x+bw*.28,mt+ih-h-6,d.lpv,{'text-anchor':'middle','font-size':10,fill:'#F5F7FF','font-weight':800}));
-    s.appendChild(txt(x+bw*.28,H-12,d.d,{'text-anchor':'middle','font-size':9.5}));
+    const h=(d.lpv/mx)*ih, x=ml+i*bw+bw*.18;
+    if(d.lpv>0) s.appendChild(el('rect',{x,y:mt+ih-h,width:bw*.64,height:h,rx:2.5,fill:d.c==='new'?GR:G,opacity:d.c==='new'?.8:.85}));
+    if(i%4===0) s.appendChild(txt(x+bw*.32,H-14,d.d.slice(0,2),{'text-anchor':'middle','font-size':9}));
   });
+  s.appendChild(txt(ml+2,mt+10,'antiga',{fill:G,'font-size':9.5,'font-weight':800}));
+  s.appendChild(txt(ml+52,mt+10,'contingência',{fill:GR,'font-size':9.5,'font-weight':800}));
 })();
 
 /* funil */
@@ -566,26 +639,28 @@ spark('sp-rev',   daily.map(d=>d.rev),   G2);
     row.innerHTML=`
       <div class="fun-name">${f.n}<em>${f.sub}</em></div>
       <div class="fun-bar"><div class="fun-fill" style="width:${pct}%"><span>${num(f.v)}</span></div></div>
-      <div class="fun-side">${f.cost!==null?`<b>R$ ${brl(f.cost)}</b><em>custo por evento</em>`:`<b>${num(21498)}</b><em>base do funil</em>`}</div>`;
+      <div class="fun-side">${f.cost!==null?`<b>R$ ${brl(f.cost)}</b><em>custo por evento</em>`:`<b>${num(60193)}</b><em>base do funil</em>`}</div>`;
     box.appendChild(row);
   });
 })();
 
 /* tabela criativos */
 (function(){
-  const tb=document.getElementById('tb-ads');
+  const tb=document.getElementById('tb-ads'), mxs=Math.max(...ads.map(a=>a.spend));
+  const tagTx={on:'ATIVO',dead:'CONTA OFF',off:'PAUSADO'};
   ads.forEach(a=>{
     const roas=a.spend?a.rev/a.spend:0, cpa=a.purch?a.spend/a.purch:0;
-    const cls=roas>=2?'good':roas>=1?'mid':'bad';
+    const cls=roas>=2.5?'good':roas>=1?'mid':'bad';
     const tr=document.createElement('tr');
     tr.innerHTML=`
       <td class="nm">${a.n}<em>${a.set}</em></td>
-      <td><span class="tag ${a.on?'on':'off'}">${a.on?'ATIVO':'PAUSADO'}</span></td>
-      <td>R$ ${brl(a.spend)}<div class="mini"><i style="width:${(a.spend/502.3*100).toFixed(0)}%"></i></div></td>
+      <td style="font-size:11.5px;color:${a.st==='on'?'#7DE3AC':'#8B90A7'};font-weight:700">${a.conta}</td>
+      <td><span class="tag ${a.st}">${tagTx[a.st]}</span></td>
+      <td>R$ ${brl(a.spend)}<div class="mini"><i style="width:${(a.spend/mxs*100).toFixed(0)}%"></i></div></td>
       <td>${num(a.impr)}</td>
       <td>${a.ctr.toFixed(2).replace('.',',')}%</td>
       <td>R$ ${brl(a.cpm)}</td>
-      <td>${a.lpv}</td>
+      <td>${num(a.lpv)}</td>
       <td>${a.purch}${a.extra?`<em style="display:block;font-style:normal;font-size:10px;color:#8B90A7;font-weight:600;margin-top:2px">${a.purch-a.extra} pixel + ${a.extra} manual</em>`:''}</td>
       <td>${cpa?'R$ '+brl(cpa):'<span style="color:#8B90A7">sem venda</span>'}</td>
       <td>R$ ${brl(a.rev)}</td>
@@ -594,7 +669,6 @@ spark('sp-rev',   daily.map(d=>d.rev),   G2);
   });
 })();
 
-/* barras horizontais reutilizavel */
 function hbar(id, rows, W, H){
   const s=document.getElementById(id), ml=118, mr=58, mt=8, mb=8;
   const iw=W-ml-mr, ih=H-mt-mb, bh=ih/rows.length, mx=Math.max(...rows.map(r=>r.spend));
@@ -603,21 +677,22 @@ function hbar(id, rows, W, H){
     s.appendChild(txt(ml-10, y+bh/2+3.5, r.n, {'text-anchor':'end','font-size':10.5,fill:'#E2E5F0'}));
     s.appendChild(el('rect',{x:ml,y:y+bh*.18,width:iw,height:bh*.64,rx:5,fill:'rgba(255,255,255,.035)'}));
     s.appendChild(el('rect',{x:ml,y:y+bh*.18,width:w,height:bh*.64,rx:5,fill:r.purch?GR:G,opacity:r.purch?.9:.72}));
-    const lab=txt(ml+w+8, y+bh/2+3.5, 'R$ '+brl(r.spend), {'font-size':10,fill:'#F5F7FF','font-weight':800});
-    s.appendChild(lab);
-    if(r.purch) s.appendChild(txt(ml+8, y+bh/2+3.5, r.purch+' compra'+(r.purch>1?'s':''), {'font-size':9.5,fill:'#04050A','font-weight':800}));
+    s.appendChild(txt(ml+w+8, y+bh/2+3.5, 'R$ '+brl(r.spend), {'font-size':10,fill:'#F5F7FF','font-weight':800}));
+    if(r.purch) s.appendChild(txt(ml+8, y+bh/2+3.5, r.purch+' venda'+(r.purch>1?'s':''), {'font-size':9.5,fill:'#04050A','font-weight':800}));
   });
 }
 hbar('chart-place', places, 420, 280);
 hbar('chart-demo',  demo,   420, 280);
 
-/* tabela dispositivos */
+/* dispositivos */
 (function(){
   const tb=document.getElementById('tb-dev');
   devs.forEach(d=>{
+    const roas=d.spend?d.rev/d.spend:0;
     const tr=document.createElement('tr');
-    tr.innerHTML=`<td class="nm">${d.n}</td><td>R$ ${brl(d.spend)}</td><td>${num(d.impr)}</td><td>${d.clicks}</td>
-      <td style="color:${d.purch?'#2ECC71':'#8B90A7'};font-weight:800">${d.purch}</td><td>R$ ${brl(d.rev)}</td>`;
+    tr.innerHTML=`<td class="nm">${d.n}</td><td>R$ ${brl(d.spend)}</td><td>${num(d.impr)}</td>
+      <td style="color:${d.purch?'#2ECC71':'#8B90A7'};font-weight:800">${d.purch}</td><td>R$ ${brl(d.rev)}</td>
+      <td class="roas ${roas>=2.5?'good':roas>=1?'mid':'bad'}">${roas.toFixed(2).replace('.',',')}x</td>`;
     tb.appendChild(tr);
   });
 })();
@@ -629,31 +704,9 @@ hbar('chart-demo',  demo,   420, 280);
     const o=.10+(v/mx)*.90, d=document.createElement('div');
     d.style.background=hourPurch[i]?`rgba(46,204,113,${o})`:`rgba(232,168,32,${o})`;
     if(hourPurch[i]) d.style.borderColor='rgba(46,204,113,.6)';
-    d.title=`${String(i).padStart(2,'0')}h · R$ ${brl(v)}${hourPurch[i]?' · '+hourPurch[i]+' compra':''}`;
+    d.title=`${String(i).padStart(2,'0')}h · R$ ${brl(v)}${hourPurch[i]?' · '+hourPurch[i]+' venda'+(hourPurch[i]>1?'s':''):''}`;
     h.appendChild(d);
     const s=document.createElement('span'); s.textContent=i%3===0?i:''; l.appendChild(s);
-  });
-})();
-
-/* chart ano */
-(function(){
-  const s=document.getElementById('chart-ano'), W=720,H=220, ml=52,mr=16,mt=16,mb=32;
-  const iw=W-ml-mr, ih=H-mt-mb, bw=iw/meses.length, mx=Math.max(...meses.map(m=>m.spend))*1.15;
-  for(let i=0;i<=3;i++){
-    const y=mt+ih-(ih/3)*i;
-    s.appendChild(el('line',{x1:ml,y1:y,x2:ml+iw,y2:y,stroke:'rgba(255,255,255,.055)'}));
-    s.appendChild(txt(ml-8,y+3,'R$ '+(mx/3*i/1000).toFixed(1).replace('.',',')+'k',{'text-anchor':'end','font-size':9.5}));
-  }
-  meses.forEach((m,i)=>{
-    const hh=(m.spend/mx)*ih, x=ml+i*bw+bw*.22, on=m.m==='Set';
-    if(m.spend>0){
-      s.appendChild(el('rect',{x,y:mt+ih-hh,width:bw*.56,height:Math.max(hh,2),rx:5,fill:on?G2:'#2C3145'}));
-      s.appendChild(txt(x+bw*.28,mt+ih-hh-6,'R$ '+(m.spend>=1000?(m.spend/1000).toFixed(1).replace('.',',')+'k':Math.round(m.spend)),{'text-anchor':'middle','font-size':9.5,fill:on?G2:MU,'font-weight':800}));
-    } else {
-      s.appendChild(el('rect',{x,y:mt+ih-4,width:bw*.56,height:4,rx:2,fill:'rgba(255,255,255,.07)'}));
-      s.appendChild(txt(x+bw*.28,mt+ih-12,'parada',{'text-anchor':'middle','font-size':9,fill:'#5A5F75','font-weight':700}));
-    }
-    s.appendChild(txt(x+bw*.28,H-10,m.m,{'text-anchor':'middle','font-size':10,fill:on?G2:MU}));
   });
 })();
 </script>
