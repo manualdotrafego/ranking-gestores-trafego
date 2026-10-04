@@ -182,15 +182,15 @@ tbody td:first-child{text-align:left;color:#606770;font-weight:600}
 </div>
 
 <div class="footer">
-  Gerado em 03/10/2026 · #712 | OralDents Rio das Ostras · Meta API v21.0
+  Gerado em 04/10/2026 · #712 | OralDents Rio das Ostras · Meta API v21.0
 </div>
 </div>
 
 <script>
-const DAILY = [{"date": "2026-10-03", "spend": 6.08, "msgs": 4, "cost_msg": 1.52, "impr": 744, "cpm": 8.17, "ctr": 1.75}, {"date": "2026-10-02", "spend": 23.26, "msgs": 22, "cost_msg": 1.06, "impr": 2712, "cpm": 8.58, "ctr": 1.7}, {"date": "2026-10-01", "spend": 22.23, "msgs": 17, "cost_msg": 1.31, "impr": 1843, "cpm": 12.06, "ctr": 2.28}, {"date": "2026-09-30", "spend": 38.13, "msgs": 24, "cost_msg": 1.59, "impr": 2721, "cpm": 14.01, "ctr": 1.87}, {"date": "2026-09-29", "spend": 52.82, "msgs": 30, "cost_msg": 1.76, "impr": 3520, "cpm": 15.01, "ctr": 1.9}, {"date": "2026-09-28", "spend": 51.48, "msgs": 19, "cost_msg": 2.71, "impr": 2553, "cpm": 20.16, "ctr": 2.23}, {"date": "2026-09-27", "spend": 30.29, "msgs": 12, "cost_msg": 2.52, "impr": 1523, "cpm": 19.89, "ctr": 2.23}, {"date": "2026-09-26", "spend": 30.63, "msgs": 18, "cost_msg": 1.7, "impr": 1973, "cpm": 15.52, "ctr": 1.93}, {"date": "2026-09-25", "spend": 5.44, "msgs": 1, "cost_msg": 5.44, "impr": 339, "cpm": 16.05, "ctr": 0.88}];
+const DAILY = [{"date": "2026-10-04", "spend": 2.04, "msgs": 1, "cost_msg": 2.04, "impr": 333, "cpm": 6.13, "ctr": 0.6}, {"date": "2026-10-03", "spend": 15.01, "msgs": 12, "cost_msg": 1.25, "impr": 2064, "cpm": 7.27, "ctr": 1.79}, {"date": "2026-10-02", "spend": 23.27, "msgs": 22, "cost_msg": 1.06, "impr": 2717, "cpm": 8.56, "ctr": 1.69}, {"date": "2026-10-01", "spend": 22.23, "msgs": 17, "cost_msg": 1.31, "impr": 1843, "cpm": 12.06, "ctr": 2.28}, {"date": "2026-09-30", "spend": 38.13, "msgs": 24, "cost_msg": 1.59, "impr": 2721, "cpm": 14.01, "ctr": 1.87}, {"date": "2026-09-29", "spend": 52.82, "msgs": 30, "cost_msg": 1.76, "impr": 3520, "cpm": 15.01, "ctr": 1.9}, {"date": "2026-09-28", "spend": 51.48, "msgs": 19, "cost_msg": 2.71, "impr": 2553, "cpm": 20.16, "ctr": 2.23}, {"date": "2026-09-27", "spend": 30.29, "msgs": 12, "cost_msg": 2.52, "impr": 1523, "cpm": 19.89, "ctr": 2.23}, {"date": "2026-09-26", "spend": 30.63, "msgs": 18, "cost_msg": 1.7, "impr": 1973, "cpm": 15.52, "ctr": 1.93}, {"date": "2026-09-25", "spend": 5.44, "msgs": 1, "cost_msg": 5.44, "impr": 339, "cpm": 16.05, "ctr": 0.88}];
 const DEFAULT_DAYS = 15;
-const FIXED_SINCE = '2026-07-06';
-const FIXED_UNTIL = '2026-10-03';
+const FIXED_SINCE = '2026-07-07';
+const FIXED_UNTIL = '2026-10-04';
 const PT_M = ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
 const PT_MF = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
 let chart=null, activeSince=null, activeUntil=null;
@@ -332,7 +332,7 @@ window.addEventListener('load',()=>{
   // Abre nos últimos 15 dias por padrão. O histórico completo continua
   // disponível no calendário, nos atalhos e nos botões dia a dia.
   buildDayButtons();
-  applyRange("2026-09-16","2026-09-30");
+  applyShortcut(15);
 });
 </script>
 </body>
