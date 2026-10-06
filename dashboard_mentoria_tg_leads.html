@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mentoria TG | Relatório de Captação · Trader Generation</title>
+<link rel="icon" href="assets/logo-tg-metodo.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700;9..40,800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --blue:#0052ff; --blue-active:#003ecc; --cyan:#1DE9FB; --blue-brand:#007BFF;
+  --ink:#080b10; --body:#525a68; --muted:#77808e;
+  --line:#dfe3e8; --line-soft:#edf0f3;
+  --canvas:#ffffff; --surface:#f6f7f9; --surface-strong:#eceff3;
+  --night:#07090d; --night-line:#252c38; --on-night:#ffffff; --on-night-soft:#aab2c0;
+  --red:#c62828; --red-soft:#fdecec; --green:#0a8f4a; --green-soft:#e9f7ef; --amber:#b26a00; --amber-soft:#fdf3e4;
+  --container:1320px;
+  --font:"DM Sans",Arial,sans-serif; --mono:"DM Mono",Consolas,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--canvas);color:var(--ink);font-family:var(--font);line-height:1.5;-webkit-font-smoothing:antialiased}
+.container{max-width:var(--container);margin:0 auto;padding:0 24px}
+.num{font-family:var(--mono);font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+
+/* ---------- hero noturno ---------- */
+.hero{background:var(--night);color:var(--on-night);padding:26px 0 40px;position:relative;overflow:hidden}
+.hero::after{content:'';position:absolute;inset:auto -10% -60% 40%;height:280px;background:radial-gradient(closest-side,rgba(0,82,255,.28),transparent 70%);pointer-events:none}
+.hero-top{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;padding-bottom:26px;border-bottom:1px solid var(--night-line)}
+.hero-top img{height:42px;width:auto;display:block}
+.tags{display:flex;gap:9px;flex-wrap:wrap}
+.tag{display:inline-flex;align-items:center;gap:7px;font-size:12px;font-weight:700;padding:7px 14px;border-radius:999px;border:1px solid var(--night-line);color:var(--on-night-soft)}
+.tag.live{border-color:rgba(29,233,251,.35);color:var(--cyan);background:rgba(29,233,251,.07)}
+.tag.blue{border-color:rgba(0,82,255,.5);color:#8FB4FF;background:rgba(0,82,255,.12)}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--cyan);box-shadow:0 0 0 0 rgba(29,233,251,.5);animation:p 2.2s infinite}
+@keyframes p{70%{box-shadow:0 0 0 9px rgba(29,233,251,0)}100%{box-shadow:0 0 0 0 rgba(29,233,251,0)}}
+.hero h1{margin:30px 0 6px;font-size:clamp(28px,4vw,44px);font-weight:800;letter-spacing:-.035em;line-height:1.06}
+.hero h1 b{background:linear-gradient(92deg,var(--blue-brand),var(--cyan));-webkit-background-clip:text;background-clip:text;color:transparent;font-weight:800}
+.hero p.sub{color:var(--on-night-soft);font-size:14.5px;max-width:720px}
+.hero-kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;margin-top:34px;background:var(--night-line);border:1px solid var(--night-line);border-radius:18px;overflow:hidden;position:relative;z-index:1}
+.hk{background:var(--night);padding:20px 22px}
+.hk span{display:block;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--on-night-soft)}
+.hk b{display:block;font-family:var(--mono);font-size:30px;font-weight:500;letter-spacing:-.03em;margin:9px 0 4px}
+.hk b small{font-size:16px;color:var(--on-night-soft);margin-right:3px}
+.hk em{font-style:normal;font-size:12px;color:var(--on-night-soft)}
+.hk.accent b{color:var(--cyan)}
+
+/* ---------- seções claras ---------- */
+.sec{padding:44px 0 0}
+.sec-h{display:flex;align-items:baseline;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:16px}
+.sec-h h2{font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--blue);display:flex;align-items:center;gap:10px}
+.sec-h h2::before{content:'';width:22px;height:2px;background:var(--blue);border-radius:2px}
+.sec-h span{font-size:12.5px;color:var(--muted)}
+
+.card{background:var(--canvas);border:1px solid var(--line);border-radius:18px;padding:20px}
+.card.soft{background:var(--surface);border-color:var(--line-soft)}
+.grid{display:grid;gap:16px}
+.g4{grid-template-columns:repeat(4,1fr)} .g3{grid-template-columns:repeat(3,1fr)} .g2{grid-template-columns:repeat(2,1fr)}
+.split{grid-template-columns:1.5fr 1fr}
+
+.kpi span.lab{display:block;font-size:11px;font-weight:700;letter-spacing:.11em;text-transform:uppercase;color:var(--muted)}
+.kpi b.val{display:block;font-family:var(--mono);font-size:26px;font-weight:500;letter-spacing:-.03em;margin:9px 0 3px;color:var(--ink)}
+.kpi b.val small{font-size:14px;color:var(--muted);margin-right:2px;font-family:var(--font);font-weight:700}
+.kpi em{font-style:normal;display:block;font-size:12.5px;color:var(--muted)}
+.pillch{display:inline-flex;align-items:center;gap:5px;margin-top:10px;font-size:11.5px;font-weight:700;padding:4px 10px;border-radius:999px}
+.pillch.up{background:var(--green-soft);color:var(--green)}
+.pillch.down{background:var(--red-soft);color:var(--red)}
+.pillch.neu{background:var(--surface-strong);color:var(--body)}
+
+.legend{display:flex;gap:18px;flex-wrap:wrap;font-size:12px;color:var(--muted);font-weight:500;margin-bottom:10px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:middle}
+svg text{font-family:"DM Mono",Consolas,monospace}
+svg text.lbl{font-family:"DM Sans",Arial,sans-serif}
+
+/* funil */
+.fun{display:grid;gap:2px}
+.fun-row{display:grid;grid-template-columns:168px 1fr 124px;gap:16px;align-items:center;padding:11px 0;border-bottom:1px solid var(--line-soft)}
+.fun-row:last-child{border-bottom:0}
+.fun-name{font-size:13px;font-weight:700}
+.fun-name em{display:block;font-style:normal;font-size:11.5px;color:var(--muted);font-weight:500;margin-top:1px}
+.fun-bar{height:30px;border-radius:8px;background:var(--surface-strong);overflow:hidden}
+.fun-fill{height:100%;border-radius:8px;background:linear-gradient(90deg,var(--blue),#4d88ff);display:flex;align-items:center;padding-left:12px;min-width:60px}
+.fun-fill span{font-family:var(--mono);font-size:13px;font-weight:500;color:#fff}
+.fun-side{text-align:right}
+.fun-side b{display:block;font-family:var(--mono);font-size:14px;font-weight:500}
+.fun-side em{font-style:normal;font-size:11px;color:var(--muted)}
+
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:right;font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);font-weight:800;padding:0 10px 11px;border-bottom:1px solid var(--line);white-space:nowrap}
+th:first-child,td:first-child{text-align:left}
+td{padding:13px 10px;border-bottom:1px solid var(--line-soft);white-space:nowrap;text-align:right;font-family:var(--mono);font-weight:400}
+td:first-child{font-family:var(--font)}
+tbody tr:last-child td{border-bottom:0}
+tbody tr:hover{background:var(--surface)}
+.nm{font-weight:700}
+.nm em{display:block;font-style:normal;font-size:11.5px;color:var(--muted);font-weight:500;margin-top:2px}
+.st{display:inline-block;font-size:10px;font-weight:800;padding:4px 9px;border-radius:7px;letter-spacing:.04em;font-family:var(--font)}
+.st.on{background:var(--green-soft);color:var(--green)}
+.good{color:var(--green);font-weight:500}
+.bad{color:var(--red);font-weight:500}
+.mini{height:6px;border-radius:99px;background:var(--surface-strong);overflow:hidden;margin-top:7px}
+.mini i{display:block;height:100%;border-radius:99px;background:var(--blue)}
+
+.heat{display:grid;grid-template-columns:repeat(24,1fr);gap:4px}
+.heat div{aspect-ratio:1;border-radius:5px;border:1px solid var(--line-soft)}
+.heat-lab{display:grid;grid-template-columns:repeat(24,1fr);gap:4px;margin-top:7px;font-size:9px;color:var(--muted);text-align:center;font-family:var(--mono)}
+
+.ins{display:grid;gap:12px}
+.item{display:flex;gap:14px;padding:17px 18px;border:1px solid var(--line);border-radius:16px;background:var(--canvas)}
+.item.alert{border-color:#f2cdcd;background:var(--red-soft)}
+.item.warn{border-color:#f0ddb8;background:var(--amber-soft)}
+.item.win{border-color:#bfe7cf;background:var(--green-soft)}
+.ico{flex:0 0 30px;height:30px;border-radius:9px;display:grid;place-items:center;font-size:14px;font-weight:800;background:rgba(0,82,255,.09);color:var(--blue);font-family:var(--font)}
+.item.alert .ico{background:#fadada;color:var(--red)}
+.item.warn .ico{background:#f8e7c6;color:var(--amber)}
+.item.win .ico{background:#d4f0de;color:var(--green)}
+.tx h4{font-size:13.5px;font-weight:800;margin-bottom:4px}
+.tx p{font-size:13px;color:var(--body);line-height:1.62}
+.tx b{font-weight:700;color:var(--ink)}
+
+.foot{margin-top:50px;padding:24px 0 60px;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap;font-size:12px;color:var(--muted)}
+.foot a{color:var(--blue);text-decoration:none;font-weight:700}
+.scroll{overflow-x:auto}
+
+@media(max-width:1060px){.g4,.hero-kpis{grid-template-columns:repeat(2,1fr)}.split,.g3{grid-template-columns:1fr}}
+@media(max-width:640px){
+  .g4,.g2,.hero-kpis{grid-template-columns:1fr}
+  .fun-row{grid-template-columns:1fr;gap:7px}
+  .fun-side{text-align:left}
+  .hero-top img{height:34px}
+}
+</style>
+</head>
+<body>
+
+<!-- ================= HERO ================= -->
+<header class="hero">
+  <div class="container">
+    <div class="hero-top">
+      <img src="assets/logo-tg-metodo.svg" alt="Trader Generation">
+      <div class="tags">
+        <span class="tag live"><span class="dot"></span>Campanha no ar</span>
+        <span class="tag blue">[CBO - MENTORIA] - [LEADS]</span>
+        <span class="tag">Contingência 02 · act_471233265258172</span>
+      </div>
+    </div>
+    <h1>Relatório de <b>captação</b><br>Mentoria Trader Generation</h1>
+    <p class="sub">Primeiros 7 dias completos da campanha, de 29/09 a 05/10/2026. Destino de todos os anúncios: tradergeneration.com.br/metodo</p>
+
+    <div class="hero-kpis">
+      <div class="hk"><span>Investido</span><b class="num"><small>R$</small>1.681,03</b><em>7 dias · média de R$ 240,15/dia</em></div>
+      <div class="hk accent"><span>Leads</span><b class="num">361</b><em>+26 hoje, dia em curso</em></div>
+      <div class="hk"><span>Custo por lead</span><b class="num"><small>R$</small>4,66</b><em>abriu em R$ 1,93 e fechou em R$ 6,46</em></div>
+      <div class="hk"><span>Visita que vira lead</span><b class="num">36,9<small style="margin-left:2px">%</small></b><em>361 leads em 979 visitas</em></div>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- ================= Alerta no topo ================= -->
+  <div class="sec">
+    <div class="ins">
+      <div class="item alert">
+        <div class="ico">!</div>
+        <div class="tx">
+          <h4>A conta está com pagamento pendente</h4>
+          <p>A Contingência 02 está em <b>account_status 3 (não quitada)</b>, com <b>R$ 192,41</b> em aberto no Mastercard *5153. No dia <b>04/10 a entrega travou</b>: foram só R$ 83,55 contra R$ 469,02 do dia anterior e R$ 477,90 do dia seguinte, com o orçamento em R$ 400/dia nos três dias. Enquanto a fatura não for quitada o risco de a conta parar de novo continua de pé, e essa é a segunda conta da operação.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= KPIs secundários ================= -->
+  <div class="sec">
+    <div class="sec-h">
+      <h2>Números do período</h2>
+      <span>29/09 a 05/10 · fuso America/Sao_Paulo · 06/10 em curso fica fora dos totais</span>
+    </div>
+    <div class="grid g4">
+      <div class="card kpi">
+        <span class="lab">Impressões</span>
+        <b class="val">81.386</b>
+        <em>23.209 pessoas alcançadas</em>
+        <span class="pillch neu">Frequência 3,51x em 7 dias</span>
+      </div>
+      <div class="card kpi">
+        <span class="lab">CTR</span>
+        <b class="val">2,38<small style="margin-left:2px">%</small></b>
+        <em>1.936 cliques · 1.124 no link</em>
+        <span class="pillch down">Caiu de 3,21% para 2,04% com a escala</span>
+      </div>
+      <div class="card kpi">
+        <span class="lab">CPM</span>
+        <b class="val"><small>R$</small>20,66</b>
+        <em>R$ 1,50 por clique no link</em>
+        <span class="pillch up">Estável mesmo multiplicando o orçamento</span>
+      </div>
+      <div class="card kpi">
+        <span class="lab">Visitas na página</span>
+        <b class="val">979</b>
+        <em>R$ 1,72 por visita</em>
+        <span class="pillch up">87,1% dos cliques carregam a página</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= Evolução ================= -->
+  <div class="sec">
+    <div class="sec-h">
+      <h2>O que a escala fez com o CPL</h2>
+      <span>Investimento por dia, custo por lead e os degraus de orçamento</span>
+    </div>
+    <div class="grid split">
+      <div class="card">
+        <div class="legend">
+          <span><i style="background:var(--blue)"></i>Investido no dia</span>
+          <span><i style="background:var(--ink)"></i>Custo por lead</span>
+          <span><i style="background:#c9d3e0"></i>Orçamento configurado</span>
+        </div>
+        <svg id="ch-daily" viewBox="0 0 740 330" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="card soft">
+        <div style="font-size:11px;font-weight:800;letter-spacing:.11em;text-transform:uppercase;color:var(--muted);margin-bottom:14px">Leads por dia</div>
+        <svg id="ch-leads" viewBox="0 0 330 290" style="width:100%;height:auto"></svg>
+        <p style="font-size:12.5px;color:var(--body);margin-top:14px;line-height:1.6">O volume de leads subiu, mas não na mesma proporção do investimento. Entre 30/09 e 05/10 o gasto diário foi multiplicado por <b>6,2</b> e os leads por <b>1,9</b>.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= Funil ================= -->
+  <div class="sec">
+    <div class="sec-h">
+      <h2>Funil de captação</h2>
+      <span>Do impacto até o formulário enviado na /metodo/</span>
+    </div>
+    <div class="grid split">
+      <div class="card"><div class="fun" id="funil"></div></div>
+      <div class="card">
+        <div style="font-size:11px;font-weight:800;letter-spacing:.11em;text-transform:uppercase;color:var(--muted);margin-bottom:14px">Leitura do funil</div>
+        <div class="ins">
+          <div class="item win">
+            <div class="ico">✓</div>
+            <div class="tx">
+              <h4>A página converte muito bem</h4>
+              <p><b>36,9%</b> de quem visita envia o formulário. Para captação de lista fria em infoproduto, qualquer coisa acima de 25% já é boa. A landing não é o gargalo.</p>
+            </div>
+          </div>
+          <div class="item warn">
+            <div class="ico">!</div>
+            <div class="tx">
+              <h4>O gargalo está no clique</h4>
+              <p>Só <b>1,38%</b> das impressões viram clique no link, e isso vem caindo com a escala. É aqui que o CPL está sendo decidido, não na página.</p>
+            </div>
+          </div>
+          <div class="item">
+            <div class="ico">i</div>
+            <div class="tx">
+              <h4>A captação já devolveu venda</h4>
+              <p>A campanha tem <b>1 compra de R$ 197</b> atribuída, mesmo sendo de topo de funil. Sinal de que parte da lista entra já pronta para comprar.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= Criativos ================= -->
+  <div class="sec">
+    <div class="sec-h">
+      <h2>Os dois criativos no ar</h2>
+      <span>Mesma oferta, mesma página, orçamento distribuído pelo CBO</span>
+    </div>
+    <div class="card scroll">
+      <table>
+        <thead><tr><th>Criativo</th><th>Status</th><th>Investido</th><th>Impressões</th><th>Freq.</th><th>CTR</th><th>CPM</th><th>Visitas</th><th>Leads</th><th>CPL</th><th>Visita→lead</th></tr></thead>
+        <tbody id="tb-ads"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ================= Posicionamento e público ================= -->
+  <div class="sec">
+    <div class="sec-h">
+      <h2>Onde o lead sai mais barato</h2>
+      <span>Investimento e CPL por posicionamento e por público</span>
+    </div>
+    <div class="grid g2">
+      <div class="card">
+        <div class="legend"><span><i style="background:var(--blue)"></i>Investido</span><span>Rótulo à direita: CPL</span></div>
+        <svg id="ch-place" viewBox="0 0 440 300" style="width:100%;height:auto"></svg>
+      </div>
+      <div class="card">
+        <div class="legend"><span><i style="background:var(--blue)"></i>Investido por faixa e gênero</span><span>Rótulo à direita: CPL</span></div>
+        <svg id="ch-demo" viewBox="0 0 440 300" style="width:100%;height:auto"></svg>
+      </div>
+    </div>
+    <div class="grid g2" style="margin-top:16px">
+      <div class="card">
+        <div style="font-size:11px;font-weight:800;letter-spacing:.11em;text-transform:uppercase;color:var(--muted);margin-bottom:14px">Dispositivo</div>
+        <div class="scroll">
+          <table>
+            <thead><tr><th>Aparelho</th><th>Investido</th><th>Impressões</th><th>Visitas</th><th>Leads</th><th>CPL</th></tr></thead>
+            <tbody id="tb-dev"></tbody>
+          </table>
+        </div>
+        <div style="font-size:11px;font-weight:800;letter-spacing:.11em;text-transform:uppercase;color:var(--muted);margin:22px 0 12px">Top estados por investimento</div>
+        <svg id="ch-uf" viewBox="0 0 440 210" style="width:100%;height:auto"></svg>
+        <p style="font-size:11.5px;color:var(--muted);margin-top:8px">A Meta não devolve conversão por região, então aqui só o investimento e o alcance.</p>
+      </div>
+      <div class="card">
+        <div style="font-size:11px;font-weight:800;letter-spacing:.11em;text-transform:uppercase;color:var(--muted);margin-bottom:14px">Custo por lead por hora do dia</div>
+        <div class="heat" id="heat"></div>
+        <div class="heat-lab" id="heat-lab"></div>
+        <div class="legend" style="margin-top:14px"><span><i style="background:#0a8f4a"></i>CPL abaixo da média</span><span><i style="background:#c62828"></i>CPL acima da média</span><span><i style="background:var(--surface-strong)"></i>Volume baixo</span></div>
+        <p style="font-size:12.5px;color:var(--body);line-height:1.6">As faixas mais eficientes são <b>13h</b> (CPL R$ 2,71), <b>16h</b> (R$ 2,82) e <b>20h</b> (R$ 3,69). O bloco da madrugada, da 1h às 5h, gasta pouco e entrega quase nada, com CPL de R$ 21,00 na 1h.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= Plano de ação ================= -->
+  <div class="sec">
+    <div class="sec-h">
+      <h2>Plano de ação</h2>
+      <span>Ordenado por impacto no custo por lead</span>
+    </div>
+    <div class="ins">
+      <div class="item alert">
+        <div class="ico">1</div>
+        <div class="tx">
+          <h4>Quitar a fatura antes de qualquer otimização</h4>
+          <p>Conta em status não quitada, com R$ 192,41 em aberto, e um dia inteiro de entrega travada no 04/10. Nenhum ajuste de campanha resolve enquanto o pagamento estiver pendente, e a conta principal já caiu uma vez.</p>
+        </div>
+      </div>
+      <div class="item warn">
+        <div class="ico">2</div>
+        <div class="tx">
+          <h4>Recuar o orçamento para R$ 250 a R$ 300/dia</h4>
+          <p>O CPL saiu de <b>R$ 1,93</b> no primeiro dia para <b>R$ 6,46</b> no sétimo, um aumento de 3,3x. O ponto de inflexão foi 01/10, quando o orçamento pulou de R$ 70 para R$ 400 em menos de 5 horas, em dois saltos. O patamar de R$ 295/dia (02/10) ainda entregou CPL de R$ 5,47 com 54 leads. Vale recuar, estabilizar e voltar a subir em degraus de 20% a cada 48h.</p>
+        </div>
+      </div>
+      <div class="item alert">
+        <div class="ico">3</div>
+        <div class="tx">
+          <h4>Criar a conversão personalizada da /metodo/</h4>
+          <p>A campanha otimiza pelo <b>evento Lead genérico do pixel</b> 2335014403963124, que também recebe os cadastros da página /protocolompr/. São duas ofertas diferentes alimentando o mesmo sinal de aprendizado, agora com R$ 400/dia em jogo. Uma conversão personalizada filtrando a URL que contém <b>/metodo/</b> resolve, e o reinício de aprendizado sai de graça se for feito junto com o ajuste de orçamento acima.</p>
+        </div>
+      </div>
+      <div class="item">
+        <div class="ico">4</div>
+        <div class="tx">
+          <h4>Ligar o advanced matching no evento Lead</h4>
+          <p>O formulário tem nome, e-mail e telefone em mãos no instante do disparo, mas o evento sai só com cookie. Sem <b>em</b>, <b>ph</b> e <b>external_id</b> a Meta perde correspondência e o algoritmo aprende com menos gente identificada. O patch já está escrito, falta publicar na página.</p>
+        </div>
+      </div>
+      <div class="item win">
+        <div class="ico">5</div>
+        <div class="tx">
+          <h4>Dar mais espaço ao Facebook e cortar a madrugada</h4>
+          <p>Ao contrário da campanha de vendas, aqui o <b>Facebook entrega mais barato</b>: Feed a <b>R$ 3,39</b> e Stories a <b>R$ 3,75</b>, contra R$ 4,96 do Instagram Reels, que é justamente onde está o maior investimento (R$ 565,96). Vale um conjunto espelho só com Feed e Stories das duas plataformas, cortando a faixa de 1h às 5h.</p>
+        </div>
+      </div>
+      <div class="item">
+        <div class="ico">6</div>
+        <div class="tx">
+          <h4>Estreitar a idade</h4>
+          <p>O conjunto está aberto de <b>18 a 65 anos</b>. A faixa <b>18-24 masculino</b> é a pior do funil, com CPL de <b>R$ 6,09</b>, enquanto <b>35-44 masculino</b> entrega a <b>R$ 4,25</b> e <b>55-64 masculino</b> a R$ 4,16. Homens de 25 a 64 concentram 83% do investimento e 83% dos leads. Cortar a faixa 18-24 libera cerca de R$ 120 por semana.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="foot">
+    <span>Dados da Graph API da Meta v21.0 em 06/10/2026 · janela de atribuição padrão da conta · leads medidos pelo evento Lead do pixel 2335014403963124</span>
+    <span>Landing: <a href="https://www.tradergeneration.com.br/metodo/" target="_blank" rel="noopener">tradergeneration.com.br/metodo</a> · Dbout Mídia</span>
+  </div>
+</div>
+
+<script>
+const BLUE='#0052ff', INK='#080b10', MUT='#77808e', LINE='#dfe3e8', SOFT='#eceff3', GREEN='#0a8f4a', RED='#c62828';
+const brl=n=>n.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
+const num=n=>n.toLocaleString('pt-BR');
+const pct=n=>n.toFixed(1).replace('.',',')+'%';
+
+const daily=[
+  {d:'29/09', spend:46.35,  impr:2055,  clicks:66,  link:44,  ctr:3.21, lpv:41,  leads:24, budget:25},
+  {d:'30/09', spend:76.56,  impr:3590,  clicks:118, link:67,  ctr:3.29, lpv:61,  leads:38, budget:70},
+  {d:'01/10', spend:232.39, impr:10298, clicks:310, link:164, ctr:3.01, lpv:133, leads:64, budget:140},
+  {d:'02/10', spend:295.26, impr:15099, clicks:357, link:213, ctr:2.36, lpv:186, leads:54, budget:400},
+  {d:'03/10', spend:469.02, impr:21426, clicks:499, link:287, ctr:2.33, lpv:255, leads:85, budget:400},
+  {d:'04/10', spend:83.55,  impr:4734,  clicks:93,  link:52,  ctr:1.96, lpv:38,  leads:22, budget:400, nota:'entrega travada'},
+  {d:'05/10', spend:477.90, impr:24184, clicks:493, link:297, ctr:2.04, lpv:265, leads:74, budget:400}
+];
+const ads=[
+  {n:'[AD 1]', set:'[AD SET 1.1] · ALFA', spend:779.11, impr:35377, freq:2.33, ctr:2.61, cpm:22.02, lpv:503, leads:172},
+  {n:'[AD 2]', set:'[AD SET 1.1] · ALFA', spend:901.92, impr:46009, freq:2.38, ctr:2.20, cpm:19.60, lpv:476, leads:189}
+];
+const places=[
+  {n:'Instagram Reels',   spend:565.96, leads:114},
+  {n:'Instagram Stories', spend:460.42, leads:108},
+  {n:'Instagram Feed',    spend:428.84, leads:84},
+  {n:'Facebook Reels',    spend:99.54,  leads:20},
+  {n:'Facebook Feed',     spend:71.20,  leads:21},
+  {n:'Facebook Stories',  spend:41.22,  leads:11},
+  {n:'Outros',            spend:13.85,  leads:3}
+];
+const demo=[
+  {n:'25-34 H', spend:530.81, leads:116},
+  {n:'35-44 H', spend:450.52, leads:106},
+  {n:'45-54 H', spend:287.46, leads:55},
+  {n:'18-24 H', spend:121.81, leads:20},
+  {n:'55-64 H', spend:91.52,  leads:22},
+  {n:'35-44 M', spend:53.04,  leads:16},
+  {n:'45-54 M', spend:45.75,  leads:6},
+  {n:'25-34 M', spend:45.26,  leads:8},
+  {n:'Outros',  spend:54.86,  leads:12}
+];
+const devs=[
+  {n:'Android smartphone', spend:1176.64, impr:51663, lpv:660, leads:262},
+  {n:'iPhone',             spend:492.96,  impr:28997, lpv:313, leads:96},
+  {n:'Desktop',            spend:5.54,    impr:373,   lpv:3,   leads:2},
+  {n:'Android tablet',     spend:4.42,    impr:283,   lpv:2,   leads:1},
+  {n:'iPad',               spend:1.47,    impr:70,    lpv:1,   leads:0}
+];
+const ufs=[
+  {n:'São Paulo', spend:470.34},{n:'Minas Gerais', spend:173.09},{n:'Rio de Janeiro', spend:162.34},
+  {n:'Paraná', spend:95.09},{n:'Santa Catarina', spend:86.14},{n:'Goiás', spend:77.95},
+  {n:'Bahia', spend:72.29},{n:'Rio Grande do Sul', spend:68.41}
+];
+const hSpend=[68.10,21.00,9.16,4.93,5.32,11.59,31.50,49.87,64.74,56.47,57.05,67.30,78.74,70.40,104.44,89.83,84.48,92.26,115.06,106.26,107.11,117.56,144.05,123.81];
+const hLeads=[13,1,1,1,1,4,9,8,13,12,10,16,17,26,19,11,30,15,22,18,29,20,35,30];
+const funil=[
+  {n:'Impressões',        sub:'23.209 pessoas alcançadas', v:81386, cost:null, rate:null},
+  {n:'Cliques no link',   sub:'1,38% das impressões',      v:1124,  cost:1.50, rate:1.38},
+  {n:'Visitas na página', sub:'87,1% dos cliques',         v:979,   cost:1.72, rate:87.10},
+  {n:'Lead no formulário',sub:'36,9% das visitas',         v:361,   cost:4.66, rate:36.90}
+];
+
+const NS='http://www.w3.org/2000/svg';
+const el=(t,a={})=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);return e;};
+const tx=(x,y,s,a={})=>{const t=el('text',Object.assign({x,y,fill:MUT,'font-size':10},a));t.textContent=s;return t;};
+
+/* ---- gasto x CPL x orçamento ---- */
+(function(){
+  const s=document.getElementById('ch-daily'), W=740,H=330, ml=54,mr=52,mt=22,mb=42;
+  const iw=W-ml-mr, ih=H-mt-mb, n=daily.length, bw=iw/n;
+  const mx=Math.max(...daily.map(d=>Math.max(d.spend,d.budget)))*1.12;
+  for(let i=0;i<=4;i++){
+    const y=mt+ih-(ih/4)*i;
+    s.appendChild(el('line',{x1:ml,y1:y,x2:ml+iw,y2:y,stroke:i?SOFT:LINE}));
+    s.appendChild(tx(ml-9,y+3.5,'R$ '+Math.round(mx/4*i),{'text-anchor':'end','font-size':9.5}));
+  }
+  // degraus de orcamento
+  let path='';
+  daily.forEach((d,i)=>{
+    const y=mt+ih-(d.budget/mx)*ih, x0=ml+i*bw, x1=ml+(i+1)*bw;
+    path+=(i?`L ${x0} ${y} `:`M ${x0} ${y} `)+`L ${x1} ${y} `;
+  });
+  s.appendChild(el('path',{d:path,fill:'none',stroke:'#c9d3e0','stroke-width':2,'stroke-dasharray':'2 4'}));
+  // barras de gasto
+  daily.forEach((d,i)=>{
+    const h=(d.spend/mx)*ih, x=ml+i*bw+bw*.22;
+    s.appendChild(el('rect',{x,y:mt+ih-h,width:bw*.56,height:h,rx:5,fill:d.nota?'#9fb3cc':BLUE}));
+    s.appendChild(tx(x+bw*.28,mt+ih-h-7,'R$'+Math.round(d.spend),{'text-anchor':'middle','font-size':9.5,fill:INK}));
+    s.appendChild(tx(x+bw*.28,H-24,d.d,{'text-anchor':'middle','font-size':10,'class':'lbl'}));
+    if(d.nota) s.appendChild(tx(x+bw*.28,H-11,d.nota,{'text-anchor':'middle','font-size':8.5,fill:RED,'class':'lbl'}));
+  });
+  // linha de CPL (eixo direito)
+  const cpl=d=>d.leads?d.spend/d.leads:0;
+  const mc=Math.max(...daily.map(cpl))*1.3;
+  for(let i=0;i<=2;i++){
+    const y=mt+ih-(ih/2)*i;
+    s.appendChild(tx(ml+iw+9,y+3.5,'R$ '+ (mc/2*i).toFixed(1).replace('.',','),{'font-size':9.5,fill:INK}));
+  }
+  const pts=daily.map((d,i)=>[ml+i*bw+bw/2, mt+ih-(cpl(d)/mc)*ih]);
+  s.appendChild(el('path',{d:pts.map((p,i)=>(i?'L':'M')+p[0].toFixed(1)+' '+p[1].toFixed(1)).join(' '),fill:'none',stroke:INK,'stroke-width':2.2,'stroke-linejoin':'round'}));
+  daily.forEach((d,i)=>{
+    s.appendChild(el('circle',{cx:pts[i][0],cy:pts[i][1],r:3.6,fill:'#fff',stroke:INK,'stroke-width':2}));
+    s.appendChild(tx(pts[i][0],pts[i][1]-10,'R$'+cpl(d).toFixed(2).replace('.',','),{'text-anchor':'middle','font-size':9.5,fill:INK}));
+  });
+  s.appendChild(tx(ml+iw+9,mt-6,'CPL',{'font-size':9,'class':'lbl',fill:MUT}));
+})();
+
+/* ---- leads por dia ---- */
+(function(){
+  const s=document.getElementById('ch-leads'), W=330,H=290, ml=34,mr=10,mt=14,mb=34;
+  const iw=W-ml-mr, ih=H-mt-mb, bw=iw/daily.length, mx=Math.max(...daily.map(d=>d.leads))*1.2;
+  for(let i=0;i<=3;i++){
+    const y=mt+ih-(ih/3)*i;
+    s.appendChild(el('line',{x1:ml,y1:y,x2:ml+iw,y2:y,stroke:i?SOFT:LINE}));
+    s.appendChild(tx(ml-7,y+3.5,Math.round(mx/3*i),{'text-anchor':'end','font-size':9.5}));
+  }
+  daily.forEach((d,i)=>{
+    const h=(d.leads/mx)*ih, x=ml+i*bw+bw*.2;
+    s.appendChild(el('rect',{x,y:mt+ih-h,width:bw*.6,height:h,rx:4,fill:d.nota?'#9fb3cc':'#4d88ff'}));
+    s.appendChild(tx(x+bw*.3,mt+ih-h-6,d.leads,{'text-anchor':'middle','font-size':10,fill:INK}));
+    s.appendChild(tx(x+bw*.3,H-14,d.d.slice(0,2),{'text-anchor':'middle','font-size':9.5,'class':'lbl'}));
+  });
+})();
+
+/* ---- funil ---- */
+(function(){
+  const box=document.getElementById('funil'), mx=funil[0].v;
+  funil.forEach(f=>{
+    const w=Math.max((f.v/mx)*100,6);
+    const row=document.createElement('div'); row.className='fun-row';
+    row.innerHTML=`<div class="fun-name">${f.n}<em>${f.sub}</em></div>
+      <div class="fun-bar"><div class="fun-fill" style="width:${w}%"><span>${num(f.v)}</span></div></div>
+      <div class="fun-side">${f.cost!==null?`<b>R$ ${brl(f.cost)}</b><em>custo por evento</em>`:`<b>${num(23209)}</b><em>pessoas únicas</em>`}</div>`;
+    box.appendChild(row);
+  });
+})();
+
+/* ---- tabela de criativos ---- */
+(function(){
+  const tb=document.getElementById('tb-ads'), mxs=Math.max(...ads.map(a=>a.spend));
+  const cplMedio=4.66;
+  ads.forEach(a=>{
+    const cpl=a.spend/a.leads, conv=a.leads/a.lpv*100;
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td class="nm">${a.n}<em>${a.set}</em></td>
+      <td><span class="st on">ATIVO</span></td>
+      <td>R$ ${brl(a.spend)}<div class="mini"><i style="width:${(a.spend/mxs*100).toFixed(0)}%"></i></div></td>
+      <td>${num(a.impr)}</td>
+      <td>${a.freq.toFixed(2).replace('.',',')}x</td>
+      <td>${a.ctr.toFixed(2).replace('.',',')}%</td>
+      <td>R$ ${brl(a.cpm)}</td>
+      <td>${num(a.lpv)}</td>
+      <td>${a.leads}</td>
+      <td class="${cpl<=cplMedio?'good':'bad'}">R$ ${brl(cpl)}</td>
+      <td>${pct(conv)}</td>`;
+    tb.appendChild(tr);
+  });
+})();
+
+/* ---- barras horizontais com CPL ---- */
+function hbar(id, rows, W, H, showCpl){
+  const s=document.getElementById(id), ml=126, mr=showCpl?74:66, mt=6, mb=6;
+  const iw=W-ml-mr, ih=H-mt-mb, bh=ih/rows.length, mx=Math.max(...rows.map(r=>r.spend));
+  const media=4.66;
+  rows.forEach((r,i)=>{
+    const y=mt+i*bh, w=Math.max((r.spend/mx)*iw,2);
+    const cpl=r.leads?r.spend/r.leads:0;
+    s.appendChild(tx(ml-10,y+bh/2+4,r.n,{'text-anchor':'end','font-size':11,fill:INK,'class':'lbl','font-weight':600}));
+    s.appendChild(el('rect',{x:ml,y:y+bh*.2,width:iw,height:bh*.6,rx:5,fill:SOFT}));
+    s.appendChild(el('rect',{x:ml,y:y+bh*.2,width:w,height:bh*.6,rx:5,fill:BLUE,opacity:.92}));
+    const lab='R$ '+Math.round(r.spend);
+    if(w>=58) s.appendChild(tx(ml+8,y+bh/2+4,lab,{'font-size':10,fill:'#fff'}));
+    else s.appendChild(tx(ml+w+8,y+bh/2+4,lab,{'font-size':10,fill:INK}));
+    if(showCpl) s.appendChild(tx(W-6,y+bh/2+4,cpl?'R$ '+brl(cpl):'sem lead',{'text-anchor':'end','font-size':10.5,fill:cpl&&cpl<=media?GREEN:(cpl?RED:MUT)}));
+  });
+}
+hbar('ch-place', places, 440, 300, true);
+hbar('ch-demo',  demo,   440, 300, true);
+hbar('ch-uf',    ufs,    440, 210, false);
+
+/* ---- dispositivos ---- */
+(function(){
+  const tb=document.getElementById('tb-dev');
+  devs.forEach(d=>{
+    const cpl=d.leads?d.spend/d.leads:0;
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td class="nm">${d.n}</td><td>R$ ${brl(d.spend)}</td><td>${num(d.impr)}</td><td>${d.lpv}</td>
+      <td>${d.leads}</td><td class="${cpl&&cpl<=4.66?'good':(cpl?'bad':'')}">${cpl?'R$ '+brl(cpl):'-'}</td>`;
+    tb.appendChild(tr);
+  });
+})();
+
+/* ---- heatmap de CPL por hora ---- */
+(function(){
+  const h=document.getElementById('heat'), l=document.getElementById('heat-lab'), media=4.66;
+  const maxLeads=Math.max(...hLeads);
+  hLeads.forEach((leads,i)=>{
+    const cpl=leads?hSpend[i]/leads:0;
+    const peso=.18+(leads/maxLeads)*.82;
+    const d=document.createElement('div');
+    if(!leads || hSpend[i]<6) d.style.background=SOFT;
+    else if(cpl<=media) d.style.background=`rgba(10,143,74,${peso})`;
+    else d.style.background=`rgba(198,40,40,${peso})`;
+    d.title=`${String(i).padStart(2,'0')}h · R$ ${brl(hSpend[i])} · ${leads} leads · CPL ${cpl?'R$ '+brl(cpl):'-'}`;
+    h.appendChild(d);
+    const sp=document.createElement('span'); sp.textContent=i%3===0?i:''; l.appendChild(sp);
+  });
+})();
+</script>
+</body>
+</html>
