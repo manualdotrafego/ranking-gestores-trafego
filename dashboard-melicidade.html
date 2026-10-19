@@ -1,0 +1,349 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Captação Melicidade</title>
+<meta name="description" content="Dashboard ao vivo da captação da Imersão ECF na Melicidade, 23/10.">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root{
+    --bg:#050507;--bg-2:#0b0c10;--card:#0f1116;--card-2:#14161d;
+    --line:rgba(255,255,255,.08);--line-strong:rgba(255,255,255,.14);
+    --text:#e8eaee;--text-dim:#9ba0aa;--text-mute:#6a6f79;
+    --yellow:#ffe600;--yellow-2:#f5d400;--green:#19e06a;--warn:#ffb020;
+    --grad-hot:linear-gradient(90deg,#7b2bff 0%,#ff3d00 55%,#ff9100 100%);
+    /* series (validadas no fundo escuro): formulario nativo e landing page */
+    --s-form:#8f5cff;--s-site:#e06a14;
+    --radius-sm:10px;--radius:16px;--radius-lg:22px;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{background:var(--bg);color:var(--text);font:15px/1.5 Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased}
+  h1,h2,h3,.mont{font-family:Montserrat,Inter,sans-serif}
+  .wrap{max-width:1200px;margin:0 auto;padding:0 16px}
+
+  /* topo, igual a landing: logo, faixa de gradiente, pilula amarela */
+  header.top{position:sticky;top:0;z-index:10;background:rgba(5,5,7,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  header.top::after{content:"";display:block;height:2px;background:var(--grad-hot)}
+  .top .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px;height:62px}
+  .logo{display:flex;align-items:center;gap:12px}
+  .logo img{height:28px;width:auto;display:block}
+  .logo span{font-size:12px;color:var(--text-dim);border-left:1px solid var(--line-strong);padding-left:12px;letter-spacing:.04em;text-transform:uppercase;font-weight:600}
+  .live{display:inline-flex;align-items:center;gap:8px;background:var(--yellow);color:#111;font-weight:700;font-size:12.5px;padding:8px 14px;border-radius:999px;white-space:nowrap}
+  .live i{width:8px;height:8px;border-radius:50%;background:#111;animation:pulse 1.6s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.25}}
+  .live.err{background:#ff5a5a;color:#fff}.live.err i{background:#fff}
+
+  /* hero */
+  .hero{padding:40px 0 22px;background:radial-gradient(900px 380px at 85% -10%,rgba(123,43,255,.18),transparent 60%),radial-gradient(700px 300px at 0% 0%,rgba(255,145,0,.10),transparent 60%)}
+  .eyebrow{color:var(--yellow);font-weight:700;font-size:12.5px;letter-spacing:.08em;text-transform:uppercase}
+  .hero h1{font-size:clamp(28px,4.6vw,46px);line-height:1.08;margin:10px 0 14px;font-weight:800;letter-spacing:-.01em}
+  .hl{background-image:var(--grad-hot);background-size:100% 4px;background-repeat:no-repeat;background-position:0 92%;padding-bottom:4px}
+  .pill{display:inline-flex;flex-wrap:wrap;gap:6px 14px;background:var(--yellow);color:#111;font-weight:800;font-size:12.5px;letter-spacing:.04em;text-transform:uppercase;padding:9px 16px;border-radius:999px}
+  .hero-grid{display:grid;grid-template-columns:1.25fr 1fr;gap:18px;align-items:stretch;margin-top:24px}
+  .panel{background:var(--card);border:1px solid var(--line);border-radius:var(--radius-lg);padding:20px 22px;min-width:0}
+  .panel h3{margin:0 0 12px;font-size:13px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.07em;font-weight:700}
+  .big{font-family:Montserrat,Inter,sans-serif;font-weight:800;font-size:clamp(40px,6vw,62px);line-height:1;color:var(--yellow)}
+  .big small{font-size:.38em;color:var(--text-dim);font-weight:600;margin-left:6px}
+  .meter{height:12px;border-radius:999px;background:var(--card-2);border:1px solid var(--line);overflow:hidden;margin:16px 0 8px}
+  .meter b{display:block;height:100%;background:var(--yellow);border-radius:999px;transition:width .8s ease}
+  .meter-legend{display:flex;justify-content:space-between;font-size:13px;color:var(--text-dim)}
+  .count{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+  .count div{background:var(--card-2);border:1px solid var(--line);border-radius:var(--radius);padding:14px 8px;text-align:center}
+  .count strong{display:block;font-family:Montserrat,Inter,sans-serif;font-size:30px;font-weight:800;line-height:1}
+  .count span{font-size:11.5px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.06em}
+  .note{font-size:12.5px;color:var(--text-mute);margin-top:12px}
+
+  /* kpis */
+  .kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin:18px 0}
+  .kpi{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:16px 18px;min-width:0}
+  .kpi .l{font-size:12px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.06em;font-weight:600}
+  .kpi .v{font-family:Montserrat,Inter,sans-serif;font-size:26px;font-weight:800;margin-top:6px;white-space:nowrap}
+  .kpi .s{font-size:12.5px;color:var(--text-mute);margin-top:2px}
+
+  section{margin:34px 0}
+  .sec-h{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+  .sec-h h2{font-size:clamp(20px,2.6vw,26px);margin:0;font-weight:800}
+  .sec-h p{margin:0;color:var(--text-dim);font-size:13.5px}
+
+  /* canais */
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .canal{position:relative;overflow:hidden}
+  .canal::before{content:"";position:absolute;inset:0 0 auto 0;height:3px;background:var(--c)}
+  .canal .head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:14px}
+  .canal .name{display:flex;align-items:center;gap:10px;font-family:Montserrat,Inter,sans-serif;font-weight:800;font-size:17px}
+  .sw{width:12px;height:12px;border-radius:4px;background:var(--c);flex:none}
+  .st{font-size:11.5px;font-weight:700;padding:3px 9px;border-radius:999px;white-space:nowrap;border:1px solid var(--line-strong);color:var(--text-dim)}
+  .st.on{color:var(--green);border-color:rgba(25,224,106,.35);background:rgba(25,224,106,.08)}
+  .st.on::before{content:"● "}
+  .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+  .m{background:var(--card-2);border:1px solid var(--line);border-radius:var(--radius-sm);padding:10px 12px}
+  .m .l{font-size:11.5px;color:var(--text-dim)}
+  .m .v{font-weight:700;font-size:18px;margin-top:2px;white-space:nowrap}
+  .canal .foot{font-size:12.5px;color:var(--text-mute);margin-top:12px}
+
+  /* grafico */
+  .chart-box{position:relative;height:300px}
+  .legend{display:flex;gap:18px;flex-wrap:wrap;font-size:13px;color:var(--text-dim);margin-bottom:10px}
+  .legend span{display:inline-flex;align-items:center;gap:8px}
+
+  /* perfil */
+  .prof-top{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:14px}
+  .ok-badge{display:inline-flex;align-items:center;gap:6px;color:var(--green);font-weight:700}
+  .bars{display:grid;gap:9px}
+  .bar{display:grid;grid-template-columns:150px 1fr 64px;align-items:center;gap:10px;font-size:13px}
+  .bar .t{color:var(--text-dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .bar .track{height:14px;background:var(--card-2);border-radius:4px;position:relative}
+  .bar .track b{position:absolute;left:0;top:0;bottom:0;background:var(--s-form);border-radius:0 4px 4px 0;min-width:2px}
+  .bar .track b.ok{background:var(--green)}
+  .bar .n{text-align:right;font-variant-numeric:tabular-nums;color:var(--text)}
+  .bar .n small{color:var(--text-mute)}
+  .prof-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:14px}
+  .prof-grid .stack{display:grid;gap:14px}
+
+  /* tabelas */
+  .tblwrap{overflow-x:auto}
+  table{width:100%;border-collapse:collapse;font-size:13.5px}
+  th{text-align:left;font-size:11.5px;color:var(--text-mute);text-transform:uppercase;letter-spacing:.06em;padding:10px;border-bottom:1px solid var(--line-strong);white-space:nowrap;font-weight:600}
+  td{padding:11px 10px;border-bottom:1px solid var(--line);white-space:nowrap}
+  tr:last-child td{border-bottom:0}
+  td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+  .chip{display:inline-flex;align-items:center;gap:7px;font-size:12.5px;color:var(--text-dim)}
+  .pv{display:inline-flex;align-items:center;gap:6px;background:var(--yellow);color:#111;font-weight:700;font-size:12px;padding:5px 11px;border-radius:999px;text-decoration:none}
+  .pv:hover{background:var(--yellow-2)}
+  .pv:focus-visible,.live:focus-visible{outline:2px solid #fff;outline-offset:2px}
+  .tag-ok{color:var(--green);font-weight:700}
+  .tag-no{color:var(--text-mute)}
+
+  footer{border-top:1px solid var(--line);margin-top:40px;padding:22px 0 40px;color:var(--text-mute);font-size:12.5px}
+  .loading{padding:80px 0;text-align:center;color:var(--text-dim)}
+
+  #tip{position:fixed;pointer-events:none;background:#000;border:1px solid var(--line-strong);color:var(--text);font-size:12.5px;padding:7px 10px;border-radius:8px;opacity:0;transition:opacity .12s;z-index:20;white-space:nowrap}
+
+  @media(max-width:980px){.kpis{grid-template-columns:repeat(2,1fr)}.hero-grid,.two,.prof-grid{grid-template-columns:1fr}.prof-top{grid-template-columns:1fr 1fr 1fr}}
+  @media(max-width:560px){.kpis{grid-template-columns:1fr 1fr}.kpi .v{font-size:22px}.grid3{grid-template-columns:1fr 1fr}.prof-top{grid-template-columns:1fr}.bar{grid-template-columns:110px 1fr 56px}.logo span{display:none}.count strong{font-size:24px}}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <div class="logo">
+      <img src="https://ecfconsultoria.com.br/imersao-melicidade/img/logo.png" alt="ECF Consultoria &amp; Assessoria">
+      <span>Captação ao vivo</span>
+    </div>
+    <div class="live" id="live"><i></i><span id="upd">carregando</span></div>
+  </div>
+</header>
+
+<main id="app"><div class="loading">Carregando dados da captação…</div></main>
+<div id="tip" role="tooltip"></div>
+
+<footer>
+  <div class="wrap">
+    Fonte: API do Meta Ads (CONTA 002) e formulário nativo da página Emerson Faccioli. Dados atualizados a cada 15 min na VPS; esta página recarrega sozinha.
+    Perfil e últimos cadastros consideram só o formulário nativo, sem dados pessoais. Os cadastros da landing ficam no sistema do site.
+  </div>
+</footer>
+
+<script>
+const SRC = "https://srv1809067.hstgr.cloud/melicidade-dashboard.json";
+const C = {form: getComputedStyle(document.documentElement).getPropertyValue("--s-form").trim(),
+           site: getComputedStyle(document.documentElement).getPropertyValue("--s-site").trim()};
+const brl = v => v == null ? "–" : v.toLocaleString("pt-BR", {style: "currency", currency: "BRL"});
+const num = v => v == null ? "–" : v.toLocaleString("pt-BR");
+const pct = v => v == null ? "–" : v.toLocaleString("pt-BR", {maximumFractionDigits: 1}) + "%";
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const STATUS = s => s === "ACTIVE" ? '<span class="st on">ativa</span>' : s === "PAUSED" ? '<span class="st">pausada</span>' : `<span class="st">${esc((s||"?").toLowerCase().replace(/_/g," "))}</span>`;
+let chart, D, timer;
+
+function countdown(){
+  if(!D) return;
+  const ms = new Date(D.evento) - new Date();
+  const el = document.getElementById("cd"); if(!el) return;
+  if(ms <= 0){ el.innerHTML = '<div style="grid-column:1/-1"><strong>Hoje</strong><span>é dia de imersão</span></div>'; return; }
+  const d = Math.floor(ms/864e5), h = Math.floor(ms%864e5/36e5), m = Math.floor(ms%36e5/6e4), s = Math.floor(ms%6e4/1e3);
+  el.innerHTML = [[d,"dias"],[h,"horas"],[m,"min"],[s,"seg"]].map(([v,l]) => `<div><strong>${String(v).padStart(2,"0")}</strong><span>${l}</span></div>`).join("");
+}
+
+function bars(list, total, okSet){
+  const max = Math.max(1, ...list.map(x => x.n));
+  return '<div class="bars">' + list.map(x => {
+    const p = total ? x.n/total*100 : 0;
+    return `<div class="bar" data-tip="${esc(x.label)}: ${x.n} (${pct(p)})"><div class="t">${esc(x.label)}</div>
+      <div class="track"><b class="${okSet && okSet.has(x.label) ? "ok" : ""}" style="width:${x.n/max*100}%"></b></div>
+      <div class="n">${x.n} <small>${Math.round(p)}%</small></div></div>`;
+  }).join("") + "</div>";
+}
+
+function render(){
+  const T = D.total, F = D.form, byKey = Object.fromEntries(D.canais.map(c => [c.key, c]));
+  const fillPct = Math.min(100, T.leads / D.vagas * 100);
+  const okFat = new Set(["R$ 500 mil a 1 mi","R$ 1 a 3 mi","Acima de R$ 3 mi"]);
+
+  let h = `
+  <div class="hero"><div class="wrap">
+    <div class="eyebrow">Imersão presencial · somente convidados</div>
+    <h1>Captação Imersão ECF<br>na <span class="hl">Melicidade</span></h1>
+    <div class="pill"><span>23 de outubro</span><span>·</span><span>a partir das 9h</span><span>·</span><span>Osasco/SP</span></div>
+    <div class="hero-grid">
+      <div class="panel">
+        <h3>Solicitações de convite via anúncios</h3>
+        <div class="big">${num(T.leads)}<small>de ${D.vagas} vagas</small></div>
+        <div class="meter" role="progressbar" aria-valuemin="0" aria-valuemax="${D.vagas}" aria-valuenow="${T.leads}" aria-label="Solicitações frente às vagas"><b style="width:${fillPct}%"></b></div>
+        <div class="meter-legend"><span>${pct(T.leads/D.vagas*100)} das vagas em solicitações</span><span>até 2 por empresa</span></div>
+        <div class="note">Solicitação não é vaga confirmada: o time ECF valida o perfil antes de liberar o convite.</div>
+      </div>
+      <div class="panel">
+        <h3>Contagem para a imersão</h3>
+        <div class="count" id="cd"></div>
+        <div class="note">Orçamento diário somado das campanhas: ${brl(T.daily_budget)}</div>
+      </div>
+    </div>
+  </div></div>
+
+  <div class="wrap">
+    <div class="kpis">
+      <div class="kpi"><div class="l">Investido</div><div class="v">${brl(T.spend)}</div><div class="s">desde ${D.canais.map(c=>c.start).sort()[0].split("-").reverse().slice(0,2).join("/")}</div></div>
+      <div class="kpi"><div class="l">Solicitações</div><div class="v">${num(T.leads)}</div><div class="s">formulário + landing</div></div>
+      <div class="kpi"><div class="l">Custo por solicitação</div><div class="v">${brl(T.cpl)}</div><div class="s">média dos dois canais</div></div>
+      <div class="kpi"><div class="l">Hoje</div><div class="v">${num(T.today_leads)}</div><div class="s">${brl(T.today_spend)} investidos</div></div>
+      <div class="kpi"><div class="l">Perfil elegível</div><div class="v">${num(F.elegiveis)} <span style="font-size:15px;color:var(--text-dim)">de ${num(F.leads)}</span></div><div class="s">no formulário nativo</div></div>
+    </div>
+
+    <section>
+      <div class="sec-h"><h2>Canais de captação</h2><p>Mesma verba diária, criativos iguais, destinos diferentes</p></div>
+      <div class="two">` +
+      ["form","site"].map(k => { const c = byKey[k]; if(!c) return ""; return `
+        <div class="panel canal" style="--c:${C[k]}">
+          <div class="head"><div class="name"><span class="sw"></span>${esc(c.label)}</div>${STATUS(c.status)}</div>
+          <div class="grid3">
+            <div class="m"><div class="l">Solicitações</div><div class="v">${num(c.leads)}</div></div>
+            <div class="m"><div class="l">Investido</div><div class="v">${brl(c.spend)}</div></div>
+            <div class="m"><div class="l">Custo por solicitação</div><div class="v">${brl(c.cpl)}</div></div>
+            <div class="m"><div class="l">CTR no link</div><div class="v">${pct(c.ctr)}</div></div>
+            <div class="m"><div class="l">CPM</div><div class="v">${brl(c.cpm)}</div></div>
+            <div class="m"><div class="l">${k==="site"?"Conversão da página":"Conversão do clique"}</div><div class="v">${pct(c.conv)}</div></div>
+          </div>
+          <div class="foot">Hoje: ${num(c.today.leads)} solicitações · ${brl(c.today.spend)} · verba ${brl(c.daily_budget)}/dia</div>
+        </div>`; }).join("") + `
+      </div>
+    </section>
+
+    <section>
+      <div class="sec-h"><h2>Solicitações por dia</h2><p>Passe o mouse nas barras para ver os valores</p></div>
+      <div class="panel">
+        <div class="legend"><span><i class="sw" style="--c:${C.form}"></i>Formulário nativo</span><span><i class="sw" style="--c:${C.site}"></i>Landing page</span></div>
+        <div class="chart-box"><canvas id="daily" aria-label="Solicitações por dia, por canal" role="img"></canvas></div>
+      </div>
+    </section>
+
+    <section>
+      <div class="sec-h"><h2>Perfil de quem pede convite</h2><p>Formulário nativo · ${num(F.leads)} solicitações</p></div>
+      <div class="prof-top">
+        <div class="panel"><h3>Elegíveis pela regra da landing</h3><div class="big" style="font-size:40px;color:var(--text)">${num(F.elegiveis)}<small>${pct(F.leads?F.elegiveis/F.leads*100:0)}</small></div>
+          <div class="note"><span class="ok-badge">✓ elegível</span> = fatura a partir de R$ 500 mil/mês no ML, investe acima de R$ 10 mil em Ads e ainda não é cliente</div></div>
+        <div class="panel"><h3>Pessoas nas solicitações</h3><div class="big" style="font-size:40px;color:var(--text)">${num(F.pessoas)}<small>pessoas</small></div><div class="note">Soma de quem marcou 1 ou 2 participantes</div></div>
+        <div class="panel"><h3>Ainda não vendem no ML</h3><div class="big" style="font-size:40px;color:var(--text)">${num((F.faturamento.find(x=>x.label==="Ainda não vende")||{n:0}).n)}<small>${pct(F.leads?(F.faturamento.find(x=>x.label==="Ainda não vende")||{n:0}).n/F.leads*100:0)}</small></div><div class="note">Fora do público da imersão</div></div>
+      </div>
+      <div class="prof-grid">
+        <div class="panel"><h3>Faturamento mensal no Mercado Livre</h3>${bars(F.faturamento, F.leads, okFat)}
+          <div class="note">Em verde, as faixas que entram na regra de elegibilidade.</div></div>
+        <div class="stack">
+          <div class="panel"><h3>Investimento mensal em Ads</h3>${bars(F.ads, F.leads)}</div>
+          <div class="panel"><h3>Cargo</h3>${bars(F.cargo, F.leads)}</div>
+          <div class="panel"><h3>Já é cliente da ECF?</h3>${bars(F.cliente, F.leads)}</div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="sec-h"><h2>Criativos</h2><p>Ordenados por solicitações · prévia abre sem login</p></div>
+      <div class="panel tblwrap"><table>
+        <thead><tr><th>Canal</th><th>Criativo</th><th>Status</th><th class="num">Solicitações</th><th class="num">Investido</th><th class="num">Custo/solic.</th><th class="num">CTR</th><th>Prévia</th></tr></thead>
+        <tbody>` + D.criativos.map(r => `<tr>
+          <td><span class="chip"><i class="sw" style="--c:${C[r.canal]}"></i>${r.canal==="form"?"Formulário":"Landing"}</span></td>
+          <td><b>${esc(r.name)}</b></td><td>${STATUS(r.status)}</td>
+          <td class="num">${num(r.leads)}</td><td class="num">${brl(r.spend)}</td><td class="num">${brl(r.cpl)}</td><td class="num">${pct(r.ctr)}</td>
+          <td>${r.preview ? `<a class="pv" href="${esc(r.preview)}" target="_blank" rel="noopener">Abrir prévia ↗</a>` : '<span class="tag-no">sem prévia</span>'}</td></tr>`).join("") + `
+        </tbody></table></div>
+    </section>
+
+    <section>
+      <div class="sec-h"><h2>Últimos cadastros</h2><p>Formulário nativo · sem dados pessoais</p></div>
+      <div class="panel tblwrap"><table>
+        <thead><tr><th>Quando</th><th>Cargo</th><th>Faturamento ML</th><th>Investimento em Ads</th><th>Plataforma</th><th>Perfil</th></tr></thead>
+        <tbody>` + F.recentes.map(r => `<tr><td>${esc(r.t)}</td><td>${esc(r.cargo)}</td><td>${esc(r.fat)}</td><td>${esc(r.ads)}</td><td>${esc(r.plat)}</td>
+          <td>${r.eleg ? '<span class="tag-ok">✓ elegível</span>' : '<span class="tag-no">fora da regra</span>'}</td></tr>`).join("") + `
+        </tbody></table></div>
+    </section>
+  </div>`;
+
+  document.getElementById("app").innerHTML = h;
+  countdown();
+  drawDaily();
+  bindTips();
+}
+
+function drawDaily(){
+  const labels = D.daily.map(d => d.d.split("-").reverse().slice(0,2).join("/"));
+  if(chart) chart.destroy();
+  chart = new Chart(document.getElementById("daily"), {
+    type: "bar",
+    data: {labels, datasets: [
+      {label: "Formulário nativo", data: D.daily.map(d => d.form), backgroundColor: C.form, borderRadius: {topLeft:0,topRight:0,bottomLeft:0,bottomRight:0}, borderSkipped: false, borderColor: "#0f1116", borderWidth: {top:2}, maxBarThickness: 56},
+      {label: "Landing page", data: D.daily.map(d => d.site), backgroundColor: C.site, borderRadius: {topLeft:4,topRight:4}, borderSkipped: false, borderColor: "#0f1116", borderWidth: {top:0}, maxBarThickness: 56},
+    ]},
+    options: {
+      responsive: true, maintainAspectRatio: false, interaction: {mode: "index", intersect: false},
+      plugins: {legend: {display: false},
+        tooltip: {backgroundColor: "#000", borderColor: "rgba(255,255,255,.14)", borderWidth: 1, titleColor: "#e8eaee", bodyColor: "#e8eaee", padding: 10,
+          callbacks: {footer: items => { const i = items[0].dataIndex, d = D.daily[i]; return `Total: ${d.form + d.site} · ${brl(d.spend)}`; }}}},
+      scales: {
+        x: {stacked: true, grid: {display: false}, ticks: {color: "#9ba0aa", font: {family: "Inter"}}, border: {color: "rgba(255,255,255,.14)"}},
+        y: {stacked: true, beginAtZero: true, grid: {color: "rgba(255,255,255,.06)"}, ticks: {color: "#6a6f79", precision: 0, font: {family: "Inter"}}, border: {display: false}}
+      }
+    },
+    plugins: [{id: "totals", afterDatasetsDraw(c){
+      const {ctx} = c, top = c.getDatasetMeta(1).data;
+      ctx.save(); ctx.fillStyle = "#e8eaee"; ctx.font = "600 12px Inter"; ctx.textAlign = "center";
+      top.forEach((b, i) => { const t = D.daily[i].form + D.daily[i].site; if(t) ctx.fillText(t, b.x, b.y - 8); });
+      ctx.restore();
+    }}]
+  });
+}
+
+function bindTips(){
+  const tip = document.getElementById("tip");
+  document.querySelectorAll("[data-tip]").forEach(el => {
+    el.addEventListener("mousemove", e => { tip.textContent = el.dataset.tip; tip.style.opacity = 1; tip.style.left = (e.clientX + 14) + "px"; tip.style.top = (e.clientY + 14) + "px"; });
+    el.addEventListener("mouseleave", () => tip.style.opacity = 0);
+  });
+}
+
+async function load(){
+  const live = document.getElementById("live"), upd = document.getElementById("upd");
+  try{
+    const r = await fetch(SRC + "?t=" + Date.now(), {cache: "no-store"});
+    if(!r.ok) throw new Error("HTTP " + r.status);
+    D = await r.json();
+    render();
+    live.classList.remove("err");
+    upd.textContent = "ao vivo · " + D.generated_at.slice(8,10) + "/" + D.generated_at.slice(5,7) + " " + D.generated_at.slice(11,16);
+    clearTimeout(timer); timer = setTimeout(load, 5*60*1000);
+  }catch(e){
+    console.error(e);
+    live.classList.add("err"); upd.textContent = "sem conexão, tentando de novo";
+    if(!D) document.getElementById("app").innerHTML = '<div class="loading">Não foi possível carregar os dados agora. Nova tentativa em 1 minuto.</div>';
+    clearTimeout(timer); timer = setTimeout(load, 60*1000);
+  }
+}
+setInterval(countdown, 1000);
+load();
+</script>
+</body>
+</html>
