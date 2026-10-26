@@ -118,33 +118,57 @@ ALWAYS_REFRESH = {
 
 # ─── API ─────────────────────────────────────────────────────────────────────
 
-def get(path, params=None):
+LAST_ERROR = False  # sinaliza falha na ultima chamada get() (para distinguir "vazio" de "erro")
+
+def get(path, params=None, tries=4):
+    """GET com retry em erros transitorios (indisponibilidade, rate limit) e reducao
+    automatica de `limit` quando a Meta pede menos dados. Em falha definitiva
+    devolve {} e marca LAST_ERROR=True."""
+    global LAST_ERROR
+    LAST_ERROR = False
     p = {"access_token": TOKEN}
     if params:
         p.update(params)
-    try:
-        r = requests.get(f"{BASE}{path}", params=p, timeout=90)
-        data = r.json()
-        if "error" in data:
-            print(f"  API error: {data['error'].get('message','?')[:80]}")
-            return {}
-        return data
-    except Exception as e:
-        print(f"  Request error: {e}")
-        return {}
+    for attempt in range(tries):
+        try:
+            r = requests.get(f"{BASE}{path}", params=p, timeout=90)
+            data = r.json()
+        except Exception as e:
+            print(f"  Request error: {e} (tentativa {attempt+1})")
+            time.sleep(15); continue
+        if "error" not in data:
+            return data
+        err = data["error"]; msg = err.get("message", "?"); code = err.get("code")
+        print(f"  API error: {msg[:80]}")
+        if "reduce the amount" in msg.lower() and int(p.get("limit", 0) or 0) > 25:
+            p["limit"] = max(25, int(p["limit"]) // 2); print(f"    -> reduzindo limit para {p['limit']}"); continue
+        if code in (1, 2, 4, 17, 32, 613) or "temporarily" in msg.lower() or "too many" in msg.lower():
+            time.sleep(20 * (attempt + 1)); continue
+        break  # erro nao transitorio (ex.: #200 sem permissao)
+    LAST_ERROR = True
+    return {}
 
 
 def get_all_pages(path, params):
+    """Devolve a lista completa; devolve None se a PRIMEIRA pagina falhou (erro de API),
+    para o chamador nao confundir falha com "sem dados"."""
     results = []
     resp = get(path, params)
+    if LAST_ERROR:
+        return None
     results.extend(resp.get("data", []))
     while resp.get("paging", {}).get("next"):
-        try:
-            r = requests.get(resp["paging"]["next"], timeout=90)
-            resp = r.json()
-            results.extend(resp.get("data", []))
-        except Exception as e:
-            print(f"  Erro na paginação: {e}")
+        nxt = resp["paging"]["next"]; ok = False
+        for attempt in range(3):
+            try:
+                r = requests.get(nxt, timeout=90)
+                resp = r.json()
+                if "error" in resp:
+                    print(f"  Erro na paginação: {resp['error'].get('message','?')[:80]}"); time.sleep(20); continue
+                results.extend(resp.get("data", [])); ok = True; break
+            except Exception as e:
+                print(f"  Erro na paginação: {e}"); time.sleep(10)
+        if not ok:
             break
     return results
 
@@ -248,6 +272,8 @@ def fetch_account(acc, ad_lookup):
         "effective_status": '["ACTIVE"]',
         "limit": 50,
     })
+    if camps_raw is None:
+        raise RuntimeError("falha na API ao listar campanhas (dados anteriores serao mantidos)")
     if not camps_raw:
         print(f"    Sem campanhas ativas")
         return {"id": acct_id, "name": acc["name"], "currency": acc["currency"], "campaigns": []}
@@ -267,6 +293,8 @@ def fetch_account(acc, ad_lookup):
         "filtering": json.dumps([{"field": "campaign.id", "operator": "IN", "value": camp_ids}]),
         "limit": 500,
     })
+    if insights_raw is None:
+        raise RuntimeError("falha na API ao buscar insights diarios (dados anteriores serao mantidos)")
     print(f"    {len(insights_raw)} linhas de insights diários")
 
     # 3. Age breakdown — aggregate últimos 7 dias (pulado no modo LITE)
@@ -478,6 +506,18 @@ def main():
         "accounts":       [],
     }
 
+    # Dados anteriores por conta: em caso de erro de API, mantem o que ja existia
+    prev_accounts = {}
+    try:
+        if os.path.exists(OUT):
+            with open(OUT) as f:
+                _prev = json.load(f)
+            for _g in _prev.get("gestores", []):
+                for _a in _g.get("accounts", []):
+                    prev_accounts[_a["id"]] = _a
+    except Exception as e:
+        print(f"  Aviso: sem dados anteriores por conta ({e})")
+
     for acc in ACCOUNTS:
         try:
             data = fetch_account(acc, ad_lookup)
@@ -488,10 +528,19 @@ def main():
                     all_days.update(ad.get("daily", {}).keys())
         except Exception as e:
             print(f"  ERRO {acc['name']}: {e}")
-            result["accounts"].append({
-                "id": acc["id"], "name": acc["name"],
-                "currency": acc["currency"], "campaigns": [], "error": str(e),
-            })
+            prev = prev_accounts.get(acc["id"])
+            if prev and prev.get("campaigns"):
+                print(f"    -> mantendo dados anteriores ({len(prev['campaigns'])} campanhas)")
+                kept = dict(prev); kept["error"] = str(e); kept["stale"] = True
+                result["accounts"].append(kept)
+                for camp in kept.get("campaigns", []):
+                    for ad in camp.get("ads", []):
+                        all_days.update(ad.get("daily", {}).keys())
+            else:
+                result["accounts"].append({
+                    "id": acc["id"], "name": acc["name"],
+                    "currency": acc["currency"], "campaigns": [], "error": str(e),
+                })
         time.sleep(0.5)
 
     result["days_available"] = sorted(all_days)
