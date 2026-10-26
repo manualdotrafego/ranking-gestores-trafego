@@ -13,7 +13,7 @@
     "min_msg_ref": 5,
     "min_msg_base": 10
   },
-  "count": 28,
+  "count": 29,
   "alerts": [
     {
       "gestor": "Bueno",
@@ -132,9 +132,9 @@
       "cpl_ant": 4.9,
       "cpl_atual": 7.2,
       "var_abs": 2.3,
-      "var_pct": 47.0,
+      "var_pct": 47.1,
       "msgs_atual": 12,
-      "spend_atual": 86.37
+      "spend_atual": 86.38
     },
     {
       "gestor": "Thiago Braga",
@@ -181,6 +181,17 @@
       "spend_atual": 37.93
     },
     {
+      "gestor": "Thiago Braga",
+      "clinica": "Itumbiara ,",
+      "tag": "#225",
+      "cpl_ant": 3.37,
+      "cpl_atual": 5.09,
+      "var_abs": 1.72,
+      "var_pct": 51.2,
+      "msgs_atual": 6,
+      "spend_atual": 30.54
+    },
+    {
       "gestor": "Victor",
       "clinica": "ABO [PROMISSÃO] ORTO",
       "tag": "#524",
@@ -197,10 +208,10 @@
       "tag": "#281",
       "cpl_ant": 2.27,
       "cpl_atual": 3.95,
-      "var_abs": 1.68,
-      "var_pct": 74.3,
+      "var_abs": 1.69,
+      "var_pct": 74.5,
       "msgs_atual": 5,
-      "spend_atual": 19.75
+      "spend_atual": 19.77
     },
     {
       "gestor": "Mota",
@@ -209,9 +220,9 @@
       "cpl_ant": 2.91,
       "cpl_atual": 4.43,
       "var_abs": 1.53,
-      "var_pct": 52.5,
+      "var_pct": 52.6,
       "msgs_atual": 5,
-      "spend_atual": 22.16
+      "spend_atual": 22.17
     },
     {
       "gestor": "Milena",
