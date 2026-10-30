@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Fozoco Meta Ads</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme:light;
+  --page:#f3f7f7; --surface:#ffffff; --surface-2:#f6f9f9;
+  --ink:#121c1d; --ink2:#465657; --muted:#7a8788;
+  --grid:#e4ebeb; --axis:#c3cfcf; --ring:rgba(18,28,29,.10);
+  --brand:#197278; --brand-deep:#073b3e; --cream:#fff3b6;
+  --s1:#00959c; --s2:#d4691f; --hl:rgba(0,149,156,.07);
+  --good:#0ca30c; --good-ink:#006300; --warning:#fab219; --serious:#ec835a; --critical:#d03b3b; --bad-ink:#b3261e;
+  --shadow:0 1px 2px rgba(7,59,62,.06),0 4px 16px rgba(7,59,62,.06);
+}
+@media (prefers-color-scheme:dark){
+  :root:where(:not([data-theme="light"])){
+    color-scheme:dark;
+    --page:#081213; --surface:#0f1d1e; --surface-2:#132526;
+    --ink:#eef3f3; --ink2:#b9c6c6; --muted:#85908f;
+    --grid:#1c2e2f; --axis:#2c4243; --ring:rgba(255,255,255,.10);
+    --s1:#00a3a8; --s2:#d9712a; --hl:rgba(0,163,168,.10);
+    --good-ink:#0ca30c; --bad-ink:#ee6b6b; --shadow:none;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --page:#081213; --surface:#0f1d1e; --surface-2:#132526;
+  --ink:#eef3f3; --ink2:#b9c6c6; --muted:#85908f;
+  --grid:#1c2e2f; --axis:#2c4243; --ring:rgba(255,255,255,.10);
+  --s1:#00a3a8; --s2:#d9712a; --hl:rgba(0,163,168,.10);
+  --good-ink:#0ca30c; --bad-ink:#ee6b6b; --shadow:none;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--page)}
+body{font-family:"Plus Jakarta Sans",system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--ink);font-size:14px;line-height:1.45;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1320px;margin:0 auto;padding:0 16px}
+header.top{background:var(--brand-deep);color:#fff}
+header.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-top:18px;padding-bottom:18px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:14px}
+.wordmark{font-weight:800;letter-spacing:.18em;color:var(--cream);font-size:18px}
+.brand h1{font-size:15px;font-weight:600;color:#d7ecea}
+.brand .sep{width:1px;height:22px;background:rgba(255,255,255,.2)}
+.upd{font-size:12.5px;color:#b8d9d6;display:flex;align-items:center;gap:10px}
+.upd .dot{width:8px;height:8px;border-radius:50%;background:#3fd17a;display:inline-block}
+.upd .dot.old{background:var(--warning)}
+.themebtn{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);color:#e6f3f2;border-radius:8px;padding:6px 10px;font:inherit;font-size:12px;cursor:pointer}
+.themebtn:hover{background:rgba(255,255,255,.14)}
+
+.filters{position:sticky;top:0;z-index:20;background:var(--page);border-bottom:1px solid var(--grid)}
+.filters .wrap{display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding-top:12px;padding-bottom:12px}
+.seg{display:flex;flex-wrap:wrap;background:var(--surface);border:1px solid var(--ring);border-radius:10px;padding:3px;gap:2px}
+.seg button{border:0;background:transparent;color:var(--ink2);font:inherit;font-size:13px;font-weight:600;padding:7px 12px;border-radius:7px;cursor:pointer;white-space:nowrap}
+.seg button:hover{background:var(--surface-2)}
+.seg button[aria-pressed="true"]{background:var(--brand);color:#fff}
+select.camp{font:inherit;font-size:13px;font-weight:600;color:var(--ink);background:var(--surface);border:1px solid var(--ring);border-radius:10px;padding:9px 12px;max-width:min(420px,100%);cursor:pointer}
+.periodo{font-size:12.5px;color:var(--muted);margin-left:auto}
+
+main{padding:20px 0 48px}
+.grid{display:grid;gap:16px}
+.card{background:var(--surface);border:1px solid var(--ring);border-radius:14px;box-shadow:var(--shadow);padding:18px}
+.card h2{font-size:15px;font-weight:700;color:var(--ink)}
+.card .sub{font-size:12.5px;color:var(--muted);margin-top:2px}
+.card-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+section{margin-top:16px}
+#app.loading{opacity:.55;transition:opacity .2s}
+
+/* KPIs */
+.kpis{display:grid;grid-template-columns:minmax(220px,1.3fr) repeat(4,minmax(0,1fr));gap:16px}
+.kpi{background:var(--surface);border:1px solid var(--ring);border-radius:14px;box-shadow:var(--shadow);padding:16px 18px}
+.kpi .lab{font-size:12.5px;color:var(--ink2);font-weight:600}
+.kpi .val{font-size:24px;font-weight:700;margin-top:4px;letter-spacing:-.01em}
+.kpi .delta{font-size:12px;margin-top:4px;color:var(--muted);display:flex;gap:4px;align-items:center}
+.kpi .delta.up-good,.kpi .delta.down-good{color:var(--good-ink)}
+.kpi .delta.up-bad,.kpi .delta.down-bad{color:var(--bad-ink)}
+.kpi.hero{grid-row:span 2;display:flex;flex-direction:column;justify-content:center;background:var(--brand-deep);border-color:transparent;color:#fff}
+.kpi.hero .lab{color:#b8d9d6}
+.kpi.hero .val{font-size:56px;font-weight:800;color:var(--cream);line-height:1.05}
+.kpi.hero .delta{color:#b8d9d6}
+.kpi.hero .delta.up-good,.kpi.hero .delta.down-good{color:#7ee2a2}
+.kpi.hero .delta.up-bad,.kpi.hero .delta.down-bad{color:#ffb4a8}
+.kpi.hero .extra{margin-top:14px;font-size:12.5px;color:#b8d9d6}
+.kpi.hero .extra b{color:#fff;font-weight:700}
+
+/* charts */
+.chart{position:relative;width:100%}
+.chart svg{display:block;width:100%;height:auto;overflow:visible}
+.chart svg:focus{outline:2px solid var(--brand);outline-offset:4px;border-radius:4px}
+.legend{display:flex;gap:16px;flex-wrap:wrap;font-size:12.5px;color:var(--ink2)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{display:inline-block;width:14px;height:2px;border-radius:2px}
+.tip{position:absolute;pointer-events:none;background:var(--surface);border:1px solid var(--ring);box-shadow:0 6px 24px rgba(0,0,0,.14);border-radius:10px;padding:9px 11px;font-size:12.5px;min-width:150px;opacity:0;transition:opacity .08s;z-index:5}
+.tip .t{color:var(--muted);font-size:11.5px;margin-bottom:4px}
+.tip .r{display:flex;align-items:center;gap:8px;justify-content:space-between}
+.tip .r b{font-weight:700;color:var(--ink);font-variant-numeric:tabular-nums}
+.tip .r span{color:var(--ink2);display:inline-flex;align-items:center;gap:6px}
+.tip .r i{display:inline-block;width:12px;height:2px;border-radius:2px}
+.minis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.linkbtn{background:none;border:0;color:var(--brand);font:inherit;font-size:12.5px;font-weight:700;cursor:pointer;padding:0}
+:root[data-theme="dark"] .linkbtn{color:var(--s1)}
+@media (prefers-color-scheme:dark){:root:where(:not([data-theme="light"])) .linkbtn{color:var(--s1)}}
+
+/* tables */
+.tbl-wrap{overflow-x:auto;margin:0 -18px;padding:0 18px}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:right;font-size:11.5px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;padding:8px 10px;border-bottom:1px solid var(--grid);white-space:nowrap;cursor:pointer;user-select:none}
+th:first-child,td:first-child{text-align:left;padding-left:0}
+th[aria-sort] .arr{opacity:1}
+th .arr{opacity:.25;margin-left:3px}
+td{text-align:right;padding:10px 10px;border-bottom:1px solid var(--grid);font-variant-numeric:tabular-nums;white-space:nowrap;color:var(--ink)}
+td.name{white-space:normal;min-width:220px;max-width:420px}
+td.name .nm{font-weight:600}
+td.name .meta{font-size:11.5px;color:var(--muted)}
+tbody tr.click{cursor:pointer}
+tbody tr.click:hover td{background:var(--surface-2)}
+tbody tr.sel td{background:var(--hl)}
+tfoot td{font-weight:700;border-bottom:0;border-top:1px solid var(--axis)}
+.st{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--ink2)}
+.st i{width:8px;height:8px;border-radius:50%;background:var(--muted);display:inline-block}
+.st.on i{background:var(--good)}
+.st.warn i{background:var(--warning)}
+.bar{display:flex;align-items:center;gap:8px;justify-content:flex-end}
+.bar .trk{width:110px;height:8px;border-radius:4px;background:var(--grid);overflow:hidden}
+.bar .fill{height:100%;background:var(--s1);border-radius:0 4px 4px 0}
+.muted{color:var(--muted)}
+
+/* alerts */
+.alerts{display:grid;gap:8px}
+.alert{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;padding:10px 12px;border-radius:10px;background:var(--surface-2);border:1px solid var(--ring)}
+.alert .ic{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:800;font-size:13px;background:var(--critical)}
+.alert .ic.ok{background:var(--good)}
+.alert .ttl{font-weight:600}
+.alert .why{font-size:12px;color:var(--ink2)}
+.alert .nums{font-size:12.5px;text-align:right;color:var(--ink2);font-variant-numeric:tabular-nums}
+.alert .nums b{color:var(--ink)}
+.limite{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--ink2)}
+.limite input{width:72px;font:inherit;font-weight:700;color:var(--ink);background:var(--surface);border:1px solid var(--ring);border-radius:8px;padding:5px 8px}
+
+/* creatives */
+.ads{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px}
+.ad{border:1px solid var(--ring);border-radius:12px;overflow:hidden;background:var(--surface);display:flex;flex-direction:column}
+.ad .th{aspect-ratio:1/1;background:var(--surface-2);position:relative;overflow:hidden}
+.ad .th img{width:100%;height:100%;object-fit:cover;display:block}
+.ad .rk{position:absolute;top:8px;left:8px;background:var(--brand-deep);color:var(--cream);font-weight:800;font-size:12px;border-radius:20px;padding:2px 9px}
+.ad .bd{padding:12px;display:flex;flex-direction:column;gap:8px;flex:1}
+.ad .nm{font-weight:700;font-size:13px;line-height:1.3;overflow-wrap:anywhere}
+.ad .cp{font-size:11.5px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ad .m{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px 8px;font-size:11px}
+.ad .m div{display:flex;flex-direction:column;gap:1px;color:var(--muted);min-width:0}
+.ad .m b{color:var(--ink);font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ad .go{margin-top:auto;display:block;text-align:center;background:var(--brand);color:#fff;text-decoration:none;font-weight:700;font-size:12.5px;padding:8px;border-radius:8px}
+.ad .go:hover{background:var(--brand-deep)}
+.ad .go.off{background:var(--grid);color:var(--muted);pointer-events:none}
+.sortsel{display:flex;gap:8px;align-items:center;font-size:12.5px;color:var(--ink2)}
+.sortsel select{font:inherit;font-size:12.5px;font-weight:600;color:var(--ink);background:var(--surface);border:1px solid var(--ring);border-radius:8px;padding:6px 8px}
+.two{display:grid;grid-template-columns:1fr;gap:16px}
+footer{font-size:12px;color:var(--muted);padding:8px 0 40px}
+footer p{margin-top:6px}
+.err{background:var(--surface);border:1px solid var(--critical);color:var(--ink);padding:16px;border-radius:12px;margin-top:20px}
+
+@media (max-width:1100px){
+  .kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .kpi.hero{grid-column:span 2;grid-row:auto}
+  .two,.minis{grid-template-columns:1fr}
+}
+@media (max-width:760px){.filters{position:static}}
+@media (max-width:560px){
+  .kpi .val{font-size:20px}
+  .kpi.hero .val{font-size:48px}
+  .periodo{margin-left:0;width:100%}
+  .brand .sep,.brand h1{display:none}
+}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <div class="brand">
+      <span class="wordmark">FOZØCO</span><span class="sep"></span><h1>Painel de campanhas Meta Ads</h1>
+    </div>
+    <div class="upd"><span class="dot" id="updDot"></span><span id="upd">Carregando dados</span>
+      <button class="themebtn" id="themeBtn" type="button" aria-label="Trocar tema">Tema: automático</button></div>
+  </div>
+</header>
+
+<div class="filters" role="region" aria-label="Filtros">
+  <div class="wrap">
+    <div class="seg" id="presets" role="group" aria-label="Período"></div>
+    <select class="camp" id="campSel" aria-label="Campanha"></select>
+    <span class="periodo" id="periodoTxt"></span>
+  </div>
+</div>
+
+<main class="wrap"><div id="app"></div></main>
+
+<script>
+const SRC = new URLSearchParams(location.search).get('src') || 'https://srv1809067.hstgr.cloud/fozoco-dashboard.json';
+const PRESETS = [['hoje','Hoje'],['ontem','Ontem'],['7d','7 dias'],['14d','14 dias'],['30d','30 dias'],['mes','Este mês'],['mespass','Mês passado']];
+const ST = {ACTIVE:['Ativa','on'],PAUSED:['Pausada',''],CAMPAIGN_PAUSED:['Campanha pausada',''],ADSET_PAUSED:['Conjunto pausado',''],
+  IN_PROCESS:['Processando','warn'],WITH_ISSUES:['Com problemas','warn'],DISAPPROVED:['Reprovado',''],ARCHIVED:['Arquivada',''],
+  PENDING_REVIEW:['Em análise','warn'],DELETED:['Excluída','']};
+const store = {get(k,d){try{const v=localStorage.getItem('fzd_'+k);return v===null?d:JSON.parse(v)}catch(e){return d}},
+               set(k,v){try{localStorage.setItem('fzd_'+k,JSON.stringify(v))}catch(e){}}};
+let D=null, S={preset:store.get('preset','7d'), camp:'all', sortC:['sp',-1], sortAd:store.get('sortAd','pu'), limite:store.get('limite',70), allAds:false, tbl:false};
+
+/* ---------- formatos ---------- */
+const nf0=new Intl.NumberFormat('pt-BR',{maximumFractionDigits:0});
+const nf2=new Intl.NumberFormat('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
+const brl=v=>v==null||!isFinite(v)?'-':'R$ '+nf2.format(v);
+const brl0=v=>v==null||!isFinite(v)?'-':'R$ '+nf0.format(v);
+const pct=v=>v==null||!isFinite(v)?'-':nf2.format(v*100)+'%';
+const xf=v=>v==null||!isFinite(v)?'-':nf2.format(v)+'x';
+const num=v=>v==null||!isFinite(v)?'-':nf0.format(v);
+function compact(v){const a=Math.abs(v);if(a>=1e6)return 'R$ '+(v/1e6).toLocaleString('pt-BR',{maximumFractionDigits:1})+' mi';
+  if(a>=1e3)return 'R$ '+(v/1e3).toLocaleString('pt-BR',{maximumFractionDigits:1})+' mil';return 'R$ '+nf0.format(v)}
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const safeUrl=u=>/^https:\/\//.test(u||'')?u:'';
+
+/* ---------- datas ---------- */
+const iso=d=>d.toISOString().slice(0,10);
+const addDays=(s,n)=>{const d=new Date(s+'T00:00:00Z');d.setUTCDate(d.getUTCDate()+n);return iso(d)};
+const diff=(a,b)=>Math.round((Date.parse(b+'T00:00:00Z')-Date.parse(a+'T00:00:00Z'))/864e5);
+const ddmm=s=>s.slice(8,10)+'/'+s.slice(5,7);
+function monthStart(s,back){const y=+s.slice(0,4),m=+s.slice(5,7);return iso(new Date(Date.UTC(y,m-1-back,1)))}
+function monthEnd(first){const y=+first.slice(0,4),m=+first.slice(5,7);return iso(new Date(Date.UTC(y,m,0)))}
+function period(p,t){
+  if(p==='hoje')return{a:t,b:t,lbl:'Hoje (parcial)',prev:{a:addDays(t,-1),b:addDays(t,-1)},plbl:'ontem',parcial:true};
+  if(p==='ontem'){const o=addDays(t,-1);return{a:o,b:o,lbl:'Ontem',prev:{a:addDays(o,-1),b:addDays(o,-1)},plbl:'anteontem'}}
+  if(/^\d+d$/.test(p)){const n=parseInt(p),b=addDays(t,-1),a=addDays(t,-n);return{a,b,lbl:`Últimos ${n} dias`,prev:{a:addDays(a,-n),b:addDays(a,-1)},plbl:`${n} dias anteriores`}}
+  if(p==='mes'){const a=monthStart(t,0),n=diff(a,t),pa=monthStart(t,1),pe=monthEnd(pa);let pb=addDays(pa,n);if(pb>pe)pb=pe;
+    return{a,b:t,lbl:'Este mês',prev:{a:pa,b:pb},plbl:'mesmo período do mês passado',parcial:true}}
+  const a=monthStart(t,1),b=monthEnd(a),pa=monthStart(t,2);return{a,b,lbl:'Mês passado',prev:{a:pa,b:monthEnd(pa)},plbl:'mês anterior'};
+}
+
+/* ---------- agregação ---------- */
+// linha: [dia,id,(extra),sp,imp,lk,ob,pu,rev]
+const Z=()=>({sp:0,imp:0,lk:0,ob:0,pu:0,rev:0});
+function add(acc,r,o){acc.sp+=r[o];acc.imp+=r[o+1];acc.lk+=r[o+2];acc.ob+=r[o+3];acc.pu+=r[o+4];acc.rev+=r[o+5];return acc}
+function inRange(r,P){return r[0]>=P.a&&r[0]<=P.b}
+const campOk=c=>S.camp==='all'||c===S.camp;
+function kpi(x){return{...x,roas:x.sp?x.rev/x.sp:null,cpa:x.pu?x.sp/x.pu:null,tk:x.pu?x.rev/x.pu:null,
+  ctr:x.imp?x.lk/x.imp:null,cpm:x.imp?x.sp/x.imp*1000:null,cpc:x.ob?x.sp/x.ob:null,conv:x.ob?x.pu/x.ob:null}}
+function totals(P){const a=Z();for(const r of D.camp_dia)if(inRange(r,P)&&campOk(r[1]))add(a,r,2);return kpi(a)}
+
+/* ---------- tema ---------- */
+function applyTheme(){const t=store.get('theme','auto');const r=document.documentElement;
+  if(t==='auto')r.removeAttribute('data-theme');else r.setAttribute('data-theme',t);
+  document.getElementById('themeBtn').textContent='Tema: '+({auto:'automático',light:'claro',dark:'escuro'}[t])}
+document.getElementById('themeBtn').onclick=()=>{const o=['auto','light','dark'];const t=store.get('theme','auto');
+  store.set('theme',o[(o.indexOf(t)+1)%3]);applyTheme();render()};
+applyTheme();
+
+/* ---------- filtros ---------- */
+function buildFilters(){
+  const seg=document.getElementById('presets');
+  seg.innerHTML=PRESETS.map(([k,l])=>`<button type="button" data-k="${k}" aria-pressed="${S.preset===k}">${l}</button>`).join('');
+  seg.onclick=e=>{const b=e.target.closest('button');if(!b)return;S.preset=b.dataset.k;store.set('preset',S.preset);render()};
+  const sel=document.getElementById('campSel');
+  const lim=addDays(D.ultimo_dia,-60);const gasto={};
+  for(const r of D.camp_dia)if(r[0]>=lim)gasto[r[1]]=(gasto[r[1]]||0)+r[2];
+  const ids=Object.keys(D.campanhas).filter(id=>gasto[id]>0||D.campanhas[id].s==='ACTIVE')
+    .sort((a,b)=>(D.campanhas[b].s==='ACTIVE')-(D.campanhas[a].s==='ACTIVE')||(gasto[b]||0)-(gasto[a]||0));
+  sel.innerHTML='<option value="all">Todas as campanhas</option>'+ids.map(id=>
+    `<option value="${esc(id)}">${D.campanhas[id].s==='ACTIVE'?'● ':''}${esc(D.campanhas[id].n)}</option>`).join('');
+  if(S.camp!=='all'&&!ids.includes(S.camp))S.camp='all';
+  sel.value=S.camp;
+  sel.onchange=()=>{S.camp=sel.value;render()};
+}
+
+/* ---------- KPIs ---------- */
+const DIR={roas:1,rev:1,pu:1,tk:1,ctr:1,conv:1,cpa:-1,cpm:-1,cpc:-1,sp:0};
+const VOLUME=new Set(['rev','pu','sp']);
+function delta(k,cur,prev,P){
+  if(P.parcial&&S.preset==='hoje'&&VOLUME.has(k))return`<div class="delta">dia ainda em andamento</div>`;
+  if(cur==null||prev==null||!prev)return`<div class="delta">sem base de comparação</div>`;
+  const d=(cur-prev)/Math.abs(prev);if(!isFinite(d))return'';
+  const up=d>=0,dir=DIR[k];let cls='';if(dir!==0&&Math.abs(d)>=0.005)cls=(up?'up':'down')+'-'+((up?dir:-dir)>0?'good':'bad');
+  return`<div class="delta ${cls}"><span aria-hidden="true">${up?'▲':'▼'}</span>${up?'+':''}${nf0.format(d*100)}% vs ${esc(P.plbl)}</div>`;
+}
+function kpis(P,cur,prev){
+  const t=(k,lab,fmt)=>`<div class="kpi"><div class="lab">${lab}</div><div class="val">${fmt(cur[k])}</div>${delta(k,cur[k],prev[k],P)}</div>`;
+  return`<div class="kpis">
+    <div class="kpi hero"><div class="lab">ROAS no período</div><div class="val">${xf(cur.roas)}</div>${delta('roas',cur.roas,prev.roas,P)}
+      <div class="extra">Cada R$ 1 investido voltou <b>${cur.roas!=null?brl(cur.roas):'-'}</b> em vendas</div></div>
+    ${t('rev','Faturamento',brl0)}${t('sp','Investimento',brl0)}${t('pu','Vendas',num)}${t('cpa','Custo por venda',brl)}
+    ${t('tk','Ticket médio',brl)}${t('ctr','CTR (link)',pct)}${t('cpc','CPC de saída',brl)}${t('conv','Conversão (clique em compra)',pct)}
+  </div>`;
+}
+
+/* ---------- gráficos SVG ---------- */
+function niceScale(v,minStep){if(!(v>0))v=1;const raw=v/4,p=Math.pow(10,Math.floor(Math.log10(raw))),n=raw/p;let s=(n<=1?1:n<=2?2:n<=2.5?2.5:n<=5?5:10)*p;if(minStep)s=Math.max(minStep,s);const k=Math.max(1,Math.ceil(v/s-1e-9));return{max:s*k,step:s,k}}
+function lineChart(el,{days,series,yfmt,tipfmt,hl,ref,h=260,endLabels=true}){
+  const W=Math.max(320,el.clientWidth),H=h,m={l:58,r:endLabels?96:16,t:14,b:28};
+  const iw=W-m.l-m.r,ih=H-m.t-m.b,n=days.length;
+  const sc0=niceScale(Math.max(ref?ref.v*1.15:0,...series.flatMap(s=>s.values.filter(v=>v!=null)))),max=sc0.max;
+  const x=i=>m.l+(n<=1?iw/2:i*iw/(n-1)),y=v=>m.t+ih-(v/max)*ih;
+  const css=getComputedStyle(document.documentElement);
+  let g='';
+  for(let k=0;k<=sc0.k;k++){const v=sc0.step*k,yy=y(v);g+=`<line x1="${m.l}" x2="${W-m.r}" y1="${yy}" y2="${yy}" stroke="var(${k?'--grid':'--axis'})" stroke-width="1"/>`+
+    `<text x="${m.l-8}" y="${yy+4}" text-anchor="end" font-size="11" fill="var(--muted)" style="font-variant-numeric:tabular-nums">${yfmt(v)}</text>`}
+  if(hl){const i0=days.indexOf(hl[0]),i1=days.indexOf(hl[1]);if(i0>=0&&i1>=0){const pad=n>1?iw/(n-1)/2:20;
+    g=`<rect x="${x(i0)-pad}" y="${m.t}" width="${x(i1)-x(i0)+pad*2}" height="${ih}" fill="var(--hl)" rx="4"/>`+g}}
+  if(ref){const yy=y(ref.v);g+=`<line x1="${m.l}" x2="${W-m.r}" y1="${yy}" y2="${yy}" stroke="var(--muted)" stroke-width="1"/>`+
+    `<text x="${m.l+6}" y="${yy-5}" text-anchor="start" font-size="11" fill="var(--ink2)" paint-order="stroke" stroke="var(--surface)" stroke-width="3">${esc(ref.lbl)}</text>`}
+  const step=Math.max(1,Math.ceil(n/8));
+  days.forEach((d,i)=>{if(i%step===0||i===n-1)g+=`<text x="${x(i)}" y="${H-8}" text-anchor="middle" font-size="11" fill="var(--muted)">${ddmm(d)}</text>`});
+  for(const s of series){let p='';s.values.forEach((v,i)=>{if(v==null)return;p+=(p?'L':'M')+x(i).toFixed(1)+' '+y(v).toFixed(1)});
+    g+=`<path d="${p}" fill="none" stroke="${s.color}" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>`;
+    let li=-1;for(let i=n-1;i>=0;i--)if(s.values[i]!=null){li=i;break}
+    if(li>=0){g+=`<circle cx="${x(li)}" cy="${y(s.values[li])}" r="4" fill="${s.color}" stroke="var(--surface)" stroke-width="2"/>`;
+      if(endLabels)s._end=[x(li),y(s.values[li]),s.values[li]]}}
+  if(endLabels){const ls=series.filter(s=>s._end).sort((a,b)=>a._end[1]-b._end[1]);let last=-99;
+    for(const s of ls){let yy=Math.max(s._end[1],last+28);last=yy;
+      g+=`<text x="${W-m.r+10}" y="${yy-2}" font-size="12" font-weight="700" fill="var(--ink)">${esc(tipfmt(s._end[2]))}</text>`+
+         `<text x="${W-m.r+10}" y="${yy+12}" font-size="11" fill="var(--ink2)">${esc(s.label)}</text>`;delete s._end}}
+  g+=`<line class="xh" x1="0" x2="0" y1="${m.t}" y2="${m.t+ih}" stroke="var(--axis)" stroke-width="1" opacity="0"/>`;
+  series.forEach((s,k)=>g+=`<circle class="hd hd${k}" r="4" fill="${s.color}" stroke="var(--surface)" stroke-width="2" opacity="0"/>`);
+  g+=`<rect class="hit" x="${m.l}" y="${m.t}" width="${iw}" height="${ih}" fill="transparent"/>`;
+  el.innerHTML=`<svg viewBox="0 0 ${W} ${H}" tabindex="0" role="img" aria-label="${esc(series.map(s=>s.label).join(' e '))} por dia">${g}</svg><div class="tip"></div>`;
+  const svg=el.querySelector('svg'),tip=el.querySelector('.tip'),xh=svg.querySelector('.xh');let cur=-1;
+  function show(i){if(i<0||i>=n)return;cur=i;const xx=x(i);xh.setAttribute('x1',xx);xh.setAttribute('x2',xx);xh.setAttribute('opacity',1);
+    series.forEach((s,k)=>{const c=svg.querySelector('.hd'+k),v=s.values[i];if(v==null){c.setAttribute('opacity',0);return}
+      c.setAttribute('cx',xx);c.setAttribute('cy',y(v));c.setAttribute('opacity',1)});
+    tip.innerHTML=`<div class="t">${ddmm(days[i])}${hl&&days[i]>=hl[0]&&days[i]<=hl[1]?' · no período':''}</div>`+
+      series.map(s=>`<div class="r"><b>${esc(tipfmt(s.values[i]))}</b><span><i style="background:${s.color}"></i>${esc(s.label)}</span></div>`).join('');
+    const sc=el.clientWidth/W;let left=xx*sc+14;if(left+170>el.clientWidth)left=xx*sc-184;tip.style.left=Math.max(0,left)+'px';tip.style.top='8px';tip.style.opacity=1}
+  function hide(){xh.setAttribute('opacity',0);svg.querySelectorAll('.hd').forEach(c=>c.setAttribute('opacity',0));tip.style.opacity=0}
+  svg.addEventListener('pointermove',e=>{const r=svg.getBoundingClientRect(),px=(e.clientX-r.left)*W/r.width;
+    show(Math.max(0,Math.min(n-1,Math.round(n<=1?0:(px-m.l)/(iw/(n-1))))))});
+  svg.addEventListener('pointerleave',hide);svg.addEventListener('blur',hide);
+  svg.addEventListener('keydown',e=>{if(e.key==='ArrowRight'){show(Math.min(n-1,cur+1));e.preventDefault()}
+    if(e.key==='ArrowLeft'){show(Math.max(0,cur<0?n-1:cur-1));e.preventDefault()}});
+  svg.addEventListener('focus',()=>show(n-1));
+}
+function colChart(el,{days,values,color,fmt,hl,h=200}){
+  const W=Math.max(300,el.clientWidth),H=h,m={l:40,r:10,t:14,b:28},iw=W-m.l-m.r,ih=H-m.t-m.b,n=days.length;
+  const sc0=niceScale(Math.max(1,...values),1),max=sc0.max,band=iw/n,bw=Math.min(24,Math.max(2,band-2));
+  const y=v=>m.t+ih-(v/max)*ih;let g='';
+  for(let k=0;k<=sc0.k;k++){const v=sc0.step*k,yy=y(v);g+=`<line x1="${m.l}" x2="${W-m.r}" y1="${yy}" y2="${yy}" stroke="var(${k?'--grid':'--axis'})"/>`+
+    `<text x="${m.l-6}" y="${yy+4}" text-anchor="end" font-size="11" fill="var(--muted)">${nf0.format(v)}</text>`}
+  const step=Math.max(1,Math.ceil(n/7));
+  values.forEach((v,i)=>{const cx=m.l+band*i+band/2,x0=cx-bw/2,top=y(v),hh=m.t+ih-top,r=Math.min(4,bw/2,hh);
+    const inP=!hl||(days[i]>=hl[0]&&days[i]<=hl[1]);
+    const d=hh<=0?'':`M${x0} ${m.t+ih}V${top+r}Q${x0} ${top} ${x0+r} ${top}H${x0+bw-r}Q${x0+bw} ${top} ${x0+bw} ${top+r}V${m.t+ih}Z`;
+    g+=`<g class="col" data-i="${i}" tabindex="0"><rect x="${m.l+band*i}" y="${m.t}" width="${band}" height="${ih}" fill="transparent"/>`+
+       (d?`<path d="${d}" fill="${color}" opacity="${inP?1:.35}"/>`:'')+`</g>`;
+    if(i%step===0||i===n-1)g+=`<text x="${cx}" y="${H-8}" text-anchor="middle" font-size="11" fill="var(--muted)">${ddmm(days[i])}</text>`});
+  el.innerHTML=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Vendas por dia">${g}</svg><div class="tip"></div>`;
+  const tip=el.querySelector('.tip');
+  el.querySelectorAll('.col').forEach(c=>{const i=+c.dataset.i;const sh=()=>{tip.innerHTML=`<div class="t">${ddmm(days[i])}</div><div class="r"><b>${esc(fmt(values[i]))}</b><span><i style="background:${color}"></i>vendas</span></div>`;
+      const sc=el.clientWidth/W,xx=(m.l+band*i+band/2)*sc;let left=xx+12;if(left+160>el.clientWidth)left=xx-172;tip.style.left=Math.max(0,left)+'px';tip.style.top='8px';tip.style.opacity=1;
+      c.querySelector('path')?.setAttribute('filter','brightness(1.15)')};
+    const hd=()=>{tip.style.opacity=0;c.querySelector('path')?.removeAttribute('filter')};
+    c.addEventListener('pointerenter',sh);c.addEventListener('focus',sh);c.addEventListener('pointerleave',hd);c.addEventListener('blur',hd)});
+}
+
+/* ---------- seções ---------- */
+function daily(P){
+  let a=P.a;const b=P.b;if(diff(a,b)<13)a=addDays(b,-13);
+  const days=[];for(let d=a;d<=b;d=addDays(d,1))days.push(d);
+  const by={};for(const d of days)by[d]=Z();
+  for(const r of D.camp_dia)if(by[r[0]]&&campOk(r[1]))add(by[r[0]],r,2);
+  return{days,rows:days.map(d=>kpi(by[d]))};
+}
+function campTable(P){
+  const acc={};for(const r of D.camp_dia)if(inRange(r,P)){(acc[r[1]]||(acc[r[1]]=Z()));add(acc[r[1]],r,2)}
+  let ids=Object.keys(D.campanhas).filter(id=>(acc[id]&&acc[id].sp>0)||D.campanhas[id].s==='ACTIVE');
+  const rows=ids.map(id=>({id,c:D.campanhas[id],...kpi(acc[id]||Z())}));
+  const [k,dir]=S.sortC;rows.sort((a,b)=>{const va=k==='n'?a.c.n:(a[k]??-1),vb=k==='n'?b.c.n:(b[k]??-1);return(va>vb?1:va<vb?-1:0)*dir});
+  const tot=kpi(rows.reduce((t,r)=>{for(const f of['sp','imp','lk','ob','pu','rev'])t[f]+=r[f];return t},Z()));
+  const cols=[['n','Campanha'],['orc','Orçamento/dia'],['sp','Investimento'],['rev','Faturamento'],['roas','ROAS'],['pu','Vendas'],['cpa','Custo/venda'],['ctr','CTR'],['cpm','CPM'],['cpc','CPC saída']];
+  const th=cols.map(([c,l])=>`<th data-k="${c}" ${S.sortC[0]===c?`aria-sort="${S.sortC[1]>0?'ascending':'descending'}"`:''}>${l}<span class="arr">${S.sortC[0]===c?(S.sortC[1]>0?'▲':'▼'):'▼'}</span></th>`).join('');
+  const tr=rows.map(r=>{const[sl,sc]=ST[r.c.s]||[r.c.s||'-',''];return`<tr class="click ${S.camp===r.id?'sel':''}" data-id="${esc(r.id)}" title="Clique para filtrar o painel por esta campanha">
+    <td class="name"><div class="nm">${esc(r.c.n)}</div><div class="meta"><span class="st ${sc}"><i></i>${sl}</span> · ${r.c.tipo}</div></td>
+    <td>${r.c.orc?brl0(r.c.orc):'<span class="muted">-</span>'}</td><td>${brl0(r.sp)}</td><td>${brl0(r.rev)}</td><td><b>${xf(r.roas)}</b></td>
+    <td>${num(r.pu)}</td><td>${brl(r.cpa)}</td><td>${pct(r.ctr)}</td><td>${brl(r.cpm)}</td><td>${brl(r.cpc)}</td></tr>`}).join('');
+  return`<div class="card"><div class="card-head"><div><h2>Campanhas</h2><div class="sub">Ativas e as que gastaram no período. Clique numa linha para filtrar o painel inteiro.</div></div>
+    ${S.camp!=='all'?'<button class="linkbtn" id="clearCamp" type="button">Ver todas as campanhas</button>':''}</div>
+    <div class="tbl-wrap"><table id="campTbl"><thead><tr>${th}</tr></thead><tbody>${tr||'<tr><td colspan="10" class="muted">Nenhuma campanha com gasto no período.</td></tr>'}</tbody>
+    <tfoot><tr><td>Total</td><td></td><td>${brl0(tot.sp)}</td><td>${brl0(tot.rev)}</td><td>${xf(tot.roas)}</td><td>${num(tot.pu)}</td><td>${brl(tot.cpa)}</td><td>${pct(tot.ctr)}</td><td>${brl(tot.cpm)}</td><td>${brl(tot.cpc)}</td></tr></tfoot></table></div></div>`;
+}
+function adsAgg(P){
+  const acc={};for(const r of D.ad_dia)if(inRange(r,P)&&D.ads[r[1]]&&campOk(D.ads[r[1]].c)){(acc[r[1]]||(acc[r[1]]=Z()));add(acc[r[1]],r,2)}
+  return Object.entries(acc).filter(([,x])=>x.sp>0).map(([id,x])=>({id,a:D.ads[id],...kpi(x)}));
+}
+function alerts(P,ads){
+  const L=+S.limite||70;
+  const bad=ads.filter(r=>r.a.s==='ACTIVE'&&r.sp>=L&&(r.pu===0||r.cpa>L)).sort((a,b)=>(b.cpa??1e9)-(a.cpa??1e9));
+  const vis=S.allAl?bad:bad.slice(0,6);const items=bad.length?vis.map(r=>`<div class="alert"><span class="ic" aria-hidden="true">!</span>
+      <div><div class="ttl">${esc(r.a.n)}</div><div class="why">${r.pu?`Custo por venda acima de ${brl0(L)}`:'Gastou sem nenhuma venda'} · ${esc((D.campanhas[r.a.c]||{}).n||'')}</div></div>
+      <div class="nums">CPA <b>${brl(r.cpa)}</b><br>${brl0(r.sp)} · ${num(r.pu)} vendas</div></div>`).join('')
+    :`<div class="alert"><span class="ic ok" aria-hidden="true">✓</span><div><div class="ttl">Nenhum anúncio ativo acima do limite</div><div class="why">Todos os anúncios ativos com gasto relevante estão com custo por venda até ${brl0(L)}.</div></div><div></div></div>`;
+  return`<div class="card"><div class="card-head"><div><h2>Atenção: anúncios ativos caros</h2><div class="sub">Ativos, com gasto de pelo menos o limite no período e custo por venda acima dele.</div></div>
+    <label class="limite">Limite de CPA (R$) <input id="limInp" type="number" min="1" step="1" value="${esc(L)}"></label></div>
+    <div class="alerts">${items}</div><div class="sub" style="margin-top:8px">${bad.length} anúncio(s) sinalizado(s).${bad.length>6?` <button class="linkbtn" id="moreAl" type="button">${S.allAl?'Mostrar menos':'Ver todos'}</button>`:''}</div></div>`;
+}
+function creatives(P,ads){
+  const k=S.sortAd;let list=ads.slice();
+  if(k==='cpa')list=list.filter(r=>r.pu>=2).sort((a,b)=>a.cpa-b.cpa);
+  else if(k==='roas')list=list.filter(r=>r.pu>=2).sort((a,b)=>b.roas-a.roas);
+  else list.sort((a,b)=>(b[k]||0)-(a[k]||0));
+  const shown=S.allAds?list:list.slice(0,12);
+  const cards=shown.map((r,i)=>{const[sl,sc]=ST[r.a.s]||[r.a.s,''];const th=safeUrl(r.a.th),pv=safeUrl(r.a.pv);return`<div class="ad">
+    <div class="th">${th?`<img loading="lazy" src="${esc(th)}" alt="" onerror="this.remove()">`:''}<span class="rk">#${i+1}</span></div>
+    <div class="bd"><div class="nm">${esc(r.a.n)}</div><div class="cp" title="${esc((D.campanhas[r.a.c]||{}).n||'')}"><span class="st ${sc}"><i></i>${sl}</span> · ${esc((D.campanhas[r.a.c]||{}).n||'')}</div>
+    <div class="m"><div>Vendas<b>${num(r.pu)}</b></div><div>ROAS<b>${xf(r.roas)}</b></div><div>Custo/venda<b>${brl(r.cpa)}</b></div><div>Investido<b>${brl0(r.sp)}</b></div>
+    <div>CTR<b>${pct(r.ctr)}</b></div><div>CPC saída<b>${brl(r.cpc)}</b></div></div>
+    <a class="go ${pv?'':'off'}" ${pv?`href="${esc(pv)}" target="_blank" rel="noopener"`:''}>${pv?'Abrir prévia ↗':'Prévia indisponível'}</a></div></div>`}).join('');
+  return`<div class="card"><div class="card-head"><div><h2>Criativos</h2><div class="sub">${list.length} anúncio(s) com gasto no período${k==='cpa'||k==='roas'?' (mínimo 2 vendas para entrar no ranking)':''}. A prévia abre sem precisar de acesso à BM.</div></div>
+    <label class="sortsel">Ordenar por <select id="sortAd">${[['pu','Mais vendas'],['rev','Maior faturamento'],['roas','Melhor ROAS'],['cpa','Menor custo por venda'],['sp','Maior investimento']]
+      .map(([v,l])=>`<option value="${v}" ${k===v?'selected':''}>${l}</option>`).join('')}</select></label></div>
+    <div class="ads">${cards||'<p class="muted">Nenhum criativo com gasto no período.</p>'}</div>
+    ${list.length>12?`<div style="margin-top:12px;text-align:center"><button class="linkbtn" id="moreAds" type="button">${S.allAds?'Mostrar só os 12 primeiros':'Mostrar todos os '+list.length}</button></div>`:''}</div>`;
+}
+function breakdown(rows,P,title,sub,order){
+  const acc={};let tsp=0;
+  for(const r of rows)if(inRange(r,P)&&campOk(r[1])){(acc[r[2]]||(acc[r[2]]=Z()));add(acc[r[2]],r,3);tsp+=r[3]}
+  let list=Object.entries(acc).map(([n,x])=>({n,...kpi(x),sh:tsp?x.sp/tsp:0}));
+  if(order)list.sort((a,b)=>order.indexOf(a.n)-order.indexOf(b.n));
+  else{list.sort((a,b)=>b.sp-a.sp);const small=list.filter(r=>r.sh<0.01);
+    if(small.length>1){const o=small.reduce((t,r)=>{for(const f of['sp','imp','lk','ob','pu','rev'])t[f]+=r[f];return t},Z());
+      list=list.filter(r=>r.sh>=0.01).concat([{n:`Outros (${small.length} posições)`,...kpi(o),sh:tsp?o.sp/tsp:0,outros:true}])}}
+  const tr=list.map(r=>`<tr><td class="name"><div class="nm ${r.outros?'muted':''}">${esc(r.n==="Unknown"?"Não informada":r.n)}</div></td>
+    <td><div class="bar"><span>${pct(r.sh)}</span><span class="trk"><span class="fill" style="width:${(r.sh*100).toFixed(1)}%"></span></span></div></td>
+    <td>${brl0(r.sp)}</td><td>${brl0(r.rev)}</td><td><b>${xf(r.roas)}</b></td><td>${brl(r.cpa)}</td><td>${num(r.pu)}</td></tr>`).join('');
+  return`<div class="card"><div class="card-head"><div><h2>${title}</h2><div class="sub">${sub}</div></div></div>
+    <div class="tbl-wrap"><table><thead><tr><th>${order?'Faixa':'Posicionamento'}</th><th>% da verba</th><th>Investimento</th><th>Faturamento</th><th>ROAS</th><th>Custo/venda</th><th>Vendas</th></tr></thead>
+    <tbody>${tr||'<tr><td colspan="7" class="muted">Sem dados no período.</td></tr>'}</tbody></table></div></div>`;
+}
+
+/* ---------- render ---------- */
+function render(){
+  if(!D)return;
+  document.querySelectorAll('#presets button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.k===S.preset));
+  const P=period(S.preset,D.ultimo_dia);
+  document.getElementById('periodoTxt').textContent=`${P.lbl}: ${ddmm(P.a)}${P.a!==P.b?' a '+ddmm(P.b):''} · comparado com ${P.plbl}`;
+  const cur=totals(P),prev=totals(P.prev),dd=daily(P),ads=adsAgg(P);
+  const anomP=(D.anomalias||[]).filter(a=>a.d>=P.a&&a.d<=P.b&&a.nivel==='campanha');
+  const s1=getComputedStyle(document.documentElement).getPropertyValue('--s1').trim(),s2=getComputedStyle(document.documentElement).getPropertyValue('--s2').trim();
+  const hl=diff(P.a,P.b)<13?[P.a,P.b]:null;
+  const app=document.getElementById('app');
+  app.innerHTML=`${kpis(P,cur,prev)}
+  <section class="card"><div class="card-head"><div><h2>Faturamento e investimento por dia</h2><div class="sub">${hl?'Faixa destacada = período selecionado (últimos 14 dias para contexto).':'Período selecionado.'}</div></div>
+    <div class="legend"><span><i style="background:${s1}"></i>Faturamento</span><span><i style="background:${s2}"></i>Investimento</span></div></div>
+    <div class="chart" id="chMain"></div>
+    <div style="margin-top:8px"><button class="linkbtn" id="tblBtn" type="button">${S.tbl?'Esconder tabela':'Ver como tabela'}</button></div>
+    ${S.tbl?`<div class="tbl-wrap" style="margin-top:8px"><table><thead><tr><th>Dia</th><th>Investimento</th><th>Faturamento</th><th>ROAS</th><th>Vendas</th><th>Custo/venda</th></tr></thead><tbody>
+      ${dd.days.map((d,i)=>{const r=dd.rows[i];return`<tr><td>${ddmm(d)}</td><td>${brl0(r.sp)}</td><td>${brl0(r.rev)}</td><td>${xf(r.roas)}</td><td>${num(r.pu)}</td><td>${brl(r.cpa)}</td></tr>`}).join('')}</tbody></table></div>`:''}
+  </section>
+  <section class="minis">
+    <div class="card"><h2>ROAS por dia</h2><div class="sub">Faturamento dividido pelo investimento</div><div class="chart" id="chRoas" style="margin-top:8px"></div></div>
+    <div class="card"><h2>Custo por venda por dia</h2><div class="sub">Linha de referência no limite de alerta</div><div class="chart" id="chCpa" style="margin-top:8px"></div></div>
+    <div class="card"><h2>Vendas por dia</h2><div class="sub">Compras atribuídas pelo Meta</div><div class="chart" id="chVendas" style="margin-top:8px"></div></div>
+  </section>
+  <section>${alerts(P,ads)}</section>
+  <section>${campTable(P)}</section>
+  <section>${creatives(P,ads)}</section>
+  <section class="two">
+    ${breakdown(D.pos_dia,P,'Posicionamentos','Onde a verba foi entregue e o retorno de cada posição. Posições com menos de 1% da verba ficam agrupadas.')}
+    ${breakdown(D.idade_dia,P,'Faixa etária','Retorno por idade do público.',['18-24','25-34','35-44','45-54','55-64','65+','Unknown'])}
+  </section>
+  <footer><p>Fonte: API do Meta Ads, conta ${esc(D.conta.nome)} (${esc(D.conta.id)}). Atualizado de hora em hora. Vendas e faturamento seguem a atribuição padrão da conta.</p>
+    <p>Valores por venda acima de R$ 2.000 são tratados como erro de registro do pixel e corrigidos para o ticket médio de referência (${brl(D.ticket_ref)}).${anomP.length?` Neste período: ${anomP.length} registro(s) corrigido(s).`:''} ROAS e faturamento não descontam custo de produto, frete ou impostos.</p></footer>`;
+  const L=+S.limite||70;
+  lineChart(document.getElementById('chMain'),{days:dd.days,hl,yfmt:compact,tipfmt:brl0,
+    series:[{label:'Faturamento',color:s1,values:dd.rows.map(r=>r.rev)},{label:'Investimento',color:s2,values:dd.rows.map(r=>r.sp)}]});
+  lineChart(document.getElementById('chRoas'),{days:dd.days,hl,h:200,endLabels:false,yfmt:v=>v.toLocaleString('pt-BR',{maximumFractionDigits:1})+'x',tipfmt:xf,series:[{label:'ROAS',color:s1,values:dd.rows.map(r=>r.roas)}]});
+  lineChart(document.getElementById('chCpa'),{days:dd.days,hl,h:200,endLabels:false,yfmt:v=>'R$ '+nf0.format(v),tipfmt:brl,ref:{v:L,lbl:'limite '+brl0(L)},series:[{label:'Custo por venda',color:s2,values:dd.rows.map(r=>r.cpa)}]});
+  colChart(document.getElementById('chVendas'),{days:dd.days,hl,values:dd.rows.map(r=>r.pu),color:s1,fmt:num});
+  // eventos
+  document.getElementById('tblBtn').onclick=()=>{S.tbl=!S.tbl;render()};
+  document.querySelectorAll('#campTbl thead th').forEach(th=>th.onclick=()=>{const k=th.dataset.k;S.sortC=[k,S.sortC[0]===k?-S.sortC[1]:(k==='n'?1:-1)];render()});
+  document.querySelectorAll('#campTbl tbody tr.click').forEach(tr=>tr.onclick=()=>{S.camp=S.camp===tr.dataset.id?'all':tr.dataset.id;document.getElementById('campSel').value=S.camp;render();scrollTo({top:0,behavior:'smooth'})});
+  const cc=document.getElementById('clearCamp');if(cc)cc.onclick=()=>{S.camp='all';document.getElementById('campSel').value='all';render()};
+  document.getElementById('sortAd').onchange=e=>{S.sortAd=e.target.value;store.set('sortAd',S.sortAd);render()};
+  const mal=document.getElementById('moreAl');if(mal)mal.onclick=()=>{S.allAl=!S.allAl;render()};
+  const more=document.getElementById('moreAds');if(more)more.onclick=()=>{S.allAds=!S.allAds;render()};
+  const li=document.getElementById('limInp');li.onchange=()=>{const v=Math.max(1,Math.round(+li.value||70));S.limite=v;store.set('limite',v);render()};
+}
+
+/* ---------- carga ---------- */
+async function load(first){
+  const app=document.getElementById('app');if(!first)app.classList.add('loading');
+  try{
+    const r=await fetch(SRC+(SRC.includes('?')?'&':'?')+'t='+Date.now(),{cache:'no-store'});
+    if(!r.ok)throw new Error('HTTP '+r.status);
+    D=await r.json();
+    const g=new Date(D.gerado_em),age=(Date.now()-g)/36e5;
+    document.getElementById('upd').textContent='Atualizado em '+g.toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});
+    document.getElementById('updDot').className='dot'+(age>3?' old':'');
+    document.getElementById('updDot').title=age>3?'Dados com mais de 3 horas':'Dados recentes';
+    buildFilters();render();
+  }catch(e){
+    if(!D)app.innerHTML=`<div class="err"><b>Não foi possível carregar os dados.</b><br>${esc(e.message)}. A página tenta de novo em alguns minutos.</div>`;
+  }finally{app.classList.remove('loading')}
+}
+let rz;addEventListener('resize',()=>{clearTimeout(rz);rz=setTimeout(render,150)});
+load(true);setInterval(()=>load(false),15*60*1000);
+</script>
+</body>
+</html>
