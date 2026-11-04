@@ -120,7 +120,7 @@ footer{text-align:center;color:var(--muted);font-size:.78rem;margin-top:30px}
   <div class="hero">
     <div class="card top hero-main">
       <div>
-        <div class="label grad">Ingressos vendidos pelos anúncios</div>
+        <div class="label grad">Ingressos vendidos atribuídos aos anúncios</div>
         <div class="big" id="h-pur">0<small>compras</small></div>
         <div style="margin-top:10px" id="h-cpa-pill"></div>
       </div>
@@ -244,7 +244,8 @@ function render(d){
   $("h-rev").textContent = brl(t.revenue);
   $("h-roas").textContent = t.roas==null ? "-" : t.roas.toLocaleString("pt-BR",{maximumFractionDigits:2}) + "x";
   $("h-cpa").textContent = brl(t.cpa);
-  $("h-cpa-pill").innerHTML = cpaPill(t.cpa, d.ticket, t.purchases);
+  $("h-cpa-pill").innerHTML = cpaPill(t.cpa, d.ticket, t.purchases) +
+    ((d.manuais||[]).length ? `<div class="note" style="margin-top:8px">Inclui ${d.manuais.length} ${d.manuais.length==1?"venda atribuída":"vendas atribuídas"} manualmente (confirmada na Hotmart, sem registro no pixel): ${d.manuais.map(v=>esc(v.ref)+" → "+esc(v.adset)+" "+esc(v.ad_name)).join("; ")}.</div>` : "");
 
   const hoje = new Date(d.today + "T12:00:00-03:00"), live = new Date(d.live + "T12:00:00-03:00");
   const dias = Math.round((live - hoje)/864e5);
@@ -310,7 +311,7 @@ function render(d){
 
   // criativos somados
   const head = `<tr><th>Criativo</th><th>Investido</th><th>Impressões</th><th>CTR</th><th>CPC</th><th>Visitas</th><th>Checkouts</th><th>Custo/checkout</th><th>Compras</th><th>Custo/compra</th><th>ROAS</th></tr>`;
-  $("t-cr").innerHTML = head + d.por_criativo.map(r=>`<tr><td class="n">${esc(r.name)}</td><td>${brl(r.spend)}</td><td>${int(r.impressions)}</td><td>${pct(r.ctr)}</td><td>${brl(r.cpc)}</td><td>${int(r.lpv)}</td><td>${int(r.ic)}</td><td>${brl(r.cost_ic)}</td><td><b>${int(r.purchases)}</b></td><td>${brl(r.cpa)}</td><td>${r.roas==null?"-":r.roas.toFixed(2).replace(".",",")+"x"}</td></tr>`).join("");
+  $("t-cr").innerHTML = head + d.por_criativo.map(r=>`<tr><td class="n">${esc(r.name)}${r.manual?`<span class="st" style="color:#c7f9da">✓ inclui ${r.manual} venda manual</span>`:""}</td><td>${brl(r.spend)}</td><td>${int(r.impressions)}</td><td>${pct(r.ctr)}</td><td>${brl(r.cpc)}</td><td>${int(r.lpv)}</td><td>${int(r.ic)}</td><td>${brl(r.cost_ic)}</td><td><b>${int(r.purchases)}</b></td><td>${brl(r.cpa)}</td><td>${r.roas==null?"-":r.roas.toFixed(2).replace(".",",")+"x"}</td></tr>`).join("");
 
   // filtros
   const codes = ["TODOS", ...d.conjuntos.map(c=>c.code)];
@@ -323,7 +324,7 @@ function renderAds(d){
   const rows = d.criativos.filter(r=>filtro==="TODOS"||r.adset===filtro);
   const st = s => ({ACTIVE:"Ativo",PAUSED:"Pausado",ADSET_PAUSED:"Conjunto pausado",CAMPAIGN_PAUSED:"Campanha pausada",PENDING_REVIEW:"Em análise",DISAPPROVED:"Reprovado",WITH_ISSUES:"Com problema",IN_PROCESS:"Processando"}[s]||s);
   $("t-ads").innerHTML = `<tr><th>Anúncio</th><th>Conjunto</th><th>Investido</th><th>Hoje</th><th>CTR</th><th>CPC</th><th>Visitas</th><th>Checkouts</th><th>Compras</th><th>Custo/compra</th><th>Prévia</th></tr>` +
-    rows.map(r=>`<tr><td class="n">${esc(r.name)}<span class="st">${st(r.status)}</span>${r.alerta?`<span class="al">⚠ ${esc(r.alerta)}</span>`:""}</td>
+    rows.map(r=>`<tr><td class="n">${esc(r.name)}<span class="st">${st(r.status)}</span>${r.alerta?`<span class="al">⚠ ${esc(r.alerta)}</span>`:""}${r.manual?`<span class="st" style="color:#c7f9da">✓ ${r.manual} venda atribuída manualmente</span>`:""}</td>
       <td><span class="tag"><i class="sw" style="background:${COR[r.adset]||"#888"}"></i>${esc(r.adset)}</span></td>
       <td>${brl(r.spend)}</td><td>${brl(r.today_spend)}</td><td>${pct(r.ctr)}</td><td>${brl(r.cpc)}</td><td>${int(r.lpv)}</td><td>${int(r.ic)}</td><td><b>${int(r.purchases)}</b></td><td>${brl(r.cpa)}</td>
       <td>${r.preview?`<a class="pv" href="${esc(r.preview)}" target="_blank" rel="noopener">Ver</a>`:"-"}</td></tr>`).join("");
