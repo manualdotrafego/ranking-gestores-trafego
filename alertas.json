@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-11-12",
-  "ref_day": "2026-11-11",
+  "generated_at": "2026-11-13",
+  "ref_day": "2026-11-12",
   "baseline_days": [
-    "2026-11-08",
     "2026-11-09",
-    "2026-11-10"
+    "2026-11-10",
+    "2026-11-11"
   ],
   "criteria": {
     "min_pct": 30.0,
@@ -13,117 +13,161 @@
     "min_msg_ref": 5,
     "min_msg_base": 10
   },
-  "count": 10,
+  "count": 14,
   "alerts": [
     {
-      "gestor": "Mota",
-      "clinica": "CP01 Grajaú R$1...",
-      "tag": "#619",
-      "cpl_ant": 4.96,
-      "cpl_atual": 12.19,
-      "var_abs": 7.23,
-      "var_pct": 145.8,
-      "msgs_atual": 6,
-      "spend_atual": 73.16
+      "gestor": "Thiago Braga",
+      "clinica": "Mirassol Orto",
+      "tag": "#234",
+      "cpl_ant": 11.35,
+      "cpl_atual": 16.29,
+      "var_abs": 4.93,
+      "var_pct": 43.5,
+      "msgs_atual": 8,
+      "spend_atual": 130.3
     },
     {
       "gestor": "Thiago Braga",
-      "clinica": "CDC Sete Lagoas",
-      "tag": "#264",
-      "cpl_ant": 3.5,
-      "cpl_atual": 6.71,
-      "var_abs": 3.21,
-      "var_pct": 91.5,
+      "clinica": "AMS Vila Velha",
+      "tag": "#269",
+      "cpl_ant": 2.58,
+      "cpl_atual": 6.44,
+      "var_abs": 3.86,
+      "var_pct": 149.6,
       "msgs_atual": 9,
-      "spend_atual": 60.41
+      "spend_atual": 57.97
     },
     {
-      "gestor": "Milena",
-      "clinica": "CP TAGUATINGA 1.,",
-      "tag": "#391",
-      "cpl_ant": 6.11,
-      "cpl_atual": 9.19,
-      "var_abs": 3.08,
-      "var_pct": 50.4,
+      "gestor": "Bueno",
+      "clinica": "CAMPO LARGO R$ ( ) [camp] R$ dia",
+      "tag": "#101",
+      "cpl_ant": 6.98,
+      "cpl_atual": 10.38,
+      "var_abs": 3.4,
+      "var_pct": 48.7,
       "msgs_atual": 6,
-      "spend_atual": 55.15
-    },
-    {
-      "gestor": "Thiago Braga",
-      "clinica": "Rio Claro CBO",
-      "tag": "#248",
-      "cpl_ant": 9.86,
-      "cpl_atual": 12.84,
-      "var_abs": 2.98,
-      "var_pct": 30.2,
-      "msgs_atual": 20,
-      "spend_atual": 256.81
-    },
-    {
-      "gestor": "Thiago Braga",
-      "clinica": "Orthopride São Bernardo do Campo",
-      "tag": "#251",
-      "cpl_ant": 4.91,
-      "cpl_atual": 7.47,
-      "var_abs": 2.56,
-      "var_pct": 52.1,
-      "msgs_atual": 10,
-      "spend_atual": 74.73
-    },
-    {
-      "gestor": "Thiago Braga",
-      "clinica": "Via Saúde Serra ES",
-      "tag": "#259",
-      "cpl_ant": 5.67,
-      "cpl_atual": 8.08,
-      "var_abs": 2.4,
-      "var_pct": 42.4,
-      "msgs_atual": 6,
-      "spend_atual": 48.45
-    },
-    {
-      "gestor": "Victor",
-      "clinica": "ABO [SÃO CONRADO RJ] R$1.INST+DOC REPUBLICADA",
-      "tag": "#536",
-      "cpl_ant": 2.5,
-      "cpl_atual": 4.09,
-      "var_abs": 1.58,
-      "var_pct": 63.3,
-      "msgs_atual": 9,
-      "spend_atual": 36.77
-    },
-    {
-      "gestor": "Milena",
-      "clinica": "CP LORENA 1.,",
-      "tag": "#390",
-      "cpl_ant": 2.66,
-      "cpl_atual": 4.23,
-      "var_abs": 1.57,
-      "var_pct": 58.9,
-      "msgs_atual": 7,
-      "spend_atual": 29.59
+      "spend_atual": 62.31
     },
     {
       "gestor": "Igor Teixeira",
-      "clinica": "FLORIPA CENTRO",
-      "tag": "#474",
-      "cpl_ant": 3.76,
-      "cpl_atual": 5.14,
-      "var_abs": 1.38,
-      "var_pct": 36.6,
+      "clinica": "7 São sebastião R$",
+      "tag": "#421",
+      "cpl_ant": 5.49,
+      "cpl_atual": 8.41,
+      "var_abs": 2.93,
+      "var_pct": 53.3,
+      "msgs_atual": 8,
+      "spend_atual": 67.32
+    },
+    {
+      "gestor": "Thiago Braga",
+      "clinica": "Orthopride Osasco",
+      "tag": "#237",
+      "cpl_ant": 4.59,
+      "cpl_atual": 7.31,
+      "var_abs": 2.72,
+      "var_pct": 59.3,
       "msgs_atual": 6,
-      "spend_atual": 30.83
+      "spend_atual": 43.88
     },
     {
       "gestor": "Milena",
-      "clinica": "CP TERESINA MOCAMBINHO 1.,",
-      "tag": "#384",
-      "cpl_ant": 3.77,
-      "cpl_atual": 5.12,
-      "var_abs": 1.35,
-      "var_pct": 35.9,
+      "clinica": "CP BANGÚ 1K",
+      "tag": "#347",
+      "cpl_ant": 4.05,
+      "cpl_atual": 6.26,
+      "var_abs": 2.2,
+      "var_pct": 54.4,
       "msgs_atual": 5,
-      "spend_atual": 25.6
+      "spend_atual": 31.28
+    },
+    {
+      "gestor": "Thiago Braga",
+      "clinica": "Gualtieri Colatina ES",
+      "tag": "#703",
+      "cpl_ant": 5.2,
+      "cpl_atual": 7.37,
+      "var_abs": 2.17,
+      "var_pct": 41.6,
+      "msgs_atual": 6,
+      "spend_atual": 44.22
+    },
+    {
+      "gestor": "Milena",
+      "clinica": "CP LUCAS DO RIO VERDE 3.,",
+      "tag": "#321",
+      "cpl_ant": 6.37,
+      "cpl_atual": 8.54,
+      "var_abs": 2.17,
+      "var_pct": 34.0,
+      "msgs_atual": 10,
+      "spend_atual": 85.44
+    },
+    {
+      "gestor": "Milena",
+      "clinica": "CP ORTHOPRIDE PINDAMONHANGABA 1.,",
+      "tag": "#375",
+      "cpl_ant": 1.65,
+      "cpl_atual": 3.61,
+      "var_abs": 1.96,
+      "var_pct": 119.1,
+      "msgs_atual": 7,
+      "spend_atual": 25.28
+    },
+    {
+      "gestor": "Thiago Braga",
+      "clinica": "IEB Gov Valadares",
+      "tag": "#220",
+      "cpl_ant": 4.59,
+      "cpl_atual": 6.08,
+      "var_abs": 1.49,
+      "var_pct": 32.4,
+      "msgs_atual": 5,
+      "spend_atual": 30.38
+    },
+    {
+      "gestor": "Milena",
+      "clinica": "CP ITAJAI 2 1,9K",
+      "tag": "#302",
+      "cpl_ant": 3.71,
+      "cpl_atual": 5.2,
+      "var_abs": 1.49,
+      "var_pct": 40.1,
+      "msgs_atual": 6,
+      "spend_atual": 31.2
+    },
+    {
+      "gestor": "Igor Teixeira",
+      "clinica": "CAMPO GRANDE RIO R$1,",
+      "tag": "#420",
+      "cpl_ant": 4.02,
+      "cpl_atual": 5.46,
+      "var_abs": 1.44,
+      "var_pct": 35.8,
+      "msgs_atual": 6,
+      "spend_atual": 32.75
+    },
+    {
+      "gestor": "Milena",
+      "clinica": "CP SANTA ROSA 2K",
+      "tag": "#310",
+      "cpl_ant": 4.55,
+      "cpl_atual": 5.99,
+      "var_abs": 1.44,
+      "var_pct": 31.6,
+      "msgs_atual": 7,
+      "spend_atual": 41.93
+    },
+    {
+      "gestor": "Igor Teixeira",
+      "clinica": "VICENTE PIRES R$.",
+      "tag": "#451",
+      "cpl_ant": 3.31,
+      "cpl_atual": 4.36,
+      "var_abs": 1.05,
+      "var_pct": 31.7,
+      "msgs_atual": 11,
+      "spend_atual": 47.92
     }
   ]
 }
