@@ -182,15 +182,16 @@ tbody td:first-child{text-align:left;color:#606770;font-weight:600}
 </div>
 
 <div class="footer">
-  Gerado em 15/11/2026 · #723 | OralDents Goianira · Meta API v21.0
+  Gerado em 16/11/2026 · #723 | OralDents Goianira · Meta API v21.0
 </div>
 </div>
 
 <script>
-const DAILY = [{"date": "2026-11-15", "spend": 6.56, "msgs": 0, "cost_msg": 0.0, "impr": 383, "cpm": 17.13, "ctr": 0.52}, {"date": "2026-11-14", "spend": 19.21, "msgs": 5, "cost_msg": 3.84, "impr": 1616, "cpm": 11.89, "ctr": 0.8}, {"date": "2026-11-13", "spend": 32.77, "msgs": 7, "cost_msg": 4.68, "impr": 1748, "cpm": 18.75, "ctr": 1.49}, {"date": "2026-11-12", "spend": 30.31, "msgs": 5, "cost_msg": 6.06, "impr": 1470, "cpm": 20.62, "ctr": 1.22}, {"date": "2026-11-11", "spend": 12.38, "msgs": 5, "cost_msg": 2.48, "impr": 932, "cpm": 13.28, "ctr": 0.86}];
+const DAILY = [{"date": "2026-11-15", "spend": 26.8, "msgs": 2, "cost_msg": 13.4, "impr": 1630, "cpm": 16.44, "ctr": 0.55}, {"date": "2026-11-14", "spend": 19.21, "msgs": 5, "cost_msg": 3.84, "impr": 1617, "cpm": 11.88, "ctr": 0.8}, {"date": "2026-11-13", "spend": 32.77, "msgs": 7, "cost_msg": 4.68, "impr": 1748, "cpm": 18.75, "ctr": 1.49}, {"date": "2026-11-12", "spend": 30.31, "msgs": 5, "cost_msg": 6.06, "impr": 1470, "cpm": 20.62, "ctr": 1.22}, {"date": "2026-11-11", "spend": 12.38, "msgs": 5, "cost_msg": 2.48, "impr": 932, "cpm": 13.28, "ctr": 0.86}];
 const DEFAULT_DAYS = 15;
-const FIXED_SINCE = '2026-08-18';
+const FIXED_SINCE = '2026-11-01';
 const FIXED_UNTIL = '2026-11-15';
+const LOCK_RANGE = true;
 const PT_M = ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
 const PT_MF = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
 let chart=null, activeSince=null, activeUntil=null;
@@ -203,7 +204,7 @@ function today(){return DAILY.length>0?DAILY[0].date:new Date().toISOString().sl
 const minDate=DAILY.length>0?new Date(DAILY[DAILY.length-1].date+"T00:00:00"):undefined;
 const maxDate=DAILY.length>0?new Date(DAILY[0].date+"T00:00:00"):undefined;
 const fp=flatpickr('#dateRangeInput',{
-  mode:'range',locale:'pt',dateFormat:'d \de M. \de Y',
+  mode:'range',locale:'pt',dateFormat:'d \\de M. \\de Y',
   minDate,maxDate,showMonths:1,
   onChange(selectedDates){
     if(selectedDates.length===2){
@@ -331,9 +332,22 @@ function renderTable(since,until){
 window.addEventListener('load',()=>{
   // Abre nos últimos 15 dias por padrão. O histórico completo continua
   // disponível no calendário, nos atalhos e nos botões dia a dia.
+  if(LOCK_RANGE){lockRange();return;}
   buildDayButtons();
   applyShortcut(15);
 });
+function lockRange(){
+  document.querySelectorAll('.period-shortcuts,.day-picker').forEach(e=>e.style.display='none');
+  fp.setDate([new Date(FIXED_SINCE+'T00:00:00'),new Date(FIXED_UNTIL+'T00:00:00')],false);
+  fp.set('clickOpens',false);
+  const inp=document.getElementById('dateRangeInput');
+  inp.style.cursor='default'; inp.title='Período fixo';
+  const note=document.createElement('div');
+  note.style.cssText='font-size:11px;color:#606770;margin-top:6px';
+  note.textContent='Período fixo: '+fmtFull(FIXED_SINCE)+' a '+fmtFull(FIXED_UNTIL);
+  inp.parentElement.insertAdjacentElement('afterend',note);
+  applyRange(FIXED_SINCE,FIXED_UNTIL);
+}
 </script>
 </body>
 </html>

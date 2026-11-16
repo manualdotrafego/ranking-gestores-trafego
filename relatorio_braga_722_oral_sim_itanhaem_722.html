@@ -182,15 +182,16 @@ tbody td:first-child{text-align:left;color:#606770;font-weight:600}
 </div>
 
 <div class="footer">
-  Gerado em 15/11/2026 · #722 | Oral Sim Itanhaém · Meta API v21.0
+  Gerado em 16/11/2026 · #722 | Oral Sim Itanhaém · Meta API v21.0
 </div>
 </div>
 
 <script>
-const DAILY = [{"date": "2026-11-15", "spend": 3.94, "msgs": 1, "cost_msg": 3.94, "impr": 365, "cpm": 10.79, "ctr": 0.55}, {"date": "2026-11-14", "spend": 25.28, "msgs": 15, "cost_msg": 1.69, "impr": 2806, "cpm": 9.01, "ctr": 1.64}, {"date": "2026-11-13", "spend": 24.18, "msgs": 12, "cost_msg": 2.02, "impr": 2764, "cpm": 8.75, "ctr": 1.59}, {"date": "2026-11-12", "spend": 22.36, "msgs": 16, "cost_msg": 1.4, "impr": 2479, "cpm": 9.02, "ctr": 2.38}, {"date": "2026-11-11", "spend": 36.03, "msgs": 26, "cost_msg": 1.39, "impr": 3652, "cpm": 9.87, "ctr": 2.27}, {"date": "2026-11-10", "spend": 55.83, "msgs": 43, "cost_msg": 1.3, "impr": 4393, "cpm": 12.71, "ctr": 2.73}, {"date": "2026-11-09", "spend": 6.7, "msgs": 2, "cost_msg": 3.35, "impr": 500, "cpm": 13.4, "ctr": 2.6}];
+const DAILY = [{"date": "2026-11-15", "spend": 34.56, "msgs": 8, "cost_msg": 4.32, "impr": 3375, "cpm": 10.24, "ctr": 1.21}, {"date": "2026-11-14", "spend": 25.31, "msgs": 15, "cost_msg": 1.69, "impr": 2818, "cpm": 8.98, "ctr": 1.63}, {"date": "2026-11-13", "spend": 24.18, "msgs": 12, "cost_msg": 2.02, "impr": 2764, "cpm": 8.75, "ctr": 1.59}, {"date": "2026-11-12", "spend": 22.36, "msgs": 16, "cost_msg": 1.4, "impr": 2479, "cpm": 9.02, "ctr": 2.38}, {"date": "2026-11-11", "spend": 36.03, "msgs": 26, "cost_msg": 1.39, "impr": 3652, "cpm": 9.87, "ctr": 2.27}, {"date": "2026-11-10", "spend": 55.83, "msgs": 43, "cost_msg": 1.3, "impr": 4393, "cpm": 12.71, "ctr": 2.73}, {"date": "2026-11-09", "spend": 6.7, "msgs": 2, "cost_msg": 3.35, "impr": 500, "cpm": 13.4, "ctr": 2.6}];
 const DEFAULT_DAYS = 15;
-const FIXED_SINCE = '2026-08-18';
+const FIXED_SINCE = '2026-11-01';
 const FIXED_UNTIL = '2026-11-15';
+const LOCK_RANGE = true;
 const PT_M = ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
 const PT_MF = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
 let chart=null, activeSince=null, activeUntil=null;
@@ -203,7 +204,7 @@ function today(){return DAILY.length>0?DAILY[0].date:new Date().toISOString().sl
 const minDate=DAILY.length>0?new Date(DAILY[DAILY.length-1].date+"T00:00:00"):undefined;
 const maxDate=DAILY.length>0?new Date(DAILY[0].date+"T00:00:00"):undefined;
 const fp=flatpickr('#dateRangeInput',{
-  mode:'range',locale:'pt',dateFormat:'d \de M. \de Y',
+  mode:'range',locale:'pt',dateFormat:'d \\de M. \\de Y',
   minDate,maxDate,showMonths:1,
   onChange(selectedDates){
     if(selectedDates.length===2){
@@ -331,9 +332,22 @@ function renderTable(since,until){
 window.addEventListener('load',()=>{
   // Abre nos últimos 15 dias por padrão. O histórico completo continua
   // disponível no calendário, nos atalhos e nos botões dia a dia.
+  if(LOCK_RANGE){lockRange();return;}
   buildDayButtons();
   applyShortcut(15);
 });
+function lockRange(){
+  document.querySelectorAll('.period-shortcuts,.day-picker').forEach(e=>e.style.display='none');
+  fp.setDate([new Date(FIXED_SINCE+'T00:00:00'),new Date(FIXED_UNTIL+'T00:00:00')],false);
+  fp.set('clickOpens',false);
+  const inp=document.getElementById('dateRangeInput');
+  inp.style.cursor='default'; inp.title='Período fixo';
+  const note=document.createElement('div');
+  note.style.cssText='font-size:11px;color:#606770;margin-top:6px';
+  note.textContent='Período fixo: '+fmtFull(FIXED_SINCE)+' a '+fmtFull(FIXED_UNTIL);
+  inp.parentElement.insertAdjacentElement('afterend',note);
+  applyRange(FIXED_SINCE,FIXED_UNTIL);
+}
 </script>
 </body>
 </html>
