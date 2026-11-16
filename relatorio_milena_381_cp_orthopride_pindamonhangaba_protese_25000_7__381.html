@@ -182,15 +182,16 @@ tbody td:first-child{text-align:left;color:#606770;font-weight:600}
 </div>
 
 <div class="footer">
-  Gerado em 15/11/2026 · #381 | CP - ORTHOPRIDE PINDAMONHANGABA PRÓTESE - 250,00 - 7 DIAS - 23/09 · Meta API v21.0
+  Gerado em 16/11/2026 · #381 | CP - ORTHOPRIDE PINDAMONHANGABA PRÓTESE - 250,00 - 7 DIAS - 23/09 · Meta API v21.0
 </div>
 </div>
 
 <script>
 const DAILY = [{"date": "2026-10-06", "spend": 0.0, "msgs": 0, "cost_msg": 0.0, "impr": 0, "cpm": 0.0, "ctr": 0.0}, {"date": "2026-10-04", "spend": 0.0, "msgs": 0, "cost_msg": 0.0, "impr": 0, "cpm": 0.0, "ctr": 0.0}, {"date": "2026-10-02", "spend": 21.59, "msgs": 4, "cost_msg": 5.4, "impr": 2225, "cpm": 9.7, "ctr": 1.44}, {"date": "2026-10-01", "spend": 34.23, "msgs": 13, "cost_msg": 2.63, "impr": 2278, "cpm": 15.03, "ctr": 2.37}, {"date": "2026-09-30", "spend": 35.53, "msgs": 13, "cost_msg": 2.73, "impr": 2283, "cpm": 15.56, "ctr": 2.19}, {"date": "2026-09-29", "spend": 38.49, "msgs": 24, "cost_msg": 1.6, "impr": 2766, "cpm": 13.92, "ctr": 2.35}, {"date": "2026-09-28", "spend": 34.26, "msgs": 18, "cost_msg": 1.9, "impr": 1975, "cpm": 17.35, "ctr": 2.63}, {"date": "2026-09-27", "spend": 27.8, "msgs": 14, "cost_msg": 1.99, "impr": 1562, "cpm": 17.8, "ctr": 2.69}, {"date": "2026-09-26", "spend": 22.81, "msgs": 10, "cost_msg": 2.28, "impr": 1464, "cpm": 15.58, "ctr": 2.05}, {"date": "2026-09-25", "spend": 20.6, "msgs": 11, "cost_msg": 1.87, "impr": 1182, "cpm": 17.43, "ctr": 2.96}, {"date": "2026-09-24", "spend": 13.32, "msgs": 2, "cost_msg": 6.66, "impr": 598, "cpm": 22.27, "ctr": 1.51}, {"date": "2026-09-23", "spend": 8.78, "msgs": 2, "cost_msg": 4.39, "impr": 557, "cpm": 15.76, "ctr": 1.44}];
 const DEFAULT_DAYS = 15;
-const FIXED_SINCE = '2026-08-18';
+const FIXED_SINCE = '2026-11-01';
 const FIXED_UNTIL = '2026-11-15';
+const LOCK_RANGE = true;
 const PT_M = ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
 const PT_MF = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
 let chart=null, activeSince=null, activeUntil=null;
@@ -203,7 +204,7 @@ function today(){return DAILY.length>0?DAILY[0].date:new Date().toISOString().sl
 const minDate=DAILY.length>0?new Date(DAILY[DAILY.length-1].date+"T00:00:00"):undefined;
 const maxDate=DAILY.length>0?new Date(DAILY[0].date+"T00:00:00"):undefined;
 const fp=flatpickr('#dateRangeInput',{
-  mode:'range',locale:'pt',dateFormat:'d \de M. \de Y',
+  mode:'range',locale:'pt',dateFormat:'d \\de M. \\de Y',
   minDate,maxDate,showMonths:1,
   onChange(selectedDates){
     if(selectedDates.length===2){
@@ -331,9 +332,22 @@ function renderTable(since,until){
 window.addEventListener('load',()=>{
   // Abre nos últimos 15 dias por padrão. O histórico completo continua
   // disponível no calendário, nos atalhos e nos botões dia a dia.
+  if(LOCK_RANGE){lockRange();return;}
   buildDayButtons();
   applyShortcut(15);
 });
+function lockRange(){
+  document.querySelectorAll('.period-shortcuts,.day-picker').forEach(e=>e.style.display='none');
+  fp.setDate([new Date(FIXED_SINCE+'T00:00:00'),new Date(FIXED_UNTIL+'T00:00:00')],false);
+  fp.set('clickOpens',false);
+  const inp=document.getElementById('dateRangeInput');
+  inp.style.cursor='default'; inp.title='Período fixo';
+  const note=document.createElement('div');
+  note.style.cssText='font-size:11px;color:#606770;margin-top:6px';
+  note.textContent='Período fixo: '+fmtFull(FIXED_SINCE)+' a '+fmtFull(FIXED_UNTIL);
+  inp.parentElement.insertAdjacentElement('afterend',note);
+  applyRange(FIXED_SINCE,FIXED_UNTIL);
+}
 </script>
 </body>
 </html>

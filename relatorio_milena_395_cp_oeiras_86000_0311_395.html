@@ -182,15 +182,16 @@ tbody td:first-child{text-align:left;color:#606770;font-weight:600}
 </div>
 
 <div class="footer">
-  Gerado em 15/11/2026 · #395 | CP - OEIRAS - 860,00 - 03/11 · Meta API v21.0
+  Gerado em 16/11/2026 · #395 | CP - OEIRAS - 860,00 - 03/11 · Meta API v21.0
 </div>
 </div>
 
 <script>
-const DAILY = [{"date": "2026-11-15", "spend": 6.88, "msgs": 2, "cost_msg": 3.44, "impr": 713, "cpm": 9.65, "ctr": 0.56}, {"date": "2026-11-14", "spend": 27.84, "msgs": 12, "cost_msg": 2.32, "impr": 3125, "cpm": 8.91, "ctr": 1.12}, {"date": "2026-11-13", "spend": 28.74, "msgs": 8, "cost_msg": 3.59, "impr": 3142, "cpm": 9.15, "ctr": 0.99}, {"date": "2026-11-12", "spend": 28.2, "msgs": 6, "cost_msg": 4.7, "impr": 2830, "cpm": 9.96, "ctr": 1.24}, {"date": "2026-11-11", "spend": 30.7, "msgs": 1, "cost_msg": 30.7, "impr": 2942, "cpm": 10.44, "ctr": 0.68}, {"date": "2026-11-10", "spend": 37.82, "msgs": 10, "cost_msg": 3.78, "impr": 4327, "cpm": 8.74, "ctr": 0.86}, {"date": "2026-11-09", "spend": 33.97, "msgs": 3, "cost_msg": 11.32, "impr": 2830, "cpm": 12.0, "ctr": 0.81}, {"date": "2026-11-08", "spend": 27.43, "msgs": 3, "cost_msg": 9.14, "impr": 2438, "cpm": 11.25, "ctr": 0.74}, {"date": "2026-11-07", "spend": 29.34, "msgs": 5, "cost_msg": 5.87, "impr": 3002, "cpm": 9.77, "ctr": 0.77}, {"date": "2026-11-06", "spend": 31.15, "msgs": 1, "cost_msg": 31.15, "impr": 2789, "cpm": 11.17, "ctr": 0.75}, {"date": "2026-11-05", "spend": 29.02, "msgs": 4, "cost_msg": 7.25, "impr": 2361, "cpm": 12.29, "ctr": 1.02}, {"date": "2026-11-04", "spend": 26.91, "msgs": 5, "cost_msg": 5.38, "impr": 1905, "cpm": 14.13, "ctr": 0.94}, {"date": "2026-11-03", "spend": 9.4, "msgs": 0, "cost_msg": 0.0, "impr": 584, "cpm": 16.1, "ctr": 0.34}];
+const DAILY = [{"date": "2026-11-15", "spend": 28.15, "msgs": 7, "cost_msg": 4.02, "impr": 3016, "cpm": 9.33, "ctr": 0.93}, {"date": "2026-11-14", "spend": 27.86, "msgs": 12, "cost_msg": 2.32, "impr": 3127, "cpm": 8.91, "ctr": 1.12}, {"date": "2026-11-13", "spend": 28.74, "msgs": 8, "cost_msg": 3.59, "impr": 3142, "cpm": 9.15, "ctr": 0.99}, {"date": "2026-11-12", "spend": 28.2, "msgs": 6, "cost_msg": 4.7, "impr": 2830, "cpm": 9.96, "ctr": 1.24}, {"date": "2026-11-11", "spend": 30.7, "msgs": 1, "cost_msg": 30.7, "impr": 2942, "cpm": 10.44, "ctr": 0.68}, {"date": "2026-11-10", "spend": 37.82, "msgs": 10, "cost_msg": 3.78, "impr": 4327, "cpm": 8.74, "ctr": 0.86}, {"date": "2026-11-09", "spend": 33.97, "msgs": 3, "cost_msg": 11.32, "impr": 2830, "cpm": 12.0, "ctr": 0.81}, {"date": "2026-11-08", "spend": 27.43, "msgs": 3, "cost_msg": 9.14, "impr": 2438, "cpm": 11.25, "ctr": 0.74}, {"date": "2026-11-07", "spend": 29.34, "msgs": 5, "cost_msg": 5.87, "impr": 3002, "cpm": 9.77, "ctr": 0.77}, {"date": "2026-11-06", "spend": 31.15, "msgs": 1, "cost_msg": 31.15, "impr": 2789, "cpm": 11.17, "ctr": 0.75}, {"date": "2026-11-05", "spend": 29.02, "msgs": 4, "cost_msg": 7.25, "impr": 2361, "cpm": 12.29, "ctr": 1.02}, {"date": "2026-11-04", "spend": 26.91, "msgs": 5, "cost_msg": 5.38, "impr": 1905, "cpm": 14.13, "ctr": 0.94}, {"date": "2026-11-03", "spend": 9.4, "msgs": 0, "cost_msg": 0.0, "impr": 584, "cpm": 16.1, "ctr": 0.34}];
 const DEFAULT_DAYS = 15;
-const FIXED_SINCE = '2026-08-18';
+const FIXED_SINCE = '2026-11-01';
 const FIXED_UNTIL = '2026-11-15';
+const LOCK_RANGE = true;
 const PT_M = ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
 const PT_MF = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
 let chart=null, activeSince=null, activeUntil=null;
@@ -203,7 +204,7 @@ function today(){return DAILY.length>0?DAILY[0].date:new Date().toISOString().sl
 const minDate=DAILY.length>0?new Date(DAILY[DAILY.length-1].date+"T00:00:00"):undefined;
 const maxDate=DAILY.length>0?new Date(DAILY[0].date+"T00:00:00"):undefined;
 const fp=flatpickr('#dateRangeInput',{
-  mode:'range',locale:'pt',dateFormat:'d \de M. \de Y',
+  mode:'range',locale:'pt',dateFormat:'d \\de M. \\de Y',
   minDate,maxDate,showMonths:1,
   onChange(selectedDates){
     if(selectedDates.length===2){
@@ -331,9 +332,22 @@ function renderTable(since,until){
 window.addEventListener('load',()=>{
   // Abre nos últimos 15 dias por padrão. O histórico completo continua
   // disponível no calendário, nos atalhos e nos botões dia a dia.
+  if(LOCK_RANGE){lockRange();return;}
   buildDayButtons();
   applyShortcut(15);
 });
+function lockRange(){
+  document.querySelectorAll('.period-shortcuts,.day-picker').forEach(e=>e.style.display='none');
+  fp.setDate([new Date(FIXED_SINCE+'T00:00:00'),new Date(FIXED_UNTIL+'T00:00:00')],false);
+  fp.set('clickOpens',false);
+  const inp=document.getElementById('dateRangeInput');
+  inp.style.cursor='default'; inp.title='Período fixo';
+  const note=document.createElement('div');
+  note.style.cssText='font-size:11px;color:#606770;margin-top:6px';
+  note.textContent='Período fixo: '+fmtFull(FIXED_SINCE)+' a '+fmtFull(FIXED_UNTIL);
+  inp.parentElement.insertAdjacentElement('afterend',note);
+  applyRange(FIXED_SINCE,FIXED_UNTIL);
+}
 </script>
 </body>
 </html>
