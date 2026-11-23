@@ -286,6 +286,83 @@ html,body{height:100%;font-family:'Inter',sans-serif;background:var(--bg);color:
   .main{margin-left:0}
   .kpi-grid{grid-template-columns:1fr 1fr}
 }
+
+/* ── MENU + OTIMIZAÇÕES ── */
+.menu-btns{display:flex;flex-direction:column;gap:5px;padding:0 18px 14px}
+.menu-btn{display:flex;align-items:center;gap:10px;background:transparent;border:1px solid var(--b1);border-radius:8px;
+  padding:10px 12px;color:var(--muted2);font-size:12px;font-family:'Inter',sans-serif;cursor:pointer;text-align:left;transition:all .15s}
+.menu-btn svg{width:16px;height:16px;flex-shrink:0}
+.menu-btn:hover{background:var(--p3);color:var(--p2);border-color:var(--b3)}
+.menu-btn.active{background:var(--p4);color:var(--p2);border-color:var(--b3);font-weight:700}
+.view-tabs{display:none;gap:8px;padding:12px 16px 0}
+.view-tabs .menu-btn{flex:1;justify-content:center}
+.sb-note{padding:0 18px 16px;font-size:11px;color:var(--muted2);line-height:1.6}
+.sb-note ul{margin:6px 0 10px 16px}
+.sb-note b{color:var(--text);font-weight:600}
+.ot-toolbar{display:flex;flex-direction:column;gap:12px;background:var(--card);border:1px solid var(--b1);border-radius:12px;padding:14px 16px;margin-bottom:20px}
+.ot-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.ot-lab{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:1.2px;font-weight:600;width:58px;flex-shrink:0}
+.ot-chips{display:flex;gap:6px;flex-wrap:wrap;align-items:center;min-width:0}
+.ot-chip{display:inline-flex;align-items:center;gap:7px;background:transparent;border:1px solid var(--b1);border-radius:999px;
+  padding:6px 12px;color:var(--muted2);font-size:12px;font-family:'Inter',sans-serif;cursor:pointer;transition:all .15s;white-space:nowrap}
+.ot-chip:hover{background:var(--p3);color:var(--p2);border-color:var(--b3)}
+.ot-chip.active{background:var(--p4);color:#fff;border-color:var(--p)}
+.ot-chip img{width:20px;height:20px;border-radius:50%;object-fit:cover}
+.ot-chip.has-img{padding:4px 12px 4px 5px}
+.ot-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;display:inline-block}
+.ot-chip:not(.active) .ot-dot{opacity:.35}
+.ot-date{background:var(--card2);color:var(--text);border:1px solid var(--b1);border-radius:8px;padding:5px 8px;font-size:12px;
+  font-family:'Inter',sans-serif;color-scheme:dark}
+.ot-date-lab{font-size:11px;color:var(--muted)}
+.ot-card{background:var(--card);border:1px solid var(--b1);border-radius:12px;padding:18px;margin-bottom:20px;min-width:0}
+.ot-card .chart-title{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.ot-card .chart-title small{font-size:10px;color:var(--muted);text-transform:none;letter-spacing:0;font-weight:400}
+.ot-scroll{overflow-x:auto}
+.ot-two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.ot-two>.ot-card{margin-bottom:20px}
+.main{min-width:0}
+.kpi-value.ot-txt{font-size:17px;line-height:1.2}
+.ot-table{width:100%;border-collapse:collapse;font-size:12px}
+.ot-table th{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;font-weight:600;text-align:right;
+  padding:6px 10px;border-bottom:1px solid var(--b1);white-space:nowrap}
+.ot-table th:first-child,.ot-table td:first-child{text-align:left}
+.ot-table td{padding:8px 10px;border-bottom:1px solid rgba(255,255,255,.04);text-align:right;color:var(--muted2);
+  font-variant-numeric:tabular-nums;white-space:nowrap}
+.ot-table td.ot-strong{color:var(--text);font-weight:700}
+.ot-table td.ot-zero{color:#3a3a3a}
+.ot-table td.ot-wrap{white-space:normal;color:var(--text)}
+.ot-table tr.ot-fds td:first-child{color:var(--muted)}
+.ot-table tfoot td{border-top:1px solid var(--b1);border-bottom:none;color:var(--text);font-weight:700}
+.ot-rank tbody tr{cursor:pointer}
+.ot-rank tbody tr:hover td{background:var(--card2)}
+.ot-rank tbody tr.active td{background:var(--p3)}
+.ot-who{display:flex;align-items:center;gap:10px;color:var(--text);font-weight:600}
+.ot-who img,.ot-ini{width:30px;height:30px;border-radius:50%;object-fit:cover;flex-shrink:0}
+.ot-ini{display:inline-flex;align-items:center;justify-content:center;background:var(--p4);color:var(--p2);font-size:11px;font-weight:700}
+.ot-big{font-size:18px;font-weight:800;color:var(--p2)}
+.ot-barcell{width:26%;min-width:140px}
+.ot-stack{display:flex;height:10px;border-radius:5px;overflow:hidden;background:rgba(255,255,255,.04)}
+.ot-stack span{display:block;height:100%}
+.ot-legend{display:flex;gap:14px;flex-wrap:wrap;margin-top:12px;font-size:11px;color:var(--muted2)}
+.ot-legend span{display:inline-flex;align-items:center;gap:6px}
+.ot-heat{border-collapse:separate;border-spacing:2px;font-size:11px;width:100%}
+.ot-heat th{font-size:9px;color:var(--muted);font-weight:600;padding:2px 0;text-align:center}
+.ot-heat td{height:26px;min-width:26px;text-align:center;border-radius:4px;background:rgba(255,255,255,.03);color:#fff;font-variant-numeric:tabular-nums}
+.ot-heat td.ot-day{background:none;text-align:left;color:var(--muted2);white-space:nowrap;padding-right:10px;min-width:74px}
+.ot-heat td.ot-tot{background:none;color:var(--text);font-weight:700;padding-left:8px;text-align:right}
+.ot-heat tr.ot-fds td.ot-day{color:var(--muted)}
+.ot-heat tfoot td{background:none;color:var(--muted2);font-weight:600}
+.ot-empty{padding:40px 0;text-align:center;color:var(--muted)}
+.ot-minibar{display:inline-block;height:6px;border-radius:3px;background:var(--p);vertical-align:middle;margin-right:8px;min-width:2px}
+@media(max-width:1100px){.ot-two{grid-template-columns:1fr}}
+@media(max-width:720px){
+  .view-tabs{display:flex}
+  .ot-lab{width:100%}
+  .ot-barcell{min-width:90px}
+  .header{flex-direction:column}
+  .header-right{text-align:left}
+  .content{padding:16px}
+}
 </style>
 </head>
 <body>
@@ -305,6 +382,31 @@ html,body{height:100%;font-family:'Inter',sans-serif;background:var(--bg);color:
 
   <div class="sb-divider"></div>
 
+  <!-- ── MENU ── -->
+  <div class="sb-section-label">Menu</div>
+  <div class="menu-btns">
+    <button class="menu-btn active" data-view="perf" onclick="setView('perf')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/></svg>Desempenho</button>
+    <button class="menu-btn" data-view="otim" onclick="setView('otim')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12M20 18h0"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/></svg>Otimizações</button>
+  </div>
+
+  <div class="sb-divider"></div>
+
+  <div id="sbOtim" style="display:none">
+    <div class="sb-section-label">O que entra na conta</div>
+    <div class="sb-note">
+      <ul>
+        <li>Pausa e reativação de anúncio, conjunto e campanha</li>
+        <li>Criativo, conjunto e campanha novos</li>
+        <li>Mudança de orçamento</li>
+        <li>Ajuste de segmentação, lance e criativo</li>
+      </ul>
+      Só entram ações feitas por pessoas. O que a Meta faz sozinha fica de fora, e ajustes feitos junto com a criação de um conjunto não contam à parte.<br><br>
+      Cada ação vai para o <b>gestor dono da conta de anúncio</b>, no horário de Brasília.<br><br>
+      Fonte: histórico de alterações da Meta. Atualiza de hora em hora.
+    </div>
+  </div>
+
+  <div id="sbPerf">
   <!-- ── PESQUISA GLOBAL ── -->
   <div class="sb-search-wrap">
     <div class="sb-search-box">
@@ -387,6 +489,7 @@ html,body{height:100%;font-family:'Inter',sans-serif;background:var(--bg);color:
 
   <div class="sb-camp-label">Campanhas</div>
   <div class="sb-camps" id="campTabs"></div>
+  </div><!-- /sbPerf -->
 
   <div class="sb-footer">
     <div class="sb-footer-text">
@@ -401,6 +504,10 @@ html,body{height:100%;font-family:'Inter',sans-serif;background:var(--bg);color:
 
 <!-- ── MAIN ── -->
 <main class="main">
+  <div class="view-tabs">
+    <button class="menu-btn active" data-view="perf" onclick="setView('perf')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/></svg>Desempenho</button>
+    <button class="menu-btn" data-view="otim" onclick="setView('otim')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12M20 18h0"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/></svg>Otimizações</button>
+  </div>
   <div class="header">
     <div class="header-left">
       <h1 id="header-title">Visão Mestre</h1>
@@ -413,6 +520,15 @@ html,body{height:100%;font-family:'Inter',sans-serif;background:var(--bg);color:
   </div>
 
   <div id="alertasCPL"></div>
+
+  <div class="content" id="otimContent" style="display:none">
+    <div class="ot-toolbar">
+      <div class="ot-row"><span class="ot-lab">Gestor</span><div class="ot-chips" id="otGestores"></div></div>
+      <div class="ot-row"><span class="ot-lab">Período</span><div class="ot-chips" id="otPeriodo"></div></div>
+      <div class="ot-row"><span class="ot-lab">Tipo</span><div class="ot-chips" id="otTipos"></div></div>
+    </div>
+    <div id="otBody"></div>
+  </div>
 
   <div class="content" id="mainContent">
     <div class="loading" id="loadingState">
@@ -504,6 +620,7 @@ function initDashboard() {
   if (gestores.length) {
     selectGestor(gestores[0].id);
   }
+  otHeader();
 }
 
 // ─── PESQUISA GLOBAL ─────────────────────────────────────────────────────────
@@ -1405,6 +1522,288 @@ function closeAdPreview() {
   document.body.style.overflow = '';
 }
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeAdPreview(); });
+
+// ─── OTIMIZAÇÕES (menu à parte) ──────────────────────────────────────────────
+// Quantidade de otimizações de cada gestor, por dia e por hora (horário de Brasília).
+// Dados: JSON gerado de hora em hora na VPS a partir do histórico de alterações da Meta.
+const OT_URL = 'https://srv1809067.hstgr.cloud/otimizacoes-dashboard.json';
+const OT_GRUPOS = [
+  { id: 'pausa', nome: 'Pausas',                 tipos: ['paus', 'sp', 'cp'],  cor: '#f87171' },
+  { id: 'reat',  nome: 'Reativações',            tipos: ['reat', 'sr', 'cr'],  cor: '#34d399' },
+  { id: 'novo',  nome: 'Novos',                  tipos: ['novo', 'sn', 'cn'],  cor: '#38bdf8' },
+  { id: 'orc',   nome: 'Orçamento',              tipos: ['orc'],               cor: '#fbbf24' },
+  { id: 'aj',    nome: 'Segmentação e ajustes',  tipos: ['seg', 'out'],        cor: '#9d6ef7' }
+];
+const OT_COR = { thiago_braga: '#9d6ef7', igor_teixeira: '#38bdf8', milena: '#f472b6', victor: '#34d399', bueno: '#fbbf24', mota: '#fb923c' };
+const OT_DOW = ['dom', 'seg', 'ter', 'qua', 'qui', 'sex', 'sáb'];
+const OT_PER = [['hoje', 'Hoje'], ['ontem', 'Ontem'], ['7', '7 dias'], ['14', '14 dias'], ['30', '30 dias']];
+const ot = { data: null, loadedAt: 0, view: 'perf', gestor: 'all', periodo: '7', de: '', ate: '',
+             grupos: new Set(OT_GRUPOS.map(g => g.id)), charts: {} };
+
+function setView(v) {
+  ot.view = v;
+  const isOt = v === 'otim';
+  document.querySelectorAll('[data-view]').forEach(b => b.classList.toggle('active', b.dataset.view === v));
+  document.getElementById('sbPerf').style.display = isOt ? 'none' : '';
+  document.getElementById('sbOtim').style.display = isOt ? '' : 'none';
+  document.getElementById('mainContent').style.display = isOt ? 'none' : '';
+  document.getElementById('alertasCPL').style.display = isOt ? 'none' : '';
+  document.getElementById('otimContent').style.display = isOt ? '' : 'none';
+  document.querySelector('.sb-footer').style.display = isOt ? 'none' : '';
+  try { history.replaceState(null, '', isOt ? '#otimizacoes' : location.pathname + location.search); } catch (e) {}
+  if (isOt) {
+    otHeader();
+    if (!ot.data || Date.now() - ot.loadedAt > 600000) otLoad(); else otRender();
+  } else {
+    if (dashData) {
+      document.getElementById('last-update-val').textContent = formatUpdatedAt(dashData.updated_at || '');
+      document.getElementById('period-badge').textContent = document.getElementById('footer-period').textContent;
+    }
+    if (currentAccount) {
+      document.getElementById('header-title').textContent = currentAccount.name;
+      document.getElementById('header-subtitle').textContent =
+        'Meta Ads · ' + (currentAccount.currency || 'BRL') + ' · ' + (currentAccount.campaigns || []).length + ' campanhas';
+    }
+  }
+}
+
+function otHeader() {
+  if (ot.view !== 'otim') return;
+  document.getElementById('header-title').textContent = 'Otimizações dos gestores';
+  document.getElementById('header-subtitle').textContent =
+    'Quantidade de ações feitas no gerenciador da Meta, por dia e por hora (horário de Brasília)';
+  if (ot.data) {
+    document.getElementById('last-update-val').textContent = otDataHora(ot.data.generated_at);
+    const d = otDias();
+    document.getElementById('period-badge').textContent = d.length
+      ? (d.length === 1 ? otDiaBR(ot.data.dias[d[0]]) : otDiaBR(ot.data.dias[d[0]]) + ' a ' + otDiaBR(ot.data.dias[d[d.length - 1]]))
+      : 'sem dias no período';
+  }
+}
+
+function otLoad() {
+  const box = document.getElementById('otBody');
+  if (!ot.data) box.innerHTML = '<div class="loading"><div class="spinner"></div><div>Carregando otimizações...</div></div>';
+  fetch(OT_URL + '?_=' + Date.now())
+    .then(r => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+    .then(j => { ot.data = j; ot.loadedAt = Date.now(); otRender(); })
+    .catch(err => {
+      if (!ot.data) box.innerHTML = '<div class="error-box">Erro ao carregar as otimizações: ' + esc(err.message) + '</div>';
+    });
+}
+
+function otDate(iso) { const p = iso.split('-'); return new Date(+p[0], +p[1] - 1, +p[2]); }
+function otDiaBR(iso) { return iso.slice(8, 10) + '/' + iso.slice(5, 7); }
+function otDiaLabel(iso) { return OT_DOW[otDate(iso).getDay()] + ' ' + otDiaBR(iso); }
+function otFds(iso) { const w = otDate(iso).getDay(); return w === 0 || w === 6; }
+function otDataHora(s) { return s ? otDiaBR(s.slice(0, 10)) + ' às ' + s.slice(11, 16) : ''; }
+function otFaixa(h) { return h + 'h às ' + (h + 1) + 'h'; }
+function otPl(n, s, p) { return fmtNum(n) + ' ' + (n === 1 ? s : p); }
+
+// índices dos dias do período escolhido (ot.data.dias termina no dia da última coleta)
+function otDias() {
+  const dias = ot.data.dias, n = dias.length; let a = 0, b = n - 1;
+  if (ot.periodo === 'hoje') a = b;
+  else if (ot.periodo === 'ontem') a = b = n - 2;
+  else if (ot.periodo === 'custom') {
+    a = dias.findIndex(d => d >= ot.de); if (a < 0) a = n;
+    b = -1; dias.forEach((d, i) => { if (d <= ot.ate) b = i; });
+  } else a = Math.max(0, n - parseInt(ot.periodo, 10));
+  const out = []; for (let i = Math.max(a, 0); i <= b; i++) out.push(i);
+  return out;
+}
+
+function otSetGestor(id) { ot.gestor = id; otRender(); }
+function otSetPeriodo(p) { ot.periodo = p; otRender(); }
+function otToggleGrupo(id) {
+  if (ot.grupos.has(id)) ot.grupos.delete(id); else ot.grupos.add(id);
+  if (!ot.grupos.size) OT_GRUPOS.forEach(g => ot.grupos.add(g.id));
+  otRender();
+}
+function otApplyRange() {
+  const de = document.getElementById('otDe').value, ate = document.getElementById('otAte').value;
+  if (!de || !ate) return;
+  ot.de = de <= ate ? de : ate; ot.ate = de <= ate ? ate : de; ot.periodo = 'custom';
+  otRender();
+}
+
+function otAvatar(g, cls) {
+  const photo = GESTOR_PHOTOS[g.id];
+  if (photo) return '<img src="' + photo + '" alt=""/>';
+  return cls ? '<span class="' + cls + '">' + esc(g.nome.split(' ').map(w => w[0]).slice(0, 2).join('').toUpperCase()) + '</span>' : '';
+}
+
+function otToolbar() {
+  const D = ot.data;
+  document.getElementById('otGestores').innerHTML =
+    '<button class="ot-chip' + (ot.gestor === 'all' ? ' active' : '') + '" onclick="otSetGestor(\'all\')">Todos</button>' +
+    D.gestores.map(g => '<button class="ot-chip' + (GESTOR_PHOTOS[g.id] ? ' has-img' : '') + (ot.gestor === g.id ? ' active' : '') +
+      '" onclick="otSetGestor(\'' + g.id + '\')">' + otAvatar(g) + esc(g.nome) + '</button>').join('');
+  document.getElementById('otPeriodo').innerHTML =
+    OT_PER.map(p => '<button class="ot-chip' + (ot.periodo === p[0] ? ' active' : '') + '" onclick="otSetPeriodo(\'' + p[0] + '\')">' + p[1] + '</button>').join('') +
+    '<span class="ot-date-lab">ou de</span><input type="date" class="ot-date" id="otDe" min="' + D.dias[0] + '" max="' + D.dias[D.dias.length - 1] + '" value="' + (ot.periodo === 'custom' ? ot.de : '') + '">' +
+    '<span class="ot-date-lab">até</span><input type="date" class="ot-date" id="otAte" min="' + D.dias[0] + '" max="' + D.dias[D.dias.length - 1] + '" value="' + (ot.periodo === 'custom' ? ot.ate : '') + '">' +
+    '<button class="ot-chip' + (ot.periodo === 'custom' ? ' active' : '') + '" onclick="otApplyRange()">Aplicar</button>';
+  document.getElementById('otTipos').innerHTML = OT_GRUPOS.map(g =>
+    '<button class="ot-chip' + (ot.grupos.has(g.id) ? ' active' : '') + '" onclick="otToggleGrupo(\'' + g.id + '\')">' +
+    '<span class="ot-dot" style="background:' + g.cor + '"></span>' + g.nome + '</button>').join('');
+}
+
+function otRender() {
+  if (!ot.data || ot.view !== 'otim') return;
+  const D = ot.data, dias = otDias(), pos = {}; dias.forEach((d, i) => { pos[d] = i; });
+  const tipoGrupo = D.tipos.map(t => OT_GRUPOS.findIndex(g => g.tipos.includes(t.id)));
+  const okTipo = tipoGrupo.map(gi => gi >= 0 && ot.grupos.has(OT_GRUPOS[gi].id));
+  otToolbar(); otHeader();
+  Object.keys(ot.charts).forEach(k => { ot.charts[k].destroy(); delete ot.charts[k]; });
+  const box = document.getElementById('otBody');
+
+  // números de cada gestor no período
+  const stats = D.gestores.map(g => {
+    const s = { g: g, total: 0, dias: new Set(), camps: new Set(), grupos: OT_GRUPOS.map(() => 0), horas: new Array(24).fill(0), ult: -1 };
+    g.linhas.forEach(l => {
+      const di = l[0], h = l[1], ti = l[2], ci = l[3], n = l[4];
+      if (!(di in pos) || !okTipo[ti]) return;
+      s.total += n; s.dias.add(di); if (ci >= 0) s.camps.add(ci);
+      s.grupos[tipoGrupo[ti]] += n; s.horas[h] += n;
+      if (di * 24 + h > s.ult) s.ult = di * 24 + h;
+    });
+    return s;
+  });
+  const sel = ot.gestor === 'all' ? stats : stats.filter(s => s.g.id === ot.gestor);
+  const total = sel.reduce((a, s) => a + s.total, 0);
+  const pico = s => { let h = -1, m = 0; s.horas.forEach((v, i) => { if (v > m) { m = v; h = i; } }); return [h, m]; };
+  const ultTxt = u => u < 0 ? 'sem registro' : otDiaBR(D.dias[Math.floor(u / 24)]) + ', ' + otFaixa(u % 24);
+
+  // séries: gestores (visão Todos) ou tipos (um gestor)
+  const porGestor = ot.gestor === 'all';
+  const series = porGestor
+    ? D.gestores.map(g => ({ nome: g.nome, cor: OT_COR[g.id] || '#9d6ef7' }))
+    : OT_GRUPOS.filter(g => ot.grupos.has(g.id)).map(g => ({ nome: g.nome, cor: g.cor, gid: g.id }));
+  series.forEach(s => { s.dia = new Array(dias.length).fill(0); s.hora = new Array(24).fill(0); s.total = 0; });
+  const heat = dias.map(() => new Array(24).fill(0)), porTipo = D.tipos.map(() => 0), porCamp = {}, campSet = new Set(), diaSet = new Set();
+  sel.forEach(s => {
+    const gi = D.gestores.indexOf(s.g);
+    s.g.linhas.forEach(l => {
+      const di = l[0], h = l[1], ti = l[2], ci = l[3], n = l[4];
+      if (!(di in pos) || !okTipo[ti]) return;
+      const si = porGestor ? gi : series.findIndex(x => x.gid === OT_GRUPOS[tipoGrupo[ti]].id);
+      series[si].dia[pos[di]] += n; series[si].hora[h] += n; series[si].total += n;
+      heat[pos[di]][h] += n; porTipo[ti] += n; diaSet.add(di);
+      if (ci >= 0) { porCamp[ci] = (porCamp[ci] || 0) + n; campSet.add(ci); }
+    });
+  });
+
+  if (!dias.length) { box.innerHTML = '<div class="ot-card"><div class="ot-empty">Nenhum dia nesse período. O histórico guardado vai de ' + otDiaBR(D.dias[0]) + ' a ' + otDiaBR(D.dias[D.dias.length - 1]) + '.</div></div>'; return; }
+
+  // KPIs
+  const horaTot = new Array(24).fill(0); sel.forEach(s => s.horas.forEach((v, i) => { horaTot[i] += v; }));
+  const pk = pico({ horas: horaTot }), ult = Math.max.apply(null, sel.map(s => s.ult).concat([-1]));
+  const quem = porGestor && ult >= 0 ? (sel.find(s => s.ult === ult) || {}).g : null;
+  const perTxt = dias.length === 1 ? otDiaLabel(D.dias[dias[0]]) : otDiaBR(D.dias[dias[0]]) + ' a ' + otDiaBR(D.dias[dias[dias.length - 1]]);
+  const kpi = (l, v, s, c) => '<div class="kpi-card"><div class="kpi-label">' + l + '</div><div class="kpi-value' + (c ? ' ot-txt' : '') + '">' + v + '</div><div class="kpi-sub">' + s + '</div></div>';
+  let html = '<div class="kpi-grid">' +
+    kpi('Otimizações', fmtNum(total), perTxt + (porGestor ? ' · todos os gestores' : ' · ' + esc(sel[0].g.nome))) +
+    kpi('Média por dia ativo', diaSet.size ? fmtNum(Math.round(total / diaSet.size)) : '0', diaSet.size + ' de ' + otPl(dias.length, 'dia', 'dias') + ' com otimização') +
+    kpi('Campanhas otimizadas', fmtNum(campSet.size), 'com pelo menos uma ação no período') +
+    kpi('Horário de pico', pk[0] >= 0 ? otFaixa(pk[0]) : 'sem registro', pk[0] >= 0 ? otPl(pk[1], 'otimização', 'otimizações') + ' nessa faixa' : 'nada no período', 1) +
+    kpi('Última otimização', ult >= 0 ? ultTxt(ult) : 'sem registro', quem ? esc(quem.nome) : (ult >= 0 ? 'dentro do período e dos tipos escolhidos' : 'nada no período'), 1) +
+    '</div>';
+
+  // ranking por gestor
+  const maxTot = Math.max.apply(null, stats.map(s => s.total).concat([1]));
+  html += '<div class="ot-card"><div class="chart-title"><span>Quantidade por gestor</span><small>clique em um gestor para ver só ele</small></div><div class="ot-scroll">' +
+    '<table class="ot-table ot-rank"><thead><tr><th>Gestor</th><th>Otimizações</th><th style="text-align:left">Por tipo</th><th>Dias ativos</th><th>Média por dia ativo</th><th>Campanhas</th><th>Pico</th><th>Última</th></tr></thead><tbody>' +
+    stats.slice().sort((a, b) => b.total - a.total).map(s => {
+      const p = pico(s);
+      return '<tr class="' + (ot.gestor === s.g.id ? 'active' : '') + '" onclick="otSetGestor(\'' + (ot.gestor === s.g.id ? 'all' : s.g.id) + '\')">' +
+        '<td><div class="ot-who">' + otAvatar(s.g, 'ot-ini') + esc(s.g.nome) + '</div></td>' +
+        '<td><span class="ot-big">' + fmtNum(s.total) + '</span></td>' +
+        '<td class="ot-barcell"><div class="ot-stack" style="width:' + Math.max(s.total / maxTot * 100, s.total ? 3 : 0) + '%">' +
+          s.grupos.map((v, i) => v ? '<span style="width:' + (v / s.total * 100) + '%;background:' + OT_GRUPOS[i].cor + '" title="' + OT_GRUPOS[i].nome + ': ' + v + '"></span>' : '').join('') + '</div></td>' +
+        '<td>' + s.dias.size + ' de ' + dias.length + '</td>' +
+        '<td>' + (s.dias.size ? fmtNum(Math.round(s.total / s.dias.size)) : '0') + '</td>' +
+        '<td>' + fmtNum(s.camps.size) + '</td>' +
+        '<td>' + (p[0] >= 0 ? otFaixa(p[0]) : '·') + '</td>' +
+        '<td>' + (s.ult >= 0 ? ultTxt(s.ult) : 'sem registro') + '</td></tr>';
+    }).join('') + '</tbody></table></div>' +
+    '<div class="ot-legend">' + OT_GRUPOS.filter(g => ot.grupos.has(g.id)).map(g => '<span><i class="ot-dot" style="background:' + g.cor + '"></i>' + g.nome + '</span>').join('') + '</div></div>';
+
+  if (!total) {
+    box.innerHTML = html + '<div class="ot-card"><div class="ot-empty">Nenhuma otimização registrada nesse período para essa seleção.</div></div>';
+    return;
+  }
+
+  // gráficos por dia e por hora
+  const quebra = porGestor ? 'por gestor' : 'por tipo';
+  html += '<div class="ot-two">' +
+    '<div class="ot-card"><div class="chart-title"><span>Otimizações por dia</span><small>' + quebra + '</small></div><div class="chart-wrap" style="height:280px"><canvas id="otChartDia"></canvas></div></div>' +
+    '<div class="ot-card"><div class="chart-title"><span>Otimizações por hora do dia</span><small>soma do período, ' + quebra + '</small></div><div class="chart-wrap" style="height:280px"><canvas id="otChartHora"></canvas></div></div></div>';
+
+  // mapa dia x hora
+  const maxCell = Math.max.apply(null, heat.map(r => Math.max.apply(null, r)).concat([1]));
+  const ordem = dias.map((d, i) => i).reverse();
+  html += '<div class="ot-card"><div class="chart-title"><span>Dia por hora</span><small>cada quadro é a quantidade de otimizações naquela hora, mais recente em cima</small></div><div class="ot-scroll"><table class="ot-heat"><thead><tr><th></th>' +
+    horaTot.map((v, h) => '<th>' + h + 'h</th>').join('') + '<th style="text-align:right">Total</th></tr></thead><tbody>' +
+    ordem.map(i => {
+      const iso = D.dias[dias[i]], tot = heat[i].reduce((a, b) => a + b, 0);
+      return '<tr class="' + (otFds(iso) ? 'ot-fds' : '') + '"><td class="ot-day">' + otDiaLabel(iso) + '</td>' +
+        heat[i].map((v, h) => v
+          ? '<td style="background:rgba(124,58,237,' + (0.18 + 0.82 * v / maxCell).toFixed(2) + ')" title="' + otDiaLabel(iso) + ', ' + otFaixa(h) + ': ' + v + '">' + v + '</td>'
+          : '<td></td>').join('') +
+        '<td class="ot-tot">' + fmtNum(tot) + '</td></tr>';
+    }).join('') + '</tbody><tfoot><tr><td class="ot-day">Total</td>' + horaTot.map(v => '<td>' + (v || '') + '</td>').join('') +
+    '<td class="ot-tot">' + fmtNum(total) + '</td></tr></tfoot></table></div></div>';
+
+  // tabela por dia
+  html += '<div class="ot-card"><div class="chart-title"><span>Por dia, ' + quebra + '</span><small>mais recente em cima</small></div><div class="ot-scroll"><table class="ot-table"><thead><tr><th>Dia</th>' +
+    series.map(s => '<th><i class="ot-dot" style="background:' + s.cor + ';margin-right:6px"></i>' + esc(s.nome) + '</th>').join('') + '<th>Total</th></tr></thead><tbody>' +
+    ordem.map(i => {
+      const iso = D.dias[dias[i]], tot = series.reduce((a, s) => a + s.dia[i], 0);
+      return '<tr class="' + (otFds(iso) ? 'ot-fds' : '') + '"><td>' + otDiaLabel(iso) + '</td>' +
+        series.map(s => '<td class="' + (s.dia[i] ? '' : 'ot-zero') + '">' + fmtNum(s.dia[i]) + '</td>').join('') +
+        '<td class="ot-strong">' + fmtNum(tot) + '</td></tr>';
+    }).join('') + '</tbody><tfoot><tr><td>Total</td>' + series.map(s => '<td>' + fmtNum(s.total) + '</td>').join('') + '<td>' + fmtNum(total) + '</td></tr></tfoot></table></div></div>';
+
+  // por tipo e campanhas mais mexidas
+  const maxTipo = Math.max.apply(null, porTipo.concat([1]));
+  const camps = Object.keys(porCamp).map(k => [D.campanhas[k], porCamp[k]]).sort((a, b) => b[1] - a[1]).slice(0, 12);
+  html += '<div class="ot-two">' +
+    '<div class="ot-card"><div class="chart-title"><span>Por tipo de ação</span></div><div class="ot-scroll"><table class="ot-table"><thead><tr><th>Tipo</th><th>Quantidade</th><th>Parte</th></tr></thead><tbody>' +
+    D.tipos.map((t, i) => [t, porTipo[i], tipoGrupo[i]]).filter(x => okTipo[D.tipos.indexOf(x[0])]).sort((a, b) => b[1] - a[1]).map(x =>
+      '<tr><td><i class="ot-dot" style="background:' + OT_GRUPOS[x[2]].cor + ';margin-right:8px"></i>' + esc(x[0].nome) + '</td>' +
+      '<td class="' + (x[1] ? 'ot-strong' : 'ot-zero') + '">' + fmtNum(x[1]) + '</td><td>' + Math.round(x[1] / total * 100) + '%</td></tr>').join('') +
+    '</tbody></table></div></div>' +
+    '<div class="ot-card"><div class="chart-title"><span>Campanhas com mais ações</span><small>as 12 primeiras</small></div><div class="ot-scroll"><table class="ot-table"><thead><tr><th>Campanha</th><th>Ações</th></tr></thead><tbody>' +
+    (camps.length ? camps.map(c => '<tr><td class="ot-wrap">' + esc(c[0]) + '</td><td class="ot-strong"><span class="ot-minibar" style="width:' + Math.round(c[1] / camps[0][1] * 60) + 'px"></span>' + fmtNum(c[1]) + '</td></tr>').join('')
+      : '<tr><td colspan="2" class="ot-zero">Sem campanha identificada</td></tr>') +
+    '</tbody></table></div></div></div>';
+
+  box.innerHTML = html;
+  otChart('otChartDia', dias.map(d => otDiaLabel(D.dias[d])), series, 'dia');
+  otChart('otChartHora', horaTot.map((v, h) => h + 'h'), series, 'hora');
+}
+
+function otChart(id, labels, series, key) {
+  const el = document.getElementById(id); if (!el) return;
+  ot.charts[id] = new Chart(el, {
+    type: 'bar',
+    data: { labels: labels, datasets: series.map(s => ({ label: s.nome, data: s[key], backgroundColor: s.cor, borderRadius: 2, maxBarThickness: 38 })) },
+    options: {
+      responsive: true, maintainAspectRatio: false, interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: { display: series.length > 1, position: 'bottom', labels: { color: '#999', boxWidth: 10, boxHeight: 10, font: { size: 11 } } },
+        tooltip: { filter: i => i.parsed.y > 0, callbacks: { footer: items => 'Total: ' + items.reduce((a, i) => a + i.parsed.y, 0) } }
+      },
+      scales: {
+        x: { stacked: true, ticks: { color: '#777', font: { size: 10 }, maxRotation: 0, autoSkip: true }, grid: { display: false } },
+        y: { stacked: true, beginAtZero: true, ticks: { color: '#777', font: { size: 10 }, precision: 0 }, grid: { color: 'rgba(255,255,255,0.05)' } }
+      }
+    }
+  });
+}
+
+if (location.hash === '#otimizacoes') setView('otim');
 </script>
 <style>
 #alertasCPL{margin:0 0 18px}
