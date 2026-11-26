@@ -452,8 +452,9 @@ document.addEventListener('click',e=>{if(!sbox.contains(e.target))res.classList.
 
 crumb();renderStates();
 addEventListener('resize',()=>{calcS();svg.call(zoom.transform,d3.zoomTransform(svg.node()))});
-const h0=decodeURIComponent(location.hash.slice(1));
-if(/^c\d+$/.test(h0)&&byId.get(+h0.slice(1)))selectCity(byId.get(+h0.slice(1)),false);else if(UF[h0.toUpperCase()])selectUF(h0.toUpperCase());
+const fromHash=()=>{const h0=decodeURIComponent(location.hash.slice(1));
+  if(/^c\d+$/.test(h0)&&byId.get(+h0.slice(1)))selectCity(byId.get(+h0.slice(1)),false);else if(UF[h0.toUpperCase()])selectUF(h0.toUpperCase())};
+fromHash();addEventListener('hashchange',fromHash);
 })();
 </script>
 </body>
