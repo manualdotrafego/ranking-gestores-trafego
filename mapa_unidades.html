@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mapa de Unidades | Dbout Mídia</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0a0a0a; --card:#141414; --card2:#1a1a1a; --card3:#202020; --line:rgba(124,58,237,.16); --line2:rgba(255,255,255,.07);
+  --p:#7c3aed; --p2:#9d6ef7; --p3:rgba(124,58,237,.14);
+  --text:#fff; --muted:#8b8b93; --muted2:#b4b4bd;
+  --on:#34d399; --off:#e5484d; --none:#5a5a68; --land:#1b1b21; --land2:#24242c;
+}
+html,body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);font-size:14px;line-height:1.45}
+button,input{font-family:inherit;color:inherit}
+button{cursor:pointer}
+.wrap{max-width:1500px;margin:0 auto;padding:20px 20px 28px}
+
+/* topo */
+.top{display:flex;gap:18px;align-items:center;flex-wrap:wrap;margin-bottom:18px}
+.brand{display:flex;gap:12px;align-items:center;flex:1 1 300px;min-width:0}
+.brand-ic{width:42px;height:42px;border-radius:11px;background:linear-gradient(135deg,var(--p),var(--p2));display:grid;place-items:center;flex-shrink:0}
+.brand-ic svg{width:22px;height:22px}
+h1{font-size:19px;font-weight:800;letter-spacing:-.2px}
+.sub{font-size:12px;color:var(--muted);margin-top:1px}
+.search{position:relative;flex:1 1 380px;max-width:520px}
+.search input{width:100%;background:var(--card2);border:1px solid var(--line);border-radius:11px;padding:12px 38px 12px 40px;font-size:14px;outline:none;transition:border-color .15s,box-shadow .15s}
+.search input::placeholder{color:var(--muted)}
+input[type=search]::-webkit-search-cancel-button{display:none}
+.search input:focus{border-color:var(--p);box-shadow:0 0 0 3px var(--p3)}
+.search .ic{position:absolute;left:13px;top:50%;transform:translateY(-50%);width:17px;height:17px;opacity:.55;pointer-events:none}
+.search .clr{position:absolute;right:8px;top:50%;transform:translateY(-50%);background:none;border:0;color:var(--muted);font-size:18px;padding:4px 8px;display:none}
+.search.has .clr{display:block}
+.results{position:absolute;left:0;right:0;top:calc(100% + 6px);background:var(--card);border:1px solid rgba(124,58,237,.35);border-radius:12px;z-index:50;max-height:440px;overflow:auto;box-shadow:0 14px 44px rgba(0,0,0,.7);display:none}
+.results.open{display:block}
+.rg{padding:9px 14px 4px;font-size:10px;letter-spacing:1.3px;text-transform:uppercase;color:var(--muted);font-weight:600}
+.ri{display:flex;gap:10px;align-items:center;width:100%;text-align:left;background:none;border:0;padding:9px 14px;font-size:13px}
+.ri:hover,.ri.act{background:var(--p3)}
+.ri .nm{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ri .nm small{color:var(--muted);margin-left:6px;font-size:12px}
+.ri .tg{font-size:11px;color:var(--muted2);white-space:nowrap}
+.empty{padding:16px 14px;color:var(--muted);font-size:13px}
+
+/* indicadores */
+.kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:14px}
+.kpi{background:var(--card);border:1px solid var(--line2);border-radius:14px;padding:14px 16px}
+.kpi .l{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.9px;font-weight:600;display:flex;align-items:center;gap:7px}
+.kpi .v{font-size:28px;font-weight:800;letter-spacing:-.6px;margin-top:4px;font-variant-numeric:tabular-nums}
+.kpi .d{font-size:12px;color:var(--muted);margin-top:1px}
+
+/* marcadores */
+.dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;display:inline-block}
+.dot.on{background:var(--on)}
+.dot.off{border:2.2px solid var(--off);background:rgba(229,72,77,.22)}
+.dot.none{width:7px;height:7px;background:#6a6a76;margin:0 1.5px}
+
+/* grade principal */
+.main{display:grid;grid-template-columns:minmax(0,1fr) 400px;gap:14px;align-items:start}
+.mapcard{background:var(--card);border:1px solid var(--line2);border-radius:16px;position:relative;overflow:hidden}
+.bar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:12px 14px;border-bottom:1px solid var(--line2)}
+.crumb{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;margin-right:auto;min-height:30px}
+.crumb button{background:none;border:0;color:var(--p2);font-weight:600;font-size:13px;padding:2px 0}
+.crumb button:hover{text-decoration:underline}
+.crumb .sep{color:var(--muted)}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{display:flex;align-items:center;gap:8px;background:var(--card2);border:1px solid var(--line2);border-radius:999px;padding:6px 12px 6px 10px;font-size:12px;font-weight:500;transition:opacity .15s,border-color .15s}
+.chip b{font-weight:700;font-variant-numeric:tabular-nums}
+.chip[aria-pressed="false"]{opacity:.38}
+.chip:hover{border-color:rgba(255,255,255,.22)}
+.mapbox{position:relative;background:radial-gradient(ellipse at 60% 40%,#121218 0%,#0c0c10 70%)}
+#map{display:block;width:100%;height:auto;max-height:calc(100vh - 292px);min-height:440px;touch-action:none;cursor:grab}
+#map:active{cursor:grabbing}
+.st{fill:var(--land);stroke:#3b3b47;stroke-width:1;vector-effect:non-scaling-stroke;transition:fill .15s,opacity .2s;cursor:pointer}
+.st:hover{fill:var(--land2)}
+.st.sel{fill:#231a3a;stroke:var(--p2);stroke-width:1.6}
+.st.dim{opacity:.5}
+#neutral{fill:none;stroke:var(--none);stroke-linecap:round;stroke-width:2.2;vector-effect:non-scaling-stroke;pointer-events:none}
+.c-on{fill:var(--on);stroke:#0b0b0e;stroke-width:1.2;vector-effect:non-scaling-stroke;cursor:pointer}
+.c-off{fill:rgba(229,72,77,.24);stroke:var(--off);stroke-width:1.7;vector-effect:non-scaling-stroke;cursor:pointer}
+.c-on.fade,.c-off.fade{opacity:.28}
+.c-hl{fill:none;stroke:#fff;stroke-width:2;vector-effect:non-scaling-stroke;pointer-events:none}
+.c-hov{fill:none;stroke:#fff;stroke-width:1.4;vector-effect:non-scaling-stroke;pointer-events:none;opacity:.85}
+.badge{cursor:pointer}
+.badge rect{fill:#0d0d11;stroke:rgba(255,255,255,.18);stroke-width:1}
+.badge.has rect{stroke:rgba(52,211,153,.55)}
+.badge text{font-size:13px;font-weight:700;fill:var(--muted2);text-anchor:middle;dominant-baseline:central;font-variant-numeric:tabular-nums}
+.badge.has text{fill:#fff}
+.badge .uf{font-size:9px;font-weight:600;fill:var(--muted);letter-spacing:.5px}
+.lead{stroke:rgba(255,255,255,.22);stroke-width:1;vector-effect:non-scaling-stroke;pointer-events:none}
+.lbl{font-size:11.5px;font-weight:600;fill:#e9e9ee;paint-order:stroke;stroke:#0b0b0e;stroke-width:3px;stroke-linejoin:round;pointer-events:none}
+.lbl.off{fill:#c9c9d2;font-weight:500}
+.zoomb{position:absolute;right:12px;bottom:12px;display:flex;flex-direction:column;gap:6px}
+.zoomb button{width:34px;height:34px;border-radius:9px;background:rgba(20,20,20,.92);border:1px solid var(--line2);font-size:17px;font-weight:600;line-height:1}
+.zoomb button:hover{border-color:var(--p2)}
+.hint{position:absolute;left:14px;bottom:12px;font-size:11.5px;color:var(--muted);background:rgba(10,10,10,.7);padding:5px 9px;border-radius:8px;pointer-events:none}
+.tip{position:fixed;z-index:60;pointer-events:none;background:#0d0d11;border:1px solid rgba(255,255,255,.16);border-radius:10px;padding:9px 11px;font-size:12.5px;max-width:280px;box-shadow:0 10px 30px rgba(0,0,0,.6);display:none}
+.tip b{font-size:13.5px}
+.tip .t2{color:var(--muted2);margin-top:3px;display:flex;align-items:center;gap:7px}
+
+/* painel */
+.side{display:flex;flex-direction:column;gap:14px;min-width:0}
+.panel{background:var(--card);border:1px solid var(--line2);border-radius:16px;overflow:hidden}
+.ph{padding:14px 16px 10px;display:flex;align-items:baseline;gap:8px}
+.ph h2{font-size:14px;font-weight:700}
+.ph span{font-size:12px;color:var(--muted)}
+.detail{border-color:rgba(124,58,237,.4)}
+.detail .hd{padding:15px 16px 12px;display:flex;gap:12px;align-items:flex-start}
+.detail h3{font-size:18px;font-weight:800;letter-spacing:-.2px;line-height:1.2}
+.detail .uf{font-size:12px;color:var(--muted);margin-top:2px}
+.detail .x{margin-left:auto;background:none;border:0;color:var(--muted);font-size:20px;line-height:1;padding:2px 6px}
+.pill{display:inline-flex;align-items:center;gap:7px;border-radius:999px;padding:4px 10px 4px 8px;font-size:12px;font-weight:600;margin-top:9px}
+.pill.on{background:rgba(52,211,153,.13);color:#7be9c3}
+.pill.off{background:rgba(229,72,77,.13);color:#ff9a9c}
+.pill.none{background:rgba(255,255,255,.07);color:var(--muted2)}
+.detail .body{padding:0 16px 14px}
+.note{font-size:12px;color:var(--muted);margin-top:8px}
+.units{margin-top:12px;border-top:1px solid var(--line2)}
+.un{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--line2)}
+.un:last-child{border-bottom:0;padding-bottom:2px}
+.un .dot{margin-top:4px}
+.un .a{flex:1;min-width:0}
+.un .a b{font-weight:600;font-size:13px;display:block;overflow-wrap:anywhere}
+.un .a span{font-size:12px;color:var(--muted)}
+.states{max-height:calc(100vh - 345px);min-height:380px;overflow:auto}
+.srow{width:100%;display:grid;grid-template-columns:34px 1fr auto 14px;gap:10px;align-items:center;background:none;border:0;border-top:1px solid var(--line2);padding:10px 16px;text-align:left}
+.srow:hover{background:rgba(255,255,255,.03)}
+.srow.open{background:var(--p3)}
+.srow .sg{font-size:11px;font-weight:700;color:var(--muted2);background:var(--card3);border-radius:6px;padding:4px 0;text-align:center}
+.srow .nm{font-size:13px;font-weight:600;min-width:0}
+.srow .mb{height:5px;border-radius:3px;background:var(--card3);margin-top:5px;display:flex;gap:2px;overflow:hidden}
+.srow .mb i{display:block;height:100%;border-radius:3px}
+.srow .mb .a{background:var(--on)}
+.srow .mb .b{background:var(--off);opacity:.8}
+.srow .ct{font-size:12px;color:var(--muted2);text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+.srow .ct b{color:#fff;font-size:15px;font-weight:700}
+.srow .ch{color:var(--muted);font-size:11px;transition:transform .15s}
+.srow.open .ch{transform:rotate(90deg)}
+.sbody{background:#101013;border-top:1px solid var(--line2);padding:10px 12px 12px}
+.sbody input{width:100%;background:var(--card2);border:1px solid var(--line2);border-radius:9px;padding:9px 12px;font-size:13px;outline:none;margin-bottom:6px}
+.sbody input:focus{border-color:var(--p)}
+.crow{width:100%;display:flex;gap:10px;align-items:center;background:none;border:0;border-radius:8px;padding:7px 8px;text-align:left;font-size:13px}
+.crow:hover,.crow.cur{background:rgba(255,255,255,.06)}
+.crow .nm{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.crow .tg{font-size:11.5px;color:var(--muted);white-space:nowrap}
+.ghd{font-size:10px;letter-spacing:1.2px;text-transform:uppercase;color:var(--muted);font-weight:600;padding:10px 8px 4px}
+.more{font-size:12px;color:var(--muted);padding:6px 8px}
+.foot{margin-top:16px;font-size:12px;color:var(--muted);display:flex;gap:6px 18px;flex-wrap:wrap}
+.load{padding:80px 20px;text-align:center;color:var(--muted)}
+@media (max-width:1100px){.main{grid-template-columns:1fr}.kpis{grid-template-columns:repeat(3,1fr)}.states{max-height:none}#map{max-height:none}}
+@media (max-width:640px){.wrap{padding:14px 12px 22px}.kpis{grid-template-columns:repeat(2,1fr);gap:8px}.kpi{padding:10px 12px}.kpi .v{font-size:22px}.kpi .d{display:none}.kpi:last-child{grid-column:span 2}.hint{display:none}h1{font-size:17px}#map{min-height:0}.chip{font-size:11.5px;padding:5px 10px 5px 8px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <div class="brand">
+      <div class="brand-ic"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-6.5-5.6-6.5-10.5a6.5 6.5 0 0 1 13 0C18.500 15.400 12 21 12 21z"/><circle cx="12" cy="10.500" r="2.300"/></svg></div>
+      <div><h1>Mapa de Unidades</h1><div class="sub" id="sub">Dbout Mídia · carregando</div></div>
+    </div>
+    <div class="search" id="search">
+      <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.500-3.500"/></svg>
+      <input id="q" type="search" autocomplete="off" spellcheck="false" placeholder="Buscar cidade, estado ou unidade" aria-label="Buscar cidade, estado ou unidade">
+      <button class="clr" id="qclr" aria-label="Limpar busca">×</button>
+      <div class="results" id="results" role="listbox"></div>
+    </div>
+  </div>
+
+  <div class="kpis" id="kpis"></div>
+
+  <div class="main">
+    <div class="mapcard">
+      <div class="bar">
+        <div class="crumb" id="crumb"></div>
+        <div class="chips" id="chips"></div>
+      </div>
+      <div class="mapbox">
+        <svg id="map" viewBox="0 0 1000 960" role="img" aria-label="Mapa do Brasil com as cidades atendidas">
+          <g id="zoom">
+            <g id="states"></g>
+            <path id="neutral"></path>
+            <g id="g-off"></g>
+            <g id="g-on"></g>
+            <g id="g-lbl"></g>
+            <g id="g-hl"></g>
+            <g id="badges"></g>
+          </g>
+        </svg>
+        <div class="hint" id="hint">Clique em um estado para ver as cidades</div>
+        <div class="zoomb"><button id="zin" aria-label="Aproximar">+</button><button id="zout" aria-label="Afastar">−</button><button id="zreset" aria-label="Ver o Brasil inteiro" title="Ver o Brasil inteiro">⌂</button></div>
+      </div>
+    </div>
+    <div class="side">
+      <div class="panel detail" id="detail" hidden></div>
+      <div class="panel">
+        <div class="ph"><h2>Estados</h2><span id="phs"></span></div>
+        <div class="states" id="states-list"><div class="load">Carregando dados</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="foot" id="foot"></div>
+</div>
+<div class="tip" id="tip"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<script>
+(async function(){
+const $=s=>document.querySelector(s), el=(t,c,h)=>{const e=document.createElement(t);if(c)e.className=c;if(h!=null)e.innerHTML=h;return e};
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const norm=s=>String(s||'').normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();
+const nf=n=>n.toLocaleString('pt-BR');
+const dataBR=d=>d?d.slice(8,10)+'/'+d.slice(5,7)+'/'+d.slice(0,4):'';
+const W=1000,H=960;
+let base,data;
+try{
+  const v='?v='+Math.floor(Date.now()/6e5);
+  [base,data]=await Promise.all([fetch('mapa_unidades_base.json').then(r=>r.json()),fetch('mapa_unidades_data.json'+v).then(r=>r.json())]);
+}catch(e){$('#states-list').innerHTML='<div class="load">Não foi possível carregar os dados. Recarregue a página.</div>';$('#sub').textContent='Dbout Mídia';return}
+
+/* ---------- projeção (Mercator plano, ajustado ao Brasil) ---------- */
+const mx=lon=>lon*Math.PI/180, my=lat=>-Math.log(Math.tan(Math.PI/4+lat*Math.PI/360));
+let bx0=1e9,bx1=-1e9,by0=1e9,by1=-1e9;
+const rings=g=>g.type==='Polygon'?g.coordinates:g.coordinates.flat();
+base.geo.features.forEach(f=>rings(f.geometry).forEach(r=>r.forEach(([lo,la])=>{const x=mx(lo),y=my(la);if(x<bx0)bx0=x;if(x>bx1)bx1=x;if(y<by0)by0=y;if(y>by1)by1=y})));
+const PAD=26, sc=Math.min((W-2*PAD)/(bx1-bx0),(H-2*PAD)/(by1-by0)), ox=(W-(bx1-bx0)*sc)/2-bx0*sc, oy=(H-(by1-by0)*sc)/2-by0*sc;
+const proj=(lo,la)=>[mx(lo)*sc+ox,my(la)*sc+oy];
+
+/* ---------- modelo ---------- */
+const UF={}; // sigla -> {uf,nome,path,bbox,cx,cy,mun:[],on:[],off:[]}
+base.geo.features.forEach(f=>{
+  let d='',x0=1e9,x1=-1e9,y0=1e9,y1=-1e9,best=null,ba=0;
+  rings(f.geometry).forEach(r=>{let a=0,sx=0,sy=0;const p=r.map(([lo,la])=>proj(lo,la));
+    p.forEach(([x,y],i)=>{d+=(i?'L':'M')+x.toFixed(1)+','+y.toFixed(1);if(x<x0)x0=x;if(x>x1)x1=x;if(y<y0)y0=y;if(y>y1)y1=y;
+      const [x2,y2]=p[(i+1)%p.length],c=x*y2-x2*y;a+=c;sx+=(x+x2)*c;sy+=(y+y2)*c});
+    d+='Z';if(Math.abs(a)>ba){ba=Math.abs(a);best=[sx/(3*a),sy/(3*a)]}});
+  // caixa só do maior polígono (ilhas oceânicas não entram no enquadramento)
+  let m0=1e9,m1=-1e9,n0=1e9,n1=-1e9;
+  rings(f.geometry).forEach(r=>{const p=r.map(([lo,la])=>proj(lo,la));let a=0;p.forEach(([x,y],i)=>{const [x2,y2]=p[(i+1)%p.length];a+=x*y2-x2*y});
+    if(Math.abs(a)>=ba*0.02)p.forEach(([x,y])=>{if(x<m0)m0=x;if(x>m1)m1=x;if(y<n0)n0=y;if(y>n1)n1=y})});
+  UF[f.properties.uf]={uf:f.properties.uf,nome:f.properties.nome,path:d,bbox:[m0,n0,m1,n1],cx:best[0],cy:best[1],mun:[],on:[],off:[]};
+});
+const byId=new Map();
+const MUN=base.mun.map(m=>{const [x,y]=proj(m[4],m[3]);const o={id:m[0],n:m[1],uf:m[2],lat:m[3],lon:m[4],pop:m[5],x,y,s:'none',k:norm(m[1])};byId.set(o.id,o);UF[o.uf].mun.push(o);return o});
+data.cidades.forEach(c=>{const o=byId.get(c.i);if(!o)return;o.u=c.u;o.on=c.on;o.off=c.off;o.d=c.d;o.a=c.a;o.q=c.q;o.s=c.s==='on'?'on':c.s==='off'?'off':'none';
+  if(o.s==='on')UF[o.uf].on.push(o);else if(o.s==='off')UF[o.uf].off.push(o)});
+const SERVED=MUN.filter(m=>m.s!=='none');
+const UNITS=[];SERVED.forEach(m=>m.u.forEach(u=>UNITS.push({u,m,k:norm(u.t)})));
+const ufList=Object.values(UF).sort((a,b)=>b.on.length-a.on.length||b.off.length-a.off.length||a.nome.localeCompare(b.nome));
+const R=data.resumo, nNone=MUN.length-R.cid_on-R.cid_off;
+const state={uf:null,city:null,layers:{on:true,off:true,none:true},k:1};
+
+/* ---------- textos de status ---------- */
+const tempo=d=>{const m=Math.round((Date.now()-new Date(d+'T12:00:00'))/2629800000);return m<1?'há menos de 1 mês':m<12?'há '+m+(m===1?' mês':' meses'):'há '+(m/12).toFixed(1).replace('.',',').replace(',0','')+(m<18?' ano':' anos')};
+const offTxt=m=>'OFF desde '+dataBR(m.d)+(m.a?' ou antes':'');
+const tagTxt=m=>m.s==='on'?(m.on+(m.on===1?' unidade ON':' unidades ON')):m.s==='off'?offTxt(m):'Nunca atendemos';
+const stName=s=>s==='on'?'ON':s==='off'?'OFF':'Sem histórico';
+
+/* ---------- indicadores ---------- */
+const estOn=ufList.filter(u=>u.on.length).length;
+$('#kpis').innerHTML=[
+ ['<span class="dot on"></span>Cidades ativas',nf(R.cid_on),'com ao menos uma unidade ON'],
+ ['Unidades ativas',nf(R.un_on),'cards ON no Notion'],
+ ['<span class="dot off"></span>Cidades em OFF',nf(R.cid_off),'já atendemos, sem unidade ON hoje'],
+ ['Estados com unidade ativa',estOn+' <span style="font-size:15px;color:var(--muted);font-weight:600">de 27</span>',ufList.filter(u=>!u.on.length&&u.off.length).length+' só com histórico'],
+ ['<span class="dot none"></span>Nunca atendemos',nf(nNone),'municípios sem histórico']
+].map(k=>`<div class="kpi"><div class="l">${k[0]}</div><div class="v">${k[1]}</div><div class="d">${k[2]}</div></div>`).join('');
+$('#sub').textContent='Dbout Mídia · atualizado em '+dataBR(data.gerado.slice(0,10))+' às '+data.gerado.slice(11,16);
+$('#phs').textContent='por cidades ativas';
+const sem=Object.values(R.sem_cidade||{}).reduce((a,b)=>a+b,0);
+$('#foot').innerHTML=`<span>Fonte: Notion, base "Data Base de Tudo". Verde: cidade com card ON. Vermelho: só cards OFF.</span><span>"OFF desde" usa a última alteração do card no Notion; "ou antes" indica dia de edição em massa.</span>`+(sem?`<span>${sem} cards sem cidade identificada ficaram fora do mapa.</span>`:'');
+
+/* ---------- mapa ---------- */
+const svg=d3.select('#map'), gz=d3.select('#zoom'), NS='http://www.w3.org/2000/svg';
+const gS=d3.select('#states').selectAll('path').data(ufList).join('path').attr('class','st').attr('d',d=>d.path)
+  .on('click',(e,d)=>{e.stopPropagation();selectUF(d.uf)})
+  .on('mousemove',(e,d)=>{if(!hoverCity)tipShow(e,`<b>${esc(d.nome)}</b><div class="t2"><span class="dot on"></span>${d.on.length} ${d.on.length===1?'cidade ativa':'cidades ativas'}</div><div class="t2"><span class="dot off"></span>${d.off.length} em OFF</div>`)})
+  .on('mouseleave',tipHide);
+d3.select('#neutral').attr('d',MUN.filter(m=>m.s==='none').map(m=>'M'+m.x.toFixed(1)+','+m.y.toFixed(1)+'h0').join(''));
+const RON=4.6,ROFF=3.9;
+let S=1;const calcS=()=>{const n=document.getElementById('map'),e=Math.min((n.clientWidth||W)/W,(n.clientHeight||H)/H)||1;S=Math.max(1,Math.min(2,0.8/e))};calcS();
+const mkDots=(sel,arr,cls)=>d3.select(sel).selectAll('circle').data(arr).join('circle').attr('class',cls).attr('cx',d=>d.x).attr('cy',d=>d.y)
+  .on('click',(e,d)=>{e.stopPropagation();selectCity(d,true)})
+  .on('mousemove',(e,d)=>{hoverCity=d;tipCity(e,d)}).on('mouseleave',()=>{hoverCity=null;tipHide()});
+let hoverCity=null;
+const cOff=mkDots('#g-off',SERVED.filter(m=>m.s==='off').sort((a,b)=>b.pop-a.pop),'c-off');
+const cOn=mkDots('#g-on',SERVED.filter(m=>m.s==='on').sort((a,b)=>b.pop-a.pop),'c-on');
+
+/* selos de contagem por estado */
+const OFFS={RN:[46,-14],PB:[62,-2],PE:[80,10],AL:[52,14],SE:[44,20],ES:[40,8],RJ:[34,30],DF:[30,-26],SC:[46,12]};
+const gB=d3.select('#badges').selectAll('g').data(ufList.filter(u=>u.on.length||u.off.length)).join('g').attr('class',d=>'badge'+(d.on.length?' has':''))
+  .on('click',(e,d)=>{e.stopPropagation();selectUF(d.uf)});
+gB.each(function(d){const g=d3.select(this),o=OFFS[d.uf];d.bx=d.cx+(o?o[0]:0);d.by=d.cy+(o?o[1]:0);
+  if(o)g.append('line').attr('class','lead').attr('x1',d.cx).attr('y1',d.cy).attr('x2',d.bx).attr('y2',d.by);
+  const b=g.append('g').attr('class','bd');const w=d.on.length>99?40:d.on.length>9?34:28;
+  b.append('rect').attr('x',-w/2).attr('y',-17).attr('width',w).attr('height',34).attr('rx',9);
+  b.append('text').attr('y',-4).text(d.on.length);b.append('text').attr('class','uf').attr('y',9).text(d.uf)});
+const hl=d3.select('#g-hl');const dotSel=hl.append('circle').attr('fill','#9a9aa8').style('display','none').style('pointer-events','none');const ringSel=hl.append('circle').attr('class','c-hl').style('display','none');const ringHov=hl.append('circle').attr('class','c-hov').style('display','none');
+
+const zoom=d3.zoom().scaleExtent([1,60]).translateExtent([[-150,-150],[W+150,H+150]]).on('zoom',e=>{
+  const t=e.transform;state.k=t.k;gz.attr('transform',t);
+  const f=Math.pow(t.k,-0.72);            // pontos crescem um pouco ao aproximar
+  cOn.attr('r',RON*f*S);cOff.attr('r',ROFF*f*S);
+  ringSel.attr('r',(RON+5)*f*S);ringHov.attr('r',(RON+3)*f*S);dotSel.attr('r',2.2*f*S);
+  d3.select('#neutral').style('stroke-width',Math.min(5,2.2+(t.k-1)*0.22));
+  gB.selectAll('.bd').attr('transform',d=>`translate(${d.bx},${d.by}) scale(${S/t.k})`);
+  d3.select('#badges').style('display',t.k>2.4?'none':null);
+  d3.select('#g-lbl').selectAll('text').remove();
+}).on('end',e=>{labels(e.transform)});
+svg.call(zoom).on('dblclick.zoom',null).on('click',()=>{if(state.uf||state.city){selectUF(null)}});
+const fit=(b,pad=40,maxK=60)=>{const k=Math.min(maxK,0.92/Math.max((b[2]-b[0])/(W-pad),(b[3]-b[1])/(H-pad)));return d3.zoomIdentity.translate(W/2-k*(b[0]+b[2])/2,H/2-k*(b[1]+b[3])/2).scale(k)};
+const go=t=>svg.transition().duration(650).call(zoom.transform,t);
+$('#zin').onclick=()=>svg.transition().duration(250).call(zoom.scaleBy,1.7);
+$('#zout').onclick=()=>svg.transition().duration(250).call(zoom.scaleBy,1/1.7);
+$('#zreset').onclick=()=>selectUF(null);
+svg.call(zoom.transform,d3.zoomIdentity);
+
+/* nomes das cidades quando há zoom (sem sobreposição) */
+function labels(t){
+  const g=d3.select('#g-lbl');g.selectAll('text').remove();
+  if(t.k<2.6)return;
+  const vis=SERVED.filter(m=>state.layers[m.s]&&(!state.uf||m.uf===state.uf)).map(m=>({m,sx:m.x*t.k+t.x,sy:m.y*t.k+t.y})).filter(o=>o.sx>-20&&o.sx<W+20&&o.sy>-10&&o.sy<H+10);
+  vis.sort((a,b)=>(a.m===state.city?-1:b.m===state.city?1:0)||(a.m.s==='on'?0:1)-(b.m.s==='on'?0:1)||b.m.pop-a.m.pop);
+  const placed=[],fs=11.5*S,out=[];
+  const dr=7*S,dots=vis.map(o=>[o.sx-dr,o.sy-dr,o.sx+dr,o.sy+dr]);
+  for(const o of vis){ if(out.length>=70)break;
+    const w=o.m.n.length*fs*0.57+6,h=fs+5;
+    const g9=9*S,cands=[[o.sx+g9,o.sy-h/2],[o.sx-g9-w,o.sy-h/2],[o.sx-w/2,o.sy-h-g9],[o.sx-w/2,o.sy+g9]];
+    for(let i=0;i<cands.length;i++){const [x,y]=cands[i],bx=[x,y,x+w,y+h];
+      if(x<2||x+w>W-2||y<2||y+h>H-2)continue;
+      if(placed.some(p=>!(bx[2]<p[0]||bx[0]>p[2]||bx[3]<p[1]||bx[1]>p[3])))continue;
+      if(dots.some((p,j)=>vis[j]!==o&&!(bx[2]<p[0]||bx[0]>p[2]||bx[3]<p[1]||bx[1]>p[3])))continue;
+      placed.push(bx);out.push({o,x:x+(i===1?w-3:i>=2?w/2:3),y:y+h/2,a:i===1?'end':i>=2?'middle':'start'});break}
+  }
+  g.selectAll('text').data(out).join('text').attr('class',d=>'lbl '+d.o.m.s).attr('text-anchor',d=>d.a).attr('dominant-baseline','central')
+    .attr('transform',d=>`translate(${(d.x-t.x)/t.k},${(d.y-t.y)/t.k}) scale(${S/t.k})`).text(d=>d.o.m.n);
+}
+
+/* ponto neutro mais próximo do cursor */
+const qt=d3.quadtree().x(d=>d.x).y(d=>d.y).addAll(MUN.filter(m=>m.s==='none'));
+svg.on('mousemove.neutral',e=>{
+  if(hoverCity||!state.layers.none||state.k<1.6){ringHov.style('display','none');return}
+  const t=d3.zoomTransform(svg.node()),p=d3.pointer(e,svg.node()),x=(p[0]-t.x)/t.k,y=(p[1]-t.y)/t.k,m=qt.find(x,y,7/t.k);
+  if(m){ringHov.style('display',null).attr('cx',m.x).attr('cy',m.y);tipCity(e,m);svg.style('cursor','pointer')}else{ringHov.style('display','none');svg.style('cursor',null)}
+}).on('mouseleave.neutral',()=>{ringHov.style('display','none');tipHide()});
+svg.on('click.neutral',e=>{ if(hoverCity||!state.layers.none||state.k<1.6)return;
+  const t=d3.zoomTransform(svg.node()),p=d3.pointer(e,svg.node()),m=qt.find((p[0]-t.x)/t.k,(p[1]-t.y)/t.k,7/t.k);
+  if(m){e.stopImmediatePropagation();selectCity(m,false)}},true);
+
+/* dica flutuante */
+const tip=$('#tip');
+function tipShow(e,h){tip.innerHTML=h;tip.style.display='block';const r=tip.getBoundingClientRect();let x=e.clientX+14,y=e.clientY+14;if(x+r.width>innerWidth-8)x=e.clientX-r.width-12;if(y+r.height>innerHeight-8)y=e.clientY-r.height-12;tip.style.left=x+'px';tip.style.top=y+'px'}
+function tipHide(){tip.style.display='none'}
+function tipCity(e,m){tipShow(e,`<b>${esc(m.n)}</b> <span style="color:var(--muted)">${m.uf}</span><div class="t2"><span class="dot ${m.s}"></span>${esc(tagTxt(m))}</div>`+(m.s==='off'&&m.off?`<div class="t2">${m.off} ${m.off===1?'unidade no histórico':'unidades no histórico'}</div>`:''))}
+
+/* ---------- camadas ---------- */
+const chipDef=[['on','Atendemos hoje',R.cid_on],['off','Já atendemos (OFF)',R.cid_off],['none','Nunca atendemos',nNone]];
+$('#chips').innerHTML=chipDef.map(c=>`<button class="chip" data-l="${c[0]}" aria-pressed="true"><span class="dot ${c[0]}"></span>${c[1]} <b>${nf(c[2])}</b></button>`).join('');
+document.querySelectorAll('.chip').forEach(b=>b.onclick=()=>{const l=b.dataset.l;state.layers[l]=!state.layers[l];b.setAttribute('aria-pressed',state.layers[l]);
+  d3.select('#g-on').style('display',state.layers.on?null:'none');d3.select('#g-off').style('display',state.layers.off?null:'none');d3.select('#neutral').style('display',state.layers.none?null:'none');
+  labels(d3.zoomTransform(svg.node()))});
+
+/* ---------- seleção ---------- */
+function crumb(){const c=$('#crumb');
+  if(!state.uf&&!state.city){c.innerHTML='Brasil';$('#hint').textContent='Clique em um estado para ver as cidades';return}
+  const u=UF[state.uf||state.city.uf];
+  c.innerHTML=`<button id="cb-br">Brasil</button><span class="sep">›</span>`+(state.city?`<button id="cb-uf">${esc(u.nome)}</button><span class="sep">›</span><span>${esc(state.city.n)}</span>`:`<span>${esc(u.nome)}</span>`);
+  $('#cb-br').onclick=()=>selectUF(null);if($('#cb-uf'))$('#cb-uf').onclick=()=>selectUF(u.uf);
+  $('#hint').textContent='Arraste para mover, role para aproximar';}
+function paintStates(){gS.classed('sel',d=>d.uf===state.uf).classed('dim',d=>state.uf&&d.uf!==state.uf);cOn.classed('fade',d=>state.uf&&d.uf!==state.uf);cOff.classed('fade',d=>state.uf&&d.uf!==state.uf);
+  const h=state.city?'#c'+state.city.id:state.uf?'#'+state.uf:' ';try{history.replaceState(null,'',h===' '?location.pathname+location.search:h)}catch(e){}}
+function selectUF(uf,keepCity){
+  state.uf=uf; if(!keepCity){state.city=null;renderDetail()}
+  paintStates();crumb();renderStates();
+  if(!keepCity)go(uf?fit(UF[uf].bbox,90,14):d3.zoomIdentity);
+  if(uf){const r=document.querySelector('.srow.open');if(r&&innerWidth>1100)r.scrollIntoView({block:'nearest',behavior:'smooth'})}
+}
+function selectCity(m,fromMap){
+  state.city=m;state.uf=m.uf;paintStates();crumb();renderDetail();renderStates();
+  ringSel.style('display',null).attr('cx',m.x).attr('cy',m.y);dotSel.style('display',m.s==='none'?null:'none').attr('cx',m.x).attr('cy',m.y);
+  const b=UF[m.uf].bbox,t=fit(b,90,14),k=Math.max(t.k,Math.min(state.k,30),6);
+  if(!fromMap||state.k<t.k*0.8)go(d3.zoomIdentity.translate(W/2-k*m.x,H/2-k*m.y).scale(k));else labels(d3.zoomTransform(svg.node()));
+  if(innerWidth<=1100)$('#detail').scrollIntoView({block:'nearest',behavior:'smooth'});
+}
+const hav=(a,b)=>{const r=Math.PI/180,dl=(b.lat-a.lat)*r,dn=(b.lon-a.lon)*r,h=Math.sin(dl/2)**2+Math.cos(a.lat*r)*Math.cos(b.lat*r)*Math.sin(dn/2)**2;return 12742*Math.asin(Math.sqrt(h))};
+const ONC=SERVED.filter(m=>m.s==='on');
+function renderDetail(){const d=$('#detail'),m=state.city;
+  if(!m){d.hidden=true;ringSel.style('display','none');dotSel.style('display','none');return}
+  d.hidden=false;
+  let h=`<div class="hd"><div><h3>${esc(m.n)}</h3><div class="uf">${esc(UF[m.uf].nome)}${m.pop?' · '+nf(m.pop)+' habitantes':''}</div>
+    <span class="pill ${m.s}"><span class="dot ${m.s}"></span>${m.s==='on'?'Atendemos hoje':m.s==='off'?'Já atendemos, hoje em OFF':'Nunca atendemos'}</span></div><button class="x" id="dx" aria-label="Fechar">×</button></div><div class="body">`;
+  if(m.s==='off')h+=`<div class="note"><b style="color:#fff">${offTxt(m)}</b> (${tempo(m.d)}). Data da última alteração do card no Notion.</div>`;
+  if(m.s==='none'){let best=null,bd=1e9;for(const c of ONC){const x=hav(m,c);if(x<bd){bd=x;best=c}}
+    h+=`<div class="note">Não há card desta cidade no Notion.</div>`+(best?`<div class="note">Unidade ativa mais próxima: <button class="lnk" id="near" style="background:none;border:0;color:var(--p2);font-weight:600;font-size:12px;padding:0">${esc(best.n)} (${best.uf})</button>, a cerca de ${nf(Math.round(bd))} km em linha reta.</div>`:'');
+    if(m.u&&m.u.length)h+=`<div class="units">`+m.u.map(unitRow).join('')+`</div>`;
+    d.innerHTML=h+'</div>';$('#dx').onclick=()=>selectUF(m.uf);if(best)$('#near').onclick=()=>selectCity(best,false);return}
+  h+=`<div class="units">`+m.u.map(unitRow).join('')+`</div></div>`;d.innerHTML=h;$('#dx').onclick=()=>selectUF(m.uf);
+}
+function unitRow(u){const k=u.k==='on'?'on':u.k==='off'?'off':'none';
+  const st=u.s==='ON'?'ON':u.s==='OFF'?'OFF':u.s;
+  const extra=u.k==='off'&&u.d?' desde '+dataBR(u.d)+(u.a?' ou antes':''):'';
+  return `<div class="un"><span class="dot ${k}"></span><div class="a"><b>${esc(u.t)}</b><span>${esc(st)}${extra}${u.g?' · Gestor: '+esc(u.g):''}${u.q?' · cidade a confirmar':''}</span></div></div>`}
+
+/* ---------- lista de estados e cidades ---------- */
+const maxTot=Math.max(...ufList.map(u=>u.on.length+u.off.length));
+let cityFilter='';
+function renderStates(){const box=$('#states-list');box.innerHTML='';
+  ufList.forEach(u=>{const open=state.uf===u.uf,t=u.on.length+u.off.length;
+    const b=el('button','srow'+(open?' open':''),`<span class="sg">${u.uf}</span><span class="nm">${esc(u.nome)}<span class="mb"><i class="a" style="width:${u.on.length/maxTot*100}%"></i><i class="b" style="width:${u.off.length/maxTot*100}%"></i></span></span>
+      <span class="ct"><b>${u.on.length}</b> ${u.on.length===1?'ativa':'ativas'}<br>${u.off.length} em OFF</span><span class="ch">▶</span>`);
+    b.setAttribute('aria-expanded',open);b.onclick=()=>{cityFilter='';selectUF(open?null:u.uf)};box.appendChild(b);
+    if(open){const body=el('div','sbody');const inp=el('input');inp.type='search';inp.placeholder='Buscar cidade em '+u.nome;inp.value=cityFilter;inp.setAttribute('aria-label','Buscar cidade em '+u.nome);
+      const list=el('div');body.appendChild(inp);body.appendChild(list);box.appendChild(body);
+      const draw=()=>{const q=norm(cityFilter);list.innerHTML='';
+        const f=a=>q?a.filter(m=>m.k.includes(q)):a, byN=(a,b)=>a.n.localeCompare(b.n,'pt-BR');
+        const on=f(u.on).sort(byN),off=f(u.off).sort((a,b)=>(b.d||'').localeCompare(a.d||'')||byN(a,b)),none=q?u.mun.filter(m=>m.s==='none'&&m.k.includes(q)).sort(byN):[];
+        const sec=(tt,arr,lim)=>{if(!arr.length)return;list.appendChild(el('div','ghd',tt+' ('+arr.length+')'));
+          arr.slice(0,lim).forEach(m=>{const r=el('button','crow'+(state.city===m?' cur':''),`<span class="dot ${m.s}"></span><span class="nm">${esc(m.n)}</span><span class="tg">${m.s==='on'?(m.on>1?m.on+' unidades':'1 unidade'):m.s==='off'?'desde '+dataBR(m.d).slice(3)+(m.a?' ou antes':''):''}</span>`);
+            r.onclick=()=>selectCity(m,false);list.appendChild(r)});
+          if(arr.length>lim)list.appendChild(el('div','more','mais '+(arr.length-lim)+', refine a busca'))};
+        sec('Atendemos hoje',on,400);sec('Já atendemos (OFF)',off,400);sec('Nunca atendemos',none,40);
+        if(!on.length&&!off.length&&!none.length)list.appendChild(el('div','more',q?'Nenhuma cidade encontrada em '+u.nome+'.':'Ainda não atendemos nenhuma cidade neste estado.'));
+        else if(!q)list.appendChild(el('div','more','Digite acima para achar também as cidades que nunca atendemos ('+nf(u.mun.length-u.on.length-u.off.length)+').'))};
+      inp.oninput=()=>{cityFilter=inp.value;draw()};draw()}
+  });
+}
+
+/* ---------- busca geral ---------- */
+const q=$('#q'),res=$('#results'),sbox=$('#search');let items=[],act=-1;
+function search(){const s=norm(q.value);sbox.classList.toggle('has',!!q.value);
+  if(s.length<2){res.classList.remove('open');items=[];return}
+  const rank=(k,s)=>k===s?0:k.startsWith(s)?1:k.includes(' '+s)?2:k.includes(s)?3:9;
+  const ufs=ufList.map(u=>({u,r:Math.min(rank(norm(u.nome),s),u.uf.toLowerCase()===s?0:9)})).filter(o=>o.r<9).sort((a,b)=>a.r-b.r).slice(0,3);
+  const cs=MUN.map(m=>({m,r:rank(m.k,s)})).filter(o=>o.r<9).sort((a,b)=>a.r-b.r||(a.m.s==='on'?0:a.m.s==='off'?1:2)-(b.m.s==='on'?0:b.m.s==='off'?1:2)||b.m.pop-a.m.pop).slice(0,9);
+  const us=UNITS.map(o=>({o,r:rank(o.k,s)})).filter(x=>x.r<9&&!cs.some(c=>c.m===x.o.m&&c.r<=1)).sort((a,b)=>a.r-b.r||(a.o.u.k==='on'?0:1)-(b.o.u.k==='on'?0:1)).slice(0,6);
+  items=[];let h='';
+  if(cs.length){h+='<div class="rg">Cidades</div>';cs.forEach(o=>{items.push(()=>selectCity(o.m,false));h+=`<button class="ri" role="option"><span class="dot ${o.m.s}"></span><span class="nm">${esc(o.m.n)}<small>${o.m.uf}</small></span><span class="tg">${esc(tagTxt(o.m))}</span></button>`})}
+  if(ufs.length){h+='<div class="rg">Estados</div>';ufs.forEach(o=>{items.push(()=>selectUF(o.u.uf));h+=`<button class="ri" role="option"><span class="dot none"></span><span class="nm">${esc(o.u.nome)}<small>${o.u.uf}</small></span><span class="tg">${o.u.on.length} ativas · ${o.u.off.length} em OFF</span></button>`})}
+  if(us.length){h+='<div class="rg">Unidades</div>';us.forEach(x=>{const k=x.o.u.k==='on'?'on':x.o.u.k==='off'?'off':'none';items.push(()=>selectCity(x.o.m,false));h+=`<button class="ri" role="option"><span class="dot ${k}"></span><span class="nm">${esc(x.o.u.t)}<small>${esc(x.o.m.n)} ${x.o.m.uf}</small></span><span class="tg">${esc(x.o.u.s)}</span></button>`})}
+  res.innerHTML=h||'<div class="empty">Nada encontrado para "'+esc(q.value)+'".</div>';res.classList.add('open');act=-1;
+  res.querySelectorAll('.ri').forEach((b,i)=>b.onclick=()=>pick(i));
+}
+function pick(i){if(!items[i])return;const f=items[i];res.classList.remove('open');q.blur();f()}
+function mark(){res.querySelectorAll('.ri').forEach((b,i)=>{b.classList.toggle('act',i===act);if(i===act)b.scrollIntoView({block:'nearest'})})}
+q.addEventListener('input',search);q.addEventListener('focus',search);
+q.addEventListener('keydown',e=>{if(e.key==='ArrowDown'){act=Math.min(items.length-1,act+1);mark();e.preventDefault()}else if(e.key==='ArrowUp'){act=Math.max(0,act-1);mark();e.preventDefault()}
+  else if(e.key==='Enter'){pick(act<0?0:act)}else if(e.key==='Escape'){res.classList.remove('open');q.blur()}});
+$('#qclr').onclick=()=>{q.value='';search();q.focus()};
+document.addEventListener('click',e=>{if(!sbox.contains(e.target))res.classList.remove('open')});
+
+crumb();renderStates();
+addEventListener('resize',()=>{calcS();svg.call(zoom.transform,d3.zoomTransform(svg.node()))});
+const h0=decodeURIComponent(location.hash.slice(1));
+if(/^c\d+$/.test(h0)&&byId.get(+h0.slice(1)))selectCity(byId.get(+h0.slice(1)),false);else if(UF[h0.toUpperCase()])selectUF(h0.toUpperCase());
+})();
+</script>
+</body>
+</html>
