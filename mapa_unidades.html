@@ -138,6 +138,16 @@ input[type=search]::-webkit-search-cancel-button{display:none}
 .srow .ct{font-size:12px;color:var(--muted2);text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
 .srow .ct b{color:#fff;font-size:15px;font-weight:700}
 .srow .ch{color:var(--muted);font-size:11px;transition:transform .15s}
+.has-cpl .srow{grid-template-columns:34px 1fr auto auto 14px}
+.srow .cp{font-size:11px;color:var(--muted);text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums;line-height:1.35}
+.srow .cp b{display:block;color:#fff;font-size:13px;font-weight:700}
+.srow .cp.nd b{color:var(--muted);font-weight:500}
+.seg{margin-left:auto;display:flex;align-items:center;gap:2px;background:var(--card3);border-radius:8px;padding:2px}
+.seg button{border:0;background:none;color:var(--muted2);font-size:11.5px;font-weight:600;padding:4px 9px;border-radius:6px}
+.seg button[aria-pressed=true]{background:var(--p);color:#fff}
+.sbody .sum{font-size:12px;color:var(--muted2);background:var(--card2);border:1px solid var(--line2);border-radius:9px;padding:8px 11px;margin-bottom:8px;line-height:1.5}
+.sbody .sum b{color:#fff;font-size:14px;font-variant-numeric:tabular-nums}
+.kpis.k6{grid-template-columns:repeat(6,1fr)}
 .srow.open .ch{transform:rotate(90deg)}
 .sbody{background:#101013;border-top:1px solid var(--line2);padding:10px 12px 12px}
 .sbody input{width:100%;background:var(--card2);border:1px solid var(--line2);border-radius:9px;padding:9px 12px;font-size:13px;outline:none;margin-bottom:6px}
@@ -150,8 +160,8 @@ input[type=search]::-webkit-search-cancel-button{display:none}
 .more{font-size:12px;color:var(--muted);padding:6px 8px}
 .foot{margin-top:16px;font-size:12px;color:var(--muted);display:flex;gap:6px 18px;flex-wrap:wrap}
 .load{padding:80px 20px;text-align:center;color:var(--muted)}
-@media (max-width:1100px){.main{grid-template-columns:1fr}.kpis{grid-template-columns:repeat(3,1fr)}.states{max-height:none}#map{max-height:none}}
-@media (max-width:640px){.wrap{padding:14px 12px 22px}.kpis{grid-template-columns:repeat(2,1fr);gap:8px}.kpi{padding:10px 12px}.kpi .v{font-size:22px}.kpi .d{display:none}.kpi:last-child{grid-column:span 2}.hint{display:none}h1{font-size:17px}#map{min-height:0}.chip{font-size:11.5px;padding:5px 10px 5px 8px}}
+@media (max-width:1100px){.main{grid-template-columns:1fr}.kpis,.kpis.k6{grid-template-columns:repeat(3,1fr)}.states{max-height:none}#map{max-height:none}}
+@media (max-width:640px){.wrap{padding:14px 12px 22px}.kpis,.kpis.k6{grid-template-columns:repeat(2,1fr);gap:8px}.kpi{padding:10px 12px}.kpi .v{font-size:22px}.kpi .d{display:none}.kpis:not(.k6) .kpi:last-child{grid-column:span 2}.hint{display:none}h1{font-size:17px}#map{min-height:0}.chip{font-size:11.5px;padding:5px 10px 5px 8px}}
 </style>
 </head>
 <body>
@@ -196,7 +206,7 @@ input[type=search]::-webkit-search-cancel-button{display:none}
     <div class="side">
       <div class="panel detail" id="detail" hidden></div>
       <div class="panel">
-        <div class="ph"><h2>Estados</h2><span id="phs"></span></div>
+        <div class="ph"><h2>Estados</h2><span id="phs"></span><div class="seg" id="sort" hidden role="group" aria-label="Ordenar estados"><button data-s="on" aria-pressed="true">Cidades ativas</button><button data-s="cpl" aria-pressed="false">CPL</button></div></div>
         <div class="states" id="states-list"><div class="load">Carregando dados</div></div>
       </div>
     </div>
@@ -214,10 +224,11 @@ const norm=s=>String(s||'').normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase(
 const nf=n=>n.toLocaleString('pt-BR');
 const dataBR=d=>d?d.slice(8,10)+'/'+d.slice(5,7)+'/'+d.slice(0,4):'';
 const W=1000,H=960;
-let base,data;
+let base,data,cpl=null;
 try{
   const v='?v='+Math.floor(Date.now()/6e5);
-  [base,data]=await Promise.all([fetch('mapa_unidades_base.json').then(r=>r.json()),fetch('mapa_unidades_data.json'+v).then(r=>r.json())]);
+  [base,data,cpl]=await Promise.all([fetch('mapa_unidades_base.json').then(r=>r.json()),fetch('mapa_unidades_data.json'+v).then(r=>r.json()),
+    fetch('mapa_unidades_cpl.json'+v).then(r=>r.ok?r.json():null).catch(()=>null)]);
 }catch(e){$('#states-list').innerHTML='<div class="load">Não foi possível carregar os dados. Recarregue a página.</div>';$('#sub').textContent='Dbout Mídia';return}
 
 /* ---------- projeção (Mercator plano, ajustado ao Brasil) ---------- */
@@ -250,7 +261,12 @@ const SERVED=MUN.filter(m=>m.s!=='none');
 const UNITS=[];SERVED.forEach(m=>m.u.forEach(u=>UNITS.push({u,m,k:norm(u.t)})));
 const ufList=Object.values(UF).sort((a,b)=>b.on.length-a.on.length||b.off.length-a.off.length||a.nome.localeCompare(b.nome));
 const R=data.resumo, nNone=MUN.length-R.cid_on-R.cid_off;
-const state={uf:null,city:null,layers:{on:true,off:true,none:true},k:1};
+const state={uf:null,city:null,layers:{on:true,off:true,none:true},k:1,sort:'on'};
+/* CPL médio por estado nos últimos 3 meses (gasto na Meta / conversas iniciadas + leads de formulário) */
+if(cpl&&!(cpl.uf&&cpl.br&&cpl.br.cpl))cpl=null;
+const brl=v=>'R$ '+v.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
+const cplUF=uf=>cpl&&cpl.uf[uf]&&cpl.uf[uf].cpl?cpl.uf[uf]:null;
+const cplPer=cpl?dataBR(cpl.de).slice(0,5)+' a '+dataBR(cpl.ate).slice(0,5):'';
 
 /* ---------- textos de status ---------- */
 const tempo=d=>{const m=Math.round((Date.now()-new Date(d+'T12:00:00'))/2629800000);return m<1?'há menos de 1 mês':m<12?'há '+m+(m===1?' mês':' meses'):'há '+(m/12).toFixed(1).replace('.',',').replace(',0','')+(m<18?' ano':' anos')};
@@ -266,17 +282,20 @@ $('#kpis').innerHTML=[
  ['<span class="dot off"></span>Cidades em OFF',nf(R.cid_off),'já atendemos, sem unidade ON hoje'],
  ['Estados com unidade ativa',estOn+' <span style="font-size:15px;color:var(--muted);font-weight:600">de 27</span>',ufList.filter(u=>!u.on.length&&u.off.length).length+' só com histórico'],
  ['<span class="dot none"></span>Nunca atendemos',nf(nNone),'municípios sem histórico']
-].map(k=>`<div class="kpi"><div class="l">${k[0]}</div><div class="v">${k[1]}</div><div class="d">${k[2]}</div></div>`).join('');
+].concat(cpl?[['CPL médio, 3 meses',brl(cpl.br.cpl),'todos os estados, '+cplPer]]:[]).map(k=>`<div class="kpi"><div class="l">${k[0]}</div><div class="v">${k[1]}</div><div class="d">${k[2]}</div></div>`).join('');
 $('#sub').textContent='Dbout Mídia · atualizado em '+dataBR(data.gerado.slice(0,10))+' às '+data.gerado.slice(11,16);
-$('#phs').textContent='por cidades ativas';
+if(cpl){$('#kpis').classList.add('k6');$('#states-list').classList.add('has-cpl');$('#sort').hidden=false;
+  document.querySelectorAll('#sort button').forEach(b=>b.onclick=()=>{state.sort=b.dataset.s;document.querySelectorAll('#sort button').forEach(x=>x.setAttribute('aria-pressed',x===b));renderStates()})}
+else $('#phs').textContent='por cidades ativas';
 const sem=Object.values(R.sem_cidade||{}).reduce((a,b)=>a+b,0);
-$('#foot').innerHTML=`<span>Fonte: Notion, base "Data Base de Tudo". Verde: cidade com card ON. Vermelho: só cards OFF.</span><span>"OFF desde" usa a última alteração do card no Notion; "ou antes" indica dia de edição em massa.</span>`+(sem?`<span>${sem} cards sem cidade identificada ficaram fora do mapa.</span>`:'');
+$('#foot').innerHTML=`<span>Fonte: Notion, base "Data Base de Tudo". Verde: cidade com card ON. Vermelho: só cards OFF.</span><span>"OFF desde" usa a última alteração do card no Notion; "ou antes" indica dia de edição em massa.</span>`+(sem?`<span>${sem} cards sem cidade identificada ficaram fora do mapa.</span>`:'')+
+  (cpl?`<span>CPL médio: gasto na Meta dividido por conversas iniciadas mais leads de formulário, de ${dataBR(cpl.de)} a ${dataBR(cpl.ate)}, todas as campanhas do estado somadas.</span>`:'');
 
 /* ---------- mapa ---------- */
 const svg=d3.select('#map'), gz=d3.select('#zoom'), NS='http://www.w3.org/2000/svg';
 const gS=d3.select('#states').selectAll('path').data(ufList).join('path').attr('class','st').attr('d',d=>d.path)
   .on('click',(e,d)=>{e.stopPropagation();selectUF(d.uf)})
-  .on('mousemove',(e,d)=>{if(!hoverCity)tipShow(e,`<b>${esc(d.nome)}</b><div class="t2"><span class="dot on"></span>${d.on.length} ${d.on.length===1?'cidade ativa':'cidades ativas'}</div><div class="t2"><span class="dot off"></span>${d.off.length} em OFF</div>`)})
+  .on('mousemove',(e,d)=>{if(!hoverCity)tipShow(e,`<b>${esc(d.nome)}</b><div class="t2"><span class="dot on"></span>${d.on.length} ${d.on.length===1?'cidade ativa':'cidades ativas'}</div><div class="t2"><span class="dot off"></span>${d.off.length} em OFF</div>`+(cplUF(d.uf)?`<div class="t2">CPL médio ${brl(cplUF(d.uf).cpl)} (3 meses)</div>`:''))})
   .on('mouseleave',tipHide);
 d3.select('#neutral').attr('d',MUN.filter(m=>m.s==='none').map(m=>'M'+m.x.toFixed(1)+','+m.y.toFixed(1)+'h0').join(''));
 const RON=4.6,ROFF=3.9;
@@ -407,12 +426,15 @@ function unitRow(u){const k=u.k==='on'?'on':u.k==='off'?'off':'none';
 const maxTot=Math.max(...ufList.map(u=>u.on.length+u.off.length));
 let cityFilter='';
 function renderStates(){const box=$('#states-list');box.innerHTML='';
-  ufList.forEach(u=>{const open=state.uf===u.uf,t=u.on.length+u.off.length;
+  const ordem=state.sort==='cpl'?ufList.slice().sort((a,b)=>{const x=cplUF(a.uf),y=cplUF(b.uf);return x&&y?x.cpl-y.cpl:x?-1:y?1:0}):ufList;
+  ordem.forEach(u=>{const open=state.uf===u.uf,t=u.on.length+u.off.length,cu=cplUF(u.uf);
     const b=el('button','srow'+(open?' open':''),`<span class="sg">${u.uf}</span><span class="nm">${esc(u.nome)}<span class="mb"><i class="a" style="width:${u.on.length/maxTot*100}%"></i><i class="b" style="width:${u.off.length/maxTot*100}%"></i></span></span>
-      <span class="ct"><b>${u.on.length}</b> ${u.on.length===1?'ativa':'ativas'}<br>${u.off.length} em OFF</span><span class="ch">▶</span>`);
+      `+(cpl?(cu?`<span class="cp"><b>${brl(cu.cpl)}</b>CPL médio</span>`:`<span class="cp nd"><b>sem dado</b>CPL médio</span>`):'')+`<span class="ct"><b>${u.on.length}</b> ${u.on.length===1?'ativa':'ativas'}<br>${u.off.length} em OFF</span><span class="ch">▶</span>`);
     b.setAttribute('aria-expanded',open);b.onclick=()=>{cityFilter='';selectUF(open?null:u.uf)};box.appendChild(b);
     if(open){const body=el('div','sbody');const inp=el('input');inp.type='search';inp.placeholder='Buscar cidade em '+u.nome;inp.value=cityFilter;inp.setAttribute('aria-label','Buscar cidade em '+u.nome);
-      const list=el('div');body.appendChild(inp);body.appendChild(list);box.appendChild(body);
+      const list=el('div');
+      if(cpl)body.appendChild(el('div','sum',cu?`CPL médio <b>${brl(cu.cpl)}</b> nos últimos 3 meses<br>${nf(cu.n)} ${cu.n===1?'lead':'leads'} de ${cplPer} · média do Brasil ${brl(cpl.br.cpl)}`:`Sem campanha com gasto neste estado nos últimos 3 meses (${cplPer}).`));
+      body.appendChild(inp);body.appendChild(list);box.appendChild(body);
       const draw=()=>{const q=norm(cityFilter);list.innerHTML='';
         const f=a=>q?a.filter(m=>m.k.includes(q)):a, byN=(a,b)=>a.n.localeCompare(b.n,'pt-BR');
         const on=f(u.on).sort(byN),off=f(u.off).sort((a,b)=>(b.d||'').localeCompare(a.d||'')||byN(a,b)),none=q?u.mun.filter(m=>m.s==='none'&&m.k.includes(q)).sort(byN):[];
