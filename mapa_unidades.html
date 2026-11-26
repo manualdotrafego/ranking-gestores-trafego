@@ -262,11 +262,11 @@ const UNITS=[];SERVED.forEach(m=>m.u.forEach(u=>UNITS.push({u,m,k:norm(u.t)})));
 const ufList=Object.values(UF).sort((a,b)=>b.on.length-a.on.length||b.off.length-a.off.length||a.nome.localeCompare(b.nome));
 const R=data.resumo, nNone=MUN.length-R.cid_on-R.cid_off;
 const state={uf:null,city:null,layers:{on:true,off:true,none:true},k:1,sort:'on'};
-/* CPL médio por estado nos últimos 3 meses (gasto na Meta / conversas iniciadas + leads de formulário) */
+/* CPL médio por estado em um período fixo de 3 meses (gasto na Meta / conversas iniciadas + leads de formulário); não é recalculado pela rotina diária */
 if(cpl&&!(cpl.uf&&cpl.br&&cpl.br.cpl))cpl=null;
 const brl=v=>'R$ '+v.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
 const cplUF=uf=>cpl&&cpl.uf[uf]&&cpl.uf[uf].cpl?cpl.uf[uf]:null;
-const cplPer=cpl?dataBR(cpl.de).slice(0,5)+' a '+dataBR(cpl.ate).slice(0,5):'';
+const cplPer=cpl?dataBR(cpl.de).slice(0,5)+' a '+dataBR(cpl.ate):'';
 
 /* ---------- textos de status ---------- */
 const tempo=d=>{const m=Math.round((Date.now()-new Date(d+'T12:00:00'))/2629800000);return m<1?'há menos de 1 mês':m<12?'há '+m+(m===1?' mês':' meses'):'há '+(m/12).toFixed(1).replace('.',',').replace(',0','')+(m<18?' ano':' anos')};
@@ -289,7 +289,7 @@ if(cpl){$('#kpis').classList.add('k6');$('#states-list').classList.add('has-cpl'
 else $('#phs').textContent='por cidades ativas';
 const sem=Object.values(R.sem_cidade||{}).reduce((a,b)=>a+b,0);
 $('#foot').innerHTML=`<span>Fonte: Notion, base "Data Base de Tudo". Verde: cidade com card ON. Vermelho: só cards OFF.</span><span>"OFF desde" usa a última alteração do card no Notion; "ou antes" indica dia de edição em massa.</span>`+(sem?`<span>${sem} cards sem cidade identificada ficaram fora do mapa.</span>`:'')+
-  (cpl?`<span>CPL médio: gasto na Meta dividido por conversas iniciadas mais leads de formulário, de ${dataBR(cpl.de)} a ${dataBR(cpl.ate)}, todas as campanhas do estado somadas.</span>`:'');
+  (cpl?`<span>CPL médio: gasto na Meta dividido por conversas iniciadas mais leads de formulário, de ${dataBR(cpl.de)} a ${dataBR(cpl.ate)}, todas as campanhas do estado somadas. Período fixo, o valor não muda com a atualização diária do mapa.</span>`:'');
 
 /* ---------- mapa ---------- */
 const svg=d3.select('#map'), gz=d3.select('#zoom'), NS='http://www.w3.org/2000/svg';
@@ -433,7 +433,7 @@ function renderStates(){const box=$('#states-list');box.innerHTML='';
     b.setAttribute('aria-expanded',open);b.onclick=()=>{cityFilter='';selectUF(open?null:u.uf)};box.appendChild(b);
     if(open){const body=el('div','sbody');const inp=el('input');inp.type='search';inp.placeholder='Buscar cidade em '+u.nome;inp.value=cityFilter;inp.setAttribute('aria-label','Buscar cidade em '+u.nome);
       const list=el('div');
-      if(cpl)body.appendChild(el('div','sum',cu?`CPL médio <b>${brl(cu.cpl)}</b> nos últimos 3 meses<br>${nf(cu.n)} ${cu.n===1?'lead':'leads'} de ${cplPer} · média do Brasil ${brl(cpl.br.cpl)}`:`Sem campanha com gasto neste estado nos últimos 3 meses (${cplPer}).`));
+      if(cpl)body.appendChild(el('div','sum',cu?`CPL médio <b>${brl(cu.cpl)}</b> em 3 meses<br>${nf(cu.n)} ${cu.n===1?'lead':'leads'} de ${cplPer} · média do Brasil ${brl(cpl.br.cpl)}`:`Sem campanha com gasto neste estado no período (${cplPer}).`));
       body.appendChild(inp);body.appendChild(list);box.appendChild(body);
       const draw=()=>{const q=norm(cityFilter);list.innerHTML='';
         const f=a=>q?a.filter(m=>m.k.includes(q)):a, byN=(a,b)=>a.n.localeCompare(b.n,'pt-BR');
