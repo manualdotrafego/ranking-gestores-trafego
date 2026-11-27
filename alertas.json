@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-11-26",
-  "ref_day": "2026-11-25",
+  "generated_at": "2026-11-27",
+  "ref_day": "2026-11-26",
   "baseline_days": [
-    "2026-11-22",
     "2026-11-23",
-    "2026-11-24"
+    "2026-11-24",
+    "2026-11-25"
   ],
   "criteria": {
     "min_pct": 30.0,
@@ -13,117 +13,172 @@
     "min_msg_ref": 5,
     "min_msg_base": 10
   },
-  "count": 10,
+  "count": 15,
   "alerts": [
     {
-      "gestor": "Igor Teixeira",
-      "clinica": "PRESIDENTE PRUDENTE FORMULÁRIO",
-      "tag": "#406",
-      "cpl_ant": 3.81,
-      "cpl_atual": 7.14,
-      "var_abs": 3.34,
-      "var_pct": 87.7,
+      "gestor": "Mota",
+      "clinica": "Soure PA R$",
+      "tag": "#643",
+      "cpl_ant": 3.98,
+      "cpl_atual": 9.61,
+      "var_abs": 5.63,
+      "var_pct": 141.3,
       "msgs_atual": 5,
-      "spend_atual": 35.71
-    },
-    {
-      "gestor": "Victor",
-      "clinica": "ABO [SÃO CONRADO RJ] R$1.INST+DOC REPUBLICADA",
-      "tag": "#536",
-      "cpl_ant": 4.22,
-      "cpl_atual": 7.24,
-      "var_abs": 3.02,
-      "var_pct": 71.7,
-      "msgs_atual": 5,
-      "spend_atual": 36.19
-    },
-    {
-      "gestor": "Milena",
-      "clinica": "CP LORENA 1.,",
-      "tag": "#390",
-      "cpl_ant": 2.3,
-      "cpl_atual": 4.42,
-      "var_abs": 2.12,
-      "var_pct": 92.1,
-      "msgs_atual": 6,
-      "spend_atual": 26.55
-    },
-    {
-      "gestor": "Milena",
-      "clinica": "CP UBERLÂNDIA 1K",
-      "tag": "#327",
-      "cpl_ant": 5.05,
-      "cpl_atual": 7.07,
-      "var_abs": 2.02,
-      "var_pct": 40.0,
-      "msgs_atual": 6,
-      "spend_atual": 42.39
-    },
-    {
-      "gestor": "Igor Teixeira",
-      "clinica": "7 São sebastião R$",
-      "tag": "#421",
-      "cpl_ant": 2.8,
-      "cpl_atual": 4.49,
-      "var_abs": 1.69,
-      "var_pct": 60.2,
-      "msgs_atual": 14,
-      "spend_atual": 62.8
-    },
-    {
-      "gestor": "Igor Teixeira",
-      "clinica": "CP03 NAVEGANTES R$1,5K .",
-      "tag": "#404",
-      "cpl_ant": 2.72,
-      "cpl_atual": 4.28,
-      "var_abs": 1.56,
-      "var_pct": 57.5,
-      "msgs_atual": 9,
-      "spend_atual": 38.52
+      "spend_atual": 48.07
     },
     {
       "gestor": "Bueno",
       "clinica": "PARANAVAÍ [para] R$ dia",
       "tag": "#105",
-      "cpl_ant": 4.4,
-      "cpl_atual": 5.88,
-      "var_abs": 1.48,
-      "var_pct": 33.7,
-      "msgs_atual": 11,
-      "spend_atual": 64.68
+      "cpl_ant": 4.67,
+      "cpl_atual": 10.16,
+      "var_abs": 5.49,
+      "var_pct": 117.6,
+      "msgs_atual": 7,
+      "spend_atual": 71.12
+    },
+    {
+      "gestor": "Milena",
+      "clinica": "CP SINOP ORTO 4.,",
+      "tag": "#317",
+      "cpl_ant": 6.1,
+      "cpl_atual": 11.54,
+      "var_abs": 5.44,
+      "var_pct": 89.1,
+      "msgs_atual": 7,
+      "spend_atual": 80.75
+    },
+    {
+      "gestor": "Milena",
+      "clinica": "CP SORRISO ORTO 3.,",
+      "tag": "#306",
+      "cpl_ant": 5.94,
+      "cpl_atual": 11.03,
+      "var_abs": 5.08,
+      "var_pct": 85.5,
+      "msgs_atual": 6,
+      "spend_atual": 66.16
     },
     {
       "gestor": "Thiago Braga",
-      "clinica": "Itumbiara ,",
-      "tag": "#225",
-      "cpl_ant": 3.4,
-      "cpl_atual": 4.74,
-      "var_abs": 1.34,
-      "var_pct": 39.4,
-      "msgs_atual": 6,
-      "spend_atual": 28.45
+      "clinica": "Vespasiano Pág Nova",
+      "tag": "#267",
+      "cpl_ant": 4.48,
+      "cpl_atual": 8.0,
+      "var_abs": 3.52,
+      "var_pct": 78.7,
+      "msgs_atual": 7,
+      "spend_atual": 56.01
     },
     {
-      "gestor": "Victor",
-      "clinica": "ABO [JUNDIAÍ] R$1.orto completa",
-      "tag": "#578",
-      "cpl_ant": 3.27,
-      "cpl_atual": 4.56,
-      "var_abs": 1.29,
-      "var_pct": 39.4,
-      "msgs_atual": 6,
-      "spend_atual": 27.35
+      "gestor": "Igor Teixeira",
+      "clinica": "PLANALTINA FORMULÁRIO",
+      "tag": "#460",
+      "cpl_ant": 4.84,
+      "cpl_atual": 8.08,
+      "var_abs": 3.24,
+      "var_pct": 67.0,
+      "msgs_atual": 8,
+      "spend_atual": 64.65
     },
     {
-      "gestor": "Victor",
-      "clinica": "[ITAPERUNA] R$,inst+doc+limp+",
-      "tag": "#595",
-      "cpl_ant": 1.89,
-      "cpl_atual": 3.06,
-      "var_abs": 1.17,
-      "var_pct": 62.1,
+      "gestor": "Thiago Braga",
+      "clinica": "Orthopride Osasco",
+      "tag": "#237",
+      "cpl_ant": 4.89,
+      "cpl_atual": 6.91,
+      "var_abs": 2.02,
+      "var_pct": 41.3,
+      "msgs_atual": 6,
+      "spend_atual": 41.44
+    },
+    {
+      "gestor": "Milena",
+      "clinica": "CP LORENA 1.,",
+      "tag": "#390",
+      "cpl_ant": 2.68,
+      "cpl_atual": 4.57,
+      "var_abs": 1.89,
+      "var_pct": 70.4,
+      "msgs_atual": 6,
+      "spend_atual": 27.42
+    },
+    {
+      "gestor": "Bueno",
+      "clinica": "CASCAVEL SORRIX R$ 1. [sorri ]",
+      "tag": "#139",
+      "cpl_ant": 3.83,
+      "cpl_atual": 5.6,
+      "var_abs": 1.77,
+      "var_pct": 46.3,
+      "msgs_atual": 5,
+      "spend_atual": 28.02
+    },
+    {
+      "gestor": "Igor Teixeira",
+      "clinica": "7 São sebastião R$",
+      "tag": "#421",
+      "cpl_ant": 3.31,
+      "cpl_atual": 5.02,
+      "var_abs": 1.71,
+      "var_pct": 51.5,
       "msgs_atual": 10,
-      "spend_atual": 30.6
+      "spend_atual": 50.19
+    },
+    {
+      "gestor": "Igor Teixeira",
+      "clinica": "DS01 PEIXOTO AZEVEDO 2K",
+      "tag": "#412",
+      "cpl_ant": 5.06,
+      "cpl_atual": 6.72,
+      "var_abs": 1.66,
+      "var_pct": 32.7,
+      "msgs_atual": 6,
+      "spend_atual": 40.32
+    },
+    {
+      "gestor": "Milena",
+      "clinica": "CP OEIRAS ,",
+      "tag": "#395",
+      "cpl_ant": 2.79,
+      "cpl_atual": 4.22,
+      "var_abs": 1.43,
+      "var_pct": 51.2,
+      "msgs_atual": 7,
+      "spend_atual": 29.52
+    },
+    {
+      "gestor": "Thiago Braga",
+      "clinica": "Orto Ribeirão Preto SP",
+      "tag": "#244",
+      "cpl_ant": 3.53,
+      "cpl_atual": 4.89,
+      "var_abs": 1.36,
+      "var_pct": 38.7,
+      "msgs_atual": 10,
+      "spend_atual": 48.93
+    },
+    {
+      "gestor": "Mota",
+      "clinica": "Codipe R$",
+      "tag": "#710",
+      "cpl_ant": 2.63,
+      "cpl_atual": 3.8,
+      "var_abs": 1.17,
+      "var_pct": 44.7,
+      "msgs_atual": 6,
+      "spend_atual": 22.82
+    },
+    {
+      "gestor": "Mota",
+      "clinica": "Manaus R$",
+      "tag": "#717",
+      "cpl_ant": 2.05,
+      "cpl_atual": 3.19,
+      "var_abs": 1.14,
+      "var_pct": 55.5,
+      "msgs_atual": 13,
+      "spend_atual": 41.45
     }
   ]
 }
